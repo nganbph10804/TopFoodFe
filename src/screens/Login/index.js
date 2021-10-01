@@ -1,20 +1,15 @@
 import React, { useState } from 'react'
 import { ImageBackground, StyleSheet, TextInput, Text, View, Alert,Image } from 'react-native'
-import { BackgroundImage } from 'react-native-elements/dist/config'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Button } from 'react-native-paper'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import LoginImage from './../../assets/Login/img-login.png'
-import fbIcon from './../../assets/Icon/facebook.png'
-import ggIcon from './../../assets/Icon/google-plus.png'
 const Login = () => {
     const [username, setUsername] = useState('');
     const [pass, setPass] = useState('');
-    const [isActive, setActive] = useState(false);
+    const bgImage = {uri :"https://lh3.googleusercontent.com/u/0/d/19VynXbKqpdthwL3_GL52oq6Kw7wXRBrX=w1920-h937-iv1"};
 
     return (
         <View style={styles.container}>
-            <ImageBackground source={LoginImage} resizeMode="cover" style={styles.image}>
+            <ImageBackground source={bgImage} resizeMode="cover" style={styles.image}>
                 <View style={styles.inputView}>
                     <TextInput
                         style={styles.TextInput}
