@@ -3,15 +3,17 @@ import { ImageBackground, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import styled from 'styled-components';
 import { BtnLogin, CustomInput } from '../components/index.js';
+import { useFonts } from '@expo-google-fonts/inter';
+import AppLoading from 'expo-app-loading';
 
 const image = {
-  uri: 'https://raw.githubusercontent.com/Leomin07/img/master/new-login.png',
+  uri: 'https://raw.githubusercontent.com/Leomin07/img/master/img-login.png',
 };
 
-const Page = styled.View`
+const Page = styled(View)`
   position: absolute;
   width: 100%;
-  top: 50%;
+  top: 37%;
 `;
 
 const LoginScreen = ({ navigation }) => {
@@ -21,69 +23,93 @@ const LoginScreen = ({ navigation }) => {
 
   const handlerLogin = () => {
     console.log(username);
+    navigation.navigate('Home');
   };
-  return (
-    <View>
-      <ImageBackground source={image} style={{ width: '100%', height: '100%' }}>
-        <Page>
-          <View>
-            <CustomInput
-              placeholder="Username"
-              value={username}
-              onChangeText={username => setUsername(username)}
-            />
-          </View>
-          <View style={{ position: 'relative' }}>
-            <CustomInput
-              placeholder="Password"
-              secureTextEntry={show ? false : true}
-              value={password}
-              onChangeText={password => setUsername(password)}
-            />
-            <Icon
-              name={show ? 'eye' : 'eye-slash'}
-              size={20}
-              color="white"
-              onPress={() => setShow(!show)}
-              style={{ position: 'absolute', right: 63, top: 20 }}
-            />
-          </View>
-          <View>
-            <Text
-              style={{
-                textAlign: 'right',
-                paddingRight: 50,
-                color: '#fff',
-                marginBottom: 30,
-                fontSize: 17,
-              }}
-            >
-              Quên mật khẩu?
-            </Text>
-          </View>
-          <View>
-            <BtnLogin>
+  let [fontsLoaded] = useFonts({
+    'Courgette-Regular': require('../../assets/fonts/Courgette-Regular.ttf'),
+  });
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <View>
+        <ImageBackground
+          resizeMode="cover"
+          source={image}
+          style={{ width: '100%', height: '100%' }}
+        >
+          <Page>
+            <View style={{ marginBottom: 10, marginLeft: 40 }}>
               <Text
-                style={{ color: '#fff', fontSize: 22 }}
-                onPress={() => handlerLogin()}
+                style={{
+                  fontFamily: 'Courgette-Regular',
+                  color: '#fff',
+                  fontSize: 35,
+                  textAlign: 'left',
+                }}
               >
-                Đăng Nhập
+                Welcome{'\n'} Back
               </Text>
-            </BtnLogin>
-          </View>
-          <View style={{ alignSelf: 'center', marginTop: 30 }}>
-            <Text
-              style={{ color: '#fff', fontSize: 17 }}
-              onPress={() => navigation.navigate('Đăng Ký')}
-            >
-              Tạo tài khoản mới?
-            </Text>
-            <Text></Text>
-          </View>
-        </Page>
-      </ImageBackground>
-    </View>
-  );
+            </View>
+            <View>
+              <CustomInput
+                placeholder="Username"
+                value={username}
+                onChangeText={username => setUsername(username)}
+              />
+            </View>
+            <View style={{ position: 'relative' }}>
+              <CustomInput
+                placeholder="Password"
+                secureTextEntry={show ? false : true}
+                value={password}
+                onChangeText={password => setUsername(password)}
+              />
+              <Icon
+                name={show ? 'eye' : 'eye-slash'}
+                size={20}
+                color="white"
+                onPress={() => setShow(!show)}
+                style={{ position: 'absolute', right: 63, top: 15 }}
+              />
+            </View>
+            <View>
+              <Text
+                style={{
+                  textAlign: 'right',
+                  paddingRight: 50,
+                  color: '#fff',
+                  marginBottom: 30,
+                  fontSize: 17,
+                }}
+              >
+                Quên mật khẩu?
+              </Text>
+            </View>
+            <View>
+              <BtnLogin>
+                <Text
+                  style={{ color: '#fff', fontSize: 22 }}
+                  onPress={() => handlerLogin()}
+                >
+                  Đăng Nhập
+                </Text>
+              </BtnLogin>
+            </View>
+            <View style={{ alignSelf: 'center', marginTop: 30 }}>
+              <Text
+                style={{ color: '#fff', fontSize: 17 }}
+                onPress={() => navigation.navigate('Register')}
+              >
+                Tạo tài khoản mới?
+              </Text>
+              <Text></Text>
+            </View>
+          </Page>
+        </ImageBackground>
+      </View>
+    );
+  }
 };
 
 export default LoginScreen;

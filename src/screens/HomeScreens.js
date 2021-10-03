@@ -1,11 +1,13 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import ProfileScreen from './ProfileScreen';
+import NotificationsScreen from './NotificationsScreen';
 
 const HomeScreens = () => {
   return (
-    <View>
-      <Text>home</Text>
-    </View>
+    <Tab.Navigator>
+      <Tab.Screen name="notification" component={NotificationsScreen} />
+      <Tab.Screen name="profile" component={ProfileScreen} />
+    </Tab.Navigator>
   );
 };
 
