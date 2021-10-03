@@ -10,8 +10,9 @@ import {
 
 export const authReducer = (
   state = {
-    user: [],
-    // token: localStorage.getItem('token'),
+    account: [],
+    profile: [],
+    token: null,
     loading: false,
   },
   action
@@ -24,11 +25,11 @@ export const authReducer = (
         loading: true,
       };
     case LOGIN_SUCCESS:
-    case REGISTER_SUCCESS:
       return {
         ...state,
-        user: action.payload.user,
-        // token: action.payload.accessToken,
+        account: action.payload.data.account,
+        profile: action.payload.data.profile,
+        token: action.payload.data.token,
         loading: false,
       };
     case LOGIN_FAILED:
@@ -39,9 +40,8 @@ export const authReducer = (
         loading: false,
       };
     case LOGOUT:
-      // localStorage.removeItem('token');
       return {
-        users: [],
+        accounts: [],
         token: null,
       };
 

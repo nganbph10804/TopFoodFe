@@ -1,10 +1,14 @@
+import { useFonts } from '@expo-google-fonts/inter';
+import AppLoading from 'expo-app-loading';
 import React, { useState } from 'react';
 import { ImageBackground, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-native';
 import styled from 'styled-components';
 import { BtnLogin, CustomInput } from '../components/index.js';
-import { useFonts } from '@expo-google-fonts/inter';
-import AppLoading from 'expo-app-loading';
+import { loginAction } from '../redux/actions/loginAction.js';
+import { useLocation, useHistory } from 'react-router-dom';
 
 const image = {
   uri: 'https://raw.githubusercontent.com/Leomin07/img/master/img-login.png',
@@ -16,14 +20,18 @@ const Page = styled(View)`
   top: 37%;
 `;
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = () => {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [show, setShow] = useState(false);
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const history = useHistory();
+  let { from } = location.state || { from: { pathname: '/' } };
 
   const handlerLogin = () => {
-    console.log(username);
-    navigation.navigate('Home');
+    dispatch(loginAction(username, password));
+    history.replace(from);
   };
   let [fontsLoaded] = useFonts({
     'Courgette-Regular': require('../../assets/fonts/Courgette-Regular.ttf'),
@@ -63,7 +71,7 @@ const LoginScreen = ({ navigation }) => {
                 placeholder="Password"
                 secureTextEntry={show ? false : true}
                 value={password}
-                onChangeText={password => setUsername(password)}
+                onChangeText={password => setPassword(password)}
               />
               <Icon
                 name={show ? 'eye' : 'eye-slash'}
@@ -97,13 +105,11 @@ const LoginScreen = ({ navigation }) => {
               </BtnLogin>
             </View>
             <View style={{ alignSelf: 'center', marginTop: 30 }}>
-              <Text
-                style={{ color: '#fff', fontSize: 17 }}
-                onPress={() => navigation.navigate('Register')}
-              >
-                Tạo tài khoản mới?
-              </Text>
-              <Text></Text>
+              <Link to="/register">
+                <Text style={{ color: '#fff', fontSize: 17 }}>
+                  Tạo tài khoản mới?
+                </Text>
+              </Link>
             </View>
           </Page>
         </ImageBackground>

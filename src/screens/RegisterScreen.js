@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import { BtnLogin, CustomInput } from '../components/index.js';
 import { useFonts } from '@expo-google-fonts/inter';
 import AppLoading from 'expo-app-loading';
+import { Link } from 'react-router-native';
+import { useHistory } from 'react-router-dom';
 
 const image = {
   uri: 'https://raw.githubusercontent.com/Leomin07/img/master/img-register-new.png',
@@ -16,9 +18,14 @@ const Page = styled(View)`
   top: 10%;
 `;
 
-const RegisterScreen = ({ navigation }) => {
+const RegisterScreen = () => {
   const [show, setShow] = useState(false);
   const [hidden, setHidden] = useState(false);
+  const history = useHistory();
+  const registerHandler = () => {
+    history.push('/login');
+  };
+
   let [fontsLoaded] = useFonts({
     'Courgette-Regular': require('../../assets/fonts/Courgette-Regular.ttf'),
   });
@@ -88,19 +95,18 @@ const RegisterScreen = ({ navigation }) => {
               <BtnLogin>
                 <Text
                   style={{ color: '#fff', fontSize: 22 }}
-                  onPress={() => navigation.goBack()}
+                  onPress={() => registerHandler()}
                 >
                   Đăng Ký
                 </Text>
               </BtnLogin>
             </View>
             <View style={{ alignSelf: 'center', marginTop: 20 }}>
-              <Text
-                style={{ color: '#fff', fontSize: 17 }}
-                onPress={() => navigation.goBack()}
-              >
-                Đã có tài khoản?
-              </Text>
+              <Link to="/login">
+                <Text style={{ color: '#fff', fontSize: 17 }}>
+                  Đã có tài khoản?
+                </Text>
+              </Link>
             </View>
           </Page>
         </ImageBackground>
