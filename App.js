@@ -20,8 +20,8 @@ function App() {
         <View>
           <Nav />
           <Route path="/login" component={LoginScreen} exact />
-          <Route path="/" component={HomeScreens} exact />
           <Route path="/register" component={RegisterScreen} exact />
+          <PrivateRoute path="/" component={HomeScreens} exact />
           <PrivateRoute path="/" component={HomeScreens} exact />
           <PrivateRoute path="/profile" component={ProfileScreen} exact />
           <PrivateRoute
