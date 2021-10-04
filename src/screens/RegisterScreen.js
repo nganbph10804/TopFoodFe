@@ -7,6 +7,8 @@ import { useFonts } from '@expo-google-fonts/inter';
 import AppLoading from 'expo-app-loading';
 import { Link } from 'react-router-native';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { registerAction } from '../redux/actions/loginAction.js';
 
 const image = {
   uri: 'https://raw.githubusercontent.com/Leomin07/img/master/img-register-new.png',
@@ -19,10 +21,19 @@ const Page = styled(View)`
 `;
 
 const RegisterScreen = () => {
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  const [username, setUsername] = useState();
+  const [phone, setPhone] = useState();
+  const [password, setPassword] = useState();
+  const [confirm, setConfirm] = useState();
+
+  const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [hidden, setHidden] = useState(false);
   const history = useHistory();
   const registerHandler = () => {
+    dispatch(registerAction(name, email, username, phone, password));
     history.push('/login');
   };
 
@@ -54,21 +65,40 @@ const RegisterScreen = () => {
               </Text>
             </View>
             <View>
-              <CustomInput placeholder="Họ Tên" />
+              <CustomInput
+                placeholder="Họ Tên"
+                value={name}
+                onChangeText={name => setName(name)}
+              />
             </View>
             <View>
-              <CustomInput placeholder="Email" />
+              <CustomInput
+                placeholder="Email"
+                value={email}
+                onChangeText={email => setEmail(email)}
+              />
             </View>
             <View>
-              <CustomInput placeholder="Username" />
+              <CustomInput
+                placeholder="Username"
+                value={username}
+                onChangeText={username => setUsername(username)}
+              />
             </View>
             <View>
-              <CustomInput placeholder="Số Điện Thoại" />
+              <CustomInput
+                placeholder="Số Điện Thoại"
+                keyboardType="number-pad"
+                value={phone}
+                onChangeText={phone => setPhone(phone)}
+              />
             </View>
             <View style={{ position: 'relative' }}>
               <CustomInput
                 placeholder="Password"
                 secureTextEntry={show ? false : true}
+                value={password}
+                onChangeText={password => setPassword(password)}
               />
               <Icon
                 name={show ? 'eye' : 'eye-slash'}
@@ -82,6 +112,8 @@ const RegisterScreen = () => {
               <CustomInput
                 placeholder="Nhập lại Password"
                 secureTextEntry={hidden ? false : true}
+                value={confirm}
+                onChangeText={confirm => setConfirm(confirm)}
               />
               <Icon
                 name={hidden ? 'eye' : 'eye-slash'}

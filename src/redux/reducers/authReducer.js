@@ -13,6 +13,7 @@ export const authReducer = (
     account: [],
     profile: [],
     token: null,
+    message: null,
     loading: false,
   },
   action
@@ -31,6 +32,11 @@ export const authReducer = (
         profile: action.payload.data.profile,
         token: action.payload.data.token,
         loading: false,
+      };
+    case REGISTER_SUCCESS:
+      return {
+        ...state,
+        message: action.payload,
       };
     case LOGIN_FAILED:
     case REGISTER_FAILED:

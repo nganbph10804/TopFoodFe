@@ -22,7 +22,7 @@ const Nav = () => {
       <NavItem>
         <Link to="/login">
           <View>
-            <Icon name={'home'} size={30} color="#000" />
+            <Text>Login</Text>
           </View>
         </Link>
       </NavItem>
