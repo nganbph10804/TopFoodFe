@@ -37,14 +37,21 @@ const Nav = () => {
         </Link>
       </NavItem>
       <NavItem>
-        <Link to="/profile">
+        <Link to="/message">
+          <View>
+            <Icon name={'comment-dots'} size={30} color="#000" />
+          </View>
+        </Link>
+      </NavItem>
+      <NavItem>
+        <Link to="/notification">
           <View>
             <Icon name={'bell'} size={30} color="#000" />
           </View>
         </Link>
       </NavItem>
       <NavItem>
-        <Link to="/notification">
+        <Link to="/profile">
           <View>
             <Icon name={'user-circle'} size={30} color="#000" />
           </View>
