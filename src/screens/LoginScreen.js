@@ -7,8 +7,8 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-native';
 import styled from 'styled-components';
 import { BtnLogin, CustomInput } from '../components/index.js';
-import { loginAction } from '../redux/actions/loginAction.js';
 import { useLocation, useHistory } from 'react-router-dom';
+import { loginAction } from '../redux/actions/authAction.js';
 
 const image = {
   uri: 'https://raw.githubusercontent.com/Leomin07/img/master/img-login.png',
