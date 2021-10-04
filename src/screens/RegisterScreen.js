@@ -8,7 +8,7 @@ import AppLoading from 'expo-app-loading';
 import { Link } from 'react-router-native';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { registerAction } from '../redux/actions/loginAction.js';
+import { registerAction } from '../redux/actions/authAction.js';
 
 const image = {
   uri: 'https://raw.githubusercontent.com/Leomin07/img/master/img-register-new.png',
@@ -33,7 +33,7 @@ const RegisterScreen = () => {
   const [hidden, setHidden] = useState(false);
   const history = useHistory();
   const registerHandler = () => {
-    dispatch(registerAction(name, email, username, phone, password));
+    dispatch(registerAction(email, name, password, phone, username));
     history.push('/login');
   };
 
