@@ -22,7 +22,6 @@ function App() {
           <Route path="/login" component={LoginScreen} exact />
           <Route path="/register" component={RegisterScreen} exact />
           <PrivateRoute path="/" component={HomeScreens} exact />
-          <PrivateRoute path="/" component={HomeScreens} exact />
           <PrivateRoute path="/profile" component={ProfileScreen} exact />
           <PrivateRoute
             path="/notification"
