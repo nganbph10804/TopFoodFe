@@ -18,10 +18,14 @@ function App() {
         <View>
           <Nav />
           <Route path="/" component={HomeScreens} exact />
-          <PrivateRoute path="/profile" component={ProfileScreen} exact />
-          <Route path="/notification" component={NotificationsScreen} exact />
           <Route path="/login" component={LoginScreen} exact />
           <Route path="/register" component={RegisterScreen} exact />
+          <PrivateRoute path="/profile" component={ProfileScreen} exact />
+          <PrivateRoute
+            path="/notification"
+            component={NotificationsScreen}
+            exact
+          />
           <StatusBar />
         </View>
       </NativeRouter>

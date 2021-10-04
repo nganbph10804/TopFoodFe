@@ -36,32 +36,31 @@ export const loginAction = (username, password) => async dispatch => {
 };
 
 export const registerAction =
-  (email, password, fullName, phone, address) => dispatch => {
+  (name, email, username, phone, password) => async dispatch => {
     dispatch({
       type: REGISTER_REQUEST,
     });
-    axios
-      .post('http://localhost:9000/register', {
-        email,
-        password,
-        fullName,
-        phone,
-        address,
-        isAdmin,
-      })
-      .then(resp => {
-        localStorage.setItem('token', resp.data.accessToken);
-        dispatch({
-          type: REGISTER_SUCCESS,
-          payload: resp.data,
-        });
-      })
-      .catch(error => {
-        dispatch({
-          type: REGISTER_FAILED,
-          payload: error.message,
-        });
+    try {
+      const { data } = await axios.post(
+        'http://35.238.98.175:8080​/auth​/register',
+        {
+          name: name,
+          email: email,
+          username: username,
+          phone: phone,
+          password: password,
+        }
+      );
+      dispatch({
+        type: REGISTER_SUCCESS,
+        payload: data,
       });
+    } catch (error) {
+      dispatch({
+        type: REGISTER_FAILED,
+        payload: error,
+      });
+    }
   };
 
 export const logoutAction = () => dispatch => {
