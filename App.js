@@ -17,9 +17,9 @@ function App() {
       <NativeRouter>
         <View>
           <Nav />
-          <Route path="/" component={HomeScreens} exact />
           <Route path="/login" component={LoginScreen} exact />
           <Route path="/register" component={RegisterScreen} exact />
+          <PrivateRoute path="/" component={HomeScreens} exact />
           <PrivateRoute path="/profile" component={ProfileScreen} exact />
           <PrivateRoute
             path="/notification"

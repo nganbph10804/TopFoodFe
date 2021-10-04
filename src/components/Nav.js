@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-native';
 import styled from 'styled-components';
 
@@ -17,6 +18,8 @@ const NavItem = styled(View)`
 `;
 
 const Nav = () => {
+  const user = useSelector(state => state.auth);
+  console.log('log 🚀 ~ file: Nav.js ~ line 22 ~ Nav ~ user', user);
   return (
     <Main>
       <NavItem>
