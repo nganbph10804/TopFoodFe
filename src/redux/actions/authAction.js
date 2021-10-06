@@ -1,4 +1,3 @@
-import { AsyncStorage } from 'react-native';
 import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -7,8 +6,9 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAILED,
   LOGOUT,
-} from '../types/loginType';
+} from '../types/authType';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const loginAction = (username, password) => async dispatch => {
   dispatch({

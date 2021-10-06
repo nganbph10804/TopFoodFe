@@ -6,7 +6,7 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAILED,
   LOGOUT,
-} from '../types/loginType';
+} from '../types/authType';
 
 export const authReducer = (
   state = {

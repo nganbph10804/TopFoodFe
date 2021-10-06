@@ -1,13 +1,11 @@
+import { useFonts } from '@expo-google-fonts/inter';
+import AppLoading from 'expo-app-loading';
 import React, { useState } from 'react';
 import { ImageBackground, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { BtnLogin, CustomInput } from '../components/index.js';
-import { useFonts } from '@expo-google-fonts/inter';
-import AppLoading from 'expo-app-loading';
-import { Link } from 'react-router-native';
-import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { registerAction } from '../redux/actions/authAction.js';
 
 const image = {
@@ -15,26 +13,24 @@ const image = {
 };
 
 const Page = styled(View)`
-  position: absolute;
-  width: 100%;
-  top: 10%;
+  top: 7%;
 `;
 
-const RegisterScreen = () => {
+const RegisterScreen = ({ navigation }) => {
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [username, setUsername] = useState();
   const [phone, setPhone] = useState();
   const [password, setPassword] = useState();
   const [confirm, setConfirm] = useState();
-
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [hidden, setHidden] = useState(false);
-  const history = useHistory();
   const registerHandler = () => {
-    dispatch(registerAction(email, name, password, phone, username));
-    history.push('/login');
+    if (password === confirm) {
+      dispatch(registerAction(email, name, password, phone, username));
+      navigation.goBack();
+    }
   };
 
   let [fontsLoaded] = useFonts({
@@ -134,11 +130,12 @@ const RegisterScreen = () => {
               </BtnLogin>
             </View>
             <View style={{ alignSelf: 'center', marginTop: 20 }}>
-              <Link to="/login">
-                <Text style={{ color: '#fff', fontSize: 17 }}>
-                  Đã có tài khoản?
-                </Text>
-              </Link>
+              <Text
+                style={{ color: '#fff', fontSize: 17 }}
+                onPress={() => navigation.goBack()}
+              >
+                Đã có tài khoản?
+              </Text>
             </View>
           </Page>
         </ImageBackground>

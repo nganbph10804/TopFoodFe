@@ -1,13 +1,12 @@
 import { useFonts } from '@expo-google-fonts/inter';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ImageBackground, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-native';
 import styled from 'styled-components';
 import { BtnLogin, CustomInput } from '../components/index.js';
-import { useLocation, useHistory } from 'react-router-dom';
 import { loginAction } from '../redux/actions/authAction.js';
 
 const image = {
@@ -20,18 +19,15 @@ const Page = styled(View)`
   top: 37%;
 `;
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
-  const location = useLocation();
-  const history = useHistory();
-  let { from } = location.state || { from: { pathname: '/' } };
 
   const handlerLogin = () => {
     dispatch(loginAction(username, password));
-    history.replace(from);
+    navigation.navigate('NAV');
   };
   let [fontsLoaded] = useFonts({
     'Courgette-Regular': require('../../assets/fonts/Courgette-Regular.ttf'),
@@ -47,7 +43,7 @@ const LoginScreen = () => {
           style={{ width: '100%', height: '100%' }}
         >
           <Page>
-            <View style={{ marginBottom: 10, marginLeft: 40 }}>
+            <View style={{ marginBottom: 10, marginLeft: 33 }}>
               <Text
                 style={{
                   fontFamily: 'Courgette-Regular',
@@ -56,6 +52,7 @@ const LoginScreen = () => {
                   textAlign: 'left',
                 }}
               >
+                {' '}
                 Welcome{'\n'} Back
               </Text>
             </View>
@@ -90,6 +87,7 @@ const LoginScreen = () => {
                   marginBottom: 30,
                   fontSize: 17,
                 }}
+                onPress={() => navigation.navigate('FORGOT_PASSWORD')}
               >
                 Quên mật khẩu?
               </Text>
@@ -105,11 +103,12 @@ const LoginScreen = () => {
               </BtnLogin>
             </View>
             <View style={{ alignSelf: 'center', marginTop: 30 }}>
-              <Link to="/register">
-                <Text style={{ color: '#fff', fontSize: 17 }}>
-                  Tạo tài khoản mới?
-                </Text>
-              </Link>
+              <Text
+                style={{ color: '#fff', fontSize: 17 }}
+                onPress={() => navigation.navigate('REGISTER')}
+              >
+                Tạo tài khoản mới?
+              </Text>
             </View>
           </Page>
         </ImageBackground>
