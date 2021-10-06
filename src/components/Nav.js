@@ -1,63 +1,64 @@
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import { View, Text } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-native';
-import styled from 'styled-components';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import FriendListScreen from '../screens/FriendListScreen.js';
+import HomeScreens from '../screens/HomeScreens.js';
+import MessageScreen from '../screens/MessageScreen.js';
+import NotificationsScreen from '../screens/NotificationsScreen.js';
+import ProfileDetailScreen from '../screens/ProfileDetailScreen.js';
+import ProfileScreen from '../screens/ProfileScreen.js';
 
-const Main = styled(View)`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  margin-top: 10px;
-`;
-
-const NavItem = styled(View)`
-  display: flex;
-  flex-direction: row;
-`;
-
+const Tab = createBottomTabNavigator();
+const HomeStack = createNativeStackNavigator();
 const Nav = () => {
-  const user = useSelector(state => state.auth);
-  console.log('log 🚀 ~ file: Nav.js ~ line 22 ~ Nav ~ user', user);
+  // const auth = useSelector(state => state.auth);
   return (
-    <Main>
-      <NavItem>
-        <Link to="/login">
-          <View>
-            <Text>Login</Text>
-          </View>
-        </Link>
-      </NavItem>
-      <NavItem>
-        <Link to="/">
-          <View>
-            <Icon name={'home'} size={30} color="#000" />
-          </View>
-        </Link>
-      </NavItem>
-      <NavItem>
-        <Link to="/message">
-          <View>
-            <Icon name={'comment-dots'} size={30} color="#000" />
-          </View>
-        </Link>
-      </NavItem>
-      <NavItem>
-        <Link to="/notification">
-          <View>
-            <Icon name={'bell'} size={30} color="#000" />
-          </View>
-        </Link>
-      </NavItem>
-      <NavItem>
-        <Link to="/profile">
-          <View>
-            <Icon name={'user-circle'} size={30} color="#000" />
-          </View>
-        </Link>
-      </NavItem>
-    </Main>
+    <Tab.Navigator>
+      <Tab.Screen
+        name="Home"
+        component={HomeScreens}
+        options={{
+          tabBarIcon: () => <Icon size={30} name={'home'} color={'black'} />,
+        }}
+      />
+      <Tab.Screen
+        name="notification"
+        component={NotificationsScreen}
+        options={{
+          tabBarIcon: () => (
+            <Icon size={30} name={'notifications-active'} color={'black'} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="message"
+        component={MessageScreen}
+        options={{
+          tabBarIcon: () => (
+            <Icon size={30} name={'question-answer'} color={'black'} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="ProfileGroup"
+        options={{
+          tabBarIcon: () => <Icon size={30} name={'person'} color={'black'} />,
+          headerShown: false,
+        }}
+      >
+        {() => (
+          <HomeStack.Navigator>
+            <HomeStack.Screen name="Profile" component={ProfileScreen} />
+            <HomeStack.Screen
+              name="ProfileDetail"
+              component={ProfileDetailScreen}
+            />
+            <HomeStack.Screen name="Friends" component={FriendListScreen} />
+          </HomeStack.Navigator>
+        )}
+      </Tab.Screen>
+    </Tab.Navigator>
   );
 };
 

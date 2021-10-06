@@ -1,17 +1,18 @@
-import * as React from 'react';
-import { AppearanceProvider } from 'react-native-appearance';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Main } from './src/Main';
-
-
+import { NavigationContainer } from '@react-navigation/native';
+import React from 'react';
+import { StatusBar } from 'react-native';
+import { Provider } from 'react-redux';
+import GlobalRoute from './src/components/GlobalRoute.js';
+import store from './src/redux/store';
 
 function App() {
   return (
-    <SafeAreaProvider>
-      <AppearanceProvider>
-        <Main />
-      </AppearanceProvider>
-    </SafeAreaProvider>
+    <Provider store={store}>
+      <NavigationContainer>
+        <GlobalRoute />
+        <StatusBar barStyle="default" />
+      </NavigationContainer>
+    </Provider>
   );
 }
 export default App;

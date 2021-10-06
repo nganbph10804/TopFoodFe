@@ -1,4 +1,4 @@
-import { TextInput, TouchableOpacity } from 'react-native';
+import { TextInput, TouchableOpacity, View } from 'react-native';
 import styled from 'styled-components';
 export const CustomInput = styled(TextInput)`
   width: 80%;
@@ -17,4 +17,9 @@ export const BtnLogin = styled(TouchableOpacity)`
   padding: 10px 30px;
   border-radius: 30px;
   font-size: 18px;
+`;
+
+export const Main = styled(View)`
+  padding: 10px 10px;
+  border
 `;

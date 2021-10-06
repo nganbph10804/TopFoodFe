@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-const FriendListScreen = () => {
+const FriendListScreen = ({ navigation }) => {
   return (
     <View>
-      <Text>friend</Text>
+      <Text onPress={() => navigation.goBack()}>friend</Text>
     </View>
   );
 };
