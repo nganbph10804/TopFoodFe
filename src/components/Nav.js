@@ -31,8 +31,8 @@ const Nav = () => {
             iconName = focused ? 'ios-notifications-circle' : 'ios-notifications-circle-outline';
           } else if (route.name === 'message') {
             iconName = focused ? 'ios-mail' : 'ios-mail-outline';
-          } else if (route.name === 'ProfileGroup') {
-            iconName = focused ? 'ios-person-circle' : 'ios-person-circle-outline';
+          } else if (route.name === 'Menu') {
+            iconName = focused ? 'menu' : 'menu-outline';
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
@@ -61,7 +61,6 @@ const Nav = () => {
       <Tab.Screen
         name="Menu"
         options={{
-          tabBarIcon: () => <Icon size={30} name={'menu'} color={'black'} />,
           headerShown: false,
         }}
       >
