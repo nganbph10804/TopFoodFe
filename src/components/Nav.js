@@ -2,6 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useSelector } from 'react-redux';
 import FriendListScreen from '../screens/FriendListScreen.js';
 import HomeScreens from '../screens/HomeScreens.js';
 import MessageScreen from '../screens/MessageScreen.js';
@@ -12,7 +13,8 @@ import ProfileScreen from '../screens/ProfileScreen.js';
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
 const Nav = () => {
-  // const auth = useSelector(state => state.auth);
+  const auth = useSelector(state => state.auth);
+  console.log('log 🚀 ~ file: Nav.js ~ line 16 ~ Nav ~ auth', auth);
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -43,7 +45,7 @@ const Nav = () => {
       <Tab.Screen
         name="ProfileGroup"
         options={{
-          tabBarIcon: () => <Icon size={30} name={'person'} color={'black'} />,
+          tabBarIcon: () => <Icon size={30} name={'menu'} color={'black'} />,
           headerShown: false,
         }}
       >

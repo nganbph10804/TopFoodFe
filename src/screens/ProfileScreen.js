@@ -2,8 +2,10 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { Main } from '../components/index.js';
+import { logoutAction } from '../redux/actions/authAction.js';
 
 const Item = styled(View)`
   background-color: #fff;
@@ -20,6 +22,12 @@ const LastItem = styled(View)`
 `;
 
 const ProfileScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const logoutHandler = () => {
+    dispatch(logoutAction());
+    navigation.navigate('LOGIN');
+  };
+
   return (
     <Main>
       <Item style={{ marginBottom: 15, marginTop: 10 }}>
@@ -87,10 +95,7 @@ const ProfileScreen = ({ navigation }) => {
             onPress={() => navigation.navigate('LOGIN')}
           />
         </View>
-        <Text
-          style={{ paddingLeft: 10 }}
-          onPress={() => navigation.navigate('LOGIN')}
-        >
+        <Text style={{ paddingLeft: 10 }} onPress={() => logoutHandler()}>
           Đăng xuất
         </Text>
       </Item>
