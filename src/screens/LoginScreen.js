@@ -2,7 +2,7 @@ import { useFonts } from '@expo-google-fonts/inter';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppLoading from 'expo-app-loading';
 import React, { useEffect, useState } from 'react';
-import { ImageBackground, Text, View } from 'react-native';
+import { ImageBackground, KeyboardAvoidingView, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
@@ -36,12 +36,16 @@ const LoginScreen = ({ navigation }) => {
     return <AppLoading />;
   } else {
     return (
-      <View>
+      <View style={{flex:1}}>
         <ImageBackground
           resizeMode="cover"
           source={image}
-          style={{ width: '100%', height: '100%' }}
-        >
+          style={{ width: '100%', height: '100%',flex:1 }}
+        ><KeyboardAvoidingView
+       behavior={Platform.OS === "ios" ? "padding" : "height"}
+       keyboardVerticalOffset={100}
+       style={{flex:1}}
+      >
           <Page>
             <View style={{ marginBottom: 10, marginLeft: 33 }}>
               <Text
@@ -111,8 +115,10 @@ const LoginScreen = ({ navigation }) => {
               </Text>
             </View>
           </Page>
+          </KeyboardAvoidingView>
         </ImageBackground>
       </View>
+      
     );
   }
 };

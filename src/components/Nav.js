@@ -8,42 +8,57 @@ import MessageScreen from '../screens/MessageScreen.js';
 import NotificationsScreen from '../screens/NotificationsScreen.js';
 import ProfileDetailScreen from '../screens/ProfileDetailScreen.js';
 import ProfileScreen from '../screens/ProfileScreen.js';
+import { Ionicons } from '@expo/vector-icons';
+import { FeedScreen } from './../screens/FeedScreen';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
 const Nav = () => {
   // const auth = useSelector(state => state.auth);
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          if (route.name === 'Home') {
+            iconName = focused
+              ? 'home'
+              : 'home-outline';
+          } else if (route.name === 'notification') {
+            iconName = focused ? 'ios-notifications-circle' : 'ios-notifications-circle-outline';
+          } else if (route.name === 'Message') {
+            iconName = focused ? 'ios-mail' : 'ios-mail-outline';
+          } else if (route.name === 'ProfileGroup') {
+            iconName = focused ? 'ios-person-circle' : 'ios-person-circle-outline';
+          }
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: 'tomato',
+          tabBarInactiveTintColor: 'gray',
+          headerStyle:{
+           backgroundColor:'light-green'
+          }
+      })}
+      
+    >
       <Tab.Screen
         name="Home"
-        component={HomeScreens}
-        options={{
-          tabBarIcon: () => <Icon size={30} name={'home'} color={'black'} />,
-        }}
+        component={FeedScreen}
+
       />
       <Tab.Screen
         name="notification"
         component={NotificationsScreen}
-        options={{
-          tabBarIcon: () => (
-            <Icon size={30} name={'notifications-active'} color={'black'} />
-          ),
-        }}
+
       />
       <Tab.Screen
-        name="message"
+        name="Message"
         component={MessageScreen}
-        options={{
-          tabBarIcon: () => (
-            <Icon size={30} name={'question-answer'} color={'black'} />
-          ),
-        }}
       />
       <Tab.Screen
         name="ProfileGroup"
         options={{
-          tabBarIcon: () => <Icon size={30} name={'person'} color={'black'} />,
           headerShown: false,
         }}
       >
