@@ -1,19 +1,19 @@
+import axios from 'axios';
+import deviceStorage from '../../components/deviceStore.js';
 import {
-  LOGIN_REQUEST,
-  LOGIN_SUCCESS,
-  LOGIN_FAILED,
-  REGISTER_REQUEST,
-  REGISTER_SUCCESS,
-  REGISTER_FAILED,
-  LOGOUT,
-  GET_OTP,
-  GET_OTP_FAILED,
+  FORGOT_FAILED,
   FORGOT_REQUEST,
   FORGOT_SUCCESS,
-  FORGOT_FAILED,
+  GET_OTP,
+  GET_OTP_FAILED,
+  LOGIN_FAILED,
+  LOGIN_REQUEST,
+  LOGIN_SUCCESS,
+  LOGOUT,
+  REGISTER_FAILED,
+  REGISTER_REQUEST,
+  REGISTER_SUCCESS,
 } from '../types/authType';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const loginAction = (username, password) => async dispatch => {
   dispatch({
@@ -27,11 +27,11 @@ export const loginAction = (username, password) => async dispatch => {
         password: password,
       }
     );
-    await AsyncStorage.setItem('token', data.data.token);
     dispatch({
       type: LOGIN_SUCCESS,
       payload: data,
     });
+    deviceStorage.saveKey('token', data.data.token);
   } catch (error) {
     dispatch({
       type: LOGIN_FAILED,
@@ -113,4 +113,5 @@ export const logoutAction = () => dispatch => {
   dispatch({
     type: LOGOUT,
   });
+  deviceStorage.deleteJWT();
 };

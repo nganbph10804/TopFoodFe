@@ -8,7 +8,8 @@ import HomeScreens from '../screens/HomeScreens.js';
 import MessageScreen from '../screens/MessageScreen.js';
 import NotificationsScreen from '../screens/NotificationsScreen.js';
 import ProfileDetailScreen from '../screens/ProfileDetailScreen.js';
-import ProfileScreen from '../screens/ProfileScreen.js';
+import SettingScreen from '../screens/SettingScreen.js';
+import deviceStorage from './deviceStore.js';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -43,7 +44,7 @@ const Nav = () => {
         }}
       />
       <Tab.Screen
-        name="ProfileGroup"
+        name="SettingGroup"
         options={{
           tabBarIcon: () => <Icon size={30} name={'menu'} color={'black'} />,
           headerShown: false,
@@ -51,7 +52,13 @@ const Nav = () => {
       >
         {() => (
           <HomeStack.Navigator>
-            <HomeStack.Screen name="Profile" component={ProfileScreen} />
+            <HomeStack.Screen
+              name="Setting"
+              component={SettingScreen}
+              options={{
+                headerShown: false,
+              }}
+            />
             <HomeStack.Screen
               name="ProfileDetail"
               component={ProfileDetailScreen}
