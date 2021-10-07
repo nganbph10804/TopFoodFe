@@ -1,14 +1,19 @@
+import axios from 'axios';
+import deviceStorage from '../../components/deviceStore.js';
 import {
+  FORGOT_FAILED,
+  FORGOT_REQUEST,
+  FORGOT_SUCCESS,
+  GET_OTP,
+  GET_OTP_FAILED,
+  LOGIN_FAILED,
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
-  LOGIN_FAILED,
+  LOGOUT,
+  REGISTER_FAILED,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
-  REGISTER_FAILED,
-  LOGOUT,
 } from '../types/authType';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const loginAction = (username, password) => async dispatch => {
   dispatch({
@@ -22,11 +27,11 @@ export const loginAction = (username, password) => async dispatch => {
         password: password,
       }
     );
-    await AsyncStorage.setItem('token', data.data.token);
     dispatch({
       type: LOGIN_SUCCESS,
       payload: data,
     });
+    deviceStorage.saveKey('token', data.data.token);
   } catch (error) {
     dispatch({
       type: LOGIN_FAILED,
@@ -63,16 +68,50 @@ export const registerAction =
     }
   };
 
+export const getOtpAction = email => async dispatch => {
+  try {
+    const { data } = await axios.get(
+      `http://35.238.98.175:8080/auth/get-otp?email=${email}`
+    );
+    dispatch({
+      type: GET_OTP,
+      payload: data.message,
+    });
+  } catch (error) {
+    dispatch({
+      type: GET_OTP_FAILED,
+      payload: error,
+    });
+  }
+};
+
+export const forgotAction = (email, newPassword, otp) => async dispatch => {
+  dispatch({
+    type: FORGOT_REQUEST,
+  });
+  try {
+    const { data } = await axios.post(
+      'http://35.238.98.175:8080/auth/forgot-password',
+      {
+        email: email,
+        newPassword: newPassword,
+        otp: otp,
+      }
+    );
+    dispatch({
+      type: FORGOT_SUCCESS,
+      payload: data.message,
+    });
+  } catch (error) {
+    dispatch({
+      type: FORGOT_FAILED,
+      payload: error,
+    });
+  }
+};
 export const logoutAction = () => dispatch => {
   dispatch({
     type: LOGOUT,
   });
-};
-export const loadUserAction = () => (dispatch, getState) => {
-  const token = getState().auth.token;
-  if (token) {
-    dispatch({
-      type: LOAD_USER,
-    });
-  } else return null;
+  deviceStorage.deleteJWT();
 };
