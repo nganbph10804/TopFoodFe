@@ -87,7 +87,7 @@ const LoginScreen = ({ navigation }) => {
                   marginBottom: 30,
                   fontSize: 17,
                 }}
-                onPress={() => navigation.navigate('FORGOT_PASSWORD')}
+                onPress={() => navigation.navigate('VERIFY_OTP')}
               >
                 Quên mật khẩu?
               </Text>

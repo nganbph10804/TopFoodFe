@@ -1,25 +1,24 @@
-import { useFonts } from '@expo-google-fonts/inter';
-import AppLoading from 'expo-app-loading';
 import React, { useState } from 'react';
 import { ImageBackground, Text, View } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { BtnLogin, CustomInput } from '../components/index.js';
-import { registerAction } from '../redux/actions/authAction.js';
+import { getOtpAction } from '../redux/actions/authAction.js';
 
 const image = {
-  uri: 'https://raw.githubusercontent.com/Leomin07/img/master/img-register-new.png',
+  uri: 'https://raw.githubusercontent.com/Leomin07/img/master/otp.png',
 };
 
 const Page = styled(View)`
-  top: 40%;
+  top: 45%;
 `;
 
 const VerifyScreen = ({ navigation }) => {
-  const [otp, setOtp] = useState();
+  const [email, setEmail] = useState();
+  const dispatch = useDispatch();
   const registerHandler = () => {
-    navigation.goBack();
+    navigation.navigate('FORGOT_PASSWORD', { email });
+    dispatch(getOtpAction(email));
   };
 
   return (
@@ -32,9 +31,9 @@ const VerifyScreen = ({ navigation }) => {
         <Page>
           <View>
             <CustomInput
-              placeholder="Otp"
-              value={otp}
-              onChangeText={otp => setOtp(otp)}
+              placeholder="Email"
+              value={email}
+              onChangeText={email => setEmail(email)}
             />
           </View>
 
