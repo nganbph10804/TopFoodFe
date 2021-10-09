@@ -10,3 +10,6 @@ export const GET_OTP_FAILED = 'GET_OTP_FAILED';
 export const FORGOT_REQUEST = 'FORGOT_REQUEST';
 export const FORGOT_SUCCESS = 'FORGOT_SUCCESS';
 export const FORGOT_FAILED = 'FORGOT_FAILED';
+export const EDIT_REQUEST = 'EDIT_REQUEST';
+export const EDIT_SUCCESS = 'EDIT_SUCCESS';
+export const EDIT_FAILED = 'EDIT_FAILED';

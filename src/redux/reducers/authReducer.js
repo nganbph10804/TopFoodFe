@@ -11,6 +11,9 @@ import {
   FORGOT_REQUEST,
   FORGOT_SUCCESS,
   FORGOT_FAILED,
+  EDIT_REQUEST,
+  EDIT_SUCCESS,
+  EDIT_FAILED,
 } from '../types/authType';
 
 export const authReducer = (
@@ -27,6 +30,7 @@ export const authReducer = (
     case LOGIN_REQUEST:
     case REGISTER_REQUEST:
     case FORGOT_REQUEST:
+    case EDIT_REQUEST:
       return {
         ...state,
         loading: true,
@@ -46,10 +50,16 @@ export const authReducer = (
         ...state,
         message: action.payload,
       };
+    case EDIT_SUCCESS:
+      return {
+        ...state,
+        profile: action.payload,
+      };
     case LOGIN_FAILED:
     case REGISTER_FAILED:
     case GET_OTP_FAILED:
     case FORGOT_FAILED:
+    case EDIT_FAILED:
       return {
         ...state,
         error: action.payload,

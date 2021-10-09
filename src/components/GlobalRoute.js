@@ -5,7 +5,6 @@ import RegisterScreen from '../screens/RegisterScreen.js';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen.js';
 import Nav from './Nav.js';
 import VerifyScreen from '../screens/VerifyScreen.js';
-4;
 
 const Stack = createStackNavigator();
 const GlobalRoute = () => {

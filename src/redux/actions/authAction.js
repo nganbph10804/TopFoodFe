@@ -1,5 +1,4 @@
 import axios from 'axios';
-import deviceStorage from '../../components/deviceStore.js';
 import {
   FORGOT_FAILED,
   FORGOT_REQUEST,
@@ -13,6 +12,9 @@ import {
   REGISTER_FAILED,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
+  EDIT_REQUEST,
+  EDIT_SUCCESS,
+  EDIT_FAILED,
 } from '../types/authType';
 
 export const loginAction = (username, password) => async dispatch => {
@@ -31,7 +33,6 @@ export const loginAction = (username, password) => async dispatch => {
       type: LOGIN_SUCCESS,
       payload: data,
     });
-    deviceStorage.saveKey('token', data.data.token);
   } catch (error) {
     dispatch({
       type: LOGIN_FAILED,
@@ -41,7 +42,7 @@ export const loginAction = (username, password) => async dispatch => {
 };
 
 export const registerAction =
-  (email, name, password, phone, username) => async dispatch => {
+  (birthday, email, name, password, phone, username) => async dispatch => {
     dispatch({
       type: REGISTER_REQUEST,
     });
@@ -49,6 +50,7 @@ export const registerAction =
       const { data } = await axios.post(
         'http://35.238.98.175:8080/auth/register',
         {
+          birthday: birthday,
           email: email,
           name: name,
           password: password,
@@ -113,5 +115,33 @@ export const logoutAction = () => dispatch => {
   dispatch({
     type: LOGOUT,
   });
-  deviceStorage.deleteJWT();
 };
+
+export const updateProfileAction =
+  (address, avatar, bio, birthday, cover, name) => async dispatch => {
+    dispatch({
+      type: EDIT_REQUEST,
+    });
+    try {
+      const { data } = await axios.put(
+        'http://35.238.98.175:8080/profiles/update',
+        {
+          address: address,
+          avatar: avatar,
+          bio: bio,
+          birthday: birthday,
+          cover: cover,
+          name: name,
+        }
+      );
+      dispatch({
+        type: EDIT_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: EDIT_FAILED,
+        payload: error,
+      });
+    }
+  };

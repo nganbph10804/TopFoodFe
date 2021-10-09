@@ -1,48 +1,25 @@
+import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+import color from 'color';
 import React from 'react';
-import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import {
-  Surface,
-  Title,
-  Caption,
-  Text,
   Avatar,
+  Caption,
+  Surface,
+  Text,
+  Title,
   TouchableRipple,
   useTheme,
 } from 'react-native-paper';
-import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
-import color from 'color';
 
-type Props = {
-  id: number;
-  name: string;
-  handle: string;
-  date: string;
-  content: string;
-  image: string;
-  avatar: string;
-  comments: number;
-  retweets: number;
-  hearts: number;
-  onPress: (id: number) => void;
-};
-
-export const Feed = (props: Props) => {
+export const FeedItem = props => {
   const theme = useTheme();
 
-  const iconColor = color(theme.colors.text)
-    .alpha(0.54)
-    .rgb()
-    .string();
+  const iconColor = color(theme.colors.text).alpha(0.54).rgb().string();
 
-  const contentColor = color(theme.colors.text)
-    .alpha(0.8)
-    .rgb()
-    .string();
+  const contentColor = color(theme.colors.text).alpha(0.8).rgb().string();
 
-  const imageBorderColor = color(theme.colors.text)
-    .alpha(0.15)
-    .rgb()
-    .string();
+  const imageBorderColor = color(theme.colors.text).alpha(0.15).rgb().string();
 
   return (
     <TouchableRipple onPress={() => props.onPress(props.id)}>
@@ -53,9 +30,11 @@ export const Feed = (props: Props) => {
         <View style={styles.rightColumn}>
           <View style={styles.topRow}>
             <Title>{props.name}</Title>
-            <Caption style={{marginTop: -5}}>{props.date}</Caption>
+            <Caption style={{ marginTop: -5 }}>{props.date}</Caption>
           </View>
-          <Text style={{ color: contentColor , fontSize: 16 }}>{props.content}</Text>
+          <Text style={{ color: contentColor, fontSize: 16 }}>
+            {props.content}
+          </Text>
           <Image
             source={{ uri: props.image }}
             style={[
@@ -71,11 +50,7 @@ export const Feed = (props: Props) => {
               hitSlop={{ top: 10, bottom: 10 }}
             >
               <View style={styles.iconContainer}>
-                <AntDesign
-                  name="hearto"
-                  size={20}
-                  color={iconColor}
-                />
+                <AntDesign name="hearto" size={20} color={iconColor} />
                 <Caption style={styles.iconDescription}>
                   {props.hearts} likes
                 </Caption>
@@ -96,19 +71,6 @@ export const Feed = (props: Props) => {
                 </Caption>
               </View>
             </TouchableOpacity>
-            {/* <TouchableOpacity
-              onPress={() => {}}
-              hitSlop={{ top: 10, bottom: 10 }}
-            >
-              <View style={styles.iconContainer}>
-                <MaterialCommunityIcons
-                  name="share-outline"
-                  size={12}
-                  color={iconColor}
-                />
-                <Caption style={styles.iconDescription}>{props.hearts}</Caption>
-              </View>
-            </TouchableOpacity> */}
           </View>
         </View>
       </Surface>
@@ -155,11 +117,11 @@ const styles = StyleSheet.create({
   iconContainer: {
     flexDirection: 'row',
     alignItems: 'baseline',
-    marginRight: '10%'
+    marginRight: '10%',
   },
   iconDescription: {
     marginLeft: 5,
     lineHeight: 22,
-    fontSize: 12
+    fontSize: 12,
   },
 });
