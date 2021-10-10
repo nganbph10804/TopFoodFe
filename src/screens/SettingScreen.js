@@ -1,4 +1,4 @@
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Text, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
@@ -12,9 +12,9 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import deviceStorage from '../redux/deviceStorage .js';
 import { Main } from '../components/index.js';
 import { logoutAction } from '../redux/actions/authAction.js';
-import { AntDesign } from '@expo/vector-icons';
 
 const Item = styled(View)`
   background-color: #fff;
@@ -35,12 +35,23 @@ const ProfileScreen = ({ navigation }) => {
   const [show, setShow] = useState(false);
   const [visible, setVisible] = React.useState(false);
   const showDialog = () => setVisible(true);
-  const logoutHandler = () => {
+  const logoutHandler = async () => {
     setVisible(false);
     dispatch(logoutAction());
     navigation.navigate('LOGIN');
   };
   const profile = useSelector(state => state.auth.profile);
+
+  const click = async () => {
+    // const token = await AsyncStorage.getItem('jwt');
+    // console.log(token);
+    const token = await deviceStorage.loadJWT();
+    console.log(
+      'log 🚀 ~ file: SettingScreen.js ~ line 51 ~ click ~ token',
+      token
+    );
+  };
+
   return (
     <Main>
       <Item style={{ marginBottom: 15, marginTop: 10 }}>
@@ -107,7 +118,7 @@ const ProfileScreen = ({ navigation }) => {
               <AntDesign
                 name="arrowup"
                 size={24}
-                color="black"
+                color="#9AA0A6"
                 style={{ paddingRight: 7 }}
                 onPress={() => setShow(!show)}
               />
@@ -115,7 +126,7 @@ const ProfileScreen = ({ navigation }) => {
               <AntDesign
                 name="arrowdown"
                 size={24}
-                color="black"
+                color="#9AA0A6"
                 style={{ paddingRight: 7 }}
                 onPress={() => setShow(!show)}
               />
@@ -130,7 +141,9 @@ const ProfileScreen = ({ navigation }) => {
                 size={35}
                 color="black"
               />
-              <Text style={{ paddingLeft: 10 }}>Xem thông tin tài khoản</Text>
+              <Text style={{ paddingLeft: 10 }} onPress={() => click()}>
+                Thông tin tài khoản
+              </Text>
               <LastItem>
                 <Icon size={35} name={'chevron-right'} color={'#9AA0A6'} />
               </LastItem>
@@ -140,10 +153,21 @@ const ProfileScreen = ({ navigation }) => {
                 name="lock-reset"
                 size={35}
                 color="black"
+                onPress={() => navigation.navigate('ChangePassScreen')}
               />
-              <Text style={{ paddingLeft: 10 }}>Đổi mật khẩu</Text>
+              <Text
+                onPress={() => navigation.navigate('ChangePassScreen')}
+                style={{ paddingLeft: 10 }}
+              >
+                Đổi mật khẩu
+              </Text>
               <LastItem>
-                <Icon size={35} name={'chevron-right'} color={'#9AA0A6'} />
+                <Icon
+                  size={35}
+                  name={'chevron-right'}
+                  color={'#9AA0A6'}
+                  onPress={() => navigation.navigate('ChangePassScreen')}
+                />
               </LastItem>
             </Item>
           </View>

@@ -1,27 +1,21 @@
 import { useFonts } from '@expo-google-fonts/inter';
+import { MaterialIcons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AppLoading from 'expo-app-loading';
 import React, { useState } from 'react';
 import {
   ImageBackground,
+  KeyboardAvoidingView,
   Platform,
   Text,
-  KeyboardAvoidingView,
   View,
 } from 'react-native';
-import {
-  Button,
-  Dialog,
-  Paragraph,
-  Portal,
-  Provider,
-} from 'react-native-paper';
+import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { BtnDate, BtnLogin, InputAuth, ViewDate } from '../components/index.js';
 import { registerAction } from '../redux/actions/authAction.js';
-import { MaterialIcons } from '@expo/vector-icons';
 
 const image = {
   uri: 'https://raw.githubusercontent.com/Leomin07/img/master/img-register-new.png',
@@ -32,15 +26,13 @@ const Page = styled(View)`
 `;
 
 const RegisterScreen = ({ navigation }) => {
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
-  const [username, setUsername] = useState();
-  const [phone, setPhone] = useState();
-  const [password, setPassword] = useState();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const [hidden, setHidden] = useState(false);
-  const [visible, setVisible] = useState(false);
-  const showDialog = () => setVisible(true);
 
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
@@ -70,9 +62,24 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   const registerHandler = () => {
-    setVisible(false);
-    dispatch(registerAction(date, email, name, password, phone, username));
-    navigation.goBack();
+    if (
+      text.length === 0 ||
+      email.length === 0 ||
+      name.length == 0 ||
+      phone.length === 0 ||
+      password.length === 0 ||
+      username.length === 0
+    ) {
+      Toast.show({
+        type: 'error',
+        topOffset: 60,
+        text1: 'Thông báo',
+        text2: 'Không được để trống.',
+      });
+    } else {
+      dispatch(registerAction(date, email, name, password, phone, username));
+      navigation.navigate('Active');
+    }
   };
 
   let [fontsLoaded] = useFonts({
@@ -123,6 +130,7 @@ const RegisterScreen = ({ navigation }) => {
                   keyboardType="number-pad"
                   value={phone}
                   onChangeText={phone => setPhone(phone)}
+                  maxLength={10}
                 />
               </View>
               <View>
@@ -172,7 +180,7 @@ const RegisterScreen = ({ navigation }) => {
                 <BtnLogin>
                   <Text
                     style={{ color: '#fff', fontSize: 22 }}
-                    onPress={() => showDialog()}
+                    onPress={() => registerHandler()}
                   >
                     Đăng Ký
                   </Text>
@@ -188,24 +196,6 @@ const RegisterScreen = ({ navigation }) => {
               </View>
             </KeyboardAvoidingView>
           </Page>
-
-          <Provider>
-            <View>
-              <Portal>
-                <Dialog visible={visible} onDismiss={registerHandler}>
-                  <Dialog.Title>Thông Báo</Dialog.Title>
-                  <Dialog.Content>
-                    <Paragraph>
-                      Đăng ký tài khoản thành công. Mời đăng nhập.
-                    </Paragraph>
-                  </Dialog.Content>
-                  <Dialog.Actions>
-                    <Button onPress={registerHandler}>Đóng</Button>
-                  </Dialog.Actions>
-                </Dialog>
-              </Portal>
-            </View>
-          </Provider>
         </ImageBackground>
       </View>
     );

@@ -1,26 +1,10 @@
 import axios from 'axios';
-import {
-  FORGOT_FAILED,
-  FORGOT_REQUEST,
-  FORGOT_SUCCESS,
-  GET_OTP,
-  GET_OTP_FAILED,
-  LOGIN_FAILED,
-  LOGIN_REQUEST,
-  LOGIN_SUCCESS,
-  LOGOUT,
-  REGISTER_FAILED,
-  REGISTER_REQUEST,
-  REGISTER_SUCCESS,
-  EDIT_REQUEST,
-  EDIT_SUCCESS,
-  EDIT_FAILED,
-} from '../types/authType';
+import Toast from 'react-native-toast-message';
+import { authHeader } from '../authHeader.js';
+import deviceStorage from '../deviceStorage .js';
+import { LOGIN_SUCCESS, LOGOUT } from '../types/authType';
 
 export const loginAction = (username, password) => async dispatch => {
-  dispatch({
-    type: LOGIN_REQUEST,
-  });
   try {
     const { data } = await axios.post(
       'http://35.238.98.175:8080/auth/login-with-username',
@@ -29,85 +13,94 @@ export const loginAction = (username, password) => async dispatch => {
         password: password,
       }
     );
+    const token = data.data.token;
+    deviceStorage.saveJWT(token);
     dispatch({
       type: LOGIN_SUCCESS,
       payload: data,
     });
+    Toast.show({
+      type: 'success',
+      topOffset: 60,
+      text1: 'Thông báo',
+      text2: 'Đăng nhập thành công.',
+    });
   } catch (error) {
-    dispatch({
-      type: LOGIN_FAILED,
-      payload: error,
+    Toast.show({
+      type: 'error',
+      topOffset: 60,
+      text1: 'Thông báo',
+      text2: error.response.data.message,
     });
   }
 };
 
 export const registerAction =
-  (birthday, email, name, password, phone, username) => async dispatch => {
-    dispatch({
-      type: REGISTER_REQUEST,
-    });
+  (birthday, email, name, password, phone, username) => async () => {
     try {
-      const { data } = await axios.post(
-        'http://35.238.98.175:8080/auth/register',
-        {
-          birthday: birthday,
-          email: email,
-          name: name,
-          password: password,
-          phoneNumber: phone,
-          username: username,
-        }
-      );
-      dispatch({
-        type: REGISTER_SUCCESS,
-        payload: data.message,
+      await axios.post('http://35.238.98.175:8080/auth/register', {
+        birthday: birthday,
+        email: email,
+        name: name,
+        password: password,
+        phoneNumber: phone,
+        username: username,
+      });
+      await axios.get(`http://35.238.98.175:8080/auth/get-otp?email=${email}`);
+      Toast.show({
+        type: 'success',
+        topOffset: 60,
+        text1: 'Thông báo',
+        text2: 'Đăng ký tài khoản thành công.',
       });
     } catch (error) {
-      dispatch({
-        type: REGISTER_FAILED,
-        payload: error,
+      Toast.show({
+        type: 'error',
+        topOffset: 60,
+        text1: 'Thông báo',
+        text2: error.response.data.message,
       });
     }
   };
 
-export const getOtpAction = email => async dispatch => {
+export const getOtpAction = email => async () => {
   try {
-    const { data } = await axios.get(
-      `http://35.238.98.175:8080/auth/get-otp?email=${email}`
-    );
-    dispatch({
-      type: GET_OTP,
-      payload: data.message,
+    await axios.get(`http://35.238.98.175:8080/auth/get-otp?email=${email}`);
+    Toast.show({
+      type: 'success',
+      topOffset: 60,
+      text1: 'Thông báo',
+      text2: 'Gửi mã xác nhận thành công.',
     });
   } catch (error) {
-    dispatch({
-      type: GET_OTP_FAILED,
-      payload: error,
+    Toast.show({
+      type: 'error',
+      topOffset: 60,
+      text1: 'Thông báo',
+      text2: error.response.data.message,
     });
   }
 };
 
-export const forgotAction = (email, newPassword, otp) => async dispatch => {
-  dispatch({
-    type: FORGOT_REQUEST,
-  });
+export const forgotAction = (email, newPassword, otp) => async () => {
   try {
-    const { data } = await axios.post(
-      'http://35.238.98.175:8080/auth/forgot-password',
-      {
-        email: email,
-        newPassword: newPassword,
-        otp: otp,
-      }
-    );
-    dispatch({
-      type: FORGOT_SUCCESS,
-      payload: data.message,
+    await axios.post('http://35.238.98.175:8080/auth/forgot-password', {
+      email: email,
+      newPassword: newPassword,
+      otp: otp,
+    });
+    Toast.show({
+      type: 'success',
+      topOffset: 60,
+      text1: 'Thông báo',
+      text2: 'Thành công.',
     });
   } catch (error) {
-    dispatch({
-      type: FORGOT_FAILED,
-      payload: error,
+    Toast.show({
+      type: 'error',
+      topOffset: 60,
+      text1: 'Thông báo',
+      text2: error.response.data.message,
     });
   }
 };
@@ -115,15 +108,19 @@ export const logoutAction = () => dispatch => {
   dispatch({
     type: LOGOUT,
   });
+  deviceStorage.deleteJWT();
+  Toast.show({
+    type: 'success',
+    topOffset: 60,
+    text1: 'Thông báo',
+    text2: 'Đăng xuất thành công. Mời đăng nhập lại!!',
+  });
 };
 
 export const updateProfileAction =
-  (address, avatar, bio, birthday, cover, name) => async dispatch => {
-    dispatch({
-      type: EDIT_REQUEST,
-    });
+  (address, avatar, bio, birthday, cover, name) => async () => {
     try {
-      const { data } = await axios.put(
+      await axios.put(
         'http://35.238.98.175:8080/profiles/update',
         {
           address: address,
@@ -132,16 +129,77 @@ export const updateProfileAction =
           birthday: birthday,
           cover: cover,
           name: name,
+        },
+        {
+          headers: await authHeader(),
         }
       );
-      dispatch({
-        type: EDIT_SUCCESS,
-        payload: data,
+      Toast.show({
+        type: 'success',
+        topOffset: 60,
+        text1: 'Thông báo',
+        text2: 'Cập nhật profile thành công.',
       });
     } catch (error) {
-      dispatch({
-        type: EDIT_FAILED,
-        payload: error,
+      Toast.show({
+        type: 'error',
+        topOffset: 60,
+        text1: 'Thông báo',
+        text2: error.response.data.message,
       });
     }
   };
+export const changePassAction = (newPassword, oldPassword) => async () => {
+  try {
+    await axios.put(
+      'http://35.238.98.175:8080/account/change-password',
+      {
+        newPassword: newPassword,
+        oldPassword: oldPassword,
+      },
+      {
+        headers: await authHeader(),
+      }
+    );
+    Toast.show({
+      type: 'success',
+      topOffset: 60,
+      text1: 'Thông báo',
+      text2: 'Đổi mật khẩu thành công.',
+    });
+  } catch (error) {
+    Toast.show({
+      type: 'error',
+      topOffset: 60,
+      text1: 'Thông báo',
+      text2: error.response.data.message,
+    });
+  }
+};
+
+export const activeAccAction = otp => async () => {
+  try {
+    await axios.post(
+      'http://35.238.98.175:8080/account/active',
+      {
+        otp: otp,
+      },
+      {
+        headers: await authHeader(),
+      }
+    );
+    Toast.show({
+      type: 'success',
+      topOffset: 60,
+      text1: 'Thông báo',
+      text2: 'Kích hoạt tài khoản thành công.',
+    });
+  } catch (error) {
+    // Toast.show({
+    //   type: 'error',
+    //   topOffset: 60,
+    //   text1: 'Thông báo',
+    //   text2: error.response.data.message,
+    // });
+  }
+};

@@ -1,15 +1,9 @@
 import React, { useState } from 'react';
 import { ImageBackground, Text, View } from 'react-native';
-import {
-  Button,
-  Dialog,
-  Paragraph,
-  Portal,
-  Provider,
-} from 'react-native-paper';
+import Toast from 'react-native-toast-message';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { BtnLogin, CustomInput } from '../components/index.js';
+import { BtnLogin, InputAuth } from '../components/index.js';
 import { getOtpAction } from '../redux/actions/authAction.js';
 
 const image = {
@@ -21,14 +15,20 @@ const Page = styled(View)`
 `;
 
 const VerifyScreen = ({ navigation }) => {
-  const [email, setEmail] = useState();
-  const [visible, setVisible] = useState(false);
-  const showDialog = () => setVisible(true);
+  const [email, setEmail] = useState('');
   const dispatch = useDispatch();
-  const registerHandler = () => {
-    dispatch(getOtpAction(email));
-    setVisible(false);
-    navigation.navigate('FORGOT_PASSWORD', { email });
+  const verifyHandler = () => {
+    if (email.length === 0) {
+      Toast.show({
+        type: 'error',
+        topOffset: 60,
+        text1: 'Thông báo',
+        text2: 'Không được để trống email.',
+      });
+    } else {
+      dispatch(getOtpAction(email));
+      navigation.navigate('FORGOT_PASSWORD', { email });
+    }
   };
 
   return (
@@ -40,7 +40,7 @@ const VerifyScreen = ({ navigation }) => {
       >
         <Page>
           <View>
-            <CustomInput
+            <InputAuth
               placeholder="Email"
               value={email}
               onChangeText={email => setEmail(email)}
@@ -50,30 +50,13 @@ const VerifyScreen = ({ navigation }) => {
             <BtnLogin>
               <Text
                 style={{ color: '#fff', fontSize: 22 }}
-                onPress={() => showDialog()}
+                onPress={() => verifyHandler()}
               >
                 Gửi Mã Xác Nhận
               </Text>
             </BtnLogin>
           </View>
         </Page>
-        <Provider>
-          <View>
-            <Portal>
-              <Dialog visible={visible} onDismiss={registerHandler}>
-                <Dialog.Title>Thông Báo</Dialog.Title>
-                <Dialog.Content>
-                  <Paragraph>
-                    Gửi mã xác nhận thành công. Vui lòng kiểm tra email!
-                  </Paragraph>
-                </Dialog.Content>
-                <Dialog.Actions>
-                  <Button onPress={registerHandler}>Đóng</Button>
-                </Dialog.Actions>
-              </Dialog>
-            </Portal>
-          </View>
-        </Provider>
       </ImageBackground>
     </View>
   );

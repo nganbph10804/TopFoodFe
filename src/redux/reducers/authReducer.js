@@ -1,20 +1,4 @@
-import {
-  LOGIN_REQUEST,
-  LOGIN_SUCCESS,
-  LOGIN_FAILED,
-  REGISTER_REQUEST,
-  REGISTER_SUCCESS,
-  REGISTER_FAILED,
-  LOGOUT,
-  GET_OTP,
-  GET_OTP_FAILED,
-  FORGOT_REQUEST,
-  FORGOT_SUCCESS,
-  FORGOT_FAILED,
-  EDIT_REQUEST,
-  EDIT_SUCCESS,
-  EDIT_FAILED,
-} from '../types/authType';
+import { LOGIN_SUCCESS, LOGOUT } from '../types/authType';
 
 export const authReducer = (
   state = {
@@ -23,18 +7,11 @@ export const authReducer = (
     token: null,
     message: null,
     loading: false,
+    error: [],
   },
   action
 ) => {
   switch (action.type) {
-    case LOGIN_REQUEST:
-    case REGISTER_REQUEST:
-    case FORGOT_REQUEST:
-    case EDIT_REQUEST:
-      return {
-        ...state,
-        loading: true,
-      };
     case LOGIN_SUCCESS:
       return {
         ...state,
@@ -43,34 +20,15 @@ export const authReducer = (
         token: action.payload.data.token,
         loading: false,
       };
-    case REGISTER_SUCCESS:
-    case GET_OTP:
-    case FORGOT_SUCCESS:
-      return {
-        ...state,
-        message: action.payload,
-      };
-    case EDIT_SUCCESS:
-      return {
-        ...state,
-        profile: action.payload,
-      };
-    case LOGIN_FAILED:
-    case REGISTER_FAILED:
-    case GET_OTP_FAILED:
-    case FORGOT_FAILED:
-    case EDIT_FAILED:
-      return {
-        ...state,
-        error: action.payload,
-        loading: false,
-      };
     case LOGOUT:
       return {
-        accounts: [],
+        ...state,
+        account: [],
         profile: [],
         token: null,
         message: null,
+        loading: false,
+        error: [],
       };
 
     default:

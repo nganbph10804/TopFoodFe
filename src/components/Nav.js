@@ -4,17 +4,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import EditProfileScreen from '../screens/EditProfileScreen.js';
 import FriendListScreen from '../screens/FriendListScreen.js';
-import MessageScreen from '../screens/MessageScreen.js';
-import FeedScreen from './../screens/FeedScreen';
 import NotificationsScreen from './../screens/NotificationsScreen';
 import ProfileDetailScreen from './../screens/ProfileDetailScreen';
 import SettingScreen from './../screens/SettingScreen';
-// import { useSelector } from 'react-redux';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
 const Nav = () => {
-  // const auth = useSelector(state => state.auth);
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -67,6 +63,7 @@ const Nav = () => {
               name="EditProfile"
               component={EditProfileScreen}
             />
+
             <HomeStack.Screen name="Friends" component={FriendListScreen} />
           </HomeStack.Navigator>
         )}

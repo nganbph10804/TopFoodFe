@@ -9,6 +9,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import { Button } from 'react-native-paper';
+import Toast from 'react-native-toast-message';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import {
@@ -19,7 +20,7 @@ import {
 } from '../components/index.js';
 import { updateProfileAction } from '../redux/actions/authAction.js';
 
-const EditProfileScreen = () => {
+const EditProfileScreen = ({ navigation }) => {
   const profile = useSelector(state => state.auth.profile);
   const [cover, setCover] = useState(profile.cover);
   const [name, setName] = useState(profile.name);
@@ -49,7 +50,23 @@ const EditProfileScreen = () => {
   };
 
   const updateHandler = () => {
-    dispatch(updateProfileAction(address, avatar, bio, date, cover, name));
+    if (
+      address.length === 0 ||
+      avatar.length === 0 ||
+      bio.length === 0 ||
+      cover.length === 0 ||
+      name.length === 0
+    ) {
+      Toast.show({
+        type: 'error',
+        topOffset: 60,
+        text1: 'Thông báo',
+        text2: 'Không được để trống.',
+      });
+    } else {
+      navigation.navigate('Setting');
+      dispatch(updateProfileAction(address, avatar, bio, date, cover, name));
+    }
   };
 
   return (
@@ -135,7 +152,11 @@ const EditProfileScreen = () => {
             <MaterialIcons name="date-range" size={28} color="black" />
           </BtnDate>
           <ViewDateUser>
-            {text.getDate() + '/' + text.getMonth() + '/' + text.getFullYear()}
+            {text.getDate() +
+              '/' +
+              (text.getMonth() + 1) +
+              '/' +
+              text.getFullYear()}
           </ViewDateUser>
         </View>
         {show && (

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { Button } from 'react-native-elements/dist/buttons/Button';
 import styled from 'styled-components';
 
 export const InputAuth = styled(TextInput)`
@@ -48,6 +49,15 @@ export const BtnDate = styled(TouchableOpacity)`
   top: 12%;
 `;
 
+export const BtnActive = styled(TouchableOpacity)`
+  background-color: #fff;
+  width: 60%;
+  align-self: center;
+  padding: 10px 20px;
+  border: 2px solid #000;
+  border-radius: 10px;
+  align-items: center;
+`;
 export const ViewDate = styled(Text)`
   font-size: 18px;
   color: #fff;

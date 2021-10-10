@@ -1,21 +1,15 @@
 import { useFonts } from '@expo-google-fonts/inter';
 import AppLoading from 'expo-app-loading';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ImageBackground,
   KeyboardAvoidingView,
   Text,
   View,
 } from 'react-native';
-import {
-  Button,
-  Dialog,
-  Paragraph,
-  Portal,
-  Provider,
-} from 'react-native-paper';
+import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { BtnLogin, InputAuth } from '../components/index.js';
 import { loginAction } from '../redux/actions/authAction.js';
@@ -31,19 +25,33 @@ const Page = styled(View)`
 `;
 
 const LoginScreen = ({ navigation }) => {
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
-  const [visible, setVisible] = useState(false);
-  const showDialog = () => setVisible(true);
+  const auth = useSelector(state => state.auth);
+
+  useEffect(() => {
+    if (auth.token) {
+      return navigation.navigate('NAV');
+    }
+  }, [auth.token]);
+
   const handlerLogin = () => {
-    dispatch(loginAction(username, password));
-    setUsername('');
-    setPassword('');
-    setVisible(false);
-    navigation.navigate('NAV');
+    if (username.length === 0 || password.length === 0) {
+      Toast.show({
+        type: 'error',
+        topOffset: 60,
+        text1: 'Thông báo',
+        text2: 'Không được để trống username và password',
+      });
+    } else {
+      dispatch(loginAction(username, password));
+      setUsername('');
+      setPassword('');
+    }
   };
+
   let [fontsLoaded] = useFonts({
     'Courgette-Regular': require('../../assets/fonts/Courgette-Regular.ttf'),
   });
@@ -116,7 +124,7 @@ const LoginScreen = ({ navigation }) => {
                 <BtnLogin>
                   <Text
                     style={{ color: '#fff', fontSize: 22 }}
-                    onPress={() => showDialog()}
+                    onPress={() => handlerLogin()}
                   >
                     Đăng Nhập
                   </Text>
@@ -132,21 +140,6 @@ const LoginScreen = ({ navigation }) => {
               </View>
             </KeyboardAvoidingView>
           </Page>
-          <Provider>
-            <View>
-              <Portal>
-                <Dialog visible={visible} onDismiss={handlerLogin}>
-                  <Dialog.Title>Thông Báo</Dialog.Title>
-                  <Dialog.Content>
-                    <Paragraph>Đăng nhập thành công.</Paragraph>
-                  </Dialog.Content>
-                  <Dialog.Actions>
-                    <Button onPress={handlerLogin}>Đóng</Button>
-                  </Dialog.Actions>
-                </Dialog>
-              </Portal>
-            </View>
-          </Provider>
         </ImageBackground>
       </View>
     );
