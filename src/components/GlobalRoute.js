@@ -5,7 +5,8 @@ import RegisterScreen from '../screens/RegisterScreen.js';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen.js';
 import Nav from './Nav.js';
 import VerifyScreen from '../screens/VerifyScreen.js';
-4;
+import ChangePassScreen from '../screens/ChangePassScreen.js';
+import ActiveAccScreen from '../screens/ActiveAccScreen.js';
 
 const Stack = createStackNavigator();
 const GlobalRoute = () => {
@@ -30,6 +31,16 @@ const GlobalRoute = () => {
         options={{ headerShown: false }}
         name="VERIFY_OTP"
         component={VerifyScreen}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="ChangePassScreen"
+        component={ChangePassScreen}
+      />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="Active"
+        component={ActiveAccScreen}
       />
       <Stack.Screen
         options={{ headerShown: false }}

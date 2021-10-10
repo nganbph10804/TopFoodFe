@@ -1,12 +1,2 @@
-export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const LOGIN_FAILED = 'LOGIN_FAILED';
-export const REGISTER_REQUEST = 'REGISTER_REQUEST';
-export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
-export const REGISTER_FAILED = 'REGISTER_FAILED';
 export const LOGOUT = 'LOGOUT';
-export const GET_OTP = 'GET_OTP';
-export const GET_OTP_FAILED = 'GET_OTP_FAILED';
-export const FORGOT_REQUEST = 'FORGOT_REQUEST';
-export const FORGOT_SUCCESS = 'FORGOT_SUCCESS';
-export const FORGOT_FAILED = 'FORGOT_FAILED';

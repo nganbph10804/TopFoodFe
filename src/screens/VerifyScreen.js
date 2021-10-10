@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { ImageBackground, Text, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { BtnLogin, CustomInput } from '../components/index.js';
+import { BtnLogin, InputAuth } from '../components/index.js';
 import { getOtpAction } from '../redux/actions/authAction.js';
 
 const image = {
@@ -14,11 +15,20 @@ const Page = styled(View)`
 `;
 
 const VerifyScreen = ({ navigation }) => {
-  const [email, setEmail] = useState();
+  const [email, setEmail] = useState('');
   const dispatch = useDispatch();
-  const registerHandler = () => {
-    navigation.navigate('FORGOT_PASSWORD', { email });
-    dispatch(getOtpAction(email));
+  const verifyHandler = () => {
+    if (email.length === 0) {
+      Toast.show({
+        type: 'error',
+        topOffset: 60,
+        text1: 'Thông báo',
+        text2: 'Không được để trống email.',
+      });
+    } else {
+      dispatch(getOtpAction(email));
+      navigation.navigate('FORGOT_PASSWORD', { email });
+    }
   };
 
   return (
@@ -30,18 +40,17 @@ const VerifyScreen = ({ navigation }) => {
       >
         <Page>
           <View>
-            <CustomInput
+            <InputAuth
               placeholder="Email"
               value={email}
               onChangeText={email => setEmail(email)}
             />
           </View>
-
           <View>
             <BtnLogin>
               <Text
                 style={{ color: '#fff', fontSize: 22 }}
-                onPress={() => registerHandler()}
+                onPress={() => verifyHandler()}
               >
                 Gửi Mã Xác Nhận
               </Text>

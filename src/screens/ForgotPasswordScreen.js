@@ -2,9 +2,17 @@ import React, { useState } from 'react';
 import { ImageBackground, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import styled from 'styled-components';
-import { BtnLogin, CustomInput } from '../components/index.js';
+import { BtnLogin, InputAuth } from '../components/index.js';
 import { useDispatch } from 'react-redux';
 import { forgotAction } from '../redux/actions/authAction';
+import {
+  Button,
+  Dialog,
+  Paragraph,
+  Portal,
+  Provider,
+} from 'react-native-paper';
+import Toast from 'react-native-toast-message';
 
 const image = {
   uri: 'https://raw.githubusercontent.com/Leomin07/img/master/forgot.png',
@@ -16,16 +24,31 @@ const Page = styled(View)`
 
 const ForgotPasswordScreen = ({ navigation, route }) => {
   const { email } = route.params;
-  const [otp, setOtp] = useState();
-  const [password, setPassword] = useState();
-  const [confirm, setConfirm] = useState();
+  const [otp, setOtp] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
   const [show, setShow] = useState(false);
   const [hidden, setHidden] = useState(false);
   const dispatch = useDispatch();
   const forgotHandler = () => {
-    navigation.navigate('LOGIN');
-    console.log(email, password, otp);
-    dispatch(forgotAction(email, password, otp));
+    if (otp.length === 0 || password.length === 0 || confirm.length === 0) {
+      Toast.show({
+        type: 'error',
+        topOffset: 60,
+        text1: 'Thông báo',
+        text2: 'Không được để trống.',
+      });
+    } else if (password !== confirm) {
+      Toast.show({
+        type: 'error',
+        topOffset: 60,
+        text1: 'Thông báo',
+        text2: 'Mật khẩu không giống nhau.',
+      });
+    } else {
+      navigation.navigate('LOGIN');
+      dispatch(forgotAction(email, password, otp));
+    }
   };
 
   return (
@@ -37,7 +60,7 @@ const ForgotPasswordScreen = ({ navigation, route }) => {
       >
         <Page>
           <View style={{ position: 'relative' }}>
-            <CustomInput
+            <InputAuth
               placeholder="Password"
               secureTextEntry={show ? false : true}
               value={password}
@@ -52,7 +75,7 @@ const ForgotPasswordScreen = ({ navigation, route }) => {
             />
           </View>
           <View style={{ position: 'relative' }}>
-            <CustomInput
+            <InputAuth
               placeholder="Nhập lại Password"
               secureTextEntry={hidden ? false : true}
               value={confirm}
@@ -67,7 +90,7 @@ const ForgotPasswordScreen = ({ navigation, route }) => {
             />
           </View>
           <View>
-            <CustomInput
+            <InputAuth
               placeholder="Otp"
               value={otp}
               onChangeText={otp => setOtp(otp)}
