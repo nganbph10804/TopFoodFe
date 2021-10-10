@@ -1,6 +1,6 @@
 import { AntDesign, FontAwesome } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Image, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Main } from '../components/index.js';
@@ -10,6 +10,11 @@ const ProfileDetailScreen = ({ navigation }) => {
     state => state.auth.profile
   );
   const [date, setDate] = useState(new Date(birthday));
+  useEffect(() => {
+    if (avatar === null) {
+      return navigation.navigate('EditProfile');
+    }
+  }, []);
   return (
     <Main>
       <View style={{ width: '100%', height: '45%' }}>
