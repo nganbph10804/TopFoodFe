@@ -15,6 +15,7 @@ const FriendListScreen = ({ navigation }) => {
     style={styled.search}
     onChangeText={onChangeSearch}
     value={searchQuery}
+    inputStyle={styled.input}
     placeholder="Search Friend" />
     <FlatList
         data={ dataFriend }
@@ -31,10 +32,14 @@ const styled = StyleSheet.create({
   search :{
     marginHorizontal: 15,
     marginVertical:20,
-    fontSize: 10,
     borderRadius: 20,
     elevation:0,
-    backgroundColor:'#ebebeb'
+    height:32,
+    backgroundColor:'#ebebeb',
+  },
+  input:{
+    fontSize:16,
+    paddingVertical:5
   }
 })
 export default FriendListScreen;
