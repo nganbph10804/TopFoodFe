@@ -7,6 +7,10 @@ import FriendListScreen from '../screens/FriendListScreen.js';
 import NotificationsScreen from './../screens/NotificationsScreen';
 import ProfileDetailScreen from './../screens/ProfileDetailScreen';
 import SettingScreen from './../screens/SettingScreen';
+import MessageStack from './../screens/MessageStack';
+import { Avatar, Button } from 'react-native-paper';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Alert } from 'react-native';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -23,7 +27,7 @@ const Nav = () => {
             iconName = focused
               ? 'ios-notifications-circle'
               : 'ios-notifications-circle-outline';
-          } else if (route.name === 'message') {
+          } else if (route.name === 'Messages') {
             iconName = focused ? 'ios-mail' : 'ios-mail-outline';
           } else if (route.name === 'Menu') {
             iconName = focused ? 'menu' : 'menu-outline';
@@ -33,13 +37,36 @@ const Nav = () => {
         tabBarActiveTintColor: 'tomato',
         tabBarInactiveTintColor: 'gray',
         headerStyle: {
-          backgroundColor: 'light-green',
+          height: 60,
+          elevation:3
         },
       })}
     >
       {/* <Tab.Screen name="Home" component={FeedScreen} /> */}
       <Tab.Screen name="notification" component={NotificationsScreen} />
-      {/* <Tab.Screen name="message" component={MessageScreen} /> */}
+      <Tab.Screen 
+       name="Messages" component={MessageStack}
+       options={{
+          headerRight: () => {
+            return (
+           <TouchableOpacity onPress={()=>{Alert.alert("create new")}}>
+             <Ionicons name='ios-create-outline'  size={23} style={{
+               paddingRight:15
+             }}/>
+           </TouchableOpacity>
+          )},
+          headerLeft :()=>{
+            return(
+              <Avatar.Image 
+               size={34}
+               source={{uri :'https://photo-cms-anninhthudo.zadn.vn/w600/Uploaded/2021/lcjlcanwm/2020_11_10/co-thien-lac-1-3744.jpg'}} 
+               style={{
+                 marginLeft:10
+               }}
+               />
+            )
+          }
+        }} />
       <Tab.Screen
         name="Menu"
         options={{
