@@ -48,6 +48,15 @@ export const registerAction =
         username: username,
       });
       await axios.get(`http://35.238.98.175:8080/auth/get-otp?email=${email}`);
+      const { data } = await axios.post(
+        'http://35.238.98.175:8080/auth/login-with-username',
+        {
+          username: username,
+          password: password,
+        }
+      );
+      const token = data.data.token;
+      deviceStorage.saveJWT(token);
       Toast.show({
         type: 'success',
         topOffset: 60,
@@ -185,7 +194,7 @@ export const changePassAction =
     }
   };
 
-export const activeAccAction = (otp, navigation) => async () => {
+export const activeAccAction = otp => async () => {
   try {
     await axios.post(
       'http://35.238.98.175:8080/account/active',
@@ -202,6 +211,7 @@ export const activeAccAction = (otp, navigation) => async () => {
       text1: 'Thông báo',
       text2: 'Kích hoạt tài khoản thành công.',
     });
+    deviceStorage.deleteJWT();
     navigation.navigate('LOGIN');
   } catch (error) {
     Toast.show({

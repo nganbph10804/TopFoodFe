@@ -38,35 +38,48 @@ const Nav = () => {
         tabBarInactiveTintColor: 'gray',
         headerStyle: {
           height: 60,
-          elevation:3
+          elevation: 3,
         },
       })}
     >
       {/* <Tab.Screen name="Home" component={FeedScreen} /> */}
       <Tab.Screen name="notification" component={NotificationsScreen} />
-      <Tab.Screen 
-       name="message" component={MessageStack}
-       options={{
+      <Tab.Screen
+        name="message"
+        component={MessageStack}
+        options={{
           headerRight: () => {
             return (
-           <TouchableOpacity onPress={()=>{Alert.alert("create new")}}>
-             <Ionicons name='ios-create-outline'  size={23} style={{
-               paddingRight:15
-             }}/>
-           </TouchableOpacity>
-          )},
-          headerLeft :()=>{
-            return(
-              <Avatar.Image 
-               size={34}
-               source={{uri :'https://photo-cms-anninhthudo.zadn.vn/w600/Uploaded/2021/lcjlcanwm/2020_11_10/co-thien-lac-1-3744.jpg'}} 
-               style={{
-                 marginLeft:10
-               }}
-               />
-            )
-          }
-        }} />
+              <TouchableOpacity
+                onPress={() => {
+                  Alert.alert('create new');
+                }}
+              >
+                <Ionicons
+                  name="ios-create-outline"
+                  size={23}
+                  style={{
+                    paddingRight: 15,
+                  }}
+                />
+              </TouchableOpacity>
+            );
+          },
+          headerLeft: () => {
+            return (
+              <Avatar.Image
+                size={34}
+                source={{
+                  uri: 'https://photo-cms-anninhthudo.zadn.vn/w600/Uploaded/2021/lcjlcanwm/2020_11_10/co-thien-lac-1-3744.jpg',
+                }}
+                style={{
+                  marginLeft: 10,
+                }}
+              />
+            );
+          },
+        }}
+      />
       <Tab.Screen
         name="Menu"
         options={{
