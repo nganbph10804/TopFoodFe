@@ -46,8 +46,7 @@ const ForgotPasswordScreen = ({ navigation, route }) => {
         text2: 'Mật khẩu không giống nhau.',
       });
     } else {
-      navigation.navigate('LOGIN');
-      dispatch(forgotAction(email, password, otp));
+      dispatch(forgotAction(email, password, otp, navigation));
     }
   };
 

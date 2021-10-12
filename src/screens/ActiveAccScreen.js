@@ -34,8 +34,7 @@ const ChangePassScreen = ({ navigation }) => {
         text2: 'Không được để trống.',
       });
     } else {
-      dispatch(activeAccAction(otp));
-      navigation.navigate('LOGIN');
+      dispatch(activeAccAction(otp, navigation));
     }
   };
 

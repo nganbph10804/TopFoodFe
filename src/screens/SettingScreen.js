@@ -33,6 +33,7 @@ const LastItem = styled(View)`
 const ProfileScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
+  const [showFr, setShowFr] = useState(false);
   const [visible, setVisible] = React.useState(false);
   const showDialog = () => setVisible(true);
   const logoutHandler = async () => {
@@ -79,28 +80,31 @@ const ProfileScreen = ({ navigation }) => {
         </LastItem>
       </Item>
       {/* friend lists */}
-      <Item>
-        <Icon
-          size={35}
-          name={'people'}
-          color={'black'}
-          onPress={() => navigation.navigate('Friends')}
-        />
-        <Text
-          style={{ paddingLeft: 10 }}
-          onPress={() => navigation.navigate('Friends')}
-        >
-          Danh sách bạn bè
-        </Text>
-        <LastItem>
+      <View>
+        <Item>
           <Icon
             size={35}
-            name={'chevron-right'}
-            color={'#9AA0A6'}
+            name={'people'}
+            color={'black'}
             onPress={() => navigation.navigate('Friends')}
           />
-        </LastItem>
-      </Item>
+          <Text
+            style={{ paddingLeft: 10 }}
+            onPress={() => navigation.navigate('Friends')}
+          >
+            Bạn bè
+          </Text>
+          <LastItem>
+            <Icon
+              size={35}
+              name={'chevron-right'}
+              color={'#9AA0A6'}
+              onPress={() => navigation.navigate('Friends')}
+            />
+          </LastItem>
+        </Item>
+      </View>
+
       {/* manage account */}
       <View>
         <Item>
