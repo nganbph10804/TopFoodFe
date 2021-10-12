@@ -27,7 +27,7 @@ const Nav = () => {
             iconName = focused
               ? 'ios-notifications-circle'
               : 'ios-notifications-circle-outline';
-          } else if (route.name === 'Messages') {
+          } else if (route.name === 'message') {
             iconName = focused ? 'ios-mail' : 'ios-mail-outline';
           } else if (route.name === 'Menu') {
             iconName = focused ? 'menu' : 'menu-outline';
@@ -45,7 +45,7 @@ const Nav = () => {
       {/* <Tab.Screen name="Home" component={FeedScreen} /> */}
       <Tab.Screen name="notification" component={NotificationsScreen} />
       <Tab.Screen 
-       name="Messages" component={MessageStack}
+       name="message" component={MessageStack}
        options={{
           headerRight: () => {
             return (
