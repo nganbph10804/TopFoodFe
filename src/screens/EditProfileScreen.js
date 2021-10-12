@@ -64,8 +64,9 @@ const EditProfileScreen = ({ navigation }) => {
         text2: 'Không được để trống.',
       });
     } else {
-      navigation.navigate('Setting');
-      dispatch(updateProfileAction(address, avatar, bio, date, cover, name));
+      dispatch(
+        updateProfileAction(address, avatar, bio, date, cover, name, navigation)
+      );
     }
   };
 

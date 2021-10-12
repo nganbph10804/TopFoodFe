@@ -26,8 +26,7 @@ const VerifyScreen = ({ navigation }) => {
         text2: 'Không được để trống email.',
       });
     } else {
-      dispatch(getOtpAction(email));
-      navigation.navigate('FORGOT_PASSWORD', { email });
+      dispatch(getOtpAction(email, navigation));
     }
   };
 

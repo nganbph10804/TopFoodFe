@@ -45,8 +45,7 @@ const ChangePassScreen = ({ navigation }) => {
         text2: 'Không được để trống.',
       });
     } else {
-      dispatch(changePassAction(newPass, password));
-      navigation.navigate('LOGIN');
+      dispatch(changePassAction(newPass, password, navigation));
     }
   };
 

@@ -77,8 +77,9 @@ const RegisterScreen = ({ navigation }) => {
         text2: 'Không được để trống.',
       });
     } else {
-      dispatch(registerAction(date, email, name, password, phone, username));
-      navigation.navigate('Active');
+      dispatch(
+        registerAction(date, email, name, password, phone, username, navigation)
+      );
     }
   };
 
