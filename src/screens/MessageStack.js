@@ -10,7 +10,7 @@ const Stack = createStackNavigator();
 const MessageStack = ({navigation}) => {
     return(
         <Stack.Navigator>
-          <Stack.Screen name="Messages" 
+          <Stack.Screen name="message" 
           options={({route})=>({
             headerShown:false
           })}

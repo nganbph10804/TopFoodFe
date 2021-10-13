@@ -13,10 +13,15 @@ import MessageStack from './../screens/MessageStack';
 import NotificationsScreen from './../screens/NotificationsScreen';
 import ProfileDetailScreen from './../screens/ProfileDetailScreen';
 import SettingScreen from './../screens/SettingScreen';
+import { useSelector } from 'react-redux';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
+
 const Nav = () => {
+  const { cover, avatar, address, birthday, bio, name,id } = useSelector(
+    state => state.auth.profile
+  );
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -29,7 +34,7 @@ const Nav = () => {
             iconName = focused
               ? 'ios-notifications-circle'
               : 'ios-notifications-circle-outline';
-          } else if (route.name === 'message') {
+          } else if (route.name === 'Messages') {
             iconName = focused ? 'ios-mail' : 'ios-mail-outline';
           } else if (route.name === 'Menu') {
             iconName = focused ? 'menu' : 'menu-outline';
@@ -47,7 +52,7 @@ const Nav = () => {
       {/* <Tab.Screen name="Home" component={FeedScreen} /> */}
       <Tab.Screen name="notification" component={NotificationsScreen} />
       <Tab.Screen
-        name="message"
+        name="Messages"
         component={MessageStack}
         options={{
           headerRight: () => {
@@ -72,7 +77,7 @@ const Nav = () => {
               <Avatar.Image
                 size={34}
                 source={{
-                  uri: 'https://photo-cms-anninhthudo.zadn.vn/w600/Uploaded/2021/lcjlcanwm/2020_11_10/co-thien-lac-1-3744.jpg',
+                  uri: avatar
                 }}
                 style={{
                   marginLeft: 10,
