@@ -22,11 +22,13 @@ import { updateProfileAction } from '../redux/actions/authAction.js';
 
 const EditProfileScreen = ({ navigation }) => {
   const profile = useSelector(state => state.auth.profile);
+  const account = useSelector(state => state.auth.account);
   const [cover, setCover] = useState(profile.cover);
   const [name, setName] = useState(profile.name);
   const [avatar, setAvatar] = useState(profile.avatar);
-  const [address, setAddress] = useState(profile.address);
   const [bio, setBio] = useState(profile.bio);
+
+  const [address, setAddress] = useState(profile.address);
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
@@ -65,7 +67,16 @@ const EditProfileScreen = ({ navigation }) => {
       });
     } else {
       dispatch(
-        updateProfileAction(address, avatar, bio, date, cover, name, navigation)
+        updateProfileAction(
+          address,
+          avatar,
+          bio,
+          date,
+          cover,
+          name,
+          navigation,
+          account.id
+        )
       );
     }
   };

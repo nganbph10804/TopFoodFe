@@ -9,7 +9,7 @@ const ProfileDetailScreen = ({ navigation }) => {
   const { cover, avatar, address, birthday, bio, name } = useSelector(
     state => state.auth.profile
   );
-  const [date, setDate] = useState(new Date(birthday));
+  // const [date, setDate] = useState(new Date(birthday));
   useEffect(() => {
     if (avatar === null) {
       return navigation.navigate('EditProfile');
@@ -36,8 +36,6 @@ const ProfileDetailScreen = ({ navigation }) => {
           justifyContent: 'space-around',
           alignItems: 'center',
           top: '38%',
-          borderBottomWidth: 2,
-          borderBottomColor: '#e0dcdc',
           paddingBottom: 10,
         }}
       >
@@ -64,18 +62,18 @@ const ProfileDetailScreen = ({ navigation }) => {
               name="edit"
               size={28}
               color="black"
-              onPress={() => navigation.navigate('EditProfile')}
+              onPress={() => navigation.navigate('PublicProfile')}
             />
             <Text
               style={{ fontSize: 18 }}
-              onPress={() => navigation.navigate('EditProfile')}
+              onPress={() => navigation.navigate('PublicProfile')}
             >
               Chỉnh sửa
             </Text>
           </View>
         </View>
       </View>
-      <View style={{ position: 'absolute', top: '63%', width: '100%' }}>
+      {/* <View style={{ position: 'absolute', top: '63%', width: '100%' }}>
         <View
           style={{
             flexDirection: 'row',
@@ -113,10 +111,14 @@ const ProfileDetailScreen = ({ navigation }) => {
           />
           <Text style={{ fontSize: 22, paddingLeft: 13 }}>
             Ngày sinh:{' '}
-            {date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear()}
+            {date.getDate() +
+              '/' +
+              (date.getMonth() + 1) +
+              '/' +
+              date.getFullYear()}
           </Text>
         </View>
-      </View>
+      </View> */}
     </Main>
   );
 };

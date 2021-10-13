@@ -2,12 +2,12 @@ import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import { authHeader } from '../authHeader.js';
 import deviceStorage from '../deviceStorage .js';
-import { LOGIN_SUCCESS, LOGOUT } from '../types/authType';
+import { LOGIN_SUCCESS, LOGOUT, EDIT_PROFILE } from '../types/authType';
 
 export const loginAction = (username, password) => async dispatch => {
   try {
     const { data } = await axios.post(
-      'http://35.238.98.175:8080/auth/login-with-username',
+      'http://34.67.241.66:8080/auth/login-with-username',
       {
         username: username,
         password: password,
@@ -39,7 +39,7 @@ export const registerAction =
   (birthday, email, name, password, phone, username, navigation) =>
   async () => {
     try {
-      await axios.post('http://35.238.98.175:8080/auth/register', {
+      await axios.post('http://34.67.241.66:8080/auth/register', {
         birthday: birthday,
         email: email,
         name: name,
@@ -47,9 +47,9 @@ export const registerAction =
         phoneNumber: phone,
         username: username,
       });
-      await axios.get(`http://35.238.98.175:8080/auth/get-otp?email=${email}`);
+      await axios.get(`http://34.67.241.66:8080/auth/get-otp?email=${email}`);
       const { data } = await axios.post(
-        'http://35.238.98.175:8080/auth/login-with-username',
+        'http://34.67.241.66:8080/auth/login-with-username',
         {
           username: username,
           password: password,
@@ -76,7 +76,7 @@ export const registerAction =
 
 export const getOtpAction = (email, navigation) => async () => {
   try {
-    await axios.get(`http://35.238.98.175:8080/auth/get-otp?email=${email}`);
+    await axios.get(`http://34.67.241.66:8080/auth/get-otp?email=${email}`);
     Toast.show({
       type: 'success',
       topOffset: 60,
@@ -97,7 +97,7 @@ export const getOtpAction = (email, navigation) => async () => {
 export const forgotAction =
   (email, newPassword, otp, navigation) => async () => {
     try {
-      await axios.post('http://35.238.98.175:8080/auth/forgot-password', {
+      await axios.post('http://34.67.241.66:8080/auth/forgot-password', {
         email: email,
         newPassword: newPassword,
         otp: otp,
@@ -119,23 +119,23 @@ export const forgotAction =
     }
   };
 export const logoutAction = () => dispatch => {
-  dispatch({
-    type: LOGOUT,
-  });
-  deviceStorage.deleteJWT();
   Toast.show({
     type: 'success',
     topOffset: 60,
     text1: 'Thông báo',
     text2: 'Đăng xuất thành công. Mời đăng nhập lại!!',
   });
+  dispatch({
+    type: LOGOUT,
+  });
+  deviceStorage.deleteJWT();
 };
 
 export const updateProfileAction =
-  (address, avatar, bio, birthday, cover, name, navigation) => async () => {
+  (address, avatar, bio, birthday, cover, name, navigation, id) => async () => {
     try {
       await axios.put(
-        'http://35.238.98.175:8080/profiles/update',
+        'http://34.67.241.66:8080/profiles/update',
         {
           address: address,
           avatar: avatar,
@@ -148,6 +148,16 @@ export const updateProfileAction =
           headers: await authHeader(),
         }
       );
+      const { data } = await axios.get(
+        `http://34.67.241.66:8080/profiles/${id}`,
+        {
+          headers: await authHeader(),
+        }
+      );
+      dispatch({
+        type: EDIT_PROFILE,
+        payload: data.profile,
+      });
       Toast.show({
         type: 'success',
         topOffset: 60,
@@ -168,7 +178,7 @@ export const changePassAction =
   (newPassword, oldPassword, navigation) => async () => {
     try {
       await axios.put(
-        'http://35.238.98.175:8080/account/change-password',
+        'http://34.67.241.66:8080/account/change-password',
         {
           newPassword: newPassword,
           oldPassword: oldPassword,
@@ -194,10 +204,10 @@ export const changePassAction =
     }
   };
 
-export const activeAccAction = otp => async () => {
+export const activeAccAction = (otp, navigation) => async () => {
   try {
     await axios.post(
-      'http://35.238.98.175:8080/account/active',
+      'http://34.67.241.66:8080/account/active',
       {
         otp: otp,
       },
@@ -211,8 +221,8 @@ export const activeAccAction = otp => async () => {
       text1: 'Thông báo',
       text2: 'Kích hoạt tài khoản thành công.',
     });
-    deviceStorage.deleteJWT();
     navigation.navigate('LOGIN');
+    deviceStorage.deleteJWT();
   } catch (error) {
     Toast.show({
       type: 'error',

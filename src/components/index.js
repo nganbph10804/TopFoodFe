@@ -30,6 +30,16 @@ export const CustomInput = styled(TextInput)`
   margin-bottom: 30px;
   border: none;
 `;
+export const InputOtp = styled(TextInput)`
+  width: 10%;
+  height: 55px;
+  font-size: 20px;
+  background-color: #f5f4f2;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+`;
 
 export const BtnLogin = styled(TouchableOpacity)`
   background-color: #f95f3b;

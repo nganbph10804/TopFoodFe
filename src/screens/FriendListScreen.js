@@ -1,45 +1,15 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
-import { Searchbar } from 'react-native-paper';
-import dataFriend from '../components/FriendList/dataFriend';
-import ItemFr from './../components/FriendList/FriendItem';
-import styles from './../components/MessageItem/style';
+import React, { useState } from 'react';
+import { Text, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
 const FriendListScreen = ({ navigation }) => {
-  const [searchQuery, setSearchQuery] = React.useState('');
-  const onChangeSearch = query => setSearchQuery(query);
+  const friend = useSelector(state => state.friend);
+  const [searchQuery, setSearchQuery] = useState('');
   return (
-
-    <View style={styles.wrapper}>
-    <Searchbar 
-    style={styled.search}
-    onChangeText={onChangeSearch}
-    value={searchQuery}
-    inputStyle={styled.input}
-    placeholder="Search Friend" />
-    <FlatList
-        data={ dataFriend }
-        renderItem={({ item }) => (
-        <ItemFr item={ item } />
-        )}
-        keyExtractor={(item) => item.id.toString() } // tránh trùng các item với nhau
-    />
-</View>
+    <View>
+      <Text>ds</Text>
+    </View>
   );
 };
 
-const styled = StyleSheet.create({
-  search :{
-    marginHorizontal: 15,
-    marginVertical:20,
-    borderRadius: 20,
-    elevation:0,
-    height:32,
-    backgroundColor:'#ebebeb',
-  },
-  input:{
-    fontSize:16,
-    paddingVertical:5
-  }
-})
 export default FriendListScreen;

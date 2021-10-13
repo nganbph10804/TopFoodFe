@@ -1,20 +1,18 @@
-import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
-import React, { useState } from 'react';
-import { Text, View } from 'react-native';
-import { Avatar } from 'react-native-elements';
 import {
-  Button,
-  Dialog,
-  Paragraph,
-  Portal,
-  Provider,
-} from 'react-native-paper';
+  AntDesign,
+  Ionicons,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { Alert, Text, View } from 'react-native';
+import { Avatar } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import deviceStorage from '../redux/deviceStorage .js';
 import { Main } from '../components/index.js';
 import { logoutAction } from '../redux/actions/authAction.js';
+import deviceStorage from '../redux/deviceStorage .js';
 
 const Item = styled(View)`
   background-color: #fff;
@@ -34,24 +32,30 @@ const ProfileScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [showFr, setShowFr] = useState(false);
-  const [visible, setVisible] = React.useState(false);
-  const showDialog = () => setVisible(true);
-  const logoutHandler = async () => {
-    setVisible(false);
-    dispatch(logoutAction());
-    navigation.navigate('LOGIN');
-  };
+
   const profile = useSelector(state => state.auth.profile);
 
   const click = async () => {
-    // const token = await AsyncStorage.getItem('jwt');
-    // console.log(token);
     const token = await deviceStorage.loadJWT();
     console.log(
       'log 🚀 ~ file: SettingScreen.js ~ line 51 ~ click ~ token',
       token
     );
   };
+  const logout = () =>
+    Alert.alert('Thông báo', 'Bạn có muốn đăng xuất không?', [
+      {
+        text: 'Huỷ',
+        style: 'cancel',
+      },
+      {
+        text: 'Đồng ý',
+        onPress: () => {
+          navigation.navigate('LOGIN');
+          dispatch(logoutAction());
+        },
+      },
+    ]);
 
   return (
     <Main>
@@ -82,27 +86,82 @@ const ProfileScreen = ({ navigation }) => {
       {/* friend lists */}
       <View>
         <Item>
-          <Icon
+          <Ionicons
+            name="ios-people-circle-outline"
             size={35}
-            name={'people'}
-            color={'black'}
-            onPress={() => navigation.navigate('Friends')}
+            color="black"
+            onPress={() => setShowFr(!showFr)}
           />
-          <Text
-            style={{ paddingLeft: 10 }}
-            onPress={() => navigation.navigate('Friends')}
-          >
+          <Text style={{ paddingLeft: 10 }} onPress={() => setShowFr(!showFr)}>
             Bạn bè
           </Text>
           <LastItem>
-            <Icon
-              size={35}
-              name={'chevron-right'}
-              color={'#9AA0A6'}
-              onPress={() => navigation.navigate('Friends')}
-            />
+            {showFr ? (
+              <AntDesign
+                name="arrowup"
+                size={24}
+                color="#9AA0A6"
+                style={{ paddingRight: 7 }}
+                onPress={() => setShowFr(!showFr)}
+              />
+            ) : (
+              <Icon
+                size={35}
+                name={'chevron-right'}
+                color={'#9AA0A6'}
+                onPress={() => setShowFr(!showFr)}
+              />
+            )}
           </LastItem>
         </Item>
+        {showFr && (
+          <View>
+            <Item>
+              <Icon
+                size={35}
+                name={'people'}
+                color={'black'}
+                onPress={() => navigation.navigate('Friends')}
+              />
+              <Text
+                style={{ paddingLeft: 10 }}
+                onPress={() => navigation.navigate('Friends')}
+              >
+                Danh sách bạn bè
+              </Text>
+              <LastItem>
+                <Icon
+                  size={35}
+                  name={'chevron-right'}
+                  color={'#9AA0A6'}
+                  onPress={() => navigation.navigate('Friends')}
+                />
+              </LastItem>
+            </Item>
+            <Item>
+              <MaterialIcons
+                name="person-search"
+                size={35}
+                color="black"
+                onPress={() => navigation.navigate('SearchFriend')}
+              />
+              <Text
+                onPress={() => navigation.navigate('SearchFriend')}
+                style={{ paddingLeft: 10 }}
+              >
+                Tìm bạn
+              </Text>
+              <LastItem>
+                <Icon
+                  size={35}
+                  name={'chevron-right'}
+                  color={'#9AA0A6'}
+                  onPress={() => navigation.navigate('SearchFriend')}
+                />
+              </LastItem>
+            </Item>
+          </View>
+        )}
       </View>
 
       {/* manage account */}
@@ -127,11 +186,10 @@ const ProfileScreen = ({ navigation }) => {
                 onPress={() => setShow(!show)}
               />
             ) : (
-              <AntDesign
-                name="arrowdown"
-                size={24}
-                color="#9AA0A6"
-                style={{ paddingRight: 7 }}
+              <Icon
+                size={35}
+                name={'chevron-right'}
+                color={'#9AA0A6'}
                 onPress={() => setShow(!show)}
               />
             )}
@@ -177,37 +235,20 @@ const ProfileScreen = ({ navigation }) => {
           </View>
         )}
       </View>
-      {/* logut */}
+      {/* logout */}
       <Item>
         <View>
           <Icon
             size={35}
             name={'logout'}
             color={'#d91b0d'}
-            onPress={() => showDialog()}
+            onPress={() => logout()}
           />
         </View>
-        <Text style={{ paddingLeft: 10 }} onPress={() => showDialog()}>
+        <Text style={{ paddingLeft: 10 }} onPress={() => logout()}>
           Đăng xuất
         </Text>
       </Item>
-      <Provider>
-        <View>
-          <Portal>
-            <Dialog visible={visible} onDismiss={logoutHandler}>
-              <Dialog.Title>Thông Báo</Dialog.Title>
-              <Dialog.Content>
-                <Paragraph>
-                  Đăng xuất thành công. Vui lòng đăng nhập lại.
-                </Paragraph>
-              </Dialog.Content>
-              <Dialog.Actions>
-                <Button onPress={logoutHandler}>Đóng</Button>
-              </Dialog.Actions>
-            </Dialog>
-          </Portal>
-        </View>
-      </Provider>
     </Main>
   );
 };
