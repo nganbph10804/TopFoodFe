@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, LOGOUT } from '../types/authType';
+import { LOGIN_SUCCESS, LOGOUT, EDIT_PROFILE } from '../types/authType';
 
 export const authReducer = (
   state = {
@@ -19,6 +19,11 @@ export const authReducer = (
         profile: action.payload.data.profile,
         token: action.payload.data.token,
         loading: false,
+      };
+
+    case EDIT_PROFILE:
+      return {
+        profile: action.payload,
       };
     case LOGOUT:
       return {

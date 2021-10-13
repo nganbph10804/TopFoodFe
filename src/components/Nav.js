@@ -2,15 +2,17 @@ import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
+import { Alert } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Avatar } from 'react-native-paper';
 import EditProfileScreen from '../screens/EditProfileScreen.js';
 import FriendListScreen from '../screens/FriendListScreen.js';
+import PublicProfileScreen from '../screens/PublicProfileScreen.js';
+import SearchFriendScreen from '../screens/SearchFriendScreen.js';
+import MessageStack from './../screens/MessageStack';
 import NotificationsScreen from './../screens/NotificationsScreen';
 import ProfileDetailScreen from './../screens/ProfileDetailScreen';
 import SettingScreen from './../screens/SettingScreen';
-import MessageStack from './../screens/MessageStack';
-import { Avatar, Button } from 'react-native-paper';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Alert } from 'react-native';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -87,7 +89,11 @@ const Nav = () => {
         }}
       >
         {() => (
-          <HomeStack.Navigator>
+          <HomeStack.Navigator
+            screenOptions={{
+              headerTitleAlign: 'center',
+            }}
+          >
             <HomeStack.Screen
               name="Setting"
               component={SettingScreen}
@@ -98,13 +104,42 @@ const Nav = () => {
             <HomeStack.Screen
               name="ProfileDetail"
               component={ProfileDetailScreen}
+              options={{
+                title: 'TRANG CÁ NHÂN',
+              }}
             />
             <HomeStack.Screen
               name="EditProfile"
               component={EditProfileScreen}
+              options={{
+                title: 'CẬP NHẬT THÔNG TIN CÁ NHÂN',
+              }}
+            />
+            <HomeStack.Screen
+              name="PublicProfile"
+              component={PublicProfileScreen}
+              options={{
+                title: 'TRANG CÁ NHÂN',
+              }}
+            />
+            <HomeStack.Screen
+              name="Friends"
+              component={FriendListScreen}
+              options={{
+                title: 'DANH SÁCH BẠN BÈ',
+                headerShown: false,
+              }}
+            />
+            <HomeStack.Screen
+              name="SearchFriend"
+              component={SearchFriendScreen}
+              options={{
+                title: 'TÌM BẠN',
+                headerShown: false,
+              }}
             />
 
-            <HomeStack.Screen name="Friends" component={FriendListScreen} />
+            {/* <HomeStack.Screen name="Friends" component={FriendListScreen} /> */}
           </HomeStack.Navigator>
         )}
       </Tab.Screen>

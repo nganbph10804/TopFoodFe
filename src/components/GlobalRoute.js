@@ -1,17 +1,21 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
+import ActiveAccScreen from '../screens/ActiveAccScreen.js';
+import ChangePassScreen from '../screens/ChangePassScreen.js';
+import ForgotPasswordScreen from '../screens/ForgotPasswordScreen.js';
 import LoginScreen from '../screens/LoginScreen.js';
 import RegisterScreen from '../screens/RegisterScreen.js';
-import ForgotPasswordScreen from '../screens/ForgotPasswordScreen.js';
-import Nav from './Nav.js';
 import VerifyScreen from '../screens/VerifyScreen.js';
-import ChangePassScreen from '../screens/ChangePassScreen.js';
-import ActiveAccScreen from '../screens/ActiveAccScreen.js';
+import Nav from './Nav.js';
 
 const Stack = createStackNavigator();
 const GlobalRoute = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerTitleAlign: 'center',
+      }}
+    >
       <Stack.Screen
         options={{ headerShown: false }}
         name="LOGIN"
