@@ -55,23 +55,6 @@ const Nav = () => {
         name="Messages"
         component={MessageStack}
         options={{
-          headerRight: () => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  Alert.alert('create new');
-                }}
-              >
-                <Ionicons
-                  name="ios-create-outline"
-                  size={23}
-                  style={{
-                    paddingRight: 15,
-                  }}
-                />
-              </TouchableOpacity>
-            );
-          },
           headerLeft: () => {
             return (
               <Avatar.Image
