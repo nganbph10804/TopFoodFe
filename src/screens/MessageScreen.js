@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, Button, StyleSheet, FlatList } from 'react-native';
+import React, {useState,useEffect} from 'react';
+import { View, Text, Button, StyleSheet, FlatList, Alert } from 'react-native';
 import { Searchbar } from 'react-native-paper';
 import {
     Container,
@@ -13,52 +13,60 @@ import {
     MessageText,
     TextSection,
 } from '../styles/MessageStyle';
+import SockJS from 'sockjs-client';
+import { useSelector} from 'react-redux';
+import Stomp from 'webstomp-client'
 
 
-const Messages = [
-    {
-        id: '1',
-        userName: 'Jenny Doe',
-        userImg: 'https://genk.mediacdn.vn/2017/a-2-1489899621733.png',
-        messageTime: '4 mins ago',
-        messageText:
-            'Hey there, this is my test for a post of my social app in React Native.',
-    },
-    {
-        id: '2',
-        userName: 'John Doe',
-        userImg: 'https://genk.mediacdn.vn/2017/a-2-1489899621733.png',
-        messageTime: '2 hours ago',
-        messageText:
-            'Hey there, this is my test for a post of my social app in React Native.',
-    },
-    {
-        id: '3',
-        userName: 'Ken William',
-        userImg: 'https://genk.mediacdn.vn/2017/a-2-1489899621733.png',
-        messageTime: '1 hours ago',
-        messageText:
-            'Hey there, this is my test for a post of my social app in React Native.',
-    },
-    {
-        id: '4',
-        userName: 'Selina Paul',
-        userImg: 'https://genk.mediacdn.vn/2017/a-2-1489899621733.png',
-        messageTime: '1 day ago',
-        messageText:
-            'Hey there, this is my test for a post of my social app in React Native.',
-    },
-    {
-        id: '5',
-        userName: 'Christy Alex',
-        userImg: 'https://genk.mediacdn.vn/2017/a-2-1489899621733.png',
-        messageTime: '2 days ago',
-        messageText:
-            'Hey there, this is my test for a post of my social app in React Native.',
-    },
-];
+const ListMessages = [];
 
 const MessagesScreen = ({ navigation }) => {
+    const { cover, avatar, address, birthday, bio, name, id } = useSelector(
+        state => state.auth.profile
+      );
+      const [messages, setMessages] = useState([]);
+      var stompClient = null;
+      var stompClientConversation = null;
+
+      const bindingData = (payload) =>{
+        let body = JSON.parse(payload.body);
+        Alert.alert(body.data[0].id);
+        // if (body.type == "LIST_CONVERSATION") {
+        //     if (body.status == true) {
+        //        ListMessages = body.data
+        //     } 
+        // }
+      }
+    
+      function subcribeConversation(idAccount) {
+        if (stompClientConversation != null) {
+          stompClient.unsubscribe(stompClientConversation.id);
+        }
+        stompClientConversation = stompClient.subscribe(`/messages/inbox/conversation_${idAccount}`, (payload) => bindingData(payload));
+        let objSend = {
+          "accountId": idAccount,
+          "conversationId": "",
+          "page": 0,
+          "pageSize": 10,
+          "order": "DESC",
+          "orderBy": "updateAt"
+        };
+        stompClient.send(`/app/conversation_${idAccount}/get-list-conversation`, JSON.stringify(objSend), {});
+      }
+    
+      const connect = () => {
+        let urlWs = "http://34.67.241.66:8080/ws/";
+        let socket = new SockJS(urlWs);
+        stompClient = Stomp.over(socket);
+        stompClient.connect({},() => {subcribeConversation(id)},error => {console.log(error);});
+      }
+      useEffect(() => {
+        connect();
+        return ()=>{
+            stompClient && stompClient.disconnect();
+        }
+      }, [id]);
+
     return (
         <Container>
             <Searchbar style={{
@@ -76,20 +84,20 @@ const MessagesScreen = ({ navigation }) => {
                 placeholder="Search"
             />
             <FlatList
-                data={Messages}
+                data={ListMessages}
                 keyExtractor={item => item.id}
                 renderItem={({ item }) => (
-                    <Card onPress={() => navigation.navigate('Chat', { userName: item.userName })}>
+                    <Card onPress={() => navigation.navigate('Chat', { userName: item.title })}>
                         <UserInfo>
                             <UserImgWrapper>
-                                <UserImg source={{ uri: item.userImg }} />
+                                <UserImg source={{ uri: item.createBy.avatar }} />
                             </UserImgWrapper>
                             <TextSection>
                                 <UserInfoText>
-                                    <UserName>{item.userName}</UserName>
-                                    <PostTime>{item.messageTime}</PostTime>
+                                    <UserName>{item.createBy.name}</UserName>
+                                    <PostTime>{item.updateAt}</PostTime>
                                 </UserInfoText>
-                                <MessageText>{item.messageText}</MessageText>
+                                <MessageText>{item.createBy.name}</MessageText>
                             </TextSection>
                         </UserInfo>
                     </Card>
