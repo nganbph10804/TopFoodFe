@@ -120,10 +120,6 @@ const  send = ()=> {
   }
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1 }}
-    >
       <GiftedChat
         messages={messages}
         onSend={(messages) => onSend(messages)}
@@ -136,7 +132,6 @@ const  send = ()=> {
         scrollToBottom
         scrollToBottomComponent={scrollToBottomComponent}
       />
-    </KeyboardAvoidingView>
 
   );
 };
