@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, ScrollView, Text, Button, StyleSheet, KeyboardAvoidingView } from 'react-native';
+import { View, ScrollView, Text, Button, StyleSheet, KeyboardAvoidingView, Alert } from 'react-native';
 import { Bubble, GiftedChat, Send } from 'react-native-gifted-chat';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -14,9 +14,10 @@ const ChatScreen = () => {
   );
   const [messages, setMessages] = useState([]);
   var stompClient = null;
-
+  var stompClientConversation = null;
   function logMessage(payload) {
-    console.log(payload.body+"deo co gi ca")
+    Alert.alert(JSON.parse(payload.body.data.title))
+   
     // let body = JSON.parse(payload.body);
     // if (body.type == "LIST_MESSAGE" && body.status == true) {
     //     body.data.forEach(element => {
@@ -42,16 +43,30 @@ const  send = ()=> {
   const connect = () => {
     let urlWs= "http://34.67.241.66:8080/ws/";
     let socket = new SockJS(urlWs);
-    stompClient = Stomp.over(socket);
+    let objSend = {
+      "accountId": id,
+      "conversationId": "",
+      "page": 0,
+      "pageSize": 10,
+      "order": "DESC",
+      "orderBy": "updateAt"
+  };
+  let onreceive =(frame)=>{
+    console.log('Message received',frame)
+}
+    stompClient = Stomp.over(socket,);
     stompClient.connect(
       {},
       frame => {
-        stompClient.subscribe(`/messages/inbox/user_${id}`, (payload) => logMessage(payload));
+        stompClientConversation = stompClient.subscribe(`/messages/inbox/user_${id}`, (payload) =>logMessage(payload),{});
+        stompClient.send(`/app/conversation_${id}/get-list-conversation`, JSON.stringify(objSend), {});
+        stompClient.onreceive = onreceive(frame)
       },
       error => {
         console.log(error+"loi con me no roi");
       }
     );
+    
 
   }
   useEffect(() => {
