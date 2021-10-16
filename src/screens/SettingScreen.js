@@ -2,17 +2,17 @@ import {
   AntDesign,
   Ionicons,
   MaterialCommunityIcons,
-  MaterialIcons,
 } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Alert, Text, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
+import { Subheading } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Main } from '../components/index.js';
 import { logoutAction } from '../redux/actions/authAction.js';
-import deviceStorage from '../redux/deviceStorage .js';
+import { authHeader } from '../redux/authHeader.js';
 
 const Item = styled(View)`
   background-color: #fff;
@@ -31,16 +31,13 @@ const LastItem = styled(View)`
 const ProfileScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
-  const [showFr, setShowFr] = useState(false);
 
   const profile = useSelector(state => state.auth.profile);
 
   const click = async () => {
-    const token = await deviceStorage.loadJWT();
-    console.log(
-      'log 🚀 ~ file: SettingScreen.js ~ line 51 ~ click ~ token',
-      token
-    );
+    const token = await authHeader();
+    // const token = await deviceStorage.loadJWT();
+    console.log(token);
   };
   const logout = () =>
     Alert.alert('Thông báo', 'Bạn có muốn đăng xuất không?', [
@@ -68,12 +65,12 @@ const ProfileScreen = ({ navigation }) => {
           }}
           onPress={() => navigation.navigate('ProfileDetail')}
         />
-        <Text
+        <Subheading
           style={{ paddingLeft: 10 }}
           onPress={() => navigation.navigate('ProfileDetail')}
         >
           {profile.name}
-        </Text>
+        </Subheading>
         <LastItem>
           <Icon
             size={35}
@@ -90,80 +87,24 @@ const ProfileScreen = ({ navigation }) => {
             name="ios-people-circle-outline"
             size={35}
             color="black"
-            onPress={() => setShowFr(!showFr)}
+            onPress={() => navigation.navigate('MainScreen')}
           />
-          <Text style={{ paddingLeft: 10 }} onPress={() => setShowFr(!showFr)}>
+          <Text
+            style={{ paddingLeft: 10 }}
+            onPress={() => navigation.navigate('MainScreen')}
+          >
             Bạn bè
           </Text>
           <LastItem>
-            {showFr ? (
-              <AntDesign
-                name="arrowup"
-                size={24}
-                color="#9AA0A6"
-                style={{ paddingRight: 7 }}
-                onPress={() => setShowFr(!showFr)}
-              />
-            ) : (
-              <Icon
-                size={35}
-                name={'chevron-right'}
-                color={'#9AA0A6'}
-                onPress={() => setShowFr(!showFr)}
-              />
-            )}
+            <Icon
+              size={35}
+              name={'chevron-right'}
+              color={'#9AA0A6'}
+              onPress={() => navigation.navigate('MainScreen')}
+            />
           </LastItem>
         </Item>
-        {showFr && (
-          <View>
-            <Item>
-              <Icon
-                size={35}
-                name={'people'}
-                color={'black'}
-                onPress={() => navigation.navigate('Friends')}
-              />
-              <Text
-                style={{ paddingLeft: 10 }}
-                onPress={() => navigation.navigate('Friends')}
-              >
-                Danh sách bạn bè
-              </Text>
-              <LastItem>
-                <Icon
-                  size={35}
-                  name={'chevron-right'}
-                  color={'#9AA0A6'}
-                  onPress={() => navigation.navigate('Friends')}
-                />
-              </LastItem>
-            </Item>
-            <Item>
-              <MaterialIcons
-                name="person-search"
-                size={35}
-                color="black"
-                onPress={() => navigation.navigate('SearchFriend')}
-              />
-              <Text
-                onPress={() => navigation.navigate('SearchFriend')}
-                style={{ paddingLeft: 10 }}
-              >
-                Tìm bạn
-              </Text>
-              <LastItem>
-                <Icon
-                  size={35}
-                  name={'chevron-right'}
-                  color={'#9AA0A6'}
-                  onPress={() => navigation.navigate('SearchFriend')}
-                />
-              </LastItem>
-            </Item>
-          </View>
-        )}
       </View>
-
       {/* manage account */}
       <View>
         <Item>
@@ -202,12 +143,21 @@ const ProfileScreen = ({ navigation }) => {
                 name="account-details"
                 size={35}
                 color="black"
+                onPress={() => navigation.navigate('InformationAccScreen')}
               />
-              <Text style={{ paddingLeft: 10 }} onPress={() => click()}>
+              <Text
+                style={{ paddingLeft: 10 }}
+                onPress={() => navigation.navigate('InformationAccScreen')}
+              >
                 Thông tin tài khoản
               </Text>
               <LastItem>
-                <Icon size={35} name={'chevron-right'} color={'#9AA0A6'} />
+                <Icon
+                  size={35}
+                  name={'chevron-right'}
+                  color={'#9AA0A6'}
+                  onPress={() => navigation.navigate('InformationAccScreen')}
+                />
               </LastItem>
             </Item>
             <Item>

@@ -14,8 +14,13 @@ import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { BtnDate, BtnLogin, InputAuth, ViewDate } from '../components/index.js';
-import { registerAction } from '../redux/actions/authAction.js';
+import {
+  BtnDate,
+  BtnLogin,
+  InputAuth,
+  ViewDate,
+} from '../../components/index.js';
+import { registerAction } from '../../redux/actions/authAction.js';
 
 const image = {
   uri: 'https://raw.githubusercontent.com/Leomin07/img/master/img-register-new.png',
@@ -84,7 +89,7 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   let [fontsLoaded] = useFonts({
-    'Courgette-Regular': require('../../assets/fonts/Courgette-Regular.ttf'),
+    'Courgette-Regular': require('../../../assets/fonts/Courgette-Regular.ttf'),
   });
   if (!fontsLoaded) {
     return <AppLoading />;

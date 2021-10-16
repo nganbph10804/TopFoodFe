@@ -3,8 +3,8 @@ import { ImageBackground, Text, View } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { BtnLogin, InputAuth } from '../components/index.js';
-import { getOtpAction } from '../redux/actions/authAction.js';
+import { BtnLogin, InputAuth } from '../../components/index.js';
+import { getOtpAction } from '../../redux/actions/authAction.js';
 
 const image = {
   uri: 'https://raw.githubusercontent.com/Leomin07/img/master/otp.png',

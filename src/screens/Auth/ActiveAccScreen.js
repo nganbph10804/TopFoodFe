@@ -10,8 +10,8 @@ import {
 import Toast from 'react-native-toast-message';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { BtnLogin, InputAuth } from '../components/index.js';
-import { activeAccAction } from '../redux/actions/authAction.js';
+import { BtnLogin, InputAuth } from '../../components/index.js';
+import { activeAccAction } from '../../redux/actions/authAction.js';
 
 const image = {
   uri: 'https://raw.githubusercontent.com/Leomin07/img/master/active.png',
@@ -21,7 +21,7 @@ const Page = styled(View)`
   top: 45%;
 `;
 
-const ChangePassScreen = ({ navigation }) => {
+const ActiveAccScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const [otp, setOtp] = useState('');
 
@@ -39,7 +39,7 @@ const ChangePassScreen = ({ navigation }) => {
   };
 
   let [fontsLoaded] = useFonts({
-    'Courgette-Regular': require('../../assets/fonts/Courgette-Regular.ttf'),
+    'Courgette-Regular': require('../../../assets/fonts/Courgette-Regular.ttf'),
   });
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -88,4 +88,4 @@ const ChangePassScreen = ({ navigation }) => {
   }
 };
 
-export default ChangePassScreen;
+export default ActiveAccScreen;

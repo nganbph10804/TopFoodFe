@@ -17,8 +17,8 @@ import {
   CustomInput,
   ViewDate,
   ViewDateUser,
-} from '../components/index.js';
-import { updateProfileAction } from '../redux/actions/authAction.js';
+} from '../../components/index.js';
+import { updateProfileAction } from '../../redux/actions/authAction.js';
 
 const EditProfileScreen = ({ navigation }) => {
   const profile = useSelector(state => state.auth.profile);

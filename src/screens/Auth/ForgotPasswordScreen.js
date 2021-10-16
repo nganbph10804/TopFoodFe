@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { ImageBackground, Text, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import styled from 'styled-components';
-import { BtnLogin, InputAuth } from '../components/index.js';
+import { BtnLogin, InputAuth } from '../../components/index.js';
 import { useDispatch } from 'react-redux';
-import { forgotAction } from '../redux/actions/authAction';
+import { forgotAction } from '../../redux/actions/authAction';
 import {
   Button,
   Dialog,

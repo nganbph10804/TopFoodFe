@@ -11,9 +11,8 @@ import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { BtnLogin, InputAuth } from '../components/index.js';
-import { loginAction } from '../redux/actions/authAction.js';
-
+import { BtnLogin, InputAuth } from '../../components/index.js';
+import { loginAction } from '../../redux/actions/authAction.js';
 const image = {
   uri: 'https://raw.githubusercontent.com/Leomin07/img/master/img-login.png',
 };
@@ -38,7 +37,7 @@ const LoginScreen = ({ navigation }) => {
   }, [auth.token]);
 
   const handlerLogin = () => {
-    if (username.length === 0 || password.length === 0) {
+    if (username.trim().length === 0 || password.trim().length === 0) {
       Toast.show({
         type: 'error',
         topOffset: 60,
@@ -53,7 +52,7 @@ const LoginScreen = ({ navigation }) => {
   };
 
   let [fontsLoaded] = useFonts({
-    'Courgette-Regular': require('../../assets/fonts/Courgette-Regular.ttf'),
+    'Courgette-Regular': require('../../../assets/fonts/Courgette-Regular.ttf'),
   });
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -121,7 +120,7 @@ const LoginScreen = ({ navigation }) => {
                 </Text>
               </View>
               <View>
-                <BtnLogin>
+                <BtnLogin onPress={() => handlerLogin()}>
                   <Text
                     style={{ color: '#fff', fontSize: 22 }}
                     onPress={() => handlerLogin()}
