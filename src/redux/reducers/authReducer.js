@@ -1,4 +1,4 @@
-import { LOGIN_SUCCESS, LOGOUT, EDIT_PROFILE } from '../types/authType';
+import { LOGIN_SUCCESS, LOGOUT, EDIT_PROFILE } from "../types/authType";
 
 export const authReducer = (
   state = {

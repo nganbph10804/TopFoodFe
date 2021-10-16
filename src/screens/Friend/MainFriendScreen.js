@@ -1,7 +1,7 @@
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import React from 'react';
-import FriendListScreen from './FriendListScreen.js';
-import SearchFriendScreen from './SearchFriendScreen.js';
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import React from "react";
+import FriendListScreen from "./FriendListScreen.js";
+import SearchFriendScreen from "./SearchFriendScreen.js";
 const Tab = createMaterialTopTabNavigator();
 
 const MainFriendScreen = () => {
@@ -11,14 +11,14 @@ const MainFriendScreen = () => {
         name="SearchFriend"
         component={SearchFriendScreen}
         options={{
-          title: 'TÌM BẠN',
+          title: "TÌM BẠN",
         }}
       />
       <Tab.Screen
         name="FriendListScreen"
         component={FriendListScreen}
         options={{
-          title: 'DANH SÁCH BẠN BÈ',
+          title: "DANH SÁCH BẠN BÈ",
         }}
       />
     </Tab.Navigator>

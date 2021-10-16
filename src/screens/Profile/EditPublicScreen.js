@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { KeyboardAvoidingView, View } from 'react-native';
-import { Button } from 'react-native-paper';
-import { useDispatch } from 'react-redux';
-import { InputUpdate, styles } from '../../styles/paper.js';
-import { updateProfileAction } from '../../redux/actions/authAction.js';
+import React, { useState } from "react";
+import { KeyboardAvoidingView, View } from "react-native";
+import { Button } from "react-native-paper";
+import { useDispatch } from "react-redux";
+import { InputUpdate, styles } from "../../styles/paper.js";
+import { updateProfileAction } from "../../redux/actions/authAction.js";
 
 const EditPublicScreen = ({ route, navigation }) => {
   const [cover, setCover] = useState(route.params.profile.cover);
@@ -32,9 +32,9 @@ const EditPublicScreen = ({ route, navigation }) => {
       <View
         style={{
           flex: 1,
-          backgroundColor: '#ADD8E6',
-          alignItems: 'center',
-          justifyContent: 'center',
+          backgroundColor: "#ADD8E6",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
         <View style={styles.card}>
@@ -43,7 +43,7 @@ const EditPublicScreen = ({ route, navigation }) => {
               label="Họ tên"
               mode="outlined"
               value={name}
-              onChangeText={name => setName(name)}
+              onChangeText={(name) => setName(name)}
             />
           </View>
           <View style={{ marginBottom: 20 }}>
@@ -51,7 +51,7 @@ const EditPublicScreen = ({ route, navigation }) => {
               label="Giới thiệu"
               mode="outlined"
               value={bio}
-              onChangeText={bio => setBio(bio)}
+              onChangeText={(bio) => setBio(bio)}
             />
           </View>
           <View style={{ marginBottom: 20 }}>
@@ -59,7 +59,7 @@ const EditPublicScreen = ({ route, navigation }) => {
               label="Ảnh bìa"
               mode="outlined"
               value={cover}
-              onChangeText={cover => setCover(cover)}
+              onChangeText={(cover) => setCover(cover)}
             />
           </View>
           <View style={{ marginBottom: 20 }}>
@@ -67,14 +67,14 @@ const EditPublicScreen = ({ route, navigation }) => {
               label="Avatar"
               mode="outlined"
               value={avatar}
-              onChangeText={avatar => setAvatar(avatar)}
+              onChangeText={(avatar) => setAvatar(avatar)}
             />
           </View>
           <View
             style={{
               width: 150,
-              alignItems: 'center',
-              alignSelf: 'center',
+              alignItems: "center",
+              alignSelf: "center",
               paddingBottom: 30,
             }}
           >

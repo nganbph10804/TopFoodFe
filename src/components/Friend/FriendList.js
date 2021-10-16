@@ -1,14 +1,14 @@
-import { Entypo } from '@expo/vector-icons';
-import React, { useState } from 'react';
-import { View } from 'react-native';
-import { Menu, MenuItem } from 'react-native-material-menu';
-import { Avatar, Title } from 'react-native-paper';
-import { useDispatch } from 'react-redux';
-import styled from 'styled-components';
+import { Entypo } from "@expo/vector-icons";
+import React, { useState } from "react";
+import { View } from "react-native";
+import { Menu, MenuItem } from "react-native-material-menu";
+import { Avatar, Title } from "react-native-paper";
+import { useDispatch } from "react-redux";
+import styled from "styled-components";
 import {
   blockFriendAction,
   unfriendAction,
-} from '../../redux/actions/friendAction.js';
+} from "../../redux/actions/friendAction.js";
 
 const Item = styled(View)`
   background-color: #fff;
@@ -29,11 +29,11 @@ const FriendList = ({ item, navigation }) => {
   const hideMenu = () => setVisible(false);
   const showMenu = () => setVisible(true);
   const dispatch = useDispatch();
-  const handlerBlock = phone => {
+  const handlerBlock = (phone) => {
     dispatch(blockFriendAction(phone));
   };
 
-  const handlerUnfriend = phone => {
+  const handlerUnfriend = (phone) => {
     dispatch(unfriendAction(phone));
   };
 
@@ -47,9 +47,9 @@ const FriendList = ({ item, navigation }) => {
           }}
         />
         <Title
-          style={{ paddingLeft: 10, fontSize: 18, fontWeight: 'bold' }}
+          style={{ paddingLeft: 10, fontSize: 18, fontWeight: "bold" }}
           onPress={() =>
-            navigation.navigate('PublicProfileScreen', { profile })
+            navigation.navigate("PublicProfileScreen", { profile })
           }
         >
           {item.profile.name}

@@ -1,10 +1,10 @@
-import { Entypo } from '@expo/vector-icons';
-import React, { useState } from 'react';
-import { Image, Text, View } from 'react-native';
-import { Menu, MenuItem } from 'react-native-material-menu';
-import { useDispatch } from 'react-redux';
-import styled from 'styled-components';
-import { acceptAction, removeActon } from '../../redux/actions/friendAction.js';
+import { Entypo } from "@expo/vector-icons";
+import React, { useState } from "react";
+import { Image, Text, View } from "react-native";
+import { Menu, MenuItem } from "react-native-material-menu";
+import { useDispatch } from "react-redux";
+import styled from "styled-components";
+import { acceptAction, removeActon } from "../../redux/actions/friendAction.js";
 
 const Item = styled(View)`
   background-color: #fff;
@@ -44,10 +44,10 @@ const ListRequest = ({ friend }) => {
             width: 55,
             height: 55,
             borderRadius: 75,
-            overflow: 'hidden',
+            overflow: "hidden",
           }}
         />
-        <Text style={{ paddingLeft: 10, fontSize: 18, fontWeight: 'bold' }}>
+        <Text style={{ paddingLeft: 10, fontSize: 18, fontWeight: "bold" }}>
           {friend.profile.name}
         </Text>
         <LastItem>

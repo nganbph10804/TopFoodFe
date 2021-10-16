@@ -1,8 +1,8 @@
-import { Entypo } from '@expo/vector-icons';
-import React, { useState } from 'react';
-import { Image, Text, View } from 'react-native';
-import { Menu, MenuItem } from 'react-native-material-menu';
-import styled from 'styled-components';
+import { Entypo } from "@expo/vector-icons";
+import React, { useState } from "react";
+import { Image, Text, View } from "react-native";
+import { Menu, MenuItem } from "react-native-material-menu";
+import styled from "styled-components";
 
 const Item = styled(View)`
   background-color: #fff;
@@ -32,15 +32,15 @@ const Notification = () => {
             width: 55,
             height: 55,
             borderRadius: 75,
-            overflow: 'hidden',
+            overflow: "hidden",
           }}
         />
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text
             style={{
               paddingLeft: 10,
               fontSize: 18,
-              fontWeight: 'bold',
+              fontWeight: "bold",
               marginRight: 10,
             }}
           >

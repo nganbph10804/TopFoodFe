@@ -1,14 +1,14 @@
-import { MaterialIcons } from '@expo/vector-icons';
-import React, { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import ListRequest from '../../components/Friend/ListRequest.js';
-import { listRequestAction } from '../../redux/actions/friendAction.js';
+import { MaterialIcons } from "@expo/vector-icons";
+import React, { useEffect, useState } from "react";
+import { Text, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import ListRequest from "../../components/Friend/ListRequest.js";
+import { listRequestAction } from "../../redux/actions/friendAction.js";
 
 const ListRequestScreen = () => {
   const [page, setPage] = useState(0);
   const dispatch = useDispatch();
-  const request = useSelector(state => state.friend.request);
+  const request = useSelector((state) => state.friend.request);
   useEffect(() => {
     dispatch(listRequestAction(page));
   }, [dispatch, page]);
@@ -21,27 +21,27 @@ const ListRequestScreen = () => {
         <View>
           <View
             style={{
-              backgroundColor: '#fff',
+              backgroundColor: "#fff",
               padding: 10,
               marginTop: 10,
-              flexDirection: 'row',
-              alignItems: 'center',
+              flexDirection: "row",
+              alignItems: "center",
             }}
           >
             <MaterialIcons name="people-alt" size={30} color="black" />
             <Text
-              style={{ fontSize: 20, paddingHorizontal: 5, fontWeight: 'bold' }}
+              style={{ fontSize: 20, paddingHorizontal: 5, fontWeight: "bold" }}
             >
               Lời mời kết bạn
             </Text>
             <Text
               style={{
-                backgroundColor: 'red',
-                color: 'white',
+                backgroundColor: "red",
+                color: "white",
                 borderRadius: 50,
                 width: 35,
                 height: 35,
-                textAlign: 'center',
+                textAlign: "center",
                 paddingTop: 5,
                 fontSize: 17,
               }}

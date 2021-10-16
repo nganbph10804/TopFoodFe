@@ -1,9 +1,9 @@
-import React from 'react';
-import { Image, Text, View } from 'react-native';
-import { Button } from 'react-native-paper';
-import { useDispatch } from 'react-redux';
-import styled from 'styled-components';
-import { sendAction } from '../../redux/actions/friendAction.js';
+import React from "react";
+import { Image, Text, View } from "react-native";
+import { Button } from "react-native-paper";
+import { useDispatch } from "react-redux";
+import styled from "styled-components";
+import { sendAction } from "../../redux/actions/friendAction.js";
 
 const Item = styled(View)`
   background-color: #fff;
@@ -35,10 +35,10 @@ const SearchFriend = ({ item }) => {
             width: 55,
             height: 55,
             borderRadius: 75,
-            overflow: 'hidden',
+            overflow: "hidden",
           }}
         />
-        <Text style={{ paddingLeft: 10, fontSize: 18, fontWeight: 'bold' }}>
+        <Text style={{ paddingLeft: 10, fontSize: 18, fontWeight: "bold" }}>
           {item.profile.name}
         </Text>
         <LastItem>

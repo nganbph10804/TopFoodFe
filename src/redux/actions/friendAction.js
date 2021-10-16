@@ -1,14 +1,14 @@
-import axios from 'axios';
-import Toast from 'react-native-toast-message';
-import { authHeader } from '../authHeader.js';
+import axios from "axios";
+import Toast from "react-native-toast-message";
+import { authHeader } from "../authHeader.js";
 import {
   FRIEND_LIST,
   GET_PROFILE,
   LIST_REQUEST,
   SEARCH_FRIEND,
-} from '../types/friendType.js';
+} from "../types/friendType.js";
 
-export const searchProfileAction = (phone, page) => async dispatch => {
+export const searchProfileAction = (phone, page) => async (dispatch) => {
   try {
     const { data } = await axios.get(
       `http://34.67.241.66:8080/profiles/search?page=${page}&search=${phone}`,
@@ -24,14 +24,14 @@ export const searchProfileAction = (phone, page) => async dispatch => {
   } catch (error) {
     console.log(error);
     Toast.show({
-      type: 'error',
+      type: "error",
       topOffset: 40,
-      text1: 'Thông báo',
+      text1: "Thông báo",
       text2: error.response.data.message,
     });
   }
 };
-export const getProfileActon = (id, navigation) => async dispatch => {
+export const getProfileActon = (id, navigation) => async (dispatch) => {
   try {
     const { data } = await axios.get(
       `http://34.67.241.66:8080/profiles/${id}`,
@@ -43,17 +43,17 @@ export const getProfileActon = (id, navigation) => async dispatch => {
       type: GET_PROFILE,
       payload: data.data,
     });
-    navigation.navigate('PublicProfile');
+    navigation.navigate("PublicProfile");
   } catch (error) {
     Toast.show({
-      type: 'error',
+      type: "error",
       topOffset: 40,
-      text1: 'Thông báo',
+      text1: "Thông báo",
       text2: error.response.data.message,
     });
   }
 };
-export const friendListAction = page => async dispatch => {
+export const friendListAction = (page) => async (dispatch) => {
   try {
     const { data } = await axios.get(
       `http://34.67.241.66:8080/friends/list-friends?page=${page}`,
@@ -67,14 +67,14 @@ export const friendListAction = page => async dispatch => {
     });
   } catch (error) {
     Toast.show({
-      type: 'error',
+      type: "error",
       topOffset: 40,
-      text1: 'Thông báo',
+      text1: "Thông báo",
       text2: error.response.data.message,
     });
   }
 };
-export const listRequestAction = page => async dispatch => {
+export const listRequestAction = (page) => async (dispatch) => {
   try {
     const { data } = await axios.get(
       `http://34.67.241.66:8080/friends/list-friends-request?page=${page}`,
@@ -89,17 +89,17 @@ export const listRequestAction = page => async dispatch => {
   } catch (error) {
     console.log(error);
     Toast.show({
-      type: 'error',
+      type: "error",
       topOffset: 40,
-      text1: 'Thông báo',
+      text1: "Thông báo",
       text2: error.response.data.message,
     });
   }
 };
-export const blockFriendAction = phone => async () => {
+export const blockFriendAction = (phone) => async () => {
   try {
     await axios.post(
-      'http://34.67.241.66:8080/friends/block-friend',
+      "http://34.67.241.66:8080/friends/block-friend",
       {
         phoneNumberBlockPerson: phone,
       },
@@ -108,21 +108,21 @@ export const blockFriendAction = phone => async () => {
       }
     );
     Toast.show({
-      type: 'success',
+      type: "success",
       topOffset: 40,
-      text1: 'Thông báo',
-      text2: 'Chặn bạn thành công.',
+      text1: "Thông báo",
+      text2: "Chặn bạn thành công.",
     });
   } catch (error) {
     Toast.show({
-      type: 'error',
+      type: "error",
       topOffset: 40,
-      text1: 'Thông báo',
+      text1: "Thông báo",
       text2: error.response.data.message,
     });
   }
 };
-export const unfriendAction = phone => async () => {
+export const unfriendAction = (phone) => async () => {
   try {
     await axios.delete(
       `http://34.67.241.66:8080/friends/remove-friend`,
@@ -134,21 +134,21 @@ export const unfriendAction = phone => async () => {
       }
     );
     Toast.show({
-      type: 'success',
+      type: "success",
       topOffset: 40,
-      text1: 'Thông báo',
-      text2: 'Huỷ kết bạn thành công.',
+      text1: "Thông báo",
+      text2: "Huỷ kết bạn thành công.",
     });
   } catch (error) {
     Toast.show({
-      type: 'error',
+      type: "error",
       topOffset: 40,
-      text1: 'Thông báo',
+      text1: "Thông báo",
       text2: error.response.data.message,
     });
   }
 };
-export const acceptAction = username => async dispatch => {
+export const acceptAction = (username) => async (dispatch) => {
   try {
     await axios.post(
       `http://34.67.241.66:8080/friends/reply-friend`,
@@ -171,21 +171,21 @@ export const acceptAction = username => async dispatch => {
       payload: data.data,
     });
     Toast.show({
-      type: 'success',
+      type: "success",
       topOffset: 40,
-      text1: 'Thông báo',
-      text2: 'Chấp nhận kết bạn thành công.',
+      text1: "Thông báo",
+      text2: "Chấp nhận kết bạn thành công.",
     });
   } catch (error) {
     Toast.show({
-      type: 'error',
+      type: "error",
       topOffset: 40,
-      text1: 'Thông báo',
+      text1: "Thông báo",
       text2: error.response.data.message,
     });
   }
 };
-export const removeActon = username => async dispatch => {
+export const removeActon = (username) => async (dispatch) => {
   try {
     await axios.post(
       `http://34.67.241.66:8080/friends/reply-friend`,
@@ -208,21 +208,21 @@ export const removeActon = username => async dispatch => {
       payload: data.data,
     });
     Toast.show({
-      type: 'success',
+      type: "success",
       topOffset: 40,
-      text1: 'Thông báo',
-      text2: 'Xoá thành công.',
+      text1: "Thông báo",
+      text2: "Xoá thành công.",
     });
   } catch (error) {
     Toast.show({
-      type: 'error',
+      type: "error",
       topOffset: 40,
-      text1: 'Thông báo',
+      text1: "Thông báo",
       text2: error.response.data.message,
     });
   }
 };
-export const sendAction = phone => async () => {
+export const sendAction = (phone) => async () => {
   try {
     await axios.post(
       `http://34.67.241.66:8080/friends/send-friend-invitations`,
@@ -234,16 +234,16 @@ export const sendAction = phone => async () => {
       }
     );
     Toast.show({
-      type: 'success',
+      type: "success",
       topOffset: 40,
-      text1: 'Thông báo',
-      text2: 'Gửi lời mời thành công.',
+      text1: "Thông báo",
+      text2: "Gửi lời mời thành công.",
     });
   } catch (error) {
     Toast.show({
-      type: 'error',
+      type: "error",
       topOffset: 40,
-      text1: 'Thông báo',
+      text1: "Thông báo",
       text2: error.response.data.message,
     });
   }

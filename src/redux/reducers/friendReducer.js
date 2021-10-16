@@ -3,8 +3,8 @@ import {
   GET_PROFILE,
   LIST_REQUEST,
   SEARCH_FRIEND,
-} from '../types/friendType.js';
-import { LOGOUT, REQUEST } from '../types/authType.js';
+} from "../types/friendType.js";
+import { LOGOUT, REQUEST } from "../types/authType.js";
 
 export const friendReducer = (
   state = {

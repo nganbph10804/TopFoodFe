@@ -2,17 +2,17 @@ import {
   AntDesign,
   Ionicons,
   MaterialCommunityIcons,
-} from '@expo/vector-icons';
-import React, { useState } from 'react';
-import { Alert, Text, View } from 'react-native';
-import { Avatar } from 'react-native-elements';
-import { Subheading } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
-import { Main } from '../components/index.js';
-import { logoutAction } from '../redux/actions/authAction.js';
-import { authHeader } from '../redux/authHeader.js';
+} from "@expo/vector-icons";
+import React, { useState } from "react";
+import { Alert, Text, View } from "react-native";
+import { Avatar } from "react-native-elements";
+import { Subheading } from "react-native-paper";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
+import { Main } from "../components/index.js";
+import { logoutAction } from "../redux/actions/authAction.js";
+import { authHeader } from "../redux/authHeader.js";
 
 const Item = styled(View)`
   background-color: #fff;
@@ -32,7 +32,7 @@ const ProfileScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
 
-  const profile = useSelector(state => state.auth.profile);
+  const profile = useSelector((state) => state.auth.profile);
 
   const click = async () => {
     const token = await authHeader();
@@ -40,15 +40,15 @@ const ProfileScreen = ({ navigation }) => {
     console.log(token);
   };
   const logout = () =>
-    Alert.alert('Thông báo', 'Bạn có muốn đăng xuất không?', [
+    Alert.alert("Thông báo", "Bạn có muốn đăng xuất không?", [
       {
-        text: 'Huỷ',
-        style: 'cancel',
+        text: "Huỷ",
+        style: "cancel",
       },
       {
-        text: 'Đồng ý',
+        text: "Đồng ý",
         onPress: () => {
-          navigation.navigate('LOGIN');
+          navigation.navigate("LOGIN");
           dispatch(logoutAction());
         },
       },
@@ -63,20 +63,20 @@ const ProfileScreen = ({ navigation }) => {
           source={{
             uri: `${profile.avatar}`,
           }}
-          onPress={() => navigation.navigate('ProfileDetail')}
+          onPress={() => navigation.navigate("ProfileDetail")}
         />
         <Subheading
           style={{ paddingLeft: 10 }}
-          onPress={() => navigation.navigate('ProfileDetail')}
+          onPress={() => navigation.navigate("ProfileDetail")}
         >
           {profile.name}
         </Subheading>
         <LastItem>
           <Icon
             size={35}
-            name={'chevron-right'}
-            color={'#9AA0A6'}
-            onPress={() => navigation.navigate('ProfileDetail')}
+            name={"chevron-right"}
+            color={"#9AA0A6"}
+            onPress={() => navigation.navigate("ProfileDetail")}
           />
         </LastItem>
       </Item>
@@ -87,20 +87,20 @@ const ProfileScreen = ({ navigation }) => {
             name="ios-people-circle-outline"
             size={35}
             color="black"
-            onPress={() => navigation.navigate('MainScreen')}
+            onPress={() => navigation.navigate("MainScreen")}
           />
           <Text
             style={{ paddingLeft: 10 }}
-            onPress={() => navigation.navigate('MainScreen')}
+            onPress={() => navigation.navigate("MainScreen")}
           >
             Bạn bè
           </Text>
           <LastItem>
             <Icon
               size={35}
-              name={'chevron-right'}
-              color={'#9AA0A6'}
-              onPress={() => navigation.navigate('MainScreen')}
+              name={"chevron-right"}
+              color={"#9AA0A6"}
+              onPress={() => navigation.navigate("MainScreen")}
             />
           </LastItem>
         </Item>
@@ -110,8 +110,8 @@ const ProfileScreen = ({ navigation }) => {
         <Item>
           <Icon
             size={35}
-            name={'account-circle'}
-            color={'black'}
+            name={"account-circle"}
+            color={"black"}
             onPress={() => setShow(!show)}
           />
           <Text style={{ paddingLeft: 10 }} onPress={() => setShow(!show)}>
@@ -129,8 +129,8 @@ const ProfileScreen = ({ navigation }) => {
             ) : (
               <Icon
                 size={35}
-                name={'chevron-right'}
-                color={'#9AA0A6'}
+                name={"chevron-right"}
+                color={"#9AA0A6"}
                 onPress={() => setShow(!show)}
               />
             )}
@@ -143,20 +143,20 @@ const ProfileScreen = ({ navigation }) => {
                 name="account-details"
                 size={35}
                 color="black"
-                onPress={() => navigation.navigate('InformationAccScreen')}
+                onPress={() => navigation.navigate("InformationAccScreen")}
               />
               <Text
                 style={{ paddingLeft: 10 }}
-                onPress={() => navigation.navigate('InformationAccScreen')}
+                onPress={() => navigation.navigate("InformationAccScreen")}
               >
                 Thông tin tài khoản
               </Text>
               <LastItem>
                 <Icon
                   size={35}
-                  name={'chevron-right'}
-                  color={'#9AA0A6'}
-                  onPress={() => navigation.navigate('InformationAccScreen')}
+                  name={"chevron-right"}
+                  color={"#9AA0A6"}
+                  onPress={() => navigation.navigate("InformationAccScreen")}
                 />
               </LastItem>
             </Item>
@@ -165,10 +165,10 @@ const ProfileScreen = ({ navigation }) => {
                 name="lock-reset"
                 size={35}
                 color="black"
-                onPress={() => navigation.navigate('ChangePassScreen')}
+                onPress={() => navigation.navigate("ChangePassScreen")}
               />
               <Text
-                onPress={() => navigation.navigate('ChangePassScreen')}
+                onPress={() => navigation.navigate("ChangePassScreen")}
                 style={{ paddingLeft: 10 }}
               >
                 Đổi mật khẩu
@@ -176,9 +176,9 @@ const ProfileScreen = ({ navigation }) => {
               <LastItem>
                 <Icon
                   size={35}
-                  name={'chevron-right'}
-                  color={'#9AA0A6'}
-                  onPress={() => navigation.navigate('ChangePassScreen')}
+                  name={"chevron-right"}
+                  color={"#9AA0A6"}
+                  onPress={() => navigation.navigate("ChangePassScreen")}
                 />
               </LastItem>
             </Item>
@@ -190,8 +190,8 @@ const ProfileScreen = ({ navigation }) => {
         <View>
           <Icon
             size={35}
-            name={'logout'}
-            color={'#d91b0d'}
+            name={"logout"}
+            color={"#d91b0d"}
             onPress={() => logout()}
           />
         </View>
