@@ -1,18 +1,17 @@
-import { Ionicons } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
-import { Alert } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Avatar } from 'react-native-paper';
-import EditProfileScreen from '../screens/EditProfileScreen.js';
-import FriendListScreen from '../screens/FriendListScreen.js';
-import PublicProfileScreen from '../screens/PublicProfileScreen.js';
-import SearchFriendScreen from '../screens/SearchFriendScreen.js';
-import MessageStack from './../screens/MessageStack';
-import NotificationsScreen from './../screens/NotificationsScreen';
-import ProfileDetailScreen from './../screens/ProfileDetailScreen';
-import SettingScreen from './../screens/SettingScreen';
+import { Ionicons } from "@expo/vector-icons";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import React from "react";
+import { Alert } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { Avatar } from "react-native-paper";
+import EditProfileScreen from "../screens/Profile/EditProfileScreen.js";
+import EditPublicScreen from "../screens/Profile/EditPublicScreen.js";
+import ProfileDetailScreen from "../screens/Profile/ProfileDetailScreen.js";
+import PublicProfileScreen from "../screens/Profile/PublicProfileScreen.js";
+import MessageStack from "../screens/MessageStack";
+import NotificationsScreen from "../screens/NotificationsScreen";
+import SettingScreen from "../screens/SettingScreen";
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -23,29 +22,36 @@ const Nav = () => {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          if (route.name === 'Home') {
-            iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'notification') {
+          if (route.name === "Home") {
+            iconName = focused ? "home" : "home-outline";
+          } else if (route.name === "notification") {
             iconName = focused
-              ? 'ios-notifications-circle'
-              : 'ios-notifications-circle-outline';
-          } else if (route.name === 'message') {
-            iconName = focused ? 'ios-mail' : 'ios-mail-outline';
-          } else if (route.name === 'Menu') {
-            iconName = focused ? 'menu' : 'menu-outline';
+              ? "ios-notifications-circle"
+              : "ios-notifications-circle-outline";
+          } else if (route.name === "message") {
+            iconName = focused ? "ios-mail" : "ios-mail-outline";
+          } else if (route.name === "Menu") {
+            iconName = focused ? "menu" : "menu-outline";
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: 'tomato',
-        tabBarInactiveTintColor: 'gray',
+        tabBarActiveTintColor: "tomato",
+        tabBarInactiveTintColor: "gray",
         headerStyle: {
           height: 60,
           elevation: 3,
         },
+        headerTitleAlign: "center",
       })}
     >
       {/* <Tab.Screen name="Home" component={FeedScreen} /> */}
-      <Tab.Screen name="notification" component={NotificationsScreen} />
+      <Tab.Screen
+        name="notification"
+        component={NotificationsScreen}
+        options={{
+          title: "Thông báo",
+        }}
+      />
       <Tab.Screen
         name="message"
         component={MessageStack}
@@ -54,7 +60,7 @@ const Nav = () => {
             return (
               <TouchableOpacity
                 onPress={() => {
-                  Alert.alert('create new');
+                  Alert.alert("create new");
                 }}
               >
                 <Ionicons
@@ -72,7 +78,7 @@ const Nav = () => {
               <Avatar.Image
                 size={34}
                 source={{
-                  uri: 'https://photo-cms-anninhthudo.zadn.vn/w600/Uploaded/2021/lcjlcanwm/2020_11_10/co-thien-lac-1-3744.jpg',
+                  uri: "https://photo-cms-anninhthudo.zadn.vn/w600/Uploaded/2021/lcjlcanwm/2020_11_10/co-thien-lac-1-3744.jpg",
                 }}
                 style={{
                   marginLeft: 10,
@@ -80,6 +86,7 @@ const Nav = () => {
               />
             );
           },
+          title: "Nhắn tin",
         }}
       />
       <Tab.Screen
@@ -91,7 +98,7 @@ const Nav = () => {
         {() => (
           <HomeStack.Navigator
             screenOptions={{
-              headerTitleAlign: 'center',
+              headerTitleAlign: "center",
             }}
           >
             <HomeStack.Screen
@@ -105,41 +112,30 @@ const Nav = () => {
               name="ProfileDetail"
               component={ProfileDetailScreen}
               options={{
-                title: 'TRANG CÁ NHÂN',
+                title: "Trang cá nhân",
               }}
             />
             <HomeStack.Screen
               name="EditProfile"
               component={EditProfileScreen}
               options={{
-                title: 'CẬP NHẬT THÔNG TIN CÁ NHÂN',
+                title: "Cập nhật thông tin cá nhân",
               }}
             />
             <HomeStack.Screen
               name="PublicProfile"
               component={PublicProfileScreen}
               options={{
-                title: 'TRANG CÁ NHÂN',
+                title: "Trang cá nhân",
               }}
             />
             <HomeStack.Screen
-              name="Friends"
-              component={FriendListScreen}
+              name="EditPublic"
+              component={EditPublicScreen}
               options={{
-                title: 'DANH SÁCH BẠN BÈ',
-                headerShown: false,
+                title: "Chỉnh sửa trang cá nhân",
               }}
             />
-            <HomeStack.Screen
-              name="SearchFriend"
-              component={SearchFriendScreen}
-              options={{
-                title: 'TÌM BẠN',
-                headerShown: false,
-              }}
-            />
-
-            {/* <HomeStack.Screen name="Friends" component={FriendListScreen} /> */}
           </HomeStack.Navigator>
         )}
       </Tab.Screen>

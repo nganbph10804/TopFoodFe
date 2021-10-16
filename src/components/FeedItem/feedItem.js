@@ -1,7 +1,7 @@
-import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
-import color from 'color';
-import React from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
+import color from "color";
+import React from "react";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import {
   Avatar,
   Caption,
@@ -10,9 +10,9 @@ import {
   Title,
   TouchableRipple,
   useTheme,
-} from 'react-native-paper';
+} from "react-native-paper";
 
-export const FeedItem = props => {
+export const FeedItem = (props) => {
   const theme = useTheme();
 
   const iconColor = color(theme.colors.text).alpha(0.54).rgb().string();
@@ -80,20 +80,20 @@ export const FeedItem = props => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingTop: 15,
     paddingRight: 15,
   },
   leftColumn: {
     width: 100,
-    alignItems: 'center',
+    alignItems: "center",
   },
   rightColumn: {
     flex: 1,
   },
   topRow: {
-    flexDirection: 'column',
-    alignItems: 'baseline',
+    flexDirection: "column",
+    alignItems: "baseline",
   },
   handle: {
     marginRight: 3,
@@ -104,20 +104,20 @@ const styles = StyleSheet.create({
   image: {
     borderWidth: StyleSheet.hairlineWidth,
     marginTop: 10,
-    width: '100%',
+    width: "100%",
     borderRadius: 10,
     height: 150,
   },
   bottomRow: {
     paddingVertical: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   iconContainer: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    marginRight: '10%',
+    flexDirection: "row",
+    alignItems: "baseline",
+    marginRight: "10%",
   },
   iconDescription: {
     marginLeft: 5,

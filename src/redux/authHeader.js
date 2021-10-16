@@ -1,4 +1,4 @@
-import deviceStorage from './deviceStorage .js';
+import deviceStorage from "./deviceStorage .js";
 
 export const authHeader = async () => {
   const token = await deviceStorage.loadJWT();

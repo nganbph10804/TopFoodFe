@@ -92,7 +92,6 @@ export const ViewDateUser = styled(Text)`
 `;
 
 export const Main = styled(View)`
-  padding: 10px 10px;
   width: 100%;
   height: 100%;
   position: relative;
@@ -101,6 +100,17 @@ export const Main = styled(View)`
 export const AvatarImage = styled(Image)`
   border: 2px solid white;
 `;
+export const InputSearch = styled(TextInput)`
+  width: 100%;
+  font-size: 20px;
+  background-color: #fff;
+  border-radius: 30px;
+  color: #000;
+  padding: 6px;
+  padding-left: 11%;
+  align-self: center;
+`;
+//3c6dcc
 
 export default styles = StyleSheet.create({
   row: {

@@ -5,9 +5,6 @@ export const authReducer = (
     account: [],
     profile: [],
     token: null,
-    message: null,
-    loading: false,
-    error: [],
   },
   action
 ) => {
@@ -18,7 +15,6 @@ export const authReducer = (
         account: action.payload.data.account,
         profile: action.payload.data.profile,
         token: action.payload.data.token,
-        loading: false,
       };
 
     case EDIT_PROFILE:
@@ -31,9 +27,6 @@ export const authReducer = (
         account: [],
         profile: [],
         token: null,
-        message: null,
-        loading: false,
-        error: [],
       };
 
     default:
