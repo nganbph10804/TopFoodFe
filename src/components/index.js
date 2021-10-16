@@ -5,9 +5,9 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-} from "react-native";
-import { Button } from "react-native-elements/dist/buttons/Button";
-import styled from "styled-components";
+} from 'react-native';
+import { Button } from 'react-native-elements/dist/buttons/Button';
+import styled from 'styled-components';
 
 export const InputAuth = styled(TextInput)`
   width: 80%;
@@ -92,7 +92,6 @@ export const ViewDateUser = styled(Text)`
 `;
 
 export const Main = styled(View)`
-  padding: 10px 10px;
   width: 100%;
   height: 100%;
   position: relative;
@@ -115,7 +114,7 @@ export const InputSearch = styled(TextInput)`
 
 export default styles = StyleSheet.create({
   row: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

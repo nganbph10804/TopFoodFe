@@ -1,91 +1,71 @@
-import { useFonts } from "@expo-google-fonts/inter";
-import AppLoading from "expo-app-loading";
-import React, { useState } from "react";
-import {
-  ImageBackground,
-  KeyboardAvoidingView,
-  Text,
-  View,
-} from "react-native";
-import Toast from "react-native-toast-message";
-import { useDispatch } from "react-redux";
-import styled from "styled-components";
-import { BtnLogin, InputAuth } from "../../components/index.js";
-import { activeAccAction } from "../../redux/actions/authAction.js";
-
-const image = {
-  uri: "https://raw.githubusercontent.com/Leomin07/img/master/active.png",
-};
-
-const Page = styled(View)`
-  top: 45%;
-`;
+import React, { useState } from 'react';
+import { KeyboardAvoidingView, Text, View } from 'react-native';
+import { Button } from 'react-native-paper';
+import Toast from 'react-native-toast-message';
+import { useDispatch } from 'react-redux';
+import { InputUpdate, styles } from '../../styles/paper.js';
 
 const ActiveAccScreen = ({ navigation }) => {
+  const [otp, setOtp] = useState('');
   const dispatch = useDispatch();
-  const [otp, setOtp] = useState("");
-
   const handlerActive = () => {
     if (otp.length === 0) {
       Toast.show({
-        type: "error",
+        type: 'error',
         topOffset: 60,
-        text1: "Thông báo",
-        text2: "Không được để trống.",
+        text1: 'Thông báo',
+        text2: 'Không được để trống.',
       });
     } else {
       dispatch(activeAccAction(otp, navigation));
     }
   };
-
-  let [fontsLoaded] = useFonts({
-    "Courgette-Regular": require("../../../assets/fonts/Courgette-Regular.ttf"),
-  });
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  } else {
-    return (
-      <View>
-        <ImageBackground
-          resizeMode="cover"
-          source={image}
-          style={{ width: "100%", height: "100%" }}
-        >
-          <Page>
-            <KeyboardAvoidingView>
-              <View>
-                <Text
-                  style={{
-                    fontFamily: "Courgette-Regular",
-                    fontSize: 27,
-                    color: "#fff",
-                    paddingLeft: 50,
-                    marginBottom: 20,
-                  }}
-                >
-                  Kích hoạt tài khoản.
-                </Text>
-              </View>
-              <View>
-                <InputAuth
-                  placeholder="OTP"
-                  onChangeText={(otp) => setOtp(otp)}
-                />
-              </View>
-              <BtnLogin>
-                <Text
-                  style={{ color: "#fff", fontSize: 22 }}
-                  onPress={() => handlerActive()}
-                >
-                  Kích hoạt tài khoản
-                </Text>
-              </BtnLogin>
-            </KeyboardAvoidingView>
-          </Page>
-        </ImageBackground>
+  return (
+    <KeyboardAvoidingView style={{ flex: 1 }}>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: '#ADD8E6',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <View style={styles.card}>
+          <View style={{ paddingTop: 20 }}>
+            <Text
+              style={{
+                fontFamily: 'Courgette-Regular',
+                fontSize: 27,
+                color: '#fff',
+                paddingLeft: 50,
+                color: '#000',
+              }}
+            >
+              Kích hoạt tài khoản
+            </Text>
+          </View>
+          <View style={{ position: 'relative', paddingTop: 10 }}>
+            <InputUpdate
+              mode="outlined"
+              label="Otp"
+              value={otp}
+              keyboardType="numeric"
+              onChangeText={otp => setOtp(otp)}
+            />
+          </View>
+          <View style={{ alignItems: 'center', padding: 20 }}>
+            <Button
+              mode="contained"
+              color="#3c6dcc"
+              onPress={() => handlerActive()}
+            >
+              Kích hoạt tài khoản
+            </Button>
+          </View>
+        </View>
       </View>
-    );
-  }
+    </KeyboardAvoidingView>
+  );
 };
 
 export default ActiveAccScreen;

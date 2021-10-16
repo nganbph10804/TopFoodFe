@@ -1,114 +1,125 @@
-import React, { useState } from "react";
-import { ImageBackground, Text, View } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome5";
-import styled from "styled-components";
-import { BtnLogin, InputAuth } from "../../components/index.js";
-import { useDispatch } from "react-redux";
-import { forgotAction } from "../../redux/actions/authAction";
-import {
-  Button,
-  Dialog,
-  Paragraph,
-  Portal,
-  Provider,
-} from "react-native-paper";
-import Toast from "react-native-toast-message";
-
-const image = {
-  uri: "https://raw.githubusercontent.com/Leomin07/img/master/forgot.png",
-};
-
-const Page = styled(View)`
-  top: 38%;
-`;
+import { useFonts } from '@expo-google-fonts/inter';
+import AppLoading from 'expo-app-loading';
+import React, { useState } from 'react';
+import { KeyboardAvoidingView, Text, View } from 'react-native';
+import { Button, TextInput } from 'react-native-paper';
+import Toast from 'react-native-toast-message';
+import { useDispatch } from 'react-redux';
+import { forgotAction } from '../../redux/actions/authAction.js';
+import { InputUpdate, styles } from '../../styles/paper.js';
 
 const ForgotPasswordScreen = ({ navigation, route }) => {
   const { email } = route.params;
-  const [otp, setOtp] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
-  const [show, setShow] = useState(false);
-  const [hidden, setHidden] = useState(false);
   const dispatch = useDispatch();
+  const [password, setPassword] = useState('');
+  const [hidden, setHidden] = useState(false);
+  const [newPass, setNewPass] = useState('');
+  const [show, setShow] = useState(false);
+  const [otp, setOtp] = useState('');
   const forgotHandler = () => {
-    if (otp.length === 0 || password.length === 0 || confirm.length === 0) {
+    if (
+      otp.trim().length === 0 ||
+      password.trim().length === 0 ||
+      newPass.trim().length === 0
+    ) {
       Toast.show({
-        type: "error",
+        type: 'error',
         topOffset: 60,
-        text1: "Thông báo",
-        text2: "Không được để trống.",
+        text1: 'Thông báo',
+        text2: 'Không được để trống.',
       });
-    } else if (password !== confirm) {
+    } else if (password.trim() !== newPass.trim()) {
       Toast.show({
-        type: "error",
+        type: 'error',
         topOffset: 60,
-        text1: "Thông báo",
-        text2: "Mật khẩu không giống nhau.",
+        text1: 'Thông báo',
+        text2: 'Mật khẩu không giống nhau.',
       });
     } else {
       dispatch(forgotAction(email, password, otp, navigation));
     }
   };
 
-  return (
-    <View>
-      <ImageBackground
-        resizeMode="stretch"
-        source={image}
-        style={{ width: "100%", height: "100%" }}
-      >
-        <Page>
-          <View style={{ position: "relative" }}>
-            <InputAuth
-              placeholder="Password"
-              secureTextEntry={show ? false : true}
-              value={password}
-              onChangeText={(password) => setPassword(password)}
-            />
-            <Icon
-              name={show ? "eye" : "eye-slash"}
-              size={20}
-              color="white"
-              onPress={() => setShow(!show)}
-              style={{ position: "absolute", right: 63, top: 15 }}
-            />
-          </View>
-          <View style={{ position: "relative" }}>
-            <InputAuth
-              placeholder="Nhập lại Password"
-              secureTextEntry={hidden ? false : true}
-              value={confirm}
-              onChangeText={(confirm) => setConfirm(confirm)}
-            />
-            <Icon
-              name={hidden ? "eye" : "eye-slash"}
-              size={20}
-              color="white"
-              onPress={() => setHidden(!hidden)}
-              style={{ position: "absolute", right: 63, top: 15 }}
-            />
-          </View>
-          <View>
-            <InputAuth
-              placeholder="Otp"
-              value={otp}
-              onChangeText={(otp) => setOtp(otp)}
-            />
-          </View>
-          <View>
-            <BtnLogin>
+  let [fontsLoaded] = useFonts({
+    'Courgette-Regular': require('../../../assets/fonts/Courgette-Regular.ttf'),
+  });
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <KeyboardAvoidingView style={{ flex: 1 }}>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: '#ADD8E6',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <View style={styles.card}>
+            <View style={{ paddingTop: 20 }}>
               <Text
-                style={{ color: "#fff", fontSize: 22 }}
+                style={{
+                  fontFamily: 'Courgette-Regular',
+                  fontSize: 27,
+                  color: '#fff',
+                  paddingLeft: 50,
+                  color: '#000',
+                }}
+              >
+                Quên mật khẩu
+              </Text>
+            </View>
+            <View style={{ position: 'relative', paddingTop: 10 }}>
+              <InputUpdate
+                mode="outlined"
+                label="Mật khẩu mới"
+                secureTextEntry={hidden ? false : true}
+                value={password}
+                onChangeText={password => setPassword(password)}
+                right={
+                  <TextInput.Icon
+                    name="eye"
+                    onPress={() => setHidden(!hidden)}
+                  />
+                }
+              />
+            </View>
+            <View style={{ position: 'relative', paddingTop: 20 }}>
+              <InputUpdate
+                mode="outlined"
+                label="Nhập lại mật khẩu"
+                secureTextEntry={show ? false : true}
+                value={newPass}
+                onChangeText={newPass => setNewPass(newPass)}
+                right={
+                  <TextInput.Icon name="eye" onPress={() => setShow(!show)} />
+                }
+              />
+            </View>
+            <View style={{ position: 'relative', paddingTop: 20 }}>
+              <InputUpdate
+                mode="outlined"
+                label="Otp"
+                value={otp}
+                keyboardType="numeric"
+                onChangeText={otp => setOtp(otp)}
+              />
+            </View>
+            <View style={{ alignItems: 'center', padding: 20 }}>
+              <Button
+                mode="contained"
+                color="#3c6dcc"
                 onPress={() => forgotHandler()}
               >
                 Đổi Mật Khẩu
-              </Text>
-            </BtnLogin>
+              </Button>
+            </View>
           </View>
-        </Page>
-      </ImageBackground>
-    </View>
-  );
+        </View>
+      </KeyboardAvoidingView>
+    );
+  }
 };
 
 export default ForgotPasswordScreen;

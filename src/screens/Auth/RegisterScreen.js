@@ -8,7 +8,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Text,
-  View,
+  View
 } from "react-native";
 import Toast from "react-native-toast-message";
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -18,7 +18,7 @@ import {
   BtnDate,
   BtnLogin,
   InputAuth,
-  ViewDate,
+  ViewDate
 } from "../../components/index.js";
 import { registerAction } from "../../redux/actions/authAction.js";
 
