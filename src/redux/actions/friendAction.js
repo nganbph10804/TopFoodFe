@@ -132,10 +132,7 @@ export const blockFriendAction = phone => async (dispatch) => {
 export const unfriendAction = phone => async () => {
   try {
     await axios.delete(
-      `http://34.67.241.66:8080/friends/remove-friend`,
-      {
-        friendPhoneNumber: phone,
-      },
+      `http://34.67.241.66:8080/friends/remove-friend/${phone}`,
       {
         headers: await authHeader(),
       }
