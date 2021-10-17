@@ -1,19 +1,16 @@
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
-import { Alert } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { default as React } from 'react';
 import { Avatar } from 'react-native-paper';
-import EditProfileScreen from '../screens/EditProfileScreen.js';
-import FriendListScreen from '../screens/FriendListScreen.js';
-import PublicProfileScreen from '../screens/PublicProfileScreen.js';
-import SearchFriendScreen from '../screens/SearchFriendScreen.js';
+import { useSelector } from 'react-redux';
+import EditProfileScreen from '../screens//Profile/EditProfileScreen';
+import EditPublicScreen from "../screens/Profile/EditPublicScreen.js";
+import PublicProfileScreen from '../screens/Profile/PublicProfileScreen';
 import MessageStack from './../screens/MessageStack';
 import NotificationsScreen from './../screens/NotificationsScreen';
-import ProfileDetailScreen from './../screens/ProfileDetailScreen';
+import ProfileDetailScreen from './../screens/Profile/ProfileDetailScreen';
 import SettingScreen from './../screens/SettingScreen';
-import { useSelector } from 'react-redux';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -28,9 +25,9 @@ const Nav = () => {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          if (route.name === 'Home') {
-            iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'notification') {
+          if (route.name === "Home") {
+            iconName = focused ? "home" : "home-outline";
+          } else if (route.name === "notification") {
             iconName = focused
               ? 'ios-notifications-circle'
               : 'ios-notifications-circle-outline';
@@ -41,16 +38,23 @@ const Nav = () => {
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: 'tomato',
-        tabBarInactiveTintColor: 'gray',
+        tabBarActiveTintColor: "tomato",
+        tabBarInactiveTintColor: "gray",
         headerStyle: {
           height: 60,
           elevation: 3,
         },
+        headerTitleAlign: "center",
       })}
     >
       {/* <Tab.Screen name="Home" component={FeedScreen} /> */}
-      <Tab.Screen name="notification" component={NotificationsScreen} />
+      <Tab.Screen
+        name="notification"
+        component={NotificationsScreen}
+        options={{
+          title: "Thông báo",
+        }}
+      />
       <Tab.Screen
         name="Messages"
         component={MessageStack}
@@ -68,6 +72,7 @@ const Nav = () => {
               />
             );
           },
+          title: "Nhắn tin",
         }}
       />
       <Tab.Screen
@@ -79,7 +84,7 @@ const Nav = () => {
         {() => (
           <HomeStack.Navigator
             screenOptions={{
-              headerTitleAlign: 'center',
+              headerTitleAlign: "center",
             }}
           >
             <HomeStack.Screen
@@ -93,41 +98,30 @@ const Nav = () => {
               name="ProfileDetail"
               component={ProfileDetailScreen}
               options={{
-                title: 'TRANG CÁ NHÂN',
+                title: "Trang cá nhân",
               }}
             />
             <HomeStack.Screen
               name="EditProfile"
               component={EditProfileScreen}
               options={{
-                title: 'CẬP NHẬT THÔNG TIN CÁ NHÂN',
+                title: "Cập nhật thông tin cá nhân",
               }}
             />
             <HomeStack.Screen
               name="PublicProfile"
               component={PublicProfileScreen}
               options={{
-                title: 'TRANG CÁ NHÂN',
+                title: "Trang cá nhân",
               }}
             />
             <HomeStack.Screen
-              name="Friends"
-              component={FriendListScreen}
+              name="EditPublic"
+              component={EditPublicScreen}
               options={{
-                title: 'DANH SÁCH BẠN BÈ',
-                headerShown: false,
+                title: "Chỉnh sửa trang cá nhân",
               }}
             />
-            <HomeStack.Screen
-              name="SearchFriend"
-              component={SearchFriendScreen}
-              options={{
-                title: 'TÌM BẠN',
-                headerShown: false,
-              }}
-            />
-
-            {/* <HomeStack.Screen name="Friends" component={FriendListScreen} /> */}
           </HomeStack.Navigator>
         )}
       </Tab.Screen>

@@ -1,24 +1,29 @@
-import { useFonts } from '@expo-google-fonts/inter';
-import { MaterialIcons } from '@expo/vector-icons';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import AppLoading from 'expo-app-loading';
-import React, { useState } from 'react';
+import { useFonts } from "@expo-google-fonts/inter";
+import { MaterialIcons } from "@expo/vector-icons";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import AppLoading from "expo-app-loading";
+import React, { useState } from "react";
 import {
   ImageBackground,
   KeyboardAvoidingView,
   Platform,
   Text,
-  View,
-} from 'react-native';
-import Toast from 'react-native-toast-message';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import { useDispatch } from 'react-redux';
-import styled from 'styled-components';
-import { BtnDate, BtnLogin, InputAuth, ViewDate } from '../components/index.js';
-import { registerAction } from '../redux/actions/authAction.js';
+  View
+} from "react-native";
+import Toast from "react-native-toast-message";
+import Icon from "react-native-vector-icons/FontAwesome5";
+import { useDispatch } from "react-redux";
+import styled from "styled-components";
+import {
+  BtnDate,
+  BtnLogin,
+  InputAuth,
+  ViewDate
+} from "../../components/index.js";
+import { registerAction } from "../../redux/actions/authAction.js";
 
 const image = {
-  uri: 'https://raw.githubusercontent.com/Leomin07/img/master/img-register-new.png',
+  uri: "https://raw.githubusercontent.com/Leomin07/img/master/img-register-new.png",
 };
 
 const Page = styled(View)`
@@ -26,39 +31,39 @@ const Page = styled(View)`
 `;
 
 const RegisterScreen = ({ navigation }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
-  const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const [hidden, setHidden] = useState(false);
 
   const [date, setDate] = useState(new Date());
-  const [mode, setMode] = useState('date');
+  const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
-    setShow(Platform.OS === 'ios');
+    setShow(Platform.OS === "ios");
     setDate(currentDate);
     let fDate =
       currentDate.getDate() +
-      '/' +
+      "/" +
       (currentDate.getMonth() + 1) +
-      '/' +
+      "/" +
       currentDate.getFullYear();
     setText(fDate);
   };
 
-  const showMode = currentMode => {
+  const showMode = (currentMode) => {
     setShow(true);
     setMode(currentMode);
   };
 
   const showDatepicker = () => {
-    showMode('date');
+    showMode("date");
   };
 
   const registerHandler = () => {
@@ -71,10 +76,10 @@ const RegisterScreen = ({ navigation }) => {
       username.length === 0
     ) {
       Toast.show({
-        type: 'error',
+        type: "error",
         topOffset: 60,
-        text1: 'Thông báo',
-        text2: 'Không được để trống.',
+        text1: "Thông báo",
+        text2: "Không được để trống.",
       });
     } else {
       dispatch(
@@ -84,7 +89,7 @@ const RegisterScreen = ({ navigation }) => {
   };
 
   let [fontsLoaded] = useFonts({
-    'Courgette-Regular': require('../../assets/fonts/Courgette-Regular.ttf'),
+    "Courgette-Regular": require("../../../assets/fonts/Courgette-Regular.ttf"),
   });
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -94,16 +99,16 @@ const RegisterScreen = ({ navigation }) => {
         <ImageBackground
           resizeMode="stretch"
           source={image}
-          style={{ width: '100%', height: '100%' }}
+          style={{ width: "100%", height: "100%" }}
         >
           <Page>
             <KeyboardAvoidingView>
               <View>
                 <Text
                   style={{
-                    fontFamily: 'Courgette-Regular',
+                    fontFamily: "Courgette-Regular",
                     fontSize: 27,
-                    color: '#fff',
+                    color: "#fff",
                     paddingLeft: 50,
                     marginBottom: 20,
                   }}
@@ -115,14 +120,14 @@ const RegisterScreen = ({ navigation }) => {
                 <InputAuth
                   placeholder="Họ Tên"
                   value={name}
-                  onChangeText={name => setName(name)}
+                  onChangeText={(name) => setName(name)}
                 />
               </View>
               <View>
                 <InputAuth
                   placeholder="Email"
                   value={email}
-                  onChangeText={email => setEmail(email)}
+                  onChangeText={(email) => setEmail(email)}
                 />
               </View>
               <View>
@@ -130,7 +135,7 @@ const RegisterScreen = ({ navigation }) => {
                   placeholder="Số Điện Thoại"
                   keyboardType="number-pad"
                   value={phone}
-                  onChangeText={phone => setPhone(phone)}
+                  onChangeText={(phone) => setPhone(phone)}
                   maxLength={10}
                 />
               </View>
@@ -138,28 +143,28 @@ const RegisterScreen = ({ navigation }) => {
                 <InputAuth
                   placeholder="Username"
                   value={username}
-                  onChangeText={username => setUsername(username)}
+                  onChangeText={(username) => setUsername(username)}
                 />
               </View>
-              <View style={{ position: 'relative' }}>
+              <View style={{ position: "relative" }}>
                 <InputAuth
                   placeholder="Password"
                   secureTextEntry={hidden ? false : true}
                   value={password}
-                  onChangeText={password => setPassword(password)}
+                  onChangeText={(password) => setPassword(password)}
                 />
                 <Icon
-                  name={hidden ? 'eye' : 'eye-slash'}
+                  name={hidden ? "eye" : "eye-slash"}
                   size={20}
                   color="white"
                   onPress={() => setHidden(!hidden)}
-                  style={{ position: 'absolute', right: 63, top: 15 }}
+                  style={{ position: "absolute", right: 63, top: 15 }}
                 />
               </View>
               <View style={{ marginBottom: 30 }}>
                 <View
                   style={{
-                    position: 'relative',
+                    position: "relative",
                   }}
                 >
                   <BtnDate onPress={showDatepicker}>
@@ -180,16 +185,16 @@ const RegisterScreen = ({ navigation }) => {
               <View>
                 <BtnLogin>
                   <Text
-                    style={{ color: '#fff', fontSize: 22 }}
+                    style={{ color: "#fff", fontSize: 22 }}
                     onPress={() => registerHandler()}
                   >
                     Đăng Ký
                   </Text>
                 </BtnLogin>
               </View>
-              <View style={{ alignSelf: 'center', marginTop: 20 }}>
+              <View style={{ alignSelf: "center", marginTop: 20 }}>
                 <Text
-                  style={{ color: '#fff', fontSize: 17 }}
+                  style={{ color: "#fff", fontSize: 17 }}
                   onPress={() => navigation.goBack()}
                 >
                   Đã có tài khoản?

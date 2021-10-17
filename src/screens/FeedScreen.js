@@ -1,10 +1,10 @@
-import React from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { useTheme } from 'react-native-paper';
-import { Feed } from '../components/FeedItem/feedItem';
-import { dataFeed } from './../components/FeedItem/dataFeed';
-import { StackNavigatorParamlist } from './../components/FeedItem/type';
+import React from "react";
+import { FlatList, View, StyleSheet } from "react-native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { useTheme } from "react-native-paper";
+import { Feed } from "../components/FeedItem/feedItem";
+import { dataFeed } from "./../components/FeedItem/dataFeed";
+import { StackNavigatorParamlist } from "./../components/FeedItem/type";
 
 type TwittProps = React.ComponentProps<typeof Feed>;
 
@@ -22,7 +22,7 @@ type Props = {
 
 export const FeedScreen = (props: Props) => {
   const theme = useTheme();
-  const data = dataFeed.map(twittProps => ({
+  const data = dataFeed.map((twittProps) => ({
     ...twittProps,
     onPress: () => {},
   }));

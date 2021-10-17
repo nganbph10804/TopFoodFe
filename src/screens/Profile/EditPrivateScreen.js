@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-const PublicProfileScreen = () => {
+const EditPrivateScreen = () => {
   return (
     <View>
-      <Text>sdffouhkj</Text>
+      <Text>private</Text>
     </View>
   );
 };
 
-export default PublicProfileScreen;
+export default EditPrivateScreen;

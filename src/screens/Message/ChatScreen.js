@@ -5,32 +5,12 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 
-const ChatScreen = () => {
-  const [messages, setMessages] = useState([]);
-
+    const ChatScreen = ({route}) => {
+      const [messages, setMessages] = useState([]);
+      const {lst} = route.params;
+      console.log(lst)
   useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: "Hello developer",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      },
-      {
-        _id: 2,
-        text: "Hello world",
-        createdAt: new Date(),
-        user: {
-          _id: 1,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      },
-    ]);
+      setMessages(lst);
   }, []);
   const onSend = useCallback((messages = []) => {
     setMessages((previousMessages) =>
