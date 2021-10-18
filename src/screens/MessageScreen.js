@@ -90,7 +90,7 @@ const MessagesScreen = ({ navigation }) => {
       stompClient.unsubscribe(stompClientMessage.id);
     }
     
-    stompClientMessage = stompClient.subscribe(`/messages/inbox/messages_${idConversation}`, (payload) => bindingData(payload));
+    stompClientMessage = stompClient.subscribe(`/messages/inbox/messages_${idConversation}`, (payload) => bindingData(payload),{});
     let objSend = {
       "accountId": id,
       "conversationId": idConversation,
@@ -99,8 +99,8 @@ const MessagesScreen = ({ navigation }) => {
       "order": "DESC",
       "orderBy": "id"
     };
-    stompClient.send(`/app/conversation_${id}/info-conversation`, JSON.stringify({objSend}), {}); // info-conversation chỉ cần accountId, conversationId
-    stompClient.send(`/app/messages_${idConversation}/get-list-message`, JSON.stringify(objSend), {});
+    stompClient.send(`/app/conversation_${id}/info-conversation`, JSON.stringify(objSend), {});
+    stompClient.send(`/app/conversation_${id}/get-list-message`,JSON.stringify(objSend), {});
 }
 
   function subcribeConversation(idAccount) {

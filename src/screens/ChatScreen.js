@@ -1,36 +1,28 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, ScrollView, Text, Button, StyleSheet, KeyboardAvoidingView, Alert } from 'react-native';
+import { View, ScrollView, Text, Button, StyleSheet, Keyboard, Alert } from 'react-native';
 import { Bubble, GiftedChat, Send } from 'react-native-gifted-chat';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 
-const ChatScreen = () => {
+const ChatScreen = ({navigation,route}) => {
   const [messages, setMessages] = useState([]);
-
+  const {lst} = route.params; 
+ console.log(lst)
   useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: "Hello developer",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      },
-      {
-        _id: 2,
-        text: "Hello world",
-        createdAt: new Date(),
-        user: {
-          _id: 1,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      },
-    ]);
+    // setMessages(lst.map(element => {
+    //   [{
+    //     _id: element.id,
+    //     text:element.messages,
+    //     createAt: new Date,
+    //     user :{
+    //       _id:element.createBy.id,
+    //       name:element.createBy.name,
+    //       avatar : element.createBy.avatar
+    //     }
+    //   }]
+    // }));
+    setMessages([]);
   }, []);
   const onSend = useCallback((messages = []) => {
     setMessages((previousMessages) =>
