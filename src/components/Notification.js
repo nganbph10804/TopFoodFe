@@ -1,8 +1,9 @@
-import { Entypo } from "@expo/vector-icons";
-import React, { useState } from "react";
-import { Image, Text, View } from "react-native";
-import { Menu, MenuItem } from "react-native-material-menu";
-import styled from "styled-components";
+import { Entypo } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { Image, Text, View } from 'react-native';
+import { Menu, MenuItem } from 'react-native-material-menu';
+import styled from 'styled-components';
+import { styles } from '../styles/paper.js';
 
 const Item = styled(View)`
   background-color: #fff;
@@ -12,10 +13,6 @@ const Item = styled(View)`
   padding: 5px 5px 5px 20px;
   border-radius: 10px;
   margin: 2px 0;
-`;
-const LastItem = styled(View)`
-  position: absolute;
-  right: 20px;
 `;
 const Notification = () => {
   const [visible, setVisible] = useState(false);
@@ -32,15 +29,15 @@ const Notification = () => {
             width: 55,
             height: 55,
             borderRadius: 75,
-            overflow: "hidden",
+            overflow: 'hidden',
           }}
         />
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text
             style={{
               paddingLeft: 10,
               fontSize: 18,
-              fontWeight: "bold",
+              fontWeight: 'bold',
               marginRight: 10,
             }}
           >
@@ -48,7 +45,7 @@ const Notification = () => {
           </Text>
           <Text>vừa nhắc đến bạn.</Text>
         </View>
-        <LastItem>
+        <View style={styles.lastItem}>
           <Menu
             visible={visible}
             anchor={
@@ -78,7 +75,7 @@ const Notification = () => {
               Xoá
             </MenuItem>
           </Menu>
-        </LastItem>
+        </View>
       </Item>
     </View>
   );

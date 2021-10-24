@@ -1,18 +1,22 @@
 import { useFonts } from '@expo-google-fonts/inter';
 import AppLoading from 'expo-app-loading';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   ImageBackground,
   KeyboardAvoidingView,
   Text,
-  View
+  View,
 } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { BtnLogin, InputAuth } from '../../components/index.js';
+import { COLORS } from '../../constants/color.const.js';
 import { loginAction } from '../../redux/actions/authAction.js';
+import { styles } from '../../styles/paper.js';
+
 const image = {
   uri: 'https://raw.githubusercontent.com/Leomin07/img/master/img-login.png',
 };
@@ -28,14 +32,7 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
-  const auth = useSelector(state => state.auth);
   const loading = useSelector(state => state.auth.loading);
-
-  useEffect(() => {
-    if (auth.token) {
-      return navigation.navigate('NAV');
-    }
-  }, [auth.token]);
 
   const handlerLogin = () => {
     if (username.trim().length === 0 || password.trim().length === 0) {
@@ -65,6 +62,15 @@ const LoginScreen = ({ navigation }) => {
           source={image}
           style={{ width: '100%', height: '100%', flex: 1 }}
         >
+          {loading && (
+            <View style={styles.loading}>
+              <ActivityIndicator
+                animating={true}
+                color={`${COLORS.blue[1]}`}
+                size={'large'}
+              />
+            </View>
+          )}
           <Page>
             <KeyboardAvoidingView
               behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

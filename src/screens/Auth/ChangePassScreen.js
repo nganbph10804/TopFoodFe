@@ -2,13 +2,15 @@ import { useFonts } from '@expo-google-fonts/inter';
 import AppLoading from 'expo-app-loading';
 import React, { useState } from 'react';
 import { KeyboardAvoidingView, Text, View } from 'react-native';
-import { Button, TextInput } from 'react-native-paper';
+import { ActivityIndicator, Button, TextInput } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { COLORS } from '../../constants/color.const.js';
 import { changePassAction } from '../../redux/actions/authAction.js';
 import { InputUpdate, styles } from '../../styles/paper.js';
 
-const ChangePassScreen = ({ navigation }) => {
+const ChangePassScreen = () => {
+  const loading = useSelector(state => state.auth.loading);
   const dispatch = useDispatch();
   const [password, setPassword] = useState('');
   const [hidden, setHidden] = useState(false);
@@ -24,7 +26,7 @@ const ChangePassScreen = ({ navigation }) => {
         text2: 'Không được để trống.',
       });
     } else {
-      dispatch(changePassAction(newPass, password, navigation));
+      dispatch(changePassAction(newPass, password));
     }
   };
 
@@ -36,6 +38,15 @@ const ChangePassScreen = ({ navigation }) => {
   } else {
     return (
       <KeyboardAvoidingView style={{ flex: 1 }}>
+        {loading && (
+          <View style={styles.loading}>
+            <ActivityIndicator
+              animating={true}
+              color={`${COLORS.blue[1]}`}
+              size={'large'}
+            />
+          </View>
+        )}
         <View
           style={{
             flex: 1,

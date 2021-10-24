@@ -1,57 +1,49 @@
-import { MaterialIcons } from "@expo/vector-icons";
-import React, { useEffect, useState } from "react";
-import { Text, View } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import ListRequest from "../../components/Friend/ListRequest.js";
-import { listRequestAction } from "../../redux/actions/friendAction.js";
+import { MaterialIcons } from '@expo/vector-icons';
+import React, { useEffect, useState } from 'react';
+import { Text, View } from 'react-native';
+import { Badge, Subheading, Title } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
+import ListRequest from '../../components/Friend/ListRequest.js';
+import { listRequestAction } from '../../redux/actions/friendAction.js';
+import { styles } from '../../styles/paper.js';
 
-const ListRequestScreen = () => {
+const ListRequestScreen = ({ navigation }) => {
   const [page, setPage] = useState(0);
   const dispatch = useDispatch();
-  const request = useSelector((state) => state.friend.request);
+  const request = useSelector(state => state.friend.request);
   useEffect(() => {
-    dispatch(listRequestAction(page));
+    dispatch(listRequestAction(page, 10));
   }, [dispatch, page]);
 
   return (
-    <View>
+    <View style={styles.main}>
       {request.length === 0 ? (
-        <Text></Text>
+        <View style={styles.noFriend}>
+          <Title style={styles.textXL}>Không có yêu cầu</Title>
+        </View>
       ) : (
         <View>
           <View
             style={{
-              backgroundColor: "#fff",
+              backgroundColor: '#fff',
               padding: 10,
               marginTop: 10,
-              flexDirection: "row",
-              alignItems: "center",
+              flexDirection: 'row',
+              alignItems: 'center',
+              position: 'relative',
             }}
           >
             <MaterialIcons name="people-alt" size={30} color="black" />
             <Text
-              style={{ fontSize: 20, paddingHorizontal: 5, fontWeight: "bold" }}
+              style={{ fontSize: 20, paddingHorizontal: 5, fontWeight: 'bold' }}
             >
               Lời mời kết bạn
             </Text>
-            <Text
-              style={{
-                backgroundColor: "red",
-                color: "white",
-                borderRadius: 50,
-                width: 35,
-                height: 35,
-                textAlign: "center",
-                paddingTop: 5,
-                fontSize: 17,
-              }}
-            >
-              99
-            </Text>
+            <Badge size={30}>{request.length}</Badge>
           </View>
           <View>
             {request.map((friend, key) => (
-              <ListRequest key={key} friend={friend} />
+              <ListRequest key={key} friend={friend} navigation={navigation} />
             ))}
           </View>
         </View>

@@ -111,10 +111,3 @@ export const InputSearch = styled(TextInput)`
   align-self: center;
 `;
 //3c6dcc
-
-export default styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-});

@@ -1,25 +1,14 @@
-import { Entypo } from "@expo/vector-icons";
-import React, { useState } from "react";
-import { Image, Text, View } from "react-native";
-import { Menu, MenuItem } from "react-native-material-menu";
-import { useDispatch } from "react-redux";
-import styled from "styled-components";
-import { acceptAction, removeActon } from "../../redux/actions/friendAction.js";
+import { Entypo } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { Menu, MenuItem } from 'react-native-material-menu';
+import { Avatar, Title } from 'react-native-paper';
+import { useDispatch } from 'react-redux';
+import { acceptAction, removeActon } from '../../redux/actions/friendAction.js';
+import { styles } from '../../styles/paper.js';
 
-const Item = styled(View)`
-  background-color: #fff;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 5px 5px 5px 20px;
-  border-radius: 10px;
-  margin: 2px 0;
-`;
-const LastItem = styled(View)`
-  position: absolute;
-  right: 20px;
-`;
-const ListRequest = ({ friend }) => {
+const ListRequest = ({ friend, navigation }) => {
+  const profile = friend.profile;
   const [visible, setVisible] = useState(false);
   const hideMenu = () => setVisible(false);
 
@@ -35,22 +24,22 @@ const ListRequest = ({ friend }) => {
 
   return (
     <View>
-      <Item style={{ marginBottom: 15, marginTop: 10 }}>
-        <Image
+      <View style={styles.Item}>
+        <Avatar.Image
+          size={60}
           source={{
             uri: `${friend.profile.avatar}`,
           }}
-          style={{
-            width: 55,
-            height: 55,
-            borderRadius: 75,
-            overflow: "hidden",
-          }}
         />
-        <Text style={{ paddingLeft: 10, fontSize: 18, fontWeight: "bold" }}>
+        <Title
+          style={{ paddingLeft: 10, fontSize: 18, fontWeight: 'bold' }}
+          onPress={() =>
+            navigation.navigate('PublicProfileScreen', { profile })
+          }
+        >
           {friend.profile.name}
-        </Text>
-        <LastItem>
+        </Title>
+        <View style={styles.lastItem}>
           <Menu
             visible={visible}
             anchor={
@@ -80,8 +69,8 @@ const ListRequest = ({ friend }) => {
               Xoá
             </MenuItem>
           </Menu>
-        </LastItem>
-      </Item>
+        </View>
+      </View>
     </View>
   );
 };

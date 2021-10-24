@@ -2,9 +2,19 @@ import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import { authHeader } from '../authHeader.js';
 import deviceStorage from '../deviceStorage .js';
-import { LOGIN_SUCCESS, LOGOUT, EDIT_PROFILE } from '../types/authType';
+import {
+  AUTH_DONE,
+  EDIT_PROFILE,
+  AUTH_FAILURE,
+  LOGIN_SUCCESS,
+  LOGOUT,
+  AUTH_REQUEST,
+} from '../types/authType';
 
 export const loginAction = (username, password) => async dispatch => {
+  dispatch({
+    type: AUTH_REQUEST,
+  });
   try {
     const { data } = await axios.post(
       'http://34.67.241.66:8080/auth/login-with-username',
@@ -13,19 +23,24 @@ export const loginAction = (username, password) => async dispatch => {
         password: password,
       }
     );
-    const token = data.data.token;
-    deviceStorage.saveJWT(token);
-    dispatch({
-      type: LOGIN_SUCCESS,
-      payload: data,
-    });
-    Toast.show({
-      type: 'success',
-      topOffset: 40,
-      text1: 'Thông báo',
-      text2: 'Đăng nhập thành công.',
-    });
+    setTimeout(() => {
+      const token = data.data.token;
+      deviceStorage.saveJWT(token);
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: data,
+      });
+      Toast.show({
+        type: 'success',
+        topOffset: 40,
+        text1: 'Thông báo',
+        text2: 'Đăng nhập thành công.',
+      });
+    }, 2000);
   } catch (error) {
+    dispatch({
+      type: AUTH_FAILURE,
+    });
     Toast.show({
       type: 'error',
       topOffset: 40,
@@ -37,7 +52,10 @@ export const loginAction = (username, password) => async dispatch => {
 
 export const registerAction =
   (birthday, email, name, password, phone, username, navigation) =>
-  async () => {
+  async dispatch => {
+    dispatch({
+      type: AUTH_REQUEST,
+    });
     try {
       await axios.post('http://34.67.241.66:8080/auth/register', {
         birthday: birthday,
@@ -55,16 +73,24 @@ export const registerAction =
           password: password,
         }
       );
-      const token = data.data.token;
-      deviceStorage.saveJWT(token);
-      Toast.show({
-        type: 'success',
-        topOffset: 40,
-        text1: 'Thông báo',
-        text2: 'Đăng ký tài khoản thành công.',
-      });
-      navigation.navigate('Active');
+      setTimeout(() => {
+        dispatch({
+          type: AUTH_DONE,
+        });
+        const token = data.data.token;
+        deviceStorage.saveJWT(token);
+        Toast.show({
+          type: 'success',
+          topOffset: 40,
+          text1: 'Thông báo',
+          text2: 'Đăng ký tài khoản thành công.',
+        });
+        navigation.navigate('Active');
+      }, 1500);
     } catch (error) {
+      dispatch({
+        type: AUTH_FAILURE,
+      });
       Toast.show({
         type: 'error',
         topOffset: 40,
@@ -74,17 +100,28 @@ export const registerAction =
     }
   };
 
-export const getOtpAction = (email, navigation) => async () => {
+export const getOtpAction = (email, navigation) => async dispatch => {
+  dispatch({
+    type: AUTH_REQUEST,
+  });
   try {
     await axios.get(`http://34.67.241.66:8080/auth/get-otp?email=${email}`);
-    Toast.show({
-      type: 'success',
-      topOffset: 40,
-      text1: 'Thông báo',
-      text2: 'Gửi mã xác nhận thành công.',
-    });
-    navigation.navigate('FORGOT_PASSWORD', { email });
+    setTimeout(() => {
+      dispatch({
+        type: AUTH_DONE,
+      });
+      Toast.show({
+        type: 'success',
+        topOffset: 40,
+        text1: 'Thông báo',
+        text2: 'Gửi mã xác nhận thành công.',
+      });
+      navigation.navigate('FORGOT_PASSWORD', { email });
+    }, 1500);
   } catch (error) {
+    dispatch({
+      type: AUTH_FAILURE,
+    });
     Toast.show({
       type: 'error',
       topOffset: 40,
@@ -95,21 +132,32 @@ export const getOtpAction = (email, navigation) => async () => {
 };
 
 export const forgotAction =
-  (email, newPassword, otp, navigation) => async () => {
+  (email, newPassword, otp, navigation) => async dispatch => {
+    dispatch({
+      type: AUTH_REQUEST,
+    });
     try {
       await axios.post('http://34.67.241.66:8080/auth/forgot-password', {
         email: email,
         newPassword: newPassword,
         otp: otp,
       });
-      Toast.show({
-        type: 'success',
-        topOffset: 40,
-        text1: 'Thông báo',
-        text2: 'Thành công.',
-      });
-      navigation.navigate('LOGIN');
+      setTimeout(() => {
+        dispatch({
+          type: AUTH_DONE,
+        });
+        Toast.show({
+          type: 'success',
+          topOffset: 40,
+          text1: 'Thông báo',
+          text2: 'Thành công.',
+        });
+        navigation.navigate('LOGIN');
+      }, 1500);
     } catch (error) {
+      dispatch({
+        type: AUTH_FAILURE,
+      });
       Toast.show({
         type: 'error',
         topOffset: 40,
@@ -134,6 +182,9 @@ export const logoutAction = () => dispatch => {
 export const updateProfileAction =
   (address, avatar, bio, birthday, cover, name, navigation, id) =>
   async dispatch => {
+    dispatch({
+      type: AUTH_REQUEST,
+    });
     try {
       await axios.put(
         'http://34.67.241.66:8080/profiles/update',
@@ -155,18 +206,23 @@ export const updateProfileAction =
           headers: await authHeader(),
         }
       );
-      dispatch({
-        type: EDIT_PROFILE,
-        payload: data.data.profile,
-      });
-      Toast.show({
-        type: 'success',
-        topOffset: 40,
-        text1: 'Thông báo',
-        text2: 'Cập nhật profile thành công.',
-      });
-      navigation.navigate('Setting');
+      setTimeout(() => {
+        dispatch({
+          type: EDIT_PROFILE,
+          payload: data.data.profile,
+        });
+        Toast.show({
+          type: 'success',
+          topOffset: 40,
+          text1: 'Thông báo',
+          text2: 'Cập nhật profile thành công.',
+        });
+        navigation.navigate('Setting');
+      }, 1500);
     } catch (error) {
+      dispatch({
+        type: AUTH_FAILURE,
+      });
       Toast.show({
         type: 'error',
         topOffset: 40,
@@ -176,7 +232,10 @@ export const updateProfileAction =
     }
   };
 export const changePassAction =
-  (newPassword, oldPassword, navigation) => async () => {
+  (newPassword, oldPassword) => async dispatch => {
+    dispatch({
+      type: AUTH_REQUEST,
+    });
     try {
       await axios.put(
         'http://34.67.241.66:8080/account/change-password',
@@ -188,14 +247,24 @@ export const changePassAction =
           headers: await authHeader(),
         }
       );
-      Toast.show({
-        type: 'success',
-        topOffset: 40,
-        text1: 'Thông báo',
-        text2: 'Đổi mật khẩu thành công.',
-      });
-      navigation.navigate('LOGIN');
+      setTimeout(() => {
+        dispatch({
+          type: AUTH_DONE,
+        });
+        dispatch({
+          type: LOGOUT,
+        });
+        Toast.show({
+          type: 'success',
+          topOffset: 40,
+          text1: 'Thông báo',
+          text2: 'Đổi mật khẩu thành công.',
+        });
+      }, 1500);
     } catch (error) {
+      dispatch({
+        type: AUTH_FAILURE,
+      });
       Toast.show({
         type: 'error',
         topOffset: 40,
@@ -205,7 +274,10 @@ export const changePassAction =
     }
   };
 
-export const activeAccAction = (otp, navigation) => async () => {
+export const activeAccAction = (otp, navigation) => async dispatch => {
+  dispatch({
+    type: AUTH_REQUEST,
+  });
   try {
     await axios.post(
       'http://34.67.241.66:8080/account/active',
@@ -216,15 +288,23 @@ export const activeAccAction = (otp, navigation) => async () => {
         headers: await authHeader(),
       }
     );
-    Toast.show({
-      type: 'success',
-      topOffset: 40,
-      text1: 'Thông báo',
-      text2: 'Kích hoạt tài khoản thành công.',
-    });
-    navigation.navigate('LOGIN');
-    deviceStorage.deleteJWT();
+    setTimeout(() => {
+      dispatch({
+        type: AUTH_DONE,
+      });
+      Toast.show({
+        type: 'success',
+        topOffset: 40,
+        text1: 'Thông báo',
+        text2: 'Kích hoạt tài khoản thành công.',
+      });
+      navigation.navigate('LOGIN');
+      deviceStorage.deleteJWT();
+    }, 1500);
   } catch (error) {
+    dispatch({
+      type: AUTH_FAILURE,
+    });
     Toast.show({
       type: 'error',
       topOffset: 40,

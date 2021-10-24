@@ -1,32 +1,36 @@
-import React from "react";
-import { Image, View } from "react-native";
-import { Avatar, Paragraph, Title } from "react-native-paper";
-import { Main } from "../../components/index.js";
+import React from 'react';
+import { Image, View } from 'react-native';
+import { Avatar, Paragraph, Title } from 'react-native-paper';
+import { Main } from '../../components/index.js';
 
 const PublicProfileScreen = ({ route }) => {
   const profile = route.params.profile;
+  console.log(
+    'log 🚀 ~ file: PublicProfileScreen.js ~ line 8 ~ PublicProfileScreen ~ route.params',
+    route.params
+  );
   return (
     <Main>
-      <View style={{ width: "100%", height: "45%" }}>
+      <View style={{ width: '100%', height: '45%' }}>
         <Image
           source={{ uri: `${profile.cover}` }}
           style={{
-            width: "100%",
-            height: "100%",
-            overflow: "hidden",
-            resizeMode: "cover",
+            width: '100%',
+            height: '100%',
+            overflow: 'hidden',
+            resizeMode: 'cover',
           }}
         />
       </View>
-      <View style={{ position: "absolute", width: "100%", top: "37%" }}>
+      <View style={{ position: 'absolute', width: '100%', top: '37%' }}>
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: "space-around",
-            alignItems: "center",
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            alignItems: 'center',
           }}
         >
-          <View style={{ alignItems: "center" }}>
+          <View style={{ alignItems: 'center' }}>
             <Avatar.Image
               size={100}
               source={{
