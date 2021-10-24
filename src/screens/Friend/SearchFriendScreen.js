@@ -1,58 +1,55 @@
-import { AntDesign } from "@expo/vector-icons";
-import React, { useEffect, useState } from "react";
-import { View } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
-import ListRequest from "../../components/Friend/ListRequest.js";
-import SearchFriend from "../../components/Friend/SearchFriend.js";
-import { InputSearch, Main } from "../../components/index.js";
+import { useIsFocused } from '@react-navigation/core';
+import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
+import { Searchbar } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
+import SearchFriend from '../../components/Friend/SearchFriend.js';
+import { Main } from '../../components/index.js';
 import {
   listRequestAction,
   searchProfileAction,
-} from "../../redux/actions/friendAction.js";
+} from '../../redux/actions/friendAction.js';
+import { styles } from '../../styles/paper.js';
 
 const SearchFriendScreen = () => {
-  const [searchValue, setSearchValue] = useState("");
-  const profile = useSelector((state) => state.friend.search);
+  const isFocused = useIsFocused();
+  const [searchValue, setSearchValue] = useState('');
+  const profile = useSelector(state => state.friend.search);
+  const filter_friend = useSelector(state => state.friend.filter_friend);
+
   const [page, setPage] = useState(0);
   const dispatch = useDispatch();
+  const request = useSelector(state => state.friend.request);
+
   const handlerSearch = () => {
     dispatch(searchProfileAction(searchValue, page));
   };
-  const request = useSelector((state) => state.friend.request);
   useEffect(() => {
-    dispatch(listRequestAction(page));
-  }, [dispatch]);
+    if (isFocused) {
+      dispatch(listRequestAction(page));
+    }
+  }, [dispatch, page]);
   return (
     <Main>
-      <View style={{ position: "relative", width: "100%" }}>
-        <AntDesign
-          name="search1"
-          size={24}
-          color="#000"
-          style={{
-            position: "absolute",
-            zIndex: 2,
-            top: "25%",
-            left: "4%",
-          }}
-        />
-        <InputSearch
+      <View
+        style={{
+          position: 'relative',
+          width: '95%',
+          marginTop: 10,
+          alignSelf: 'center',
+        }}
+      >
+        <Searchbar
           placeholder="Tìm bạn bè"
-          minLength={10}
-          maxLength={10}
           value={searchValue}
-          onChangeText={(searchValue) => setSearchValue(searchValue)}
+          onChangeText={searchValue => setSearchValue(searchValue)}
           onSubmitEditing={() => handlerSearch()}
+          style={styles.search}
         />
       </View>
       <View>
         {profile.map((item, key) => (
           <SearchFriend key={key} item={item} />
-        ))}
-      </View>
-      <View>
-        {request.map((friend, key) => (
-          <ListRequest key={key} friend={friend} />
         ))}
       </View>
     </Main>

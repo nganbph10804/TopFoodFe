@@ -8,6 +8,11 @@ export const InputUpdate = styled(TextInput)`
 
 //2089dc ADD8E6
 export const styles = StyleSheet.create({
+  main: {
+    width: '100%',
+    height: '100%',
+    position: 'relative',
+  },
   card: {
     shadowColor: 'black',
     shadowOpacity: 0.26,
@@ -17,6 +22,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#fff',
     width: '90%',
+    zIndex: 1,
   },
   center: {
     justifyContent: 'center',
@@ -36,6 +42,38 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    zIndex: 999,
+    zIndex: 99999,
+  },
+  search: {
+    borderRadius: 10,
+    zIndex: 1,
+  },
+  noFriend: {
+    top: '45%',
+    alignItems: 'center',
+  },
+  textXL: {
+    fontSize: 28,
+  },
+  Item: {
+    backgroundColor: '#fff',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 2,
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingRight: 20,
+    paddingLeft: 5,
+    marginTop: 10,
+    paddingLeft: 15,
+  },
+  lastItem: {
+    right: 20,
+    position: 'absolute',
+  },
+  seeAll: {
+    position: 'absolute',
+    right: 0,
+    top: 8,
   },
 });
