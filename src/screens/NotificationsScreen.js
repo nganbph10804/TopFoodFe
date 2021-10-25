@@ -1,5 +1,5 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/core';
+import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback } from 'react';
 import { Text, View } from 'react-native';
 import { ActivityIndicator, Badge, Button, Title } from 'react-native-paper';

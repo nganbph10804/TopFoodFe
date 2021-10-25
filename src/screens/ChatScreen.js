@@ -38,7 +38,8 @@ const ChatScreen = ({ navigation, route }) => {
   useEffect(() => {
     setUser({
       _id:_id,
-      name: userName
+      name: userName,
+      avatar:'https://placeimg.com/140/140/any'
     })
     const unsubscribe = chatsRef.onSnapshot((querySnapshot) => {
       const messagesFirestore = querySnapshot
