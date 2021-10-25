@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Button, StyleSheet, FlatList } from "react-native";
+import { View, Text, Button, StyleSheet, FlatList,  LogBox } from "react-native";
 import { Searchbar } from "react-native-paper";
 import {
   Container,
@@ -13,6 +13,8 @@ import {
   MessageText,
   TextSection,
 } from "../styles/MessageStyle";
+import { useSelector } from "react-redux";
+
 
 const Messages = [
   {
@@ -31,33 +33,12 @@ const Messages = [
     messageText:
       "Hey there, this is my test for a post of my social app in React Native.",
   },
-  {
-    id: "3",
-    userName: "Ken William",
-    userImg: "https://genk.mediacdn.vn/2017/a-2-1489899621733.png",
-    messageTime: "1 hours ago",
-    messageText:
-      "Hey there, this is my test for a post of my social app in React Native.",
-  },
-  {
-    id: "4",
-    userName: "Selina Paul",
-    userImg: "https://genk.mediacdn.vn/2017/a-2-1489899621733.png",
-    messageTime: "1 day ago",
-    messageText:
-      "Hey there, this is my test for a post of my social app in React Native.",
-  },
-  {
-    id: "5",
-    userName: "Christy Alex",
-    userImg: "https://genk.mediacdn.vn/2017/a-2-1489899621733.png",
-    messageTime: "2 days ago",
-    messageText:
-      "Hey there, this is my test for a post of my social app in React Native.",
-  },
+ 
 ];
 
+
 const MessagesScreen = ({ navigation }) => {
+  const {id} = useSelector(state => state.auth.profile)
   return (
     <Container>
       <Searchbar
@@ -80,7 +61,7 @@ const MessagesScreen = ({ navigation }) => {
         renderItem={({ item }) => (
           <Card
             onPress={() =>
-              navigation.navigate("Chat", { userName: item.userName })
+              navigation.navigate("Chat", { userName: item.userName,_id:id })
             }
           >
             <UserInfo>
