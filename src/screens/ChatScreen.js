@@ -24,7 +24,7 @@ if (firebase.apps.length === 0) {
   firebase.initializeApp(firebaseConfig)
 }
 
-const db = firebase.firestore()
+const db = firebase.firestore() 
 const chatsRef = db.collection('chats')
 
 
@@ -32,14 +32,14 @@ const ChatScreen = ({ navigation, route }) => {
   const [user, setUser] = useState(null)
   const [name, setName] = useState('')
   const [messages, setMessages] = useState([]);
-  const { _id, userName } = route.params;
+  const { _id, userName,avt,uname } = route.params;
 
 
   useEffect(() => {
     setUser({
       _id:_id,
-      name: userName,
-      avatar:'https://placeimg.com/140/140/any'
+      name: uname,
+      avatar: avt,
     })
     const unsubscribe = chatsRef.onSnapshot((querySnapshot) => {
       const messagesFirestore = querySnapshot

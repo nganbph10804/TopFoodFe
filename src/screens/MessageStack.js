@@ -8,7 +8,9 @@ const Stack = createStackNavigator();
 
 const MessageStack = ({ navigation }) => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+  
+    >
       <Stack.Screen
         name="Messages"
         options={({ route }) => ({

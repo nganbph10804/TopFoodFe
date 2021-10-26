@@ -14,10 +14,12 @@ import NotificationsScreen from '../screens/NotificationsScreen';
 import SettingScreen from '../screens/SettingScreen';
 import SearchFriendScreen from '../screens/Friend/SearchFriendScreen.js';
 import { AntDesign } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
 const Nav = () => {
+  const {avatar} = useSelector(state => state.auth.profile)
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -37,6 +39,7 @@ const Nav = () => {
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
+        headerShown: route.name == 'message' ? false :true,
         tabBarActiveTintColor: 'tomato',
         tabBarInactiveTintColor: 'gray',
         headerStyle: {
@@ -61,29 +64,12 @@ const Nav = () => {
         name="message"
         component={MessageStack}
         options={{
-          headerRight: () => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  Alert.alert('create new');
-                }}
-              >
-                <Ionicons
-                  name="ios-create-outline"
-                  size={23}
-                  style={{
-                    paddingRight: 15,
-                  }}
-                />
-              </TouchableOpacity>
-            );
-          },
           headerLeft: () => {
             return (
               <Avatar.Image
                 size={34}
                 source={{
-                  uri: 'https://photo-cms-anninhthudo.zadn.vn/w600/Uploaded/2021/lcjlcanwm/2020_11_10/co-thien-lac-1-3744.jpg',
+                  uri: avatar,
                 }}
                 style={{
                   marginLeft: 10,
