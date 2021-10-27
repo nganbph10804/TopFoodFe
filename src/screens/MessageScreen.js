@@ -26,14 +26,6 @@ const Messages = [
     messageText:
       "Hey there, this is my test for a post of my social app in React Native.",
   },
-  {
-    id: "2",
-    userName: "John Doe",
-    userImg: "https://genk.mediacdn.vn/2017/a-2-1489899621733.png",
-    messageTime: "2 hours ago",
-    messageText:
-      "Hey there, this is my test for a post of my social app in React Native.",
-  },
 
 ];
 
