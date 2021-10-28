@@ -7,15 +7,16 @@ import fb from './../Firebase/config';
 
 
 
-const db = fb.firestore()
-const chatsRef = db.collection('chats')
+const db = fb.firestore();
+const chatsRef = db.collection('chats');
+const roomRef = db.collection('Rooms');
 
 
 const ChatScreen = ({ navigation, route }) => {
   const [user, setUser] = useState(null)
   const [name, setName] = useState('')
   const [messages, setMessages] = useState([]);
-  const { _id, userName,avt,uname } = route.params;
+  const { _id, userName,avt,uname,idRoom } = route.params;
 
 
   useEffect(() => {
@@ -24,7 +25,7 @@ const ChatScreen = ({ navigation, route }) => {
       name: uname,
       avatar: avt,
     })
-    const unsubscribe = chatsRef.onSnapshot((querySnapshot) => {
+    const unsubscribe = chatsRef.where("idRoom","==",idRoom).onSnapshot((querySnapshot) => {
       const messagesFirestore = querySnapshot
         .docChanges()
         .filter(({ type }) => type == 'added')
@@ -44,13 +45,6 @@ const ChatScreen = ({ navigation, route }) => {
     },
     [messages]
 )
-
-  const onSend = useCallback((messages = []) => {
-    setMessages((previousMessages) =>
-      GiftedChat.append(previousMessages, messages)
-    );
-  }, [messages]);
-
   const renderSend = (props) => {
     return (
       <Send {...props}>
@@ -88,7 +82,16 @@ const ChatScreen = ({ navigation, route }) => {
     return <FontAwesome name="angle-double-down" size={22} color="#333" />;
   };
   async function handleSend(messages) {
-    const writes = messages.map((m) => chatsRef.add(m))
+    const writes = messages.map((m) => {
+      chatsRef.add({
+        ...m,
+        "idRoom" : idRoom
+      })
+      roomRef.doc(idRoom).update({
+        "lastMessageTime" : new Date(),
+        "lastMessage": m.text
+      })
+    })
     await Promise.all(writes)
 }
 

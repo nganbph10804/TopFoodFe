@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { View, Text, StyleSheet, FlatList, LogBox, TouchableOpacity } from "react-native";
 import { Button, Paragraph, Dialog, Portal, Provider, Searchbar, TextInput } from 'react-native-paper';
 import {
@@ -15,27 +15,46 @@ import {
 } from "../styles/MessageStyle";
 import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
+import fb from './../Firebase/config';
 
-
-const Messages = [
-  {
-    id: "1",
-    userName: "Nhóm chăn rau cấp 3",
-    userImg: "https://genk.mediacdn.vn/2017/a-2-1489899621733.png",
-    messageTime: "4 mins ago",
-    messageText:
-      "Hey there, this is my test for a post of my social app in React Native.",
-  },
-
-];
-
+const db = fb.firestore()
+const RoomsRef = db.collection('Rooms')
 
 const MessagesScreen = ({ navigation }) => {
   const { id, avatar,name } = useSelector(state => state.auth.profile)
   const hideDialog = () => setVisible(false);
   const [visible, setVisible] = useState(false);
   const [cvsName, setCvsName] = useState('');
-  const [cvsId, setCvsId] = useState('')
+  const [cvsId, setCvsId] = useState('');
+  const [lstRoom, setLstRoom] = useState([]);
+
+
+  function toDateTime(secs) {
+   let hours = Number(new Date(secs * 1000).toISOString().substr(12, 1))+7;
+   let minute = new Date(secs * 1000).toISOString().substr(14, 2);
+   let day = new Date(secs * 1000).toISOString().substr(0, 10);
+    
+    return `${day} | ${hours}:${minute}`;
+}
+
+  //.orderBy('lastMessageTime')
+  useEffect(()=>{
+     const querySnapshot = RoomsRef.where("userId", "array-contains", `${id}`)
+     querySnapshot.onSnapshot(snap =>{
+       const data = [
+         ...snap.docs.map(doc=>{
+           return {...doc.data(),id:doc.id}
+         })
+       ]
+      setLstRoom(data);
+     })
+
+    return ()=> {setLstRoom([])}
+
+    
+
+  },[id])
+
   return (
     <Provider>
       <Container>
@@ -87,29 +106,30 @@ const MessagesScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <FlatList
-          data={Messages}
-          keyExtractor={(item) => item.id}
+          data={lstRoom}
+          keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <Card
               onPress={() =>
                 navigation.navigate("Chat", {
-                  userName: item.userName,
+                  userName: item.nameRoom,
                   _id: id,
                   avt: avatar,
-                  uname : name
+                  uname : name,
+                  idRoom : item.id
                 })
               }
             >
               <UserInfo>
                 <UserImgWrapper>
-                  <UserImg source={{ uri: item.userImg }} />
+                  <UserImg source={{ uri: item.imgRoom }} />
                 </UserImgWrapper>
                 <TextSection>
                   <UserInfoText>
-                    <UserName>{item.userName}</UserName>
-                    <PostTime>{item.messageTime}</PostTime>
+                    <UserName>{item.nameRoom}</UserName>
+                    <PostTime>{toDateTime(item.lastMessageTime.seconds)}</PostTime>
                   </UserInfoText>
-                  <MessageText>{item.messageText}</MessageText>
+                  <MessageText>{item.lastMessage}</MessageText>
                 </TextSection>
               </UserInfo>
             </Card>
