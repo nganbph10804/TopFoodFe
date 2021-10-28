@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import styled from 'styled-components';
+import { COLORS } from '../constants/color.const.js';
 export const InputUpdate = styled(TextInput)`
   width: 90%;
   align-self: center;
@@ -75,5 +76,30 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     top: 8,
+  },
+  imageContainer: {
+    position: 'absolute',
+    bottom: '-30%',
+    alignSelf: 'center',
+    marginBottom: 10,
+    borderWidth: 2,
+    borderRadius: 80,
+    borderColor: `${COLORS.blue[1]}`,
+  },
+  iconAvatar: {
+    position: 'absolute',
+    bottom: 10,
+    right: -18,
+    backgroundColor: '#fff',
+    borderRadius: 80,
+    alignSelf: 'center',
+  },
+  iconCover: {
+    position: 'absolute',
+    bottom: -20,
+    right: 38,
+    backgroundColor: '#fff',
+    borderRadius: 80,
+    alignSelf: 'center',
   },
 });
