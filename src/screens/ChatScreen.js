@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Bubble, GiftedChat, Send } from "react-native-gifted-chat";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
 import fb from './../Firebase/config';
+import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 
@@ -110,11 +110,3 @@ const ChatScreen = ({ navigation, route }) => {
 };
 
 export default ChatScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
