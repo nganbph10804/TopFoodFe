@@ -1,27 +1,19 @@
-import React, { useState,useEffect } from "react";
-import { View, Text, StyleSheet, FlatList, LogBox, TouchableOpacity } from "react-native";
-import { Button, Paragraph, Dialog, Portal, Provider, Searchbar, TextInput } from 'react-native-paper';
-import {
-  Container,
-  Card,
-  UserInfo,
-  UserImgWrapper,
-  UserImg,
-  UserInfoText,
-  UserName,
-  PostTime,
-  MessageText,
-  TextSection,
-} from "../styles/MessageStyle";
-import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
+import React, { useEffect, useState } from "react";
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Button, Dialog, Paragraph, Portal, Provider, Searchbar, TextInput } from 'react-native-paper';
+import { useSelector } from "react-redux";
+import {
+  Card, Container, MessageText, PostTime, TextSection, UserImg, UserImgWrapper, UserInfo, UserInfoText,
+  UserName
+} from "../styles/MessageStyle";
 import fb from './../Firebase/config';
 
 const db = fb.firestore()
 const RoomsRef = db.collection('Rooms')
 
 const MessagesScreen = ({ navigation }) => {
-  const { id, avatar,name } = useSelector(state => state.auth.profile)
+  const { id, avatar, name } = useSelector(state => state.auth.profile)
   const hideDialog = () => setVisible(false);
   const [visible, setVisible] = useState(false);
   const [cvsName, setCvsName] = useState('');
@@ -30,30 +22,24 @@ const MessagesScreen = ({ navigation }) => {
 
 
   function toDateTime(secs) {
-   let hours = Number(new Date(secs * 1000).toISOString().substr(12, 1))+7;
-   let minute = new Date(secs * 1000).toISOString().substr(14, 2);
-   let day = new Date(secs * 1000).toISOString().substr(0, 10);
-    
-    return `${day} | ${hours}:${minute}`;
-}
+     let d = new Date(secs);
+    return d.toString().substr(4,17);
+  }
 
   //.orderBy('lastMessageTime')
-  useEffect(()=>{
-     const querySnapshot = RoomsRef.where("userId", "array-contains", `${id}`)
-     querySnapshot.onSnapshot(snap =>{
-       const data = [
-         ...snap.docs.map(doc=>{
-           return {...doc.data(),id:doc.id}
-         })
-       ]
-      setLstRoom(data);
-     })
+  useEffect(() => {
+        const querySnapshot = RoomsRef.where("userId", "array-contains", `${id}`).orderBy("lastMessageTime", "desc")
+        querySnapshot.onSnapshot(snap => {
+          const data = [
+            ...snap.docs.map(doc => {
+              return { ...doc.data(), id: doc.id,timeConverter : doc.data().lastMessageTime.toDate()}})
+             ]
+          setLstRoom(data);
+        })
 
-    return ()=> {setLstRoom([])}
+        return () => { setLstRoom([]) }
 
-    
-
-  },[id])
+ }, [id])
 
   return (
     <Provider>
@@ -115,8 +101,8 @@ const MessagesScreen = ({ navigation }) => {
                   userName: item.nameRoom,
                   _id: id,
                   avt: avatar,
-                  uname : name,
-                  idRoom : item.id
+                  uname: name,
+                  idRoom: item.id
                 })
               }
             >
@@ -127,7 +113,7 @@ const MessagesScreen = ({ navigation }) => {
                 <TextSection>
                   <UserInfoText>
                     <UserName>{item.nameRoom}</UserName>
-                    <PostTime>{toDateTime(item.lastMessageTime.seconds)}</PostTime>
+                    <PostTime>{toDateTime(item.timeConverter)}</PostTime>
                   </UserInfoText>
                   <MessageText>{item.lastMessage}</MessageText>
                 </TextSection>
