@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { View, ScrollView, Text, Button, StyleSheet } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
 import { Bubble, GiftedChat, Send } from "react-native-gifted-chat";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import fb from './../Firebase/config';
 
 
@@ -16,16 +16,16 @@ const ChatScreen = ({ navigation, route }) => {
   const [user, setUser] = useState(null)
   const [name, setName] = useState('')
   const [messages, setMessages] = useState([]);
-  const { _id, userName,avt,uname,idRoom } = route.params;
+  const { _id, avt, uname, idRoom } = route.params;
 
 
   useEffect(() => {
     setUser({
-      _id:_id,
+      _id: _id,
       name: uname,
       avatar: avt,
     })
-    const unsubscribe = chatsRef.where("idRoom","==",idRoom).onSnapshot((querySnapshot) => {
+    const unsubscribe = chatsRef.where("idRoom", "==", idRoom).onSnapshot((querySnapshot) => {
       const messagesFirestore = querySnapshot
         .docChanges()
         .filter(({ type }) => type == 'added')
@@ -41,10 +41,10 @@ const ChatScreen = ({ navigation, route }) => {
 
   const appendMessages = useCallback(
     (messages) => {
-        setMessages((previousMessages) => GiftedChat.append(previousMessages, messages))
+      setMessages((previousMessages) => GiftedChat.append(previousMessages, messages))
     },
     [messages]
-)
+  )
   const renderSend = (props) => {
     return (
       <Send {...props}>
@@ -85,20 +85,20 @@ const ChatScreen = ({ navigation, route }) => {
     const writes = messages.map((m) => {
       chatsRef.add({
         ...m,
-        "idRoom" : idRoom
+        "idRoom": idRoom
       })
       roomRef.doc(idRoom).update({
-        "lastMessageTime" : new Date(),
+        "lastMessageTime": new Date(),
         "lastMessage": m.text
       })
     })
     await Promise.all(writes)
-}
+  }
 
   return (
     <GiftedChat
       messages={messages}
-      onSend={(messages)=>{handleSend(messages)}}
+      onSend={(messages) => { handleSend(messages) }}
       user={user}
       renderBubble={renderBubble}
       alwaysShowSend

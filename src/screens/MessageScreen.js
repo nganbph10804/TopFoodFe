@@ -26,7 +26,6 @@ const MessagesScreen = ({ navigation }) => {
     return d.toString().substr(4,17);
   }
 
-  //.orderBy('lastMessageTime')
   useEffect(() => {
         const querySnapshot = RoomsRef.where("userId", "array-contains", `${id}`).orderBy("lastMessageTime", "desc")
         querySnapshot.onSnapshot(snap => {
@@ -46,48 +45,42 @@ const MessagesScreen = ({ navigation }) => {
       <Container>
         <Portal>
           <Dialog visible={visible} onDismiss={hideDialog}>
-            <Dialog.Title>Create New Conversation</Dialog.Title>
-            <Dialog.Content>
-              <Paragraph>name</Paragraph>
-              <TextInput
-                value={cvsName}
-                onChangeText={setCvsName}
-                style={styles.inputt}
-              />
-              <Paragraph>ID</Paragraph>
-              <TextInput
-                value={cvsId}
-                onChangeText={setCvsId}
-                style={styles.inputt}
-              />
-            </Dialog.Content>
-            <Dialog.Actions>
-              <Button onPress={hideDialog}>Cancel</Button>
-              <Button onPress={() => { }}>OK</Button>
-            </Dialog.Actions>
+            <Dialog.Title>Tạo cuộc trò chuyện mới</Dialog.Title>
+              <Dialog.Content>
+                <Paragraph>Tìm tên bạn bè</Paragraph>
+                <TextInput
+                  value={cvsName}
+                  onChangeText={setCvsName}
+                  style={styles.inputt}
+                />
+                <Paragraph>ID</Paragraph>
+                <TextInput
+                  value={cvsId}
+                  onChangeText={setCvsId}
+                  style={styles.inputt}
+                />
+              </Dialog.Content>
+              <Dialog.Actions>
+                <Button onPress={hideDialog}>Cancel</Button>
+                <Button onPress={() => {}}>OK</Button>
+              </Dialog.Actions>
           </Dialog>
         </Portal>
+
         <View style={styles.container}>
           <Searchbar style={styles.searchBarr}
-            inputStyle={{
-              fontSize: 16,
-              paddingVertical: 5
-            }}
+            inputStyle={{ fontSize: 16,  paddingVertical: 5}}
             placeholder="Search"
           />
 
           <TouchableOpacity
             style={styles.createBtn}
-            onPress={() => {
-              setVisible(true)
-            }}
+            onPress={() => {setVisible(true)}}
           >
             <Ionicons
               name="ios-create-outline"
               size={23}
-              style={{
-                paddingRight: 15,
-              }}
+              style={styles.iconCreate}
             />
           </TouchableOpacity>
         </View>
@@ -148,5 +141,8 @@ const styles = StyleSheet.create({
   },
   inputt: {
     height: 30,
+  },
+  iconCreate:{
+    paddingRight :15
   }
 });
