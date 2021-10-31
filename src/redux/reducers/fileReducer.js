@@ -1,8 +1,9 @@
-import { FILE_DONE, FILE_ERR, FILE_REQ } from '../fileType.js';
+import { FILE_DONE, FILE_ERR, FILE_REQ, MULTI_FILE } from '../fileType.js';
 
 const initState = {
   loading: false,
-  file: [],
+  file: '',
+  files: [],
 };
 export const fileReducer = (state = initState, action) => {
   switch (action.type) {
@@ -15,11 +16,17 @@ export const fileReducer = (state = initState, action) => {
       return {
         ...state,
         loading: false,
-        file: [...state.file, action.payload],
+        file: action.payload,
       };
     case FILE_ERR:
       return {
         ...state,
+        loading: false,
+      };
+    case MULTI_FILE:
+      return {
+        ...state,
+        files: [...state.files, action.payload],
         loading: false,
       };
 

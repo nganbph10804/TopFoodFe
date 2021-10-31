@@ -6,6 +6,10 @@ export const InputUpdate = styled(TextInput)`
   width: 90%;
   align-self: center;
 `;
+export const InputLogin = styled(TextInput)`
+  width: 90%;
+  align-self: center;
+`;
 
 //2089dc ADD8E6
 export const styles = StyleSheet.create({
@@ -90,7 +94,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     right: -18,
-    backgroundColor: '#fff',
+    backgroundColor: `${COLORS.purple[4]}`,
     borderRadius: 80,
     alignSelf: 'center',
   },
@@ -98,7 +102,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     bottom: -20,
     right: 38,
-    backgroundColor: '#fff',
+    backgroundColor: `${COLORS.purple[4]}`,
     borderRadius: 80,
     alignSelf: 'center',
   },

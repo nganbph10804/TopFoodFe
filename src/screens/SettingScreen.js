@@ -3,21 +3,25 @@ import {
   Ionicons,
   MaterialCommunityIcons,
 } from '@expo/vector-icons';
-import React, { useState } from 'react';
+import { useFocusEffect } from '@react-navigation/core';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, Text, View } from 'react-native';
-import { Avatar, Subheading } from 'react-native-paper';
+import { ActivityIndicator, Avatar, Subheading } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useDispatch, useSelector } from 'react-redux';
 import { Main } from '../components/index.js';
+import { COLORS } from '../constants/color.const.js';
 import { ROLES } from '../constants/role.const.js';
-import { logoutAction } from '../redux/actions/authAction.js';
+import { getProfile, logoutAction } from '../redux/actions/authAction.js';
 import { styles } from '../styles/paper.js';
 
-const ProfileScreen = ({ navigation }) => {
+const SettingScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const profile = useSelector(state => state.auth.profile);
+  const loading = useSelector(state => state.auth.loading);
   const store = useSelector(state => state.auth.account.role);
+  const [avatar, setAvatar] = useState(profile.avatar);
   const logout = () =>
     Alert.alert('Thông báo', 'Bạn có muốn đăng xuất không?', [
       {
@@ -32,13 +36,35 @@ const ProfileScreen = ({ navigation }) => {
       },
     ]);
 
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(getProfile(profile.id));
+    }, [])
+  );
+
+  useEffect(() => {
+    dispatch(getProfile(profile.id));
+  }, [dispatch]);
+
   return (
     <Main>
+      {loading && (
+        <View style={styles.loading}>
+          <ActivityIndicator
+            animating={true}
+            color={`${COLORS.blue[1]}`}
+            size={'large'}
+          />
+        </View>
+      )}
       <View style={styles.Item}>
         <Avatar.Image
           size={60}
           source={{
-            uri: `${profile.avatar}`,
+            uri:
+              avatar === null
+                ? 'https://fakeimg.pl/350x200/?text=Hello'
+                : avatar,
           }}
           onPress={() => navigation.navigate('ProfileDetail')}
         />
@@ -191,4 +217,4 @@ const ProfileScreen = ({ navigation }) => {
   );
 };
 
-export default ProfileScreen;
+export default SettingScreen;

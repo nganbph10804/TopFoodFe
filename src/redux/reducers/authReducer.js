@@ -41,7 +41,6 @@ export const authReducer = (
         profile: action.payload.data.profile,
         token: action.payload.data.token,
       };
-
     case EDIT_PROFILE:
       return {
         ...state,

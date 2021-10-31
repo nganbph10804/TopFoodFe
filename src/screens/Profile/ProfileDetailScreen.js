@@ -1,86 +1,176 @@
-import { Entypo } from '@expo/vector-icons';
-import React, { useEffect } from 'react';
-import { Image, Text, View } from 'react-native';
-import { Subheading, Title } from 'react-native-paper';
-import { useSelector } from 'react-redux';
-import { Main } from '../../components/index.js';
+import { Ionicons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
+import React, { useEffect, useState } from 'react';
+import { Image, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Avatar,
+  Button,
+  Subheading,
+  Title,
+} from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
+import { uploadAvatar, uploadCover } from '../../redux/actions/fileAction.js';
+import { styles } from '../../styles/paper.js';
 
 const ProfileDetailScreen = ({ navigation }) => {
   const profile = useSelector(state => state.auth.profile);
-  useEffect(() => {
-    if (profile.avatar === null) {
-      return navigation.navigate('EditProfile');
+  const dispatch = useDispatch();
+  const [avatar, setAvatar] = useState(null);
+  const [cover, setCover] = useState(null);
+  const loading = useSelector(state => state.file.loading);
+
+  const handlerUploadAvatar = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    if (!result.cancelled) {
+      setAvatar(result.uri);
+      dispatch(uploadAvatar(result.uri, profile, navigation));
     }
+  };
+
+  const handlerUploadCover = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    if (!result.cancelled) {
+      setCover(result.uri);
+      dispatch(uploadCover(result.uri, profile, navigation));
+    }
+  };
+  useEffect(() => {
+    const focus = navigation.addListener('focus', () => {
+      if (profile.avatar === null) {
+        return navigation.navigate('EditProfile');
+      }
+    });
+    return focus;
+  }, [dispatch, navigation]);
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== 'web') {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!');
+        }
+      }
+    })();
   }, []);
+
   return (
-    <Main>
-      <View style={{ width: '100%', height: '45%' }}>
-        <Image
-          source={{ uri: `${profile.cover}` }}
-          style={{
-            width: '100%',
-            height: '100%',
-            overflow: 'hidden',
-            resizeMode: 'cover',
-          }}
-        />
-      </View>
-      <View style={{ position: 'absolute', width: '100%', top: '37%' }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-            alignItems: 'center',
-          }}
-        >
-          <View style={{ alignItems: 'center' }}>
+    <View style={styles.main}>
+      {loading ? (
+        <View style={styles.loading}>
+          <ActivityIndicator
+            animating={true}
+            color={`${COLORS.blue[1]}`}
+            size={'large'}
+          />
+        </View>
+      ) : (
+        <View style={{ width: '100%', height: '45%', position: 'relative' }}>
+          <View>
             <Image
+              source={{ uri: cover === null ? `${profile.cover}` : cover }}
               style={{
-                width: 100,
-                height: 100,
-                borderRadius: 10,
-                borderWidth: 2,
-                borderColor: 'white',
+                width: '100%',
+                height: '100%',
                 overflow: 'hidden',
-              }}
-              source={{
-                uri: `${profile.avatar}`,
+                resizeMode: 'cover',
               }}
             />
-            <Title style={{ fontSize: 22, fontWeight: 'bold' }}>
-              {profile.name}
-            </Title>
-            <Subheading style={{ fontSize: 18 }}>{profile.bio} </Subheading>
+            <TouchableOpacity
+              style={styles.iconCover}
+              onPress={handlerUploadCover}
+            >
+              <Ionicons
+                name="camera-outline"
+                size={24}
+                color="black"
+                style={{ padding: 5 }}
+                onPress={handlerUploadCover}
+              />
+            </TouchableOpacity>
           </View>
-          <View>
+          <View
+            style={{
+              position: 'absolute',
+              width: '100%',
+              bottom: '-40%',
+            }}
+          >
             <View
               style={{
                 flexDirection: 'row',
+                justifyContent: 'space-around',
                 alignItems: 'center',
-                borderWidth: 1,
-                borderColor: `${COLORS.blue[1]}`,
-                padding: 10,
-                borderRadius: 10,
-                marginTop: '70%',
               }}
             >
-              <Entypo name="edit" size={24} color="black" />
-              <Text
-                style={{
-                  color: `${COLORS.blue[1]}`,
-                  fontSize: 18,
-                  fontWeight: 'bold',
-                }}
-                onPress={() => navigation.navigate('EditPublic', { profile })}
-              >
-                Chỉnh sửa
-              </Text>
+              <View style={{ alignItems: 'center' }}>
+                <View>
+                  <Avatar.Image
+                    style={{
+                      borderWidth: 2,
+                      borderColor: `${COLORS.blue[1]}`,
+                      overflow: 'hidden',
+                    }}
+                    source={{
+                      uri: avatar === null ? `${profile.avatar}` : avatar,
+                    }}
+                    size={120}
+                  />
+                  <TouchableOpacity
+                    style={styles.iconAvatar}
+                    onPress={handlerUploadAvatar}
+                  >
+                    <Ionicons
+                      name="camera-outline"
+                      size={24}
+                      color="black"
+                      style={{ padding: 5 }}
+                      onPress={handlerUploadAvatar}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <Title style={{ fontSize: 22, fontWeight: 'bold' }}>
+                  {profile.name}
+                </Title>
+                <Subheading style={{ fontSize: 18 }}>{profile.bio} </Subheading>
+              </View>
+              <View>
+                <View
+                  style={{
+                    borderWidth: 1,
+                    borderColor: `${COLORS.blue[1]}`,
+                    padding: 5,
+                    borderRadius: 10,
+                    marginTop: '100%',
+                  }}
+                >
+                  <Button
+                    onPress={() =>
+                      navigation.navigate('EditPublic', { profile })
+                    }
+                  >
+                    Chỉnh sửa
+                  </Button>
+                </View>
+              </View>
             </View>
           </View>
         </View>
-      </View>
-    </Main>
+      )}
+    </View>
   );
 };
 
