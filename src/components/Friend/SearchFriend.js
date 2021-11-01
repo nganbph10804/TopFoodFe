@@ -1,10 +1,10 @@
 import React from 'react';
 import { Image, Text, View } from 'react-native';
-import { Button, Subheading } from 'react-native-paper';
+import { Button } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
 import { FRIENDS } from '../../constants/friend.const.js';
-import { sendAction } from '../../redux/actions/friendAction.js';
+import { acceptAction, sendAction } from '../../redux/actions/friendAction.js';
 import { styles } from '../../styles/paper.js';
 
 const SearchFriend = ({ item }) => {
@@ -12,7 +12,9 @@ const SearchFriend = ({ item }) => {
   const handlerSend = () => {
     dispatch(sendAction(item.phoneNumber));
   };
-
+  const accept = () => {
+    dispatch(acceptAction(item.username));
+  };
   return (
     <View>
       <View style={styles.Item}>
@@ -32,13 +34,15 @@ const SearchFriend = ({ item }) => {
         </Text>
         <View style={styles.lastItem}>
           {item.friendStatus === FRIENDS.FRIEND ? (
-            <Subheading style={{ color: `${COLORS.blue[4]}` }}>
-              BẠN BÈ
-            </Subheading>
+            <Button color={`${COLORS.blue[4]}`}>BẠN BÈ</Button>
           ) : item.friendStatus === FRIENDS.SENDING ? (
-            <Subheading style={{ color: `${COLORS.orange}` }}>
-              ĐÃ GỬI LỜI MỜI
-            </Subheading>
+            item.isPersonSending === FRIENDS.IS_PERSON ? (
+              <Button color={`${COLORS.orange}`}>ĐÃ GỬI</Button>
+            ) : (
+              <Button color={`${COLORS.blue[1]}`} onPress={() => accept()}>
+                CHẤP NHẬN
+              </Button>
+            )
           ) : (
             <Button onPress={() => handlerSend()}>Kết bạn</Button>
           )}
