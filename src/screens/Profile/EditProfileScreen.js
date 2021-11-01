@@ -30,27 +30,21 @@ import { InputUpdate, styles } from '../../styles/paper.js';
 const EditProfileScreen = ({ navigation }) => {
   const profile = useSelector(state => state.auth.profile);
   const loading = useSelector(state => state.auth.loading);
-  const [cover, setCover] = useState(profile.cover);
-  const [name, setName] = useState(profile.name);
-  const [avatar, setAvatar] = useState(profile.avatar);
-  const [bio, setBio] = useState(profile.bio);
-  const [address, setAddress] = useState(profile.address);
-  const [date, setDate] = useState(new Date());
+  const [newCover, setNewCover] = useState(profile.cover);
+  const [newName, setNewName] = useState(profile.name);
+  const [newAvatar, setNewAvatar] = useState(profile.avatar);
+  const [newBio, setNewBio] = useState(profile.bio);
+  const [newAddress, setNewAddress] = useState(profile.address);
+  const [date, setDate] = useState(new Date(profile.birthday));
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [text, setText] = useState(new Date(profile.birthday));
+  const birthday =
+    date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear();
   const dispatch = useDispatch();
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
-    let fDate =
-      currentDate.getDate() +
-      '/' +
-      (currentDate.getMonth() + 1) +
-      '/' +
-      currentDate.getFullYear();
-    setText(fDate);
   };
   const showMode = currentMode => {
     setShow(true);
@@ -61,11 +55,11 @@ const EditProfileScreen = ({ navigation }) => {
   };
   const updateHandler = () => {
     if (
-      address.length === 0 ||
-      avatar.length === 0 ||
-      bio.length === 0 ||
-      cover.length === 0 ||
-      name.length === 0
+      newCover === null ||
+      newName === null ||
+      newAvatar === null ||
+      newBio === null ||
+      newAddress === null
     ) {
       Toast.show({
         type: 'error',
@@ -76,14 +70,14 @@ const EditProfileScreen = ({ navigation }) => {
     } else {
       dispatch(
         updateProfileAction(
-          address,
-          avatar,
-          bio,
+          newAddress,
+          newAvatar,
+          newBio,
           date,
-          cover,
-          name,
-          null,
-          profile.id
+          newCover,
+          newName,
+          navigation,
+          id
         )
       );
     }
@@ -97,7 +91,7 @@ const EditProfileScreen = ({ navigation }) => {
       quality: 1,
     });
     if (!result.cancelled) {
-      setAvatar(result.uri);
+      setNewAvatar(result.uri);
       dispatch(uploadAvatar(result.uri, profile, navigation));
     }
   };
@@ -110,7 +104,7 @@ const EditProfileScreen = ({ navigation }) => {
       quality: 1,
     });
     if (!result.cancelled) {
-      setCover(result.uri);
+      setNewCover(result.uri);
       dispatch(uploadCover(result.uri, profile, navigation));
     }
   };
@@ -144,11 +138,9 @@ const EditProfileScreen = ({ navigation }) => {
             <Image
               source={{
                 uri:
-                  urlCover === null
-                    ? cover === null
-                      ? 'https://fakeimg.pl/350x200/?text=Hello'
-                      : cover
-                    : urlCover,
+                  newCover === null
+                    ? 'https://fakeimg.pl/350x200/?text=Hello'
+                    : newCover,
               }}
               style={style.image}
             />
@@ -181,11 +173,9 @@ const EditProfileScreen = ({ navigation }) => {
                 }}
                 source={{
                   uri:
-                    urlAvatar === null
-                      ? avatar === null
-                        ? 'https://fakeimg.pl/350x200/?text=Hello'
-                        : avatar
-                      : urlAvatar,
+                    newAvatar === null
+                      ? 'https://fakeimg.pl/350x200/?text=Hello'
+                      : newAvatar,
                 }}
                 size={120}
               />
@@ -210,8 +200,8 @@ const EditProfileScreen = ({ navigation }) => {
               <InputUpdate
                 mode="outlined"
                 label="Họ và tên"
-                value={name}
-                onChangeText={name => setName(name)}
+                value={newName}
+                onChangeText={newName => setNewName(newName)}
                 left={
                   <TextInput.Icon
                     name={() => (
@@ -225,8 +215,8 @@ const EditProfileScreen = ({ navigation }) => {
               <InputUpdate
                 mode="outlined"
                 label="Địa chỉ"
-                value={address}
-                onChangeText={address => setAddress(address)}
+                value={newAddress}
+                onChangeText={newAddress => setNewAddress(newAddress)}
                 left={
                   <TextInput.Icon
                     name={() => (
@@ -244,8 +234,8 @@ const EditProfileScreen = ({ navigation }) => {
               <InputUpdate
                 mode="outlined"
                 label="Giới thiệu"
-                value={bio}
-                onChangeText={bio => setBio(bio)}
+                value={newBio}
+                onChangeText={newBio => setNewBio(newBio)}
                 left={
                   <TextInput.Icon
                     name={() => (
@@ -264,7 +254,7 @@ const EditProfileScreen = ({ navigation }) => {
                 <InputUpdate
                   mode="outlined"
                   label="Ngày sinh"
-                  value={text}
+                  value={birthday}
                   disabled="true"
                   left={
                     <TextInput.Icon
@@ -305,43 +295,5 @@ const EditProfileScreen = ({ navigation }) => {
     </View>
   );
 };
-
-const style = StyleSheet.create({
-  main: {
-    flex: 1,
-  },
-  touch: {
-    backgroundColor: `${COLORS.purple[4]}`,
-    borderRadius: 80,
-    bottom: 40,
-    right: -40,
-  },
-  image: {
-    width: '100%',
-    height: 200,
-    overflow: 'hidden',
-    resizeMode: 'cover',
-  },
-  iconCover: {
-    position: 'absolute',
-    bottom: -20,
-    right: 38,
-    backgroundColor: `${COLORS.purple[4]}`,
-    borderRadius: 80,
-    alignSelf: 'center',
-  },
-  fill: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 80,
-  },
-  viewBtn: {
-    width: 150,
-    alignItems: 'center',
-    alignSelf: 'center',
-    paddingBottom: 10,
-    marginTop: 20,
-  },
-});
 
 export default EditProfileScreen;

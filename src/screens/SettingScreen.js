@@ -3,7 +3,7 @@ import {
   Ionicons,
   MaterialCommunityIcons,
 } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/core';
+import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Alert, Text, View } from 'react-native';
 import { ActivityIndicator, Avatar, Subheading } from 'react-native-paper';
@@ -21,7 +21,7 @@ const SettingScreen = ({ navigation }) => {
   const profile = useSelector(state => state.auth.profile);
   const loading = useSelector(state => state.auth.loading);
   const store = useSelector(state => state.auth.account.role);
-  const [avatar, setAvatar] = useState(profile.avatar);
+  const { avatar } = profile;
   const logout = () =>
     Alert.alert('Thông báo', 'Bạn có muốn đăng xuất không?', [
       {
@@ -64,7 +64,7 @@ const SettingScreen = ({ navigation }) => {
             uri:
               avatar === null
                 ? 'https://fakeimg.pl/350x200/?text=Hello'
-                : avatar,
+                : `${profile.avatar}`,
           }}
           onPress={() => navigation.navigate('ProfileDetail')}
         />

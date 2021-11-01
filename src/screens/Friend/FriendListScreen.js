@@ -19,7 +19,7 @@ const FriendListScreen = ({ navigation }) => {
     return focus;
   }, [dispatch, page, navigation]);
   return (
-    <View style={styles.main}>
+    <View style={{ flex: 1 }}>
       {loading ? (
         <View style={styles.loading}>
           <ActivityIndicator
@@ -29,20 +29,18 @@ const FriendListScreen = ({ navigation }) => {
           />
         </View>
       ) : (
-        <View>
-          <View>
-            {friend.length === 0 ? (
-              <View style={styles.noFriend}>
-                <Text style={styles.textXL}>Không có bạn bè.</Text>
-              </View>
-            ) : (
-              <View>
-                {friend.map((item, index) => (
-                  <FriendList key={index} item={item} navigation={navigation} />
-                ))}
-              </View>
-            )}
-          </View>
+        <View style={styles.main}>
+          {friend.length === 0 ? (
+            <View style={styles.noFriend}>
+              <Text style={styles.textXL}>Không có bạn bè</Text>
+            </View>
+          ) : (
+            <View>
+              {friend.map((item, index) => (
+                <FriendList key={index} item={item} navigation={navigation} />
+              ))}
+            </View>
+          )}
         </View>
       )}
     </View>
