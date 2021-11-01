@@ -17,6 +17,7 @@ import SearchFriendScreen from '../screens/Friend/SearchFriendScreen.js';
 import { AntDesign } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 import { ROLES } from '../constants/role.const.js';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -57,6 +58,24 @@ const Nav = () => {
           title: 'Trang chủ',
         }}
       />
+      {role === ROLES.ROLE_STORE && (
+        <Tab.Screen
+          name="SearchFriendScreen"
+          component={SearchFriendScreen}
+          options={{
+            title: 'Tìm bạn bè',
+            tabBarIcon: ({ color, size }) => {
+              return (
+                <MaterialCommunityIcons
+                  name="storefront-outline"
+                  size={size}
+                  color={color}
+                />
+              );
+            },
+          }}
+        />
+      )}
       {role === ROLES.ROLE_USER && (
         <Tab.Screen
           name="SearchFriendScreen"

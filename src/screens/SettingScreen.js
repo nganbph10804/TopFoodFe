@@ -39,7 +39,7 @@ const SettingScreen = ({ navigation }) => {
   useFocusEffect(
     useCallback(() => {
       dispatch(getProfile(profile.id));
-    }, [])
+    }, [dispatch])
   );
 
   useEffect(() => {

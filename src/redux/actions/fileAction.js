@@ -4,7 +4,12 @@ import Toast from 'react-native-toast-message';
 import { BASE_URL } from '../../constants/file.const.js';
 import { authHeader } from '../authHeader.js';
 import deviceStorage from '../deviceStorage .js';
-import { FILE_DONE, FILE_ERR, FILE_REQ, MULTI_FILE } from '../fileType.js';
+import {
+  FILE_DONE,
+  FILE_ERR,
+  FILE_REQ,
+  MULTI_FILE,
+} from '../types/fileType.js';
 
 export const uploadAvatar = (file, profile, navigation) => async dispatch => {
   dispatch({

@@ -1,6 +1,6 @@
 export const FRIENDS = {
   FRIEND: 'FRIEND',
   SENDING: 'SENDING',
-  SENDING: true,
+  IS_PERSON: true,
   ACCEPT: false,
 };

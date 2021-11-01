@@ -61,7 +61,6 @@ const Notification = () => {
             <MenuItem
               onPress={() => {
                 hideMenu();
-                accept();
               }}
             >
               Chấp nhận
@@ -69,7 +68,6 @@ const Notification = () => {
             <MenuItem
               onPress={() => {
                 hideMenu();
-                remove();
               }}
             >
               Xoá
