@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, View,LogBox } from "react-native";
+import { StyleSheet, TouchableOpacity, View,LogBox, Alert } from "react-native";
 import { Actions, Bubble, GiftedChat, Send,ActionsProps } from "react-native-gifted-chat";
 
 import fb from './../Firebase/config';
@@ -14,7 +14,7 @@ LogBox.ignoreAllLogs();
 
 const ChatScreen = ({ navigation, route }) => {
   const [user, setUser] = useState(null)
-  const [name, setName] = useState('')
+  const [img, setImg] = useState('')
   const [messages, setMessages] = useState([]);
   const { _id, avt, uname, idRoom } = route.params;
 
@@ -31,7 +31,7 @@ const ChatScreen = ({ navigation, route }) => {
         .filter(({ type }) => type == 'added')
         .map(({ doc }) => {
           const message = doc.data()
-          return { ...message, createdAt: message.createdAt.toDate() }
+          return { ...message, createdAt: message.createdAt.toDate()}
         })
         .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
       appendMessages(messagesFirestore)
@@ -87,12 +87,26 @@ const ChatScreen = ({ navigation, route }) => {
       <Actions
         {...props}
         options={{
-          ['Send Image']: handlePickImage,
+          ['Send Image']: async ()=>{
+             let result = await handlePickImage.launchImageLibraryAsync({
+               mediaTypes: handlePickImage.MediaTypeOptions.All,
+               allowsEditing: true,
+               aspect : [4, 3],
+               quality :1,
+             })
+             if(!result.cancelled){
+              const message = {
+                "image" : result.uri,
+                "messageType" :"image"
+              };
+                chatsRef.add(message);
+             }
+          },
         }}
         icon={() => (
           <Ionicons name='ios-image' size={22} color='blue' />
         )}
-        onSend={args => console.log(args)}
+        onSend={args => console.log(img)}
       />
     )
   }
@@ -103,7 +117,7 @@ const ChatScreen = ({ navigation, route }) => {
     const writes = messages.map((m) => {
       chatsRef.add({
         ...m,
-        "idRoom": idRoom
+        "idRoom": idRoom,
       })
       roomRef.doc(idRoom).update({
         "lastMessageTime": new Date(),
