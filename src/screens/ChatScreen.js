@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View,LogBox } from "react-native";
-import { Actions, Bubble, GiftedChat, Send } from "react-native-gifted-chat";
+import { Actions, Bubble, GiftedChat, Send,ActionsProps } from "react-native-gifted-chat";
 
 import fb from './../Firebase/config';
 import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-
+import * as handlePickImage from 'expo-image-picker'
 
 
 const db = fb.firestore();
@@ -36,8 +36,8 @@ const ChatScreen = ({ navigation, route }) => {
         .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
       appendMessages(messagesFirestore)
     })
-    return () => unsubscribe()
-  }, []);
+    return () => {setMessages([]); unsubscribe()}; 
+  }, []); 
 
   const appendMessages = useCallback(
     (messages) => {
@@ -81,6 +81,24 @@ const ChatScreen = ({ navigation, route }) => {
   const scrollToBottomComponent = () => {
     return <FontAwesome name="angle-double-down" size={22} color="#333" />;
   };
+
+  function renderActions(props: Readonly<ActionsProps>) {
+    return (
+      <Actions
+        {...props}
+        options={{
+          ['Send Image']: handlePickImage,
+        }}
+        icon={() => (
+          <Ionicons name='ios-image' size={22} color='blue' />
+        )}
+        onSend={args => console.log(args)}
+      />
+    )
+  }
+
+
+
   async function handleSend(messages) {
     const writes = messages.map((m) => {
       chatsRef.add({
@@ -105,11 +123,7 @@ const ChatScreen = ({ navigation, route }) => {
       renderSend={renderSend}
       scrollToBottom
       scrollToBottomComponent={scrollToBottomComponent}
-      renderActions={() => (
-       <TouchableOpacity onPress={()=>{}}>
-          <Ionicons name='home' size={22} color="#333" />
-       </TouchableOpacity>
-    )}
+      renderActions={renderActions}
     />
   );
 };
