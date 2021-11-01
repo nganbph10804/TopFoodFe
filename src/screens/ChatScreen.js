@@ -1,16 +1,16 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { Bubble, GiftedChat, Send } from "react-native-gifted-chat";
+import { StyleSheet, TouchableOpacity, View,LogBox } from "react-native";
+import { Actions, Bubble, GiftedChat, Send } from "react-native-gifted-chat";
 
 import fb from './../Firebase/config';
-import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 
 const db = fb.firestore();
 const chatsRef = db.collection('chats');
 const roomRef = db.collection('Rooms');
-
+LogBox.ignoreAllLogs();
 
 const ChatScreen = ({ navigation, route }) => {
   const [user, setUser] = useState(null)
@@ -105,6 +105,11 @@ const ChatScreen = ({ navigation, route }) => {
       renderSend={renderSend}
       scrollToBottom
       scrollToBottomComponent={scrollToBottomComponent}
+      renderActions={() => (
+       <TouchableOpacity onPress={()=>{}}>
+          <Ionicons name='home' size={22} color="#333" />
+       </TouchableOpacity>
+    )}
     />
   );
 };
