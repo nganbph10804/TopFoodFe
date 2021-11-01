@@ -49,7 +49,7 @@ export const uploadAvatar = (file, profile, navigation) => async dispatch => {
     });
     Toast.show({
       type: 'error',
-      topOffset: 40,
+      topOffset: 60,
       text1: 'Thông báo',
       text2: 'Upload thất bại',
     });
@@ -98,7 +98,7 @@ export const uploadCover = (file, profile, navigation) => async dispatch => {
     });
     Toast.show({
       type: 'error',
-      topOffset: 40,
+      topOffset: 60,
       text1: 'Thông báo',
       text2: 'Upload thất bại',
     });
@@ -133,7 +133,7 @@ const uploadProfile = async (
       navigation.navigate('SettingScreen');
       Toast.show({
         type: 'success',
-        topOffset: 40,
+        topOffset: 60,
         text1: 'Thông báo',
         text2: 'Cập nhật thành công',
       });
@@ -141,7 +141,7 @@ const uploadProfile = async (
     .catch(err => {
       Toast.show({
         type: 'error',
-        topOffset: 40,
+        topOffset: 60,
         text1: 'Thông báo',
         text2: 'Cập nhật thất bại',
       });
@@ -181,7 +181,7 @@ export const multiFileAction = file => async dispatch => {
     });
     Toast.show({
       type: 'error',
-      topOffset: 40,
+      topOffset: 60,
       text1: 'Thông báo',
       text2: 'Upload thất bại',
     });

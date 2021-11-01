@@ -35,7 +35,7 @@ export const searchProfileAction = (phone, page) => async dispatch => {
     });
     Toast.show({
       type: 'error',
-      topOffset: 40,
+      topOffset: 60,
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -65,7 +65,7 @@ export const getProfileActon = (id, navigation) => async dispatch => {
     });
     Toast.show({
       type: 'error',
-      topOffset: 40,
+      topOffset: 60,
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -94,7 +94,7 @@ export const friendListAction = page => async dispatch => {
     });
     Toast.show({
       type: 'error',
-      topOffset: 40,
+      topOffset: 60,
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -123,7 +123,7 @@ export const notificationAction = page => async dispatch => {
     });
     Toast.show({
       type: 'error',
-      topOffset: 40,
+      topOffset: 60,
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -152,7 +152,7 @@ export const listRequestAction = page => async dispatch => {
     });
     Toast.show({
       type: 'error',
-      topOffset: 40,
+      topOffset: 60,
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -185,7 +185,7 @@ export const blockFriendAction = phone => async dispatch => {
       });
       Toast.show({
         type: 'success',
-        topOffset: 40,
+        topOffset: 60,
         text1: 'Thông báo',
         text2: 'Chặn bạn thành công.',
       });
@@ -196,7 +196,7 @@ export const blockFriendAction = phone => async dispatch => {
     });
     Toast.show({
       type: 'error',
-      topOffset: 40,
+      topOffset: 60,
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -226,7 +226,7 @@ export const unfriendAction = phone => async dispatch => {
       });
       Toast.show({
         type: 'success',
-        topOffset: 40,
+        topOffset: 60,
         text1: 'Thông báo',
         text2: 'Huỷ kết bạn thành công.',
       });
@@ -237,7 +237,7 @@ export const unfriendAction = phone => async dispatch => {
     });
     Toast.show({
       type: 'error',
-      topOffset: 40,
+      topOffset: 60,
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -271,7 +271,7 @@ export const acceptAction = username => async dispatch => {
       });
       Toast.show({
         type: 'success',
-        topOffset: 40,
+        topOffset: 60,
         text1: 'Thông báo',
         text2: 'Chấp nhận kết bạn thành công.',
       });
@@ -282,7 +282,7 @@ export const acceptAction = username => async dispatch => {
     });
     Toast.show({
       type: 'error',
-      topOffset: 40,
+      topOffset: 60,
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -316,7 +316,7 @@ export const removeActon = username => async dispatch => {
       });
       Toast.show({
         type: 'success',
-        topOffset: 40,
+        topOffset: 60,
         text1: 'Thông báo',
         text2: 'Xoá thành công.',
       });
@@ -327,7 +327,7 @@ export const removeActon = username => async dispatch => {
     });
     Toast.show({
       type: 'error',
-      topOffset: 40,
+      topOffset: 60,
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -350,7 +350,7 @@ export const sendAction = phone => async dispatch => {
     setTimeout(() => {
       Toast.show({
         type: 'success',
-        topOffset: 40,
+        topOffset: 60,
         text1: 'Thông báo',
         text2: 'Gửi lời mời thành công.',
       });
@@ -364,7 +364,7 @@ export const sendAction = phone => async dispatch => {
     });
     Toast.show({
       type: 'error',
-      topOffset: 40,
+      topOffset: 60,
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -398,7 +398,7 @@ export const unblockAction = (id, page) => async dispatch => {
       });
       Toast.show({
         type: 'success',
-        topOffset: 40,
+        topOffset: 60,
         text1: 'Thông báo',
         text2: 'Bỏ chặn thành công.',
       });
@@ -409,7 +409,7 @@ export const unblockAction = (id, page) => async dispatch => {
     });
     Toast.show({
       type: 'error',
-      topOffset: 40,
+      topOffset: 60,
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -438,7 +438,7 @@ export const blockListAction = page => async dispatch => {
     });
     Toast.show({
       type: 'error',
-      topOffset: 40,
+      topOffset: 60,
       text1: 'Thông báo',
       text2: error.response.data.message,
     });

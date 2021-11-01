@@ -32,7 +32,7 @@ export const loginAction = (username, password) => async dispatch => {
       });
       Toast.show({
         type: 'success',
-        topOffset: 40,
+        topOffset: 60,
         text1: 'Thông báo',
         text2: 'Đăng nhập thành công.',
       });
@@ -43,7 +43,7 @@ export const loginAction = (username, password) => async dispatch => {
     });
     Toast.show({
       type: 'error',
-      topOffset: 40,
+      topOffset: 60,
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -80,7 +80,7 @@ export const registerAction =
         deviceStorage.saveJWT(token);
         Toast.show({
           type: 'success',
-          topOffset: 40,
+          topOffset: 60,
           text1: 'Thông báo',
           text2: 'Đăng ký tài khoản thành công.',
         });
@@ -91,7 +91,7 @@ export const registerAction =
       });
       Toast.show({
         type: 'error',
-        topOffset: 40,
+        topOffset: 60,
         text1: 'Thông báo',
         text2: error.response.data.message,
       });
@@ -110,7 +110,7 @@ export const getOtpAction = (email, navigation) => async dispatch => {
       });
       Toast.show({
         type: 'success',
-        topOffset: 40,
+        topOffset: 60,
         text1: 'Thông báo',
         text2: 'Gửi mã xác nhận thành công.',
       });
@@ -122,7 +122,7 @@ export const getOtpAction = (email, navigation) => async dispatch => {
     });
     Toast.show({
       type: 'error',
-      topOffset: 40,
+      topOffset: 60,
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -146,7 +146,7 @@ export const forgotAction =
         });
         Toast.show({
           type: 'success',
-          topOffset: 40,
+          topOffset: 60,
           text1: 'Thông báo',
           text2: 'Thành công.',
         });
@@ -158,7 +158,7 @@ export const forgotAction =
       });
       Toast.show({
         type: 'error',
-        topOffset: 40,
+        topOffset: 60,
         text1: 'Thông báo',
         text2: error.response.data.message,
       });
@@ -167,7 +167,7 @@ export const forgotAction =
 export const logoutAction = () => dispatch => {
   Toast.show({
     type: 'success',
-    topOffset: 40,
+    topOffset: 60,
     text1: 'Thông báo',
     text2: 'Đăng xuất thành công. Mời đăng nhập lại!!',
   });
@@ -205,7 +205,7 @@ export const updateProfileAction =
       });
       Toast.show({
         type: 'error',
-        topOffset: 40,
+        topOffset: 60,
         text1: 'Thông báo',
         text2: 'Cập nhật thất bại',
       });
@@ -236,7 +236,7 @@ export const changePassAction =
         });
         Toast.show({
           type: 'success',
-          topOffset: 40,
+          topOffset: 60,
           text1: 'Thông báo',
           text2: 'Đổi mật khẩu thành công.',
         });
@@ -247,7 +247,7 @@ export const changePassAction =
       });
       Toast.show({
         type: 'error',
-        topOffset: 40,
+        topOffset: 60,
         text1: 'Thông báo',
         text2: error.response.data.message,
       });
@@ -274,7 +274,7 @@ export const activeAccAction = (otp, navigation) => async dispatch => {
       });
       Toast.show({
         type: 'success',
-        topOffset: 40,
+        topOffset: 60,
         text1: 'Thông báo',
         text2: 'Kích hoạt tài khoản thành công.',
       });
@@ -287,7 +287,7 @@ export const activeAccAction = (otp, navigation) => async dispatch => {
     });
     Toast.show({
       type: 'error',
-      topOffset: 40,
+      topOffset: 60,
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -316,7 +316,7 @@ export const getProfile = id => async dispatch => {
     });
     Toast.show({
       type: 'error',
-      topOffset: 40,
+      topOffset: 60,
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
