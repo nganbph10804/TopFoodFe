@@ -1,38 +1,41 @@
 import {
-  FILE_DONE,
-  FILE_ERR,
-  FILE_REQ,
-  MULTI_FILE,
-} from '../types/fileType.js';
+  DELETE_FOOD,
+  FOOD_DETAIL,
+  FOOD_LIST,
+  STORE_FAILURE,
+  STORE_REQUEST,
+  UPDATE_FOOD,
+} from '../types/storeType.js';
 
 const initState = {
   loading: false,
-  file: '',
-  files: [],
+  food: [],
+  detail: [],
 };
-export const fileReducer = (state = initState, action) => {
+
+export const storeReducer = (state = initState, action) => {
   switch (action.type) {
-    case FILE_REQ:
+    case STORE_REQUEST:
       return {
         ...state,
         loading: true,
       };
-    case FILE_DONE:
-      return {
-        ...state,
-        loading: false,
-        file: action.payload,
-      };
-    case FILE_ERR:
+    case STORE_FAILURE:
       return {
         ...state,
         loading: false,
       };
-    case MULTI_FILE:
+    case FOOD_LIST:
       return {
         ...state,
-        files: [...state.files, action.payload],
         loading: false,
+        food: action.payload,
+      };
+    case DELETE_FOOD:
+      return {
+        ...state,
+        loading: false,
+        detail: action.payload,
       };
 
     default:
