@@ -5,10 +5,6 @@ import { Main } from '../../components/index.js';
 
 const PublicProfileScreen = ({ route }) => {
   const profile = route.params.profile;
-  console.log(
-    'log 🚀 ~ file: PublicProfileScreen.js ~ line 8 ~ PublicProfileScreen ~ route.params',
-    route.params
-  );
   return (
     <Main>
       <View style={{ width: '100%', height: '45%' }}>

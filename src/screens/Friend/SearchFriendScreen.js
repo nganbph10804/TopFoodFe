@@ -1,4 +1,4 @@
-import { useIsFocused } from '@react-navigation/core';
+import { useIsFocused } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Searchbar } from 'react-native-paper';

@@ -3,6 +3,7 @@ import { KeyboardAvoidingView, Text, View } from 'react-native';
 import { Button } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import { useDispatch } from 'react-redux';
+import { activeAccAction } from '../../redux/actions/authAction.js';
 import { InputUpdate, styles } from '../../styles/paper.js';
 
 const ActiveAccScreen = ({ navigation }) => {
