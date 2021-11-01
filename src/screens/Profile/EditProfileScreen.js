@@ -29,6 +29,7 @@ import { InputUpdate, styles } from '../../styles/paper.js';
 
 const EditProfileScreen = ({ navigation }) => {
   const profile = useSelector(state => state.auth.profile);
+
   const loading = useSelector(state => state.auth.loading);
   const [cover, setCover] = useState(profile.cover);
   const [name, setName] = useState(profile.name);
@@ -38,7 +39,13 @@ const EditProfileScreen = ({ navigation }) => {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [text, setText] = useState(new Date(profile.birthday));
+  const [text, setText] = useState(
+    new Date(profile.birthday).getDate() +
+      '/' +
+      new Date(profile.birthday).getMonth() +
+      '/' +
+      new Date(profile.birthday).getFullYear()
+  );
   const dispatch = useDispatch();
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -144,11 +151,9 @@ const EditProfileScreen = ({ navigation }) => {
             <Image
               source={{
                 uri:
-                  urlCover === null
-                    ? cover === null
-                      ? 'https://fakeimg.pl/350x200/?text=Hello'
-                      : cover
-                    : urlCover,
+                  cover === null
+                    ? 'https://fakeimg.pl/350x200/?text=Hello'
+                    : cover,
               }}
               style={style.image}
             />
@@ -181,11 +186,9 @@ const EditProfileScreen = ({ navigation }) => {
                 }}
                 source={{
                   uri:
-                    urlAvatar === null
-                      ? avatar === null
-                        ? 'https://fakeimg.pl/350x200/?text=Hello'
-                        : avatar
-                      : urlAvatar,
+                    avatar === null
+                      ? 'https://fakeimg.pl/350x200/?text=Hello'
+                      : avatar,
                 }}
                 size={120}
               />

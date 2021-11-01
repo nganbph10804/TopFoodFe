@@ -48,7 +48,13 @@ const ProfileDetailScreen = ({ navigation }) => {
   };
   useEffect(() => {
     const focus = navigation.addListener('focus', () => {
-      if (profile.avatar === null) {
+      if (
+        profile.avatar === null ||
+        profile.cover === null ||
+        profile.address === null ||
+        profile.bio === null ||
+        profile.avatar === null
+      ) {
         return navigation.navigate('EditProfile');
       }
     });
