@@ -13,5 +13,10 @@ const firebaseConfig = {
   appId: "1:142333678071:web:e267a3d5073b194753def2",
   measurementId: "G-7W5SQXFGZM"
 }
-const fb = firebase.initializeApp(firebaseConfig);
+var fb;
+if (!firebase.apps.length) {
+   fb = firebase.initializeApp(firebaseConfig);
+}else {
+   fb= firebase.app()
+}
 export default fb;
