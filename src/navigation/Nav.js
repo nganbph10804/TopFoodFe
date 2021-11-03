@@ -6,6 +6,7 @@ import { Alert } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Avatar } from 'react-native-paper';
 import EditProfileScreen from '../screens/Profile/EditProfileScreen.js';
+import FeedScreen from '../screens/FeedScreen.js';
 import EditPublicScreen from '../screens/Profile/EditPublicScreen.js';
 import ProfileDetailScreen from '../screens/Profile/ProfileDetailScreen.js';
 import PublicProfileScreen from '../screens/Profile/PublicProfileScreen.js';
@@ -15,10 +16,14 @@ import SettingScreen from '../screens/SettingScreen';
 import SearchFriendScreen from '../screens/Friend/SearchFriendScreen.js';
 import { AntDesign } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
+import { ROLES } from '../constants/role.const.js';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import StoreNavigation from './StoreNavigation.js';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
 const Nav = () => {
+  const role = useSelector(state => state.auth.account.role);
   const {avatar} = useSelector(state => state.auth.profile)
   return (
     <Tab.Navigator
@@ -26,7 +31,7 @@ const Nav = () => {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          if (route.name === 'Home') {
+          if (route.name === 'FeedScreen') {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'notification') {
             iconName = focused
@@ -49,21 +54,64 @@ const Nav = () => {
         headerTitleAlign: 'center',
       })}
     >
-      {/* <Tab.Screen name="Home" component={FeedScreen} /> */}
       <Tab.Screen
-        name="SearchFriendScreen"
-        component={SearchFriendScreen}
+        name="FeedScreen"
+        component={FeedScreen}
         options={{
-          title: 'Tìm bạn bè',
-          tabBarIcon: ({ color, size }) => {
-            return <AntDesign name="search1" size={size} color={color} />;
-          },
+          title: 'Trang chủ',
         }}
       />
+      {role === ROLES.ROLE_STORE && (
+        <Tab.Screen
+          name="Store"
+          component={StoreNavigation}
+          options={{
+            headerShown: false,
+            tabBarIcon: ({ color, size }) => {
+              return (
+                <MaterialCommunityIcons
+                  name="storefront-outline"
+                  size={size}
+                  color={color}
+                />
+              );
+            },
+          }}
+        />
+      )}
+      {role === ROLES.ROLE_USER && (
+        <Tab.Screen
+          name="SearchFriendScreen"
+          component={SearchFriendScreen}
+          options={{
+            title: 'Tìm bạn bè',
+            tabBarIcon: ({ color, size }) => {
+              return <AntDesign name="search1" size={size} color={color} />;
+            },
+          }}
+        />
+      )}
       <Tab.Screen
         name="message"
         component={MessageStack}
         options={{
+          headerRight: () => {
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  Alert.alert('create new');
+                }}
+              >
+                <Ionicons
+                  name="ios-create-outline"
+                  size={23}
+                  style={{
+                    paddingRight: 15,
+                  }}
+                />
+              </TouchableOpacity>
+            );
+          },
           headerLeft: () => {
             return (
               <Avatar.Image
@@ -100,7 +148,7 @@ const Nav = () => {
             }}
           >
             <HomeStack.Screen
-              name="Setting"
+              name="SettingScreen"
               component={SettingScreen}
               options={{
                 headerShown: false,

@@ -2,38 +2,34 @@ import React, { useState } from 'react';
 import { KeyboardAvoidingView, View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
-import { InputUpdate, styles } from '../../styles/paper.js';
-import { updateProfileAction } from '../../redux/actions/authAction.js';
 import { COLORS } from '../../constants/color.const.js';
+import { updateProfileAction } from '../../redux/actions/authAction.js';
+import { InputUpdate, styles } from '../../styles/paper.js';
 
 const EditPublicScreen = ({ route, navigation }) => {
-  const [cover, setCover] = useState(route.params.profile.cover);
   const [name, setName] = useState(route.params.profile.name);
-  const [avatar, setAvatar] = useState(route.params.profile.avatar);
   const [bio, setBio] = useState(route.params.profile.bio);
-
   const dispatch = useDispatch();
   const handlerUpdate = () => {
     dispatch(
       updateProfileAction(
         route.params.profile.address,
-        avatar,
+        route.params.profile.avatar,
         bio,
         route.params.profile.birthday,
-        cover,
+        route.params.profile.cover,
         name,
         navigation,
         route.params.profile.id
       )
     );
   };
-
   return (
     <KeyboardAvoidingView style={{ flex: 1 }}>
       <View
         style={{
           flex: 1,
-          backgroundColor: '#ADD8E6',
+          backgroundColor: `${COLORS.blue[2]}`,
           alignItems: 'center',
           justifyContent: 'center',
         }}
@@ -53,22 +49,6 @@ const EditPublicScreen = ({ route, navigation }) => {
               mode="outlined"
               value={bio}
               onChangeText={bio => setBio(bio)}
-            />
-          </View>
-          <View style={{ marginBottom: 20 }}>
-            <InputUpdate
-              label="Ảnh bìa"
-              mode="outlined"
-              value={cover}
-              onChangeText={cover => setCover(cover)}
-            />
-          </View>
-          <View style={{ marginBottom: 20 }}>
-            <InputUpdate
-              label="Avatar"
-              mode="outlined"
-              value={avatar}
-              onChangeText={avatar => setAvatar(avatar)}
             />
           </View>
           <View

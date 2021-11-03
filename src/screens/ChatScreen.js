@@ -124,7 +124,6 @@ const ChatScreen = ({ navigation, route }) => {
               quality: 1,
             })
             const path = await uploadFile(result.uri);
-            console.log(path)
             const message = {
               "_id": (Math.random() + 1).toString(36).substring(2),
               "image": path,
@@ -178,7 +177,6 @@ const ChatScreen = ({ navigation, route }) => {
   }
 
   const onLongPress = (context, message) => {
-    console.log(context, message);
     const options = ['Coppy', 'Delete Message', 'Cancel'];
     const cancelButtonIndex = options.length - 1;
     context.actionSheet().showActionSheetWithOptions({
