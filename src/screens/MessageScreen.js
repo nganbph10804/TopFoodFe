@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Button, Dialog, Paragraph, Portal, Provider, Searchbar, TextInput } from 'react-native-paper';
+import Toast from "react-native-toast-message";
 import { useSelector } from "react-redux";
 import {
   Card, Container, MessageText, PostTime, TextSection, UserImg, UserImgWrapper, UserInfo, UserInfoText,
@@ -11,6 +12,7 @@ import fb from './../Firebase/config';
 
 const db = fb.firestore()
 const RoomsRef = db.collection('Rooms')
+const UserRef =db.collection('users')
 
 const MessagesScreen = ({ navigation }) => {
   const { id, avatar, name } = useSelector(state => state.auth.profile)
@@ -19,11 +21,37 @@ const MessagesScreen = ({ navigation }) => {
   const [cvsName, setCvsName] = useState('');
   const [cvsId, setCvsId] = useState('');
   const [lstRoom, setLstRoom] = useState([]);
+  const [lstUser, setLstUser] = useState([]);
+  
 
 
   function toDateTime(secs) {
      let d = new Date(secs);
     return d.toString().substr(4,17);
+  }
+
+  const onCreateConverSation = (targetId,targetName,targetAvatar) =>{
+        try {
+          const conversation ={
+            nameRoom : `${name} và ${targetName}`,
+            userId : [`${targetId}`,`${id}`],
+            imgRoom : targetAvatar,
+            lastMessage : `${name} đã tạo nhóm!`,
+            lastMessageTime : new Date()
+        };
+          RoomsRef.add(conversation);
+          hideDialog()
+
+         Toast.show({
+          type: 'success',
+          topOffset: 40,
+          text1: 'Thông báo',
+          text2: 'Tạo cuộc trò chuyện thành công!',
+        });
+        
+        } catch (error) {
+          console.log(error)
+        }
   }
 
   useEffect(() => {
@@ -35,6 +63,18 @@ const MessagesScreen = ({ navigation }) => {
              ]
           setLstRoom(data);
         })
+
+        const querySnapshotUser = UserRef.where("_id","!=",id)
+        querySnapshotUser.get().then(
+          snap =>{
+           const dataUser = [
+             ...snap.docs.map(doc => {
+               return {...doc.data(), id : doc.id}
+             })
+           ]
+           setLstUser(dataUser)
+          }
+        )
 
         return () => { setLstRoom([]) }
 
@@ -53,12 +93,29 @@ const MessagesScreen = ({ navigation }) => {
                   onChangeText={setCvsName}
                   style={styles.inputt}
                 />
-                <Paragraph>ID</Paragraph>
-                <TextInput
-                  value={cvsId}
-                  onChangeText={setCvsId}
-                  style={styles.inputt}
+                <FlatList 
+                  data={lstUser}
+                  keyExtractor={(item)=>item.id.toString()}
+                  renderItem={({item}) => (
+                    <Card
+                      onPress={()=>{
+                          onCreateConverSation(item._id, item.name, item.avatar)
+                      }}
+                      >
+                        <UserInfo>
+                        <UserImgWrapper>
+                          <UserImg source={{ uri: item.avatar }} />
+                        </UserImgWrapper>
+                        <TextSection>
+                          <UserInfoText>
+                            <UserName>{item.name}</UserName>
+                          </UserInfoText>
+                        </TextSection>
+                      </UserInfo>
+                    </Card>
+                  )}
                 />
+
               </Dialog.Content>
               <Dialog.Actions>
                 <Button onPress={hideDialog}>Cancel</Button>
