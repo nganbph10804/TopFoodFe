@@ -24,6 +24,7 @@ const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
 const Nav = () => {
   const role = useSelector(state => state.auth.account.role);
+  const {avatar} = useSelector(state => state.auth.profile)
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -43,6 +44,7 @@ const Nav = () => {
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
+        headerShown: route.name == 'message' ? false :true,
         tabBarActiveTintColor: 'tomato',
         tabBarInactiveTintColor: 'gray',
         headerStyle: {
@@ -115,7 +117,7 @@ const Nav = () => {
               <Avatar.Image
                 size={34}
                 source={{
-                  uri: 'https://photo-cms-anninhthudo.zadn.vn/w600/Uploaded/2021/lcjlcanwm/2020_11_10/co-thien-lac-1-3744.jpg',
+                  uri: avatar,
                 }}
                 style={{
                   marginLeft: 10,
