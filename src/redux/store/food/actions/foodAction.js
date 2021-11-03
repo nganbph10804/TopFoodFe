@@ -1,17 +1,18 @@
 import axios from 'axios';
-import { authHeader } from '../../authHeader.js';
+import Toast from 'react-native-toast-message';
+import { authHeader } from '../../../authHeader.js';
 import {
   DELETE_FOOD,
   FOOD_DETAIL,
+  FOOD_FAILURE,
   FOOD_LIST,
-  STORE_FAILURE,
-  STORE_REQUEST,
+  FOOD_REQUEST,
   UPDATE_FOOD,
-} from '../types/storeType.js';
+} from '../types/foodType.js';
 
 export const foodListAction = () => async dispatch => {
   dispatch({
-    type: STORE_REQUEST,
+    type: FOOD_REQUEST,
   });
   try {
     const { data } = await axios.get(
@@ -25,10 +26,10 @@ export const foodListAction = () => async dispatch => {
         type: FOOD_LIST,
         payload: data.data,
       });
-    }, 1000);
+    }, 500);
   } catch (error) {
     dispatch({
-      type: STORE_FAILURE,
+      type: FOOD_FAILURE,
     });
     Toast.show({
       type: 'error',
@@ -40,7 +41,7 @@ export const foodListAction = () => async dispatch => {
 };
 export const foodDetailAction = id => async dispatch => {
   dispatch({
-    type: STORE_REQUEST,
+    type: FOOD_REQUEST,
   });
   try {
     const { data } = await axios.get(
@@ -63,7 +64,7 @@ export const foodDetailAction = id => async dispatch => {
     }, 1000);
   } catch (error) {
     dispatch({
-      type: STORE_FAILURE,
+      type: FOOD_FAILURE,
     });
     Toast.show({
       type: 'error',
@@ -75,9 +76,9 @@ export const foodDetailAction = id => async dispatch => {
 };
 
 export const createFoodAction =
-  (content, files, id, name, price, tagId) => async dispatch => {
+  (content, files, name, price, tagId, navigation) => async dispatch => {
     dispatch({
-      type: STORE_REQUEST,
+      type: FOOD_REQUEST,
     });
     try {
       await axios.post(
@@ -85,7 +86,6 @@ export const createFoodAction =
         {
           content: content,
           files: files,
-          id: id,
           name: name,
           price: price,
           tagId: tagId,
@@ -101,10 +101,14 @@ export const createFoodAction =
           text1: 'Thông báo',
           text2: 'Tạo món ăn thành công',
         });
+        if (navigation) {
+          navigation.navigate('FoodMain');
+        }
       }, 1000);
     } catch (error) {
+      console.log('log 🚀 ~ file: foodAction.js ~ line 109 ~ error', error);
       dispatch({
-        type: STORE_FAILURE,
+        type: FOOD_FAILURE,
       });
       Toast.show({
         type: 'error',
@@ -117,7 +121,7 @@ export const createFoodAction =
 export const updateFoodAction =
   (content, files, id, name, price, tagId) => async dispatch => {
     dispatch({
-      type: STORE_REQUEST,
+      type: FOOD_REQUEST,
     });
     try {
       const { data } = await axios.put(
@@ -148,7 +152,7 @@ export const updateFoodAction =
       }, 1000);
     } catch (error) {
       dispatch({
-        type: STORE_FAILURE,
+        type: FOOD_FAILURE,
       });
       Toast.show({
         type: 'error',
@@ -160,7 +164,7 @@ export const updateFoodAction =
   };
 export const deleteFoodAction = id => async dispatch => {
   dispatch({
-    type: STORE_REQUEST,
+    type: FOOD_REQUEST,
   });
   try {
     await axios.delete(
@@ -183,7 +187,7 @@ export const deleteFoodAction = id => async dispatch => {
     }, 1000);
   } catch (error) {
     dispatch({
-      type: STORE_FAILURE,
+      type: FOOD_FAILURE,
     });
     Toast.show({
       type: 'error',

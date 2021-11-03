@@ -1,4 +1,4 @@
-import { STORE_FAILURE, STORE_REQUEST, TAG_LIST } from '../types/storeType.js';
+import { TAG_FAILURE, TAG_LIST, TAG_REQUEST } from '../type/tagType.js';
 
 const initState = {
   loading: false,
@@ -6,7 +6,7 @@ const initState = {
 };
 export const tagReducer = (state = initState, action) => {
   switch (action.type) {
-    case STORE_REQUEST:
+    case TAG_REQUEST:
       return {
         ...state,
         loading: true,
@@ -17,7 +17,7 @@ export const tagReducer = (state = initState, action) => {
         loading: false,
         tag: action.payload,
       };
-    case STORE_FAILURE:
+    case TAG_FAILURE:
       return {
         ...state,
         loading: false,

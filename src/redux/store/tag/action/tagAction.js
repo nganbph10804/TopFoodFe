@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { authHeader } from '../../authHeader.js';
-import { STORE_FAILURE, STORE_REQUEST, TAG_LIST } from '../types/storeType.js';
+import { authHeader } from '../../../authHeader.js';
+import { TAG_FAILURE, TAG_LIST, TAG_REQUEST } from '../type/tagType.js';
 
 export const tagListAction = () => async dispatch => {
   dispatch({
-    type: STORE_REQUEST,
+    type: TAG_REQUEST,
   });
   try {
     const { data } = await axios.get(
@@ -19,7 +19,7 @@ export const tagListAction = () => async dispatch => {
     });
   } catch (error) {
     dispatch({
-      type: STORE_FAILURE,
+      type: TAG_FAILURE,
     });
     Toast.show({
       type: 'error',

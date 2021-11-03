@@ -1,19 +1,16 @@
-import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
-
-import MessageScreen from "./MessageScreen";
-import ChatScreen from "./ChatScreen";
+import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
+import ChatScreen from './ChatScreen';
+import MessageScreen from './MessageScreen';
 
 const Stack = createStackNavigator();
 
-const MessageStack = ({ navigation }) => {
+const MessageStack = () => {
   return (
-    <Stack.Navigator
-  
-    >
+    <Stack.Navigator>
       <Stack.Screen
         name="Messages"
-        options={({ route }) => ({
+        options={() => ({
           headerShown: false,
         })}
         component={MessageScreen}

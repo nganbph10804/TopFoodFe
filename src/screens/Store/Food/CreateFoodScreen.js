@@ -7,18 +7,29 @@ import {
 import { useFocusEffect } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Image, Picker, ScrollView, View } from 'react-native';
-import { Button, Subheading, TextInput } from 'react-native-paper';
+import { Picker, ScrollView, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Button,
+  Subheading,
+  TextInput,
+} from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../../constants/color.const.js';
 import { multiFileAction } from '../../../redux/actions/fileAction.js';
-import { tagListAction } from '../../../redux/store/actions/tagAction.js';
+import { createFoodAction } from '../../../redux/store/food/actions/foodAction.js';
+import { tagListAction } from '../../../redux/store/tag/action/tagAction.js';
 import { InputUpdate, styles } from '../../../styles/paper.js';
 import { styled } from '../../../styles/store.js';
 
-const CreateFoodScreen = () => {
+const CreateFoodScreen = ({ navigation }) => {
   const { tag } = useSelector(state => state.tag);
   const file = useSelector(state => state.file.files);
+  const loading = useSelector(state => state.tag.loading);
+  const [content, setContent] = useState('');
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
+
   const [tagList, setTagList] = useState();
   const dispatch = useDispatch();
 
@@ -32,6 +43,10 @@ const CreateFoodScreen = () => {
     if (!result.cancelled) {
       dispatch(multiFileAction(result.uri));
     }
+  };
+
+  const handlerCreate = () => {
+    dispatch(createFoodAction(content, file, name, price, tagList, navigation));
   };
 
   useFocusEffect(
@@ -83,14 +98,23 @@ const CreateFoodScreen = () => {
                 Upload
               </Button>
             </View>
-            <View style={{ flexDirection: 'row' }}>
-              {file.map((i, index) => (
+            <View style={{ flexDirection: 'row', paddingTop: 10 }}>
+              {loading && (
+                <View style={{ zIndex: 10 }}>
+                  <ActivityIndicator
+                    animating={true}
+                    color={`${COLORS.blue[1]}`}
+                    size={'large'}
+                  />
+                </View>
+              )}
+              {/* {file.map((i, index) => (
                 <Image
                   key={index}
                   source={{ uri: i }}
                   style={{ width: 70, height: 70, margin: 5 }}
                 />
-              ))}
+              ))} */}
             </View>
           </View>
           <View style={{ paddingHorizontal: 20, paddingBottom: 15 }}>
@@ -121,8 +145,8 @@ const CreateFoodScreen = () => {
             <InputUpdate
               mode="outlined"
               label="Tên món ăn"
-              // value={newName}
-              // onChangeText={newName => setNewName(newName)}
+              value={name}
+              onChangeText={name => setName(name)}
               left={
                 <TextInput.Icon
                   name={() => (
@@ -136,8 +160,8 @@ const CreateFoodScreen = () => {
             <InputUpdate
               mode="outlined"
               label="Giá tiền"
-              // value={newAddress}
-              // onChangeText={newAddress => setNewAddress(newAddress)}
+              value={price}
+              onChangeText={price => setPrice(price)}
               left={
                 <TextInput.Icon
                   name={() => (
@@ -151,8 +175,8 @@ const CreateFoodScreen = () => {
             <InputUpdate
               mode="outlined"
               label="Mô tả"
-              // value={newBio}
-              // onChangeText={newBio => setNewBio(newBio)}
+              value={content}
+              onChangeText={content => setContent(content)}
               multiline={true}
               numberOfLines={5}
               left={
@@ -172,7 +196,7 @@ const CreateFoodScreen = () => {
             <Button
               mode="contained"
               color={COLORS.blue[1]}
-              onPress={() => updateHandler()}
+              onPress={handlerCreate}
             >
               Tạo món ăn
             </Button>
