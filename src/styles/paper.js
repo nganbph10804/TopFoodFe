@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { Button, TextInput } from 'react-native-paper';
 import styled from 'styled-components';
 import { COLORS } from '../constants/color.const.js';
 export const InputUpdate = styled(TextInput)`

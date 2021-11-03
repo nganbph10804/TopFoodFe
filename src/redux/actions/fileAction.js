@@ -135,13 +135,15 @@ const uploadProfile = async (
       }
     )
     .then(resp => {
-      navigation.navigate('SettingScreen');
       Toast.show({
         type: 'success',
         topOffset: 60,
         text1: 'Thông báo',
         text2: 'Cập nhật thành công',
       });
+      if (navigation) {
+        navigation.navigate('SettingScreen');
+      }
     })
     .catch(err => {
       Toast.show({
@@ -176,10 +178,13 @@ export const multiFileAction = file => async dispatch => {
         },
       }
     );
-    dispatch({
-      type: MULTI_FILE,
-      payload: data.data,
-    });
+    const url = BASE_URL + data.data.map(i => i.path);
+    setTimeout(() => {
+      dispatch({
+        type: MULTI_FILE,
+        payload: url,
+      });
+    }, 500);
   } catch (error) {
     dispatch({
       type: FILE_ERR,

@@ -18,6 +18,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 import { ROLES } from '../constants/role.const.js';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import StoreNavigation from './StoreNavigation.js';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -60,10 +61,10 @@ const Nav = () => {
       />
       {role === ROLES.ROLE_STORE && (
         <Tab.Screen
-          name="SearchFriendScreen"
-          component={SearchFriendScreen}
+          name="Store"
+          component={StoreNavigation}
           options={{
-            title: 'Tìm bạn bè',
+            headerShown: false,
             tabBarIcon: ({ color, size }) => {
               return (
                 <MaterialCommunityIcons

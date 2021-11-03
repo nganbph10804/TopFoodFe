@@ -92,7 +92,7 @@ const EditProfileScreen = ({ navigation }) => {
     });
     if (!result.cancelled) {
       setNewAvatar(result.uri);
-      dispatch(uploadAvatar(result.uri, profile, navigation));
+      dispatch(uploadAvatar(result.uri, profile, null));
     }
   };
 
@@ -105,7 +105,7 @@ const EditProfileScreen = ({ navigation }) => {
     });
     if (!result.cancelled) {
       setNewCover(result.uri);
-      dispatch(uploadCover(result.uri, profile, navigation));
+      dispatch(uploadCover(result.uri, profile, null));
     }
   };
 
