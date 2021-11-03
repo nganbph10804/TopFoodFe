@@ -30,7 +30,7 @@ const ProfileDetailScreen = ({ navigation }) => {
     });
     if (!result.cancelled) {
       setAvatar(result.uri);
-      dispatch(uploadAvatar(result.uri, profile, navigation));
+      dispatch(uploadAvatar(result.uri, profile, null));
     }
   };
 
@@ -43,7 +43,7 @@ const ProfileDetailScreen = ({ navigation }) => {
     });
     if (!result.cancelled) {
       setCover(result.uri);
-      dispatch(uploadCover(result.uri, profile, navigation));
+      dispatch(uploadCover(result.uri, profile, null));
     }
   };
   useEffect(() => {
