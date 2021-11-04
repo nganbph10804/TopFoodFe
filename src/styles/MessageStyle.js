@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.View`
   flex: 1;
-  padding-left: 20px;
+  padding-left: 15px;
   padding-right: 20px;
   align-items: center;
   background-color: #ffffff;
@@ -18,8 +18,8 @@ export const UserInfo = styled.View`
 `;
 
 export const UserImgWrapper = styled.View`
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding-top: 10px;
+  padding-bottom: 5px;
 `;
 
 export const UserImg = styled.Image`
@@ -48,10 +48,11 @@ export const UserInfoText = styled.View`
 export const UserName = styled.Text`
   font-size: 14px;
   font-weight: bold;
+  width : 170px
 `;
 
 export const PostTime = styled.Text`
-  font-size: 12px;
+  font-size: 11px;
   color: #666;
 `;
 
