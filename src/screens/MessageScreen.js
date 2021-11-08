@@ -1,9 +1,10 @@
-import { Entypo, Ionicons } from "@expo/vector-icons";
+import { Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
-import { Button, Checkbox, Dialog, Paragraph, Portal, Provider, Searchbar, TextInput } from 'react-native-paper';
+import { Alert, FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Button, Dialog, Paragraph, Portal, Provider, Searchbar } from 'react-native-paper';
 import Toast from "react-native-toast-message";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { friendListAction } from "../redux/actions/friendAction";
 import {
   Card, Container, MessageText, PostTime, TextSection, UserImg, UserImgWrapper, UserInfo, UserInfoText,
   UserName
@@ -13,14 +14,17 @@ import fb from './../Firebase/config';
 const db = fb.firestore()
 const RoomsRef = db.collection('Rooms')
 const UserRef = db.collection('users')
+const ChatRef = db.collection('chats')
 
 const MessagesScreen = ({ navigation }) => {
-  const { id, avatar, name } = useSelector(state => state.auth.profile)
-  const hideDialog = () => setVisible(false);
+  const { id, avatar, name } = useSelector(state => state.auth.profile);
+  const { friend } = useSelector(state => state.friend);
+  const hideDialog = () => setVisible(false)
   const [visible, setVisible] = useState(false);
-  const [cvsName, setCvsName] = useState('');
   const [lstRoom, setLstRoom] = useState([]);
   const [lstUser, setLstUser] = useState([]);
+  const [lstSuggest, setLstSuggest] = useState([]);
+  const dispatch = useDispatch();
 
   function toDateTime(secs) {
     let d = new Date(secs);
@@ -67,14 +71,52 @@ const MessagesScreen = ({ navigation }) => {
         type: 'error',
         topOffset: 40,
         text1: 'Thông báo',
-        text2: error,
+        text2: error.response.data.message,
       });
     }
   }
 
 
-  const onDeleteConversation = () => {
-      
+  const onDeleteConversation = (uid) => {
+    Alert.alert(
+      "Thông báo",
+      "Bạn có muốn xóa cuộc trò chuyện này?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => { },
+          style: "cancel"
+        },
+        {
+          text: "OK", onPress: () => {
+            try {
+              RoomsRef.doc(uid).delete().then(() => {
+
+                const chatDeleteQuery = ChatRef.where('idRoom', '==', uid);
+                chatDeleteQuery.get().then(function (querySnapshot) {
+                  querySnapshot.forEach(function (doc) {
+                    doc.ref.delete();
+                  });
+                });
+                Toast.show({
+                  type: 'success',
+                  topOffset: 40,
+                  text1: 'Thông báo',
+                  text2: "Đã xóa cuộc trò chuyện",
+                })
+              })
+            } catch (error) {
+              Toast.show({
+                type: 'error',
+                topOffset: 40,
+                text1: 'Thông báo',
+                text2: error.response.data.message,
+              })
+            }
+          }
+        }
+      ]
+    );
   }
 
   useEffect(() => {
@@ -103,61 +145,101 @@ const MessagesScreen = ({ navigation }) => {
             "avatar": avatar
           })
         } else {
+          if(avatar == "" || avatar == null) {
+            UserRef.add({
+              "_id": id,
+              "name": name,
+              "avatar": "https://us.123rf.com/450wm/afe207/afe2071602/afe207160200158/52329668-photo-de-profil-d-avatar-masculin-ombre-l%C3%A9g%C3%A8re-de-silhouette.jpg?ver=6"
+            })
+          }else{
           UserRef.add({
             "_id": id,
-            "name": name,
+            "name": name, 
             "avatar": avatar
           })
         }
+        }
+
+
+        dispatch(friendListAction(0))
         const dataFilter = dataUser.filter(item => item._id !== id);
-        setLstUser(dataFilter)
+        setLstSuggest(dataFilter)
+        setLstUser(friend)
+       
       }
+
     )
     return () => { setLstRoom([]); setLstUser([]) }
 
-  }, [])
+  }, [dispatch])
 
   return (
     <Provider>
       <Container>
         <Portal>
-          <Dialog visible={visible} onDismiss={hideDialog}>
+          <Dialog style={{ marginTop: 10 }} visible={visible} onDismiss={hideDialog}>
             <Dialog.Title>Tạo cuộc trò chuyện mới</Dialog.Title>
             <Dialog.Content>
-              <Paragraph>Nhập tên cuộc trò chuyện</Paragraph>
-              <TextInput
-                value={cvsName}
-                onChangeText={setCvsName}
-                style={styles.inputt}
-              />
-              <FlatList
-                data={lstUser}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => (
-                  <Card
-                    onPress={() => {
-                      onCreateConverSation(item._id, item.name, item.avatar)
-                    }}
-                  >
-                    <UserInfo>
-                      <UserImgWrapper>
-                        <UserImg source={{ uri: item.avatar }} />
-                      </UserImgWrapper>
-                      <TextSection>
-                        <UserInfoText>
-                          <UserName>{item.name}</UserName>
-                        </UserInfoText>
-                      </TextSection>
-                    </UserInfo>
+              <Paragraph>Tạo nhóm mới</Paragraph>
+              <TouchableOpacity onPress={() => { }}>
+                <FontAwesome name='group' size={23} color='blue' style={styles.createGroup} />
+              </TouchableOpacity>
 
-                  </Card>
-                )}
-              />
-
+              {lstUser.length !== 0 ? (
+                <>
+                  <Paragraph>Bạn bè</Paragraph>
+                  <FlatList
+                    style={{ height: 210 }}
+                    data={lstUser}
+                    keyExtractor={(item) => item.accountId.toString()}
+                    renderItem={({ item }) => (
+                      <Card
+                        onPress={() => {
+                          onCreateConverSation(item.accountId, item.profile.name, item.profile.avatar)
+                        }}
+                      >
+                        <UserInfo>
+                          <UserImgWrapper>
+                            <UserImg source={{ uri: item.profile.avatar }} />
+                          </UserImgWrapper>
+                          <TextSection>
+                            <UserInfoText>
+                              <UserName>{item.profile.name}</UserName>
+                            </UserInfoText>
+                          </TextSection>
+                        </UserInfo>
+                      </Card>
+                    )}
+                  />
+                </>)
+                : (<></>)}
+                  
+                <Paragraph>Những người bạn có thể biết</Paragraph>
+                  <FlatList
+                    style={{ height: 200 }}
+                    data={lstSuggest}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={({ item }) => (
+                      <Card
+                        onPress={() => {
+                          onCreateConverSation(item._id, item.name, item.avatar)
+                        }} >
+                        <UserInfo>
+                          <UserImgWrapper>
+                            <UserImg source={{ uri: item.avatar }} />
+                          </UserImgWrapper>
+                          <TextSection>
+                            <UserInfoText>
+                              <UserName>{item.name}</UserName>
+                            </UserInfoText>
+                          </TextSection>
+                        </UserInfo>
+                      </Card>
+                    )}
+                  />
             </Dialog.Content>
             <Dialog.Actions>
-              <Button onPress={hideDialog}>Cancel</Button>
-              <Button onPress={() => { }}>OK</Button>
+              <Button onPress={hideDialog}>Hủy bỏ</Button>
             </Dialog.Actions>
           </Dialog>
         </Portal>
@@ -205,7 +287,7 @@ const MessagesScreen = ({ navigation }) => {
                   </UserInfoText>
                   <MessageText>{item.lastMessage}</MessageText>
                 </TextSection>
-                <TouchableOpacity onPress={() => {   onDeleteConversation(item.id) }}>
+                <TouchableOpacity onPress={() => { onDeleteConversation(item.id) }}>
                   <Entypo name="dots-three-vertical" style={{ marginTop: 30 }} size={20} />
                 </TouchableOpacity>
               </UserInfo>
@@ -242,5 +324,15 @@ const styles = StyleSheet.create({
   },
   iconCreate: {
     paddingRight: 15
-  }
+  },
+  createGroup: {
+    marginVertical: 10,
+  },
+  noFriend: {
+    bottom: '10%',
+    alignItems: 'center',
+  },
+  textXL: {
+    fontSize: 20,
+  },
 });
