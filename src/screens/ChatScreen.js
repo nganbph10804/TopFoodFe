@@ -111,7 +111,12 @@ const ChatScreen = ({ navigation, route }) => {
       );
       return 'http://34.67.241.66:8080' + data.data.map(i => i.path);
     } catch (error) {
-      console.log(error);
+      Toast.show({
+        type: 'error',
+        topOffset: 40,
+        text1: 'Thông báo',
+        text2: error.message,
+      });
     }
   }
 
@@ -155,31 +160,36 @@ const ChatScreen = ({ navigation, route }) => {
             }
           },
         }}
-        icon={() => <Ionicons name="ios-image" size={22} color="blue" />}
-        onSend={args => console.log(args)}
+        icon={() => (
+          <Ionicons name='ios-image' size={22} color='blue' />
+        )}
       />
     );
   }
   const onDelete = messageIdToDelete => {
     let batch = db.batch();
-    const deletequery = chatsRef.where('_id', '==', messageIdToDelete);
-    deletequery.get().then(snapshot => {
-      snapshot.docs.forEach(doc => {
-        batch.delete(doc.ref);
-      });
-      return batch.commit();
-    });
-    setMessages(previousState =>
-      previousState.filter(message => message._id !== messageIdToDelete)
-    );
-
-    Toast.show({
-      type: 'success',
-      topOffset: 40,
-      text1: 'Thông báo',
-      text2: 'Đã xóa tin nhắn',
-    });
-  };
+      const deletequery = chatsRef.where("_id","==",messageIdToDelete);
+      deletequery.get().then(
+        snapshot =>{
+          snapshot.docs.forEach(doc=>{
+            batch.delete(doc.ref)
+          })
+          return batch.commit();
+        }
+      )
+      setMessages(previousState =>
+        previousState.filter(message => message._id !== messageIdToDelete))
+        roomRef.doc(idRoom).update({
+          "lastMessageTime": new Date(),
+          "lastMessage": uname + ` đã xóa 1 tin nhắn`
+        })
+        Toast.show({
+          type: 'success',
+          topOffset: 40,
+          text1: 'Thông báo',
+          text2: 'Đã xóa tin nhắn',
+        });
+  }
 
   const onLongPress = (context, message) => {
     const options = ['Coppy', 'Delete Message', 'Cancel'];
