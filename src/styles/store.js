@@ -8,9 +8,35 @@ export const styled = StyleSheet.create({
     backgroundColor: `${COLORS.blue[2]}`,
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'relative',
   },
   viewBtn: {
     padding: 10,
     alignSelf: 'center',
+  },
+  container: {
+    flexDirection: 'row',
+    flex: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+    padding: 10,
+  },
+  image: {
+    borderColor: '#ccc',
+    borderRadius: 10,
+    width: 90,
+    height: 90,
+  },
+  textName: {
+    fontSize: 17,
+  },
+  textTag: {
+    fontSize: 13,
+    color: '#968299',
+    marginTop: 5,
+  },
+  textPrice: {
+    fontSize: 16,
+    marginTop: 20,
   },
 });

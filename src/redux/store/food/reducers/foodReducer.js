@@ -5,12 +5,16 @@ import {
   FOOD_FAILURE,
   FOOD_REQUEST,
   UPDATE_FOOD,
+  FILTER_FOOD,
+  SEARCH_FOOD,
 } from '../types/foodType.js';
 
 const initState = {
   loading: false,
   food: [],
   detail: [],
+  search: [],
+  filter: [],
 };
 
 export const foodReducer = (state = initState, action) => {
@@ -41,14 +45,21 @@ export const foodReducer = (state = initState, action) => {
       return {
         ...state,
         loading: false,
-        detail: state.food.filter(i => i.id !== action.payload),
+        food: state.food.filter(i => i.id !== action.payload),
       };
-    case UPDATE_FOOD:
-      const { id, data } = action.payload;
+    case FILTER_FOOD:
       return {
         ...state,
         loading: false,
-        food: state.food.map(i => (i.id === id ? [...state.food, data] : i)),
+        filter: action.payload,
+      };
+    case SEARCH_FOOD:
+      return {
+        ...state,
+        loading: false,
+        search: state.food.filter(i =>
+          i.name.toLowerCase().includes(action.payload.toLowerCase())
+        ),
       };
 
     default:

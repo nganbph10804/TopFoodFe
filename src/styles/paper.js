@@ -49,9 +49,18 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 99999,
   },
+  loadingFile: {
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    zIndex: 99999,
+  },
   search: {
     borderRadius: 10,
-    zIndex: 1,
+    zIndex: -10,
   },
   noFriend: {
     top: '45%',
@@ -105,5 +114,11 @@ export const styles = StyleSheet.create({
     backgroundColor: `${COLORS.purple[4]}`,
     borderRadius: 80,
     alignSelf: 'center',
+  },
+  picker: {
+    borderWidth: 1,
+    width: 150,
+    borderRadius: 10,
+    borderColor: '#ccc',
   },
 });

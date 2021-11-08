@@ -1,8 +1,14 @@
-import { TAG_FAILURE, TAG_LIST, TAG_REQUEST } from '../type/tagType.js';
+import {
+  TAG_FAILURE,
+  SEARCH_TAG,
+  TAG_REQUEST,
+  GET_TAG_ID,
+} from '../type/tagType.js';
 
 const initState = {
   loading: false,
   tag: [],
+  details: [],
 };
 export const tagReducer = (state = initState, action) => {
   switch (action.type) {
@@ -11,11 +17,18 @@ export const tagReducer = (state = initState, action) => {
         ...state,
         loading: true,
       };
-    case TAG_LIST:
+    case SEARCH_TAG:
       return {
         ...state,
         loading: false,
         tag: action.payload,
+      };
+    case GET_TAG_ID:
+      const { foodId, datas } = action.payload;
+      return {
+        ...state,
+        loading: false,
+        details: datas.filter(i => i.id !== foodId),
       };
     case TAG_FAILURE:
       return {

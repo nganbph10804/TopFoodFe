@@ -3,6 +3,7 @@ import {
   FILE_ERR,
   FILE_REQ,
   MULTI_FILE,
+  CLEAR_FILE,
 } from '../types/fileType.js';
 
 const initState = {
@@ -34,7 +35,11 @@ export const fileReducer = (state = initState, action) => {
         files: [...state.files, action.payload],
         loading: false,
       };
-
+    case CLEAR_FILE:
+      return {
+        ...state,
+        files: [],
+      };
     default:
       return state;
   }

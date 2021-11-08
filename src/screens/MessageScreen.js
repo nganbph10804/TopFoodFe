@@ -35,11 +35,35 @@ const MessagesScreen = ({ navigation }) => {
   const [cvsName, setCvsName] = useState('');
   const [cvsId, setCvsId] = useState('');
   const [lstRoom, setLstRoom] = useState([]);
+  const [lstUser, setLstUser] = useState([]);
 
   function toDateTime(secs) {
     let d = new Date(secs);
     return d.toString().substr(4, 17);
   }
+
+  const onCreateConverSation = (targetId, targetName, targetAvatar) => {
+    try {
+      const conversation = {
+        nameRoom: `${name} và ${targetName}`,
+        userId: [`${targetId}`, `${id}`],
+        imgRoom: targetAvatar,
+        lastMessage: `${name} đã tạo nhóm!`,
+        lastMessageTime: new Date(),
+      };
+      RoomsRef.add(conversation);
+      hideDialog();
+
+      Toast.show({
+        type: 'success',
+        topOffset: 40,
+        text1: 'Thông báo',
+        text2: 'Tạo cuộc trò chuyện thành công!',
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     const querySnapshot = RoomsRef.where(

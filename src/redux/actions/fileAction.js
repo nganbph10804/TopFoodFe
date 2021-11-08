@@ -9,6 +9,7 @@ import {
   FILE_ERR,
   FILE_REQ,
   MULTI_FILE,
+  CLEAR_FILE,
 } from '../types/fileType.js';
 
 export const uploadAvatar = (file, profile, navigation) => async dispatch => {
@@ -183,7 +184,7 @@ export const multiFileAction = file => async dispatch => {
     setTimeout(() => {
       dispatch({
         type: MULTI_FILE,
-        payload: { file, type },
+        payload: url,
       });
     }, 500);
   } catch (error) {
@@ -197,4 +198,10 @@ export const multiFileAction = file => async dispatch => {
       text2: 'Upload thất bại',
     });
   }
+};
+
+export const clearFilesAction = () => dispatch => {
+  dispatch({
+    type: CLEAR_FILE,
+  });
 };

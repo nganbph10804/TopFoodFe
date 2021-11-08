@@ -1,6 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { COLORS } from '../constants/color.const.js';
 import ActiveAccScreen from '../screens/Auth/ActiveAccScreen.js';
 import ChangePassScreen from '../screens/Auth/ChangePassScreen.js';
 import ForgotPasswordScreen from '../screens/Auth/ForgotPasswordScreen.js';
@@ -18,7 +19,12 @@ const GlobalRoute = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerTitleAlign: 'center',
+        headerBackTitleVisible: true,
+        headerBackTitleStyle: { color: `#fff`, fontSize: 20 },
+        headerTintColor: '#fff',
+        headerStyle: {
+          backgroundColor: `${COLORS.blue[4]}`,
+        },
       }}
     >
       {token ? (

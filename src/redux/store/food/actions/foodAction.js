@@ -1,13 +1,16 @@
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import { authHeader } from '../../../authHeader.js';
+import { CLEAR_FILE } from '../../../types/fileType.js';
 import {
   DELETE_FOOD,
+  FILTER_FOOD,
   FOOD_DETAIL,
   FOOD_FAILURE,
   FOOD_LIST,
   FOOD_REQUEST,
-  UPDATE_FOOD,
+  PRICE_FOOD,
+  SEARCH_FOOD,
 } from '../types/foodType.js';
 
 export const foodListAction = () => async dispatch => {
@@ -16,7 +19,7 @@ export const foodListAction = () => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://34.67.241.66:8080/store-profile/list-food`,
+      `http://34.67.241.66:8080/store-profile/list-food?page=0&pageSize=1000`,
       {
         headers: await authHeader(),
       }
@@ -24,7 +27,10 @@ export const foodListAction = () => async dispatch => {
     setTimeout(() => {
       dispatch({
         type: FOOD_LIST,
-        payload: data.data,
+        payload: data.data.data,
+      });
+      dispatch({
+        type: CLEAR_FILE,
       });
     }, 500);
   } catch (error) {
@@ -106,7 +112,6 @@ export const createFoodAction =
         }
       }, 1000);
     } catch (error) {
-      console.log('log 🚀 ~ file: foodAction.js ~ line 109 ~ error', error);
       dispatch({
         type: FOOD_FAILURE,
       });
@@ -119,7 +124,7 @@ export const createFoodAction =
     }
   };
 export const updateFoodAction =
-  (content, files, id, name, price, tagId) => async dispatch => {
+  (content, files, id, name, price, tagId, navigation) => async dispatch => {
     dispatch({
       type: FOOD_REQUEST,
     });
@@ -139,16 +144,13 @@ export const updateFoodAction =
         }
       );
       setTimeout(() => {
-        dispatch({
-          type: UPDATE_FOOD,
-          payload: data.data,
-        });
         Toast.show({
           type: 'success',
           topOffset: 60,
           text1: 'Thông báo',
           text2: 'Cập nhật món ăn thành công',
         });
+        navigation.navigate('FoodListScreen');
       }, 1000);
     } catch (error) {
       dispatch({
@@ -196,4 +198,70 @@ export const deleteFoodAction = id => async dispatch => {
       text2: error.response.data.message,
     });
   }
+};
+
+export const filterFoodAction = tagId => async dispatch => {
+  dispatch({
+    type: FOOD_REQUEST,
+  });
+  try {
+    const { data } = await axios.get(
+      `http://34.67.241.66:8080/api/tag/${tagId}`,
+      {
+        headers: await authHeader(),
+      }
+    );
+    setTimeout(() => {
+      dispatch({
+        type: FILTER_FOOD,
+        payload: data,
+      });
+    }, 500);
+  } catch (error) {
+    dispatch({
+      type: FOOD_FAILURE,
+    });
+    Toast.show({
+      type: 'error',
+      topOffset: 40,
+      text1: 'Thông báo',
+      text2: error.response.data.message,
+    });
+  }
+};
+export const filterPriceAction = (min, max) => async dispatch => {
+  dispatch({
+    type: FOOD_REQUEST,
+  });
+  try {
+    const { data } = await axios.get(
+      `http://34.67.241.66:8080/store-profile/search/food?page=0&pageSize=1000`,
+      {
+        headers: await authHeader(),
+      },
+      {
+        foodName: '',
+        maxPrice: 100000,
+        minPrice: 0,
+        tagName: '',
+      }
+    );
+    console.log(data);
+  } catch (error) {
+    dispatch({
+      type: FOOD_FAILURE,
+    });
+    Toast.show({
+      type: 'error',
+      topOffset: 40,
+      text1: 'Thông báo',
+      text2: error.response.data.message,
+    });
+  }
+};
+export const searchFoodAction = value => dispatch => {
+  dispatch({
+    type: SEARCH_FOOD,
+    payload: value,
+  });
 };
