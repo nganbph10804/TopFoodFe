@@ -7,7 +7,7 @@ import {
 } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import React, { useEffect, useState } from 'react';
-import { Image, Picker, ScrollView, Text, View } from 'react-native';
+import { Image, ScrollView, Text, View } from 'react-native';
 import {
   ActivityIndicator,
   Button,
@@ -18,20 +18,17 @@ import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../../constants/color.const.js';
 import { multiFileAction } from '../../../redux/actions/fileAction.js';
-import { createFoodAction } from '../../../redux/store/food/actions/foodAction.js';
-import { searchTagAction } from '../../../redux/store/tag/action/tagAction.js';
+import { updateFoodAction } from '../../../redux/store/food/actions/foodAction.js';
 import { InputUpdate, styles } from '../../../styles/paper.js';
 import { styled } from '../../../styles/store.js';
 
-const CreateFoodScreen = ({ navigation }) => {
-  const { tag } = useSelector(state => state.tag);
+const EditFoodScreen = ({ route, navigation }) => {
+  const { content, files, id, name, price, tag } = route.params;
   const file = useSelector(state => state.file.files);
   const loadingFile = useSelector(state => state.file.loading);
-  const [content, setContent] = useState('');
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [tagList, setTagList] = useState('');
-  const [pickerValue, setPickerValue] = useState('');
+  const [newContent, setNewContent] = useState(content);
+  const [newName, setName] = useState(name);
+  const [newPrice, setPrice] = useState(price);
   const dispatch = useDispatch();
 
   const handlerUpload = async () => {
@@ -45,26 +42,15 @@ const CreateFoodScreen = ({ navigation }) => {
       dispatch(multiFileAction(result.uri));
     }
   };
-
+  // useEffect(() => {
+  //   file.map(i => files.push(i));
+  // }, [file]);
   const handlerCreate = () => {
-    if (file.length === 0) {
-      Toast.show({
-        type: 'error',
-        topOffset: 60,
-        text1: 'Thông báo',
-        text2: 'Phải upload ảnh',
-      });
-    } else if (file.length < 2) {
-      Toast.show({
-        type: 'error',
-        topOffset: 60,
-        text1: 'Thông báo',
-        text2: 'Phải upload từ 2 ảnh trở lên',
-      });
-    } else if (
-      content.trim().length < 1 &&
-      name.trim().length < 1 &&
-      price.trim().length < 1
+    file.map(i => files.push(i));
+    if (
+      newContent.trim().length < 1 &&
+      newName.trim().length < 1 &&
+      newPrice.trim().length < 1
     ) {
       Toast.show({
         type: 'error',
@@ -72,15 +58,21 @@ const CreateFoodScreen = ({ navigation }) => {
         text1: 'Thông báo',
         text2: 'Không được để trống',
       });
-    } else
+    } else {
       dispatch(
-        createFoodAction(content, file, name, price, tagList, navigation)
+        updateFoodAction(
+          newContent,
+          files,
+          id,
+          newName,
+          newPrice,
+          tag.id,
+          navigation
+        )
       );
+    }
   };
 
-  useEffect(() => {
-    dispatch(searchTagAction(''));
-  }, [dispatch]);
   useEffect(() => {
     (async () => {
       if (Platform.OS !== 'web') {
@@ -92,6 +84,7 @@ const CreateFoodScreen = ({ navigation }) => {
       }
     })();
   }, []);
+
   return (
     <View style={styled.main}>
       <ScrollView style={{ width: '100%', height: '100%', marginTop: 20 }}>
@@ -134,21 +127,36 @@ const CreateFoodScreen = ({ navigation }) => {
                   </Button>
                 )}
               </View>
-              {loadingFile ? (
-                <Text></Text>
-              ) : (
-                <View style={{ flexDirection: 'row', paddingTop: 10 }}>
-                  <ScrollView horizontal={true}>
-                    {file.map((i, index) => (
-                      <Image
-                        key={index}
-                        source={{ uri: i }}
-                        style={{ width: 70, height: 70, margin: 5 }}
-                      />
-                    ))}
-                  </ScrollView>
-                </View>
-              )}
+              <View style={{ flexDirection: 'row' }}>
+                <ScrollView horizontal={true}>
+                  {loadingFile ? (
+                    <Text></Text>
+                  ) : (
+                    <View style={{ flexDirection: 'row', paddingTop: 10 }}>
+                      {file.map((i, index) => (
+                        <Image
+                          key={index}
+                          source={{ uri: i }}
+                          style={{ width: 70, height: 70, margin: 5 }}
+                        />
+                      ))}
+                    </View>
+                  )}
+                  {files.length < 1 ? (
+                    <Text></Text>
+                  ) : (
+                    <View style={{ flexDirection: 'row', paddingTop: 10 }}>
+                      {files.map((i, index) => (
+                        <Image
+                          key={index}
+                          source={{ uri: i }}
+                          style={{ width: 70, height: 70, margin: 5 }}
+                        />
+                      ))}
+                    </View>
+                  )}
+                </ScrollView>
+              </View>
             </View>
             <View style={{ paddingHorizontal: 20, paddingBottom: 15 }}>
               <View style={{ flexDirection: 'row', padding: 10 }}>
@@ -157,28 +165,17 @@ const CreateFoodScreen = ({ navigation }) => {
                   size={24}
                   color={`${COLORS.blue[1]}`}
                 />
-                <Subheading style={{ paddingLeft: 10 }}>Tag món ăn</Subheading>
-              </View>
-              <View style={styles.picker}>
-                <Picker
-                  mode="dialog"
-                  style={{ width: undefined }}
-                  selectedValue={pickerValue}
-                  onValueChange={e => [setPickerValue(e), setTagList(e)]}
-                >
-                  <Picker.Item label="Chọn tag" />
-                  {tag.map(c => (
-                    <Picker.Item key={c.id} label={c.tagName} value={c.id} />
-                  ))}
-                </Picker>
+                <Subheading style={{ paddingLeft: 10 }}>
+                  Tag món ăn / {tag.tagName}
+                </Subheading>
               </View>
             </View>
             <View style={{ position: 'relative' }}>
               <InputUpdate
                 mode="outlined"
                 label="Tên món ăn"
-                value={name}
-                onChangeText={name => setName(name)}
+                value={newName}
+                onChangeText={newName => setName(newName)}
                 left={
                   <TextInput.Icon
                     name={() => (
@@ -196,9 +193,9 @@ const CreateFoodScreen = ({ navigation }) => {
               <InputUpdate
                 mode="outlined"
                 label="Giá tiền"
-                value={price}
                 keyboardType="numeric"
-                onChangeText={price => setPrice(price)}
+                value={newPrice.toString()}
+                onChangeText={newPrice => setPrice(newPrice)}
                 left={
                   <TextInput.Icon
                     name={() => (
@@ -216,8 +213,8 @@ const CreateFoodScreen = ({ navigation }) => {
               <InputUpdate
                 mode="outlined"
                 label="Mô tả"
-                value={content}
-                onChangeText={content => setContent(content)}
+                value={newContent}
+                onChangeText={newContent => setNewContent(newContent)}
                 multiline={true}
                 numberOfLines={5}
                 left={
@@ -239,7 +236,7 @@ const CreateFoodScreen = ({ navigation }) => {
                 color={COLORS.blue[1]}
                 onPress={() => handlerCreate()}
               >
-                Tạo món ăn
+                Cập nhật món ăn
               </Button>
             </View>
           </View>
@@ -249,4 +246,4 @@ const CreateFoodScreen = ({ navigation }) => {
   );
 };
 
-export default CreateFoodScreen;
+export default EditFoodScreen;
