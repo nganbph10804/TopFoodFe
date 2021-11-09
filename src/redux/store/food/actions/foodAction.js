@@ -3,6 +3,7 @@ import Toast from 'react-native-toast-message';
 import { authHeader } from '../../../authHeader.js';
 import { CLEAR_FILE } from '../../../types/fileType.js';
 import {
+  CLEAR_SEARCH,
   DELETE_FOOD,
   FILTER_FOOD,
   FOOD_DETAIL,
@@ -24,15 +25,13 @@ export const foodListAction = () => async dispatch => {
         headers: await authHeader(),
       }
     );
-    setTimeout(() => {
-      dispatch({
-        type: FOOD_LIST,
-        payload: data.data.data,
-      });
-      dispatch({
-        type: CLEAR_FILE,
-      });
-    }, 500);
+    dispatch({
+      type: FOOD_LIST,
+      payload: data.data.data,
+    });
+    dispatch({
+      type: CLEAR_FILE,
+    });
   } catch (error) {
     dispatch({
       type: FOOD_FAILURE,
@@ -56,18 +55,10 @@ export const foodDetailAction = id => async dispatch => {
         headers: await authHeader(),
       }
     );
-    setTimeout(() => {
-      dispatch({
-        type: FOOD_DETAIL,
-        payload: data.data,
-      });
-      Toast.show({
-        type: 'success',
-        topOffset: 60,
-        text1: 'Thông báo',
-        text2: 'Xoá món ăn thành công',
-      });
-    }, 1000);
+    dispatch({
+      type: FOOD_DETAIL,
+      payload: data.data,
+    });
   } catch (error) {
     dispatch({
       type: FOOD_FAILURE,
@@ -263,5 +254,10 @@ export const searchFoodAction = value => dispatch => {
   dispatch({
     type: SEARCH_FOOD,
     payload: value,
+  });
+};
+export const clearSearchAction = value => dispatch => {
+  dispatch({
+    type: CLEAR_SEARCH,
   });
 };

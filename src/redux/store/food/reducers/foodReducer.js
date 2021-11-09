@@ -7,6 +7,7 @@ import {
   UPDATE_FOOD,
   FILTER_FOOD,
   SEARCH_FOOD,
+  CLEAR_SEARCH,
 } from '../types/foodType.js';
 
 const initState = {
@@ -15,6 +16,7 @@ const initState = {
   detail: [],
   search: [],
   filter: [],
+  tagName: '',
 };
 
 export const foodReducer = (state = initState, action) => {
@@ -51,15 +53,20 @@ export const foodReducer = (state = initState, action) => {
       return {
         ...state,
         loading: false,
-        filter: action.payload,
+        filter: action.payload.foods,
+        tagName: action.payload.tagName,
       };
     case SEARCH_FOOD:
       return {
         ...state,
-        loading: false,
         search: state.food.filter(i =>
           i.name.toLowerCase().includes(action.payload.toLowerCase())
         ),
+      };
+    case CLEAR_SEARCH:
+      return {
+        ...state,
+        search: [],
       };
 
     default:

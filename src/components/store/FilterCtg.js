@@ -1,27 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { BottomSheet, ListItem } from 'react-native-elements';
 import { Divider } from 'react-native-paper';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
 import { formatPrice } from '../../constants/price.const.js';
-import { deleteFoodAction } from '../../redux/store/food/actions/foodAction.js';
+import {
+  deleteFoodAction,
+  foodDetailAction,
+} from '../../redux/store/food/actions/foodAction.js';
 
-const FoodList = ({ food, navigation }) => {
+const FilterCtg = ({ foods, navigation, tagName }) => {
+  const detail = useSelector(state => state.food.detail);
+  const food = detail;
   const dispatch = useDispatch();
   const handlerOption = () => {
     setIsVisible(true);
   };
   const handlerRemove = () => {
-    dispatch(deleteFoodAction(food.id));
+    dispatch(deleteFoodAction(foods.id));
     setIsVisible(false);
   };
+  useEffect(() => {
+    dispatch(foodDetailAction(foods.id));
+  }, [dispatch]);
   const [isVisible, setIsVisible] = useState(false);
   const list = [
     {
       title: 'Cập nhật',
       titleStyle: { color: `${COLORS.blue[1]}` },
-      onPress: () => navigation.navigate('EditFoodScreen', food),
+      onPress: () => navigation.navigate('EditFoodScreen', foods),
     },
     {
       title: 'Xoá',
@@ -41,12 +49,12 @@ const FoodList = ({ food, navigation }) => {
       <View style={styled.container}>
         <View style={styled.main}>
           <View style={{ width: '32%' }}>
-            <Image source={{ uri: `${food.files[1]}` }} style={styled.image} />
+            <Image source={{ uri: `${foods.files[1]}` }} style={styled.image} />
           </View>
           <View>
-            <Text style={styled.textName}>{food.name}</Text>
-            <Text style={styled.textTag}>{food.tag.tagName} </Text>
-            <Text style={styled.textPrice}>{formatPrice(food.price)} </Text>
+            <Text style={styled.textName}>{foods.name}</Text>
+            <Text style={styled.textTag}>{tagName} </Text>
+            <Text style={styled.textPrice}>{formatPrice(foods.price)} </Text>
           </View>
         </View>
         <Divider />
@@ -99,4 +107,4 @@ const styled = StyleSheet.create({
     backgroundColor: '#fff',
   },
 });
-export default FoodList;
+export default FilterCtg;

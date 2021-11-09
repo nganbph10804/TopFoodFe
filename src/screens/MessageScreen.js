@@ -1,11 +1,9 @@
-import { Entypo, Ionicons } from "@expo/vector-icons";
-import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
-import { Button, Checkbox, Dialog, Paragraph, Portal, Provider, Searchbar, TextInput } from 'react-native-paper';
-import Toast from "react-native-toast-message";
-import { useSelector } from "react-redux";
+import { Entypo, Ionicons } from '@expo/vector-icons';
+import React, { useEffect, useState } from 'react';
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import {
   Button,
+  Checkbox,
   Dialog,
   Paragraph,
   Portal,
@@ -13,6 +11,7 @@ import {
   Searchbar,
   TextInput,
 } from 'react-native-paper';
+import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
 import {
   Card,
@@ -28,9 +27,9 @@ import {
 } from '../styles/MessageStyle';
 import fb from './../Firebase/config';
 
-const db = fb.firestore()
-const RoomsRef = db.collection('Rooms')
-const UserRef = db.collection('users')
+const db = fb.firestore();
+const RoomsRef = db.collection('Rooms');
+const UserRef = db.collection('users');
 
 const MessagesScreen = ({ navigation }) => {
   const { id, avatar, name } = useSelector(state => state.auth.profile);
@@ -52,13 +51,17 @@ const MessagesScreen = ({ navigation }) => {
         userId: [`${targetId}`, `${id}`],
         imgRoom: targetAvatar,
         lastMessage: `${name} đã tạo nhóm!`,
-        lastMessageTime: new Date()
+        lastMessageTime: new Date(),
       };
       let check = false;
       lstRoom.every(item => {
-        if (conversation.userId.every((value, index) => value === item.userId[index])) {
+        if (
+          conversation.userId.every(
+            (value, index) => value === item.userId[index]
+          )
+        ) {
           check = true;
-          hideDialog()
+          hideDialog();
           Toast.show({
             type: 'error',
             topOffset: 40,
@@ -67,10 +70,10 @@ const MessagesScreen = ({ navigation }) => {
           });
           return false;
         }
-      })
+      });
       if (check == false) {
         RoomsRef.add(conversation);
-        hideDialog()
+        hideDialog();
 
         Toast.show({
           type: 'success',
@@ -79,7 +82,6 @@ const MessagesScreen = ({ navigation }) => {
           text2: 'Tạo cuộc trò chuyện thành công!',
         });
       }
-
     } catch (error) {
       Toast.show({
         type: 'error',
@@ -88,52 +90,57 @@ const MessagesScreen = ({ navigation }) => {
         text2: error,
       });
     }
-  }
+  };
 
-
-  const onDeleteConversation = () => {
-      
-  }
+  const onDeleteConversation = () => {};
 
   useEffect(() => {
-    const querySnapshot = RoomsRef.where("userId", "array-contains", `${id}`).orderBy("lastMessageTime", "desc")
+    const querySnapshot = RoomsRef.where(
+      'userId',
+      'array-contains',
+      `${id}`
+    ).orderBy('lastMessageTime', 'desc');
     querySnapshot.onSnapshot(snap => {
       const data = [
         ...snap.docs.map(doc => {
-          return { ...doc.data(), id: doc.id, timeConverter: doc.data().lastMessageTime.toDate() }
-        })
-      ]
+          return {
+            ...doc.data(),
+            id: doc.id,
+            timeConverter: doc.data().lastMessageTime.toDate(),
+          };
+        }),
+      ];
       setLstRoom(data);
-    })
+    });
 
-    const querySnapshotUser = UserRef
-    querySnapshotUser.get().then(
-      snap => {
-        const dataUser = [
-          ...snap.docs.map(doc => {
-            return { ...doc.data(), id: doc.id }
-          })
-        ]
-        const userExist = dataUser.find(item => item._id === id);
-        if (userExist) {
-          UserRef.doc(userExist.id).update({
-            "name": name,
-            "avatar": avatar
-          })
-        } else {
-          UserRef.add({
-            "_id": id,
-            "name": name,
-            "avatar": avatar
-          })
-        }
-        const dataFilter = dataUser.filter(item => item._id !== id);
-        setLstUser(dataFilter)
+    const querySnapshotUser = UserRef;
+    querySnapshotUser.get().then(snap => {
+      const dataUser = [
+        ...snap.docs.map(doc => {
+          return { ...doc.data(), id: doc.id };
+        }),
+      ];
+      const userExist = dataUser.find(item => item._id === id);
+      if (userExist) {
+        UserRef.doc(userExist.id).update({
+          name: name,
+          avatar: avatar,
+        });
+      } else {
+        UserRef.add({
+          _id: id,
+          name: name,
+          avatar: avatar,
+        });
       }
-    )
-    return () => { setLstRoom([]); setLstUser([]) }
-
-  }, [])
+      const dataFilter = dataUser.filter(item => item._id !== id);
+      setLstUser(dataFilter);
+    });
+    return () => {
+      setLstRoom([]);
+      setLstUser([]);
+    };
+  }, []);
 
   return (
     <Provider>
@@ -150,11 +157,11 @@ const MessagesScreen = ({ navigation }) => {
               />
               <FlatList
                 data={lstUser}
-                keyExtractor={(item) => item.id.toString()}
+                keyExtractor={item => item.id.toString()}
                 renderItem={({ item }) => (
                   <Card
                     onPress={() => {
-                      onCreateConverSation(item._id, item.name, item.avatar)
+                      onCreateConverSation(item._id, item.name, item.avatar);
                     }}
                   >
                     <UserInfo>
@@ -167,28 +174,29 @@ const MessagesScreen = ({ navigation }) => {
                         </UserInfoText>
                       </TextSection>
                     </UserInfo>
-
                   </Card>
                 )}
               />
-
             </Dialog.Content>
             <Dialog.Actions>
               <Button onPress={hideDialog}>Cancel</Button>
-              <Button onPress={() => { }}>OK</Button>
+              <Button onPress={() => {}}>OK</Button>
             </Dialog.Actions>
           </Dialog>
         </Portal>
 
         <View style={styles.container}>
-          <Searchbar style={styles.searchBarr}
+          <Searchbar
+            style={styles.searchBarr}
             inputStyle={{ fontSize: 16, paddingVertical: 5 }}
             placeholder="Search"
           />
 
           <TouchableOpacity
             style={styles.createBtn}
-            onPress={() => { setVisible(true) }}
+            onPress={() => {
+              setVisible(true);
+            }}
           >
             <Ionicons
               name="ios-create-outline"
@@ -223,8 +231,16 @@ const MessagesScreen = ({ navigation }) => {
                   </UserInfoText>
                   <MessageText>{item.lastMessage}</MessageText>
                 </TextSection>
-                <TouchableOpacity onPress={() => {   onDeleteConversation(item.id) }}>
-                  <Entypo name="dots-three-vertical" style={{ marginTop: 30 }} size={20} />
+                <TouchableOpacity
+                  onPress={() => {
+                    onDeleteConversation(item.id);
+                  }}
+                >
+                  <Entypo
+                    name="dots-three-vertical"
+                    style={{ marginTop: 30 }}
+                    size={20}
+                  />
                 </TouchableOpacity>
               </UserInfo>
             </Card>
@@ -259,6 +275,6 @@ const styles = StyleSheet.create({
     height: 30,
   },
   iconCreate: {
-    paddingRight: 15
-  }
+    paddingRight: 15,
+  },
 });

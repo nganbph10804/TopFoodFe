@@ -8,8 +8,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Slider } from 'react-native-elements';
-import { Button, Portal, Provider, Subheading } from 'react-native-paper';
+import {
+  Button,
+  Portal,
+  Provider,
+  Subheading,
+  TextInput,
+} from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
 import { filterPriceAction } from '../../redux/store/food/actions/foodAction.js';
@@ -19,7 +24,6 @@ const FilterModal = () => {
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
   const [value, setValue] = useState(0);
-  const [scroll, setScroll] = useState(false);
   const maxPrice = 1000000;
   const dispatch = useDispatch();
   const handlerFilterPrice = () => {
@@ -61,24 +65,29 @@ const FilterModal = () => {
           </View>
           <View style={styled.main}>
             <Subheading>Giá</Subheading>
-            <ScrollView scrollEnabled={scroll}>
-              <MultiSlider
-                onValuesChangeStart={setScroll(false)}
-                onValuesChangeFinish={setScroll(true)}
-                isMarkersSeparated={true}
-                customMarkerLeft={e => {
-                  return (
-                    <CustomSliderMarkerLeft currentValue={e.currentValue} />
-                  );
-                }}
-                customMarkerRight={e => {
-                  return (
-                    <CustomSliderMarkerRight currentValue={e.currentValue} />
-                  );
-                }}
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                width: 500,
+              }}
+            >
+              <TextInput
+                mode="outlined"
+                placeholder="Bắt đầu"
+                label="Bắt đầu"
+                style={{ width: 150 }}
+                keyboardType="numeric"
               />
-            </ScrollView>
-            <Subheading style={{ paddingTop: 20 }}>Giá: {value}</Subheading>
+              <Subheading> Đến </Subheading>
+              <TextInput
+                mode="outlined"
+                placeholder="Kết thúc"
+                label="Kết thúc"
+                style={{ width: 150 }}
+                keyboardType="numeric"
+              />
+            </View>
           </View>
           <View style={{ alignItems: 'center', marginTop: 30 }}>
             <Button mode="contained" onPress={() => handlerFilterPrice()}>

@@ -166,6 +166,7 @@ const CreateFoodScreen = ({ navigation }) => {
                   selectedValue={pickerValue}
                   onValueChange={e => [setPickerValue(e), setTagList(e)]}
                 >
+                  <Picker.Item label="Chọn tag" />
                   {tag.map(c => (
                     <Picker.Item key={c.id} label={c.tagName} value={c.id} />
                   ))}

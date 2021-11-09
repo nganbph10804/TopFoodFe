@@ -1,5 +1,6 @@
-import { AntDesign, Ionicons } from '@expo/vector-icons';
-import React, { useEffect, useState } from 'react';
+import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Picker,
   ScrollView,
@@ -10,15 +11,19 @@ import {
 } from 'react-native';
 import {
   ActivityIndicator,
-  Divider,
   Searchbar,
   Subheading,
+  TextInput,
 } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
+import FilterCtg from '../../../components/store/FilterCtg.js';
 import FilterModal from '../../../components/store/FilterModal.js';
 import FoodList from '../../../components/store/FoodList.js';
+import SearchFood from '../../../components/store/SearchFood.js';
+import TagList from '../../../components/store/TagList.js';
 import { COLORS } from '../../../constants/color.const.js';
 import {
+  clearSearchAction,
   filterFoodAction,
   foodListAction,
   searchFoodAction,
@@ -29,33 +34,62 @@ import { styles } from '../../../styles/paper.js';
 const FoodListScreen = ({ navigation }) => {
   const { tag } = useSelector(state => state.tag);
   const food = useSelector(state => state.food.food);
-  const search = useSelector(state => state.food.search);
-  console.log(
-    'log 🚀 ~ file: FoodListScreen.js ~ line 33 ~ FoodListScreen ~ search',
-    search
-  );
   const loading = useSelector(state => state.food.loading);
+  const foods = useSelector(state => state.food.filter);
+  const tags = useSelector(state => state.food.tagName);
+  const search = useSelector(state => state.food.search);
+  const ref = useRef(null);
   const dispatch = useDispatch();
-  const [tagId, setTagId] = useState(null);
-  const [pickerValue, setPickerValue] = useState(null);
   const [searchValue, setSearchValue] = useState(null);
-  const handlerSearch = () => {
-    dispatch(searchFoodAction(searchValue));
+  const [active, setActive] = useState();
+  const [focus, setFocus] = useState();
+  const [ctg, setCtg] = useState();
+  const [tagId, setTagId] = useState();
+
+  const handlerFilter = id => {
+    if (id === 'ALL') {
+      dispatch(foodListAction());
+      setCtg(false);
+    } else {
+      setTagId(id);
+      setCtg(true);
+    }
   };
+
+  const onFocus = () => {
+    setFocus(true);
+  };
+
+  const onBlur = () => {
+    setFocus(false);
+    ref.current.blur();
+    ref.current.clear();
+    dispatch(clearSearchAction());
+  };
+
+  useEffect(() => {
+    if (tagId) dispatch(filterFoodAction(tagId));
+  }, [dispatch, tagId]);
+
+  useEffect(() => {
+    if (searchValue) {
+      setTimeout(() => {
+        dispatch(searchFoodAction(searchValue));
+      }, 500);
+    }
+  }, [dispatch, searchValue]);
+
   useEffect(() => {
     const focus = navigation.addListener('focus', () => {
       dispatch(foodListAction());
     });
     return focus;
   }, [dispatch]);
-  useEffect(() => {
-    dispatch(searchTagAction(''));
-  }, [dispatch]);
 
   useEffect(() => {
-    if (tagId) dispatch(filterFoodAction(tagId));
-    if (tagId === 0) dispatch(foodListAction());
-  }, [dispatch, tagId]);
+    dispatch(searchTagAction());
+  }, [dispatch]);
+
   return (
     <View style={styles.main}>
       {loading && (
@@ -80,50 +114,81 @@ const FoodListScreen = ({ navigation }) => {
           />
           <Subheading style={{ paddingLeft: 10 }}>Thêm món</Subheading>
         </TouchableOpacity>
-        <View style={{ marginLeft: 20 }}>
-          <ScrollView horizontal={true}>
-            <View style={styled.filter}>
-              <Subheading>Tag </Subheading>
-              <View style={styled.picker}>
-                <Picker
-                  mode="dialog"
-                  style={{ width: undefined }}
-                  selectedValue={pickerValue}
-                  onValueChange={e => [setPickerValue(e), setTagId(e)]}
-                >
-                  <Picker.Item label="Tất cả" value={0} />
-                  {tag.map(c => (
-                    <Picker.Item key={c.id} label={c.tagName} value={c.id} />
-                  ))}
-                </Picker>
-              </View>
-            </View>
-          </ScrollView>
-        </View>
         <FilterModal />
       </View>
       <View style={{ padding: 10, zIndex: -15, backgroundColor: '#fff' }}>
         <Searchbar
           placeholder="Tìm kiếm"
+          ref={ref}
+          onFocus={onFocus}
           value={searchValue}
           onChangeText={searchValue => setSearchValue(searchValue)}
-          onSubmitEditing={() => handlerSearch()}
           style={styles.search}
+          onIconPress={() => console.log(true)}
+          clearIcon={() => (
+            <MaterialIcons
+              name="cancel"
+              size={24}
+              color="black"
+              onPress={onBlur}
+            />
+          )}
         />
       </View>
-      <View style={{ zIndex: -7 }}>
-        {food.length < 1 ? (
-          <View style={styles.noFriend}>
-            <Text style={styles.textXL}>Không có món ăn</Text>
+      <View>
+        <ScrollView horizontal={true}>
+          <View style={styled.filter}>
+            <TagList
+              data={tag}
+              active={active}
+              setActive={setActive}
+              handlerFilter={handlerFilter}
+            />
           </View>
-        ) : (
-          <ScrollView>
-            <View style={{ flex: 1 }}>
-              {food.map(i => (
-                <FoodList key={i.id} food={i} navigation={navigation} />
-              ))}
-            </View>
-          </ScrollView>
+        </ScrollView>
+      </View>
+      <View>
+        {focus && search.length < 1
+          ? null
+          : search.map(i => (
+              <SearchFood key={i.id} food={i} navigation={navigation} />
+            ))}
+      </View>
+      <View>
+        {!focus && !ctg && (
+          <View style={{ zIndex: -7 }}>
+            {food.length < 1 ? (
+              <View style={styles.noFriend}>
+                <Text style={styles.textXL}>Không có món ăn</Text>
+              </View>
+            ) : (
+              <ScrollView>
+                <View style={{ flex: 1 }}>
+                  {food.map(i => (
+                    <FoodList key={i.id} food={i} navigation={navigation} />
+                  ))}
+                </View>
+              </ScrollView>
+            )}
+          </View>
+        )}
+      </View>
+      <View>
+        {ctg && (
+          <View style={{ zIndex: -7 }}>
+            <ScrollView>
+              <View style={{ flex: 1 }}>
+                {foods.map(i => (
+                  <FilterCtg
+                    key={i.id}
+                    foods={i}
+                    navigation={navigation}
+                    tagName={tags}
+                  />
+                ))}
+              </View>
+            </ScrollView>
+          </View>
         )}
       </View>
     </View>
@@ -187,6 +252,7 @@ const styled = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flex: 1,
+    backgroundColor: '#fcfc',
   },
 });
 export default FoodListScreen;
