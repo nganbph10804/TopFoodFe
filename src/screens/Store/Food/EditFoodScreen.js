@@ -54,7 +54,7 @@ const EditFoodScreen = ({ route, navigation }) => {
     ) {
       Toast.show({
         type: 'error',
-        topOffset: 60,
+
         text1: 'Thông báo',
         text2: 'Không được để trống',
       });

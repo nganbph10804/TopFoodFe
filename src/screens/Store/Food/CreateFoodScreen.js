@@ -50,14 +50,14 @@ const CreateFoodScreen = ({ navigation }) => {
     if (file.length === 0) {
       Toast.show({
         type: 'error',
-        topOffset: 60,
+
         text1: 'Thông báo',
         text2: 'Phải upload ảnh',
       });
     } else if (file.length < 2) {
       Toast.show({
         type: 'error',
-        topOffset: 60,
+
         text1: 'Thông báo',
         text2: 'Phải upload từ 2 ảnh trở lên',
       });
@@ -68,7 +68,7 @@ const CreateFoodScreen = ({ navigation }) => {
     ) {
       Toast.show({
         type: 'error',
-        topOffset: 60,
+
         text1: 'Thông báo',
         text2: 'Không được để trống',
       });
@@ -81,6 +81,7 @@ const CreateFoodScreen = ({ navigation }) => {
   useEffect(() => {
     dispatch(searchTagAction(''));
   }, [dispatch]);
+
   useEffect(() => {
     (async () => {
       if (Platform.OS !== 'web') {

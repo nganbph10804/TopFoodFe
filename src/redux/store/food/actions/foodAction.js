@@ -38,7 +38,7 @@ export const foodListAction = () => async dispatch => {
     });
     Toast.show({
       type: 'error',
-      topOffset: 60,
+
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -65,7 +65,7 @@ export const foodDetailAction = id => async dispatch => {
     });
     Toast.show({
       type: 'error',
-      topOffset: 60,
+
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -94,7 +94,7 @@ export const createFoodAction =
       setTimeout(() => {
         Toast.show({
           type: 'success',
-          topOffset: 60,
+
           text1: 'Thông báo',
           text2: 'Tạo món ăn thành công',
         });
@@ -108,7 +108,7 @@ export const createFoodAction =
       });
       Toast.show({
         type: 'error',
-        topOffset: 60,
+
         text1: 'Thông báo',
         text2: error.response.data.message,
       });
@@ -137,7 +137,7 @@ export const updateFoodAction =
       setTimeout(() => {
         Toast.show({
           type: 'success',
-          topOffset: 60,
+
           text1: 'Thông báo',
           text2: 'Cập nhật món ăn thành công',
         });
@@ -149,7 +149,7 @@ export const updateFoodAction =
       });
       Toast.show({
         type: 'error',
-        topOffset: 60,
+
         text1: 'Thông báo',
         text2: error.response.data.message,
       });
@@ -173,7 +173,7 @@ export const deleteFoodAction = id => async dispatch => {
       });
       Toast.show({
         type: 'success',
-        topOffset: 60,
+
         text1: 'Thông báo',
         text2: 'Xoá món ăn thành công',
       });
@@ -184,7 +184,7 @@ export const deleteFoodAction = id => async dispatch => {
     });
     Toast.show({
       type: 'error',
-      topOffset: 60,
+
       text1: 'Thông báo',
       text2: error.response.data.message,
     });

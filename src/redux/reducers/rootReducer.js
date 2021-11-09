@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { feedReducer } from '../store/feed/reducers/feedReducer.js';
 import { foodReducer } from '../store/food/reducers/foodReducer.js';
 import { tagReducer } from '../store/tag/reducer/tagReducer.js';
 import { authReducer } from './authReducer.js';
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   file: fileReducer,
   tag: tagReducer,
   food: foodReducer,
+  feed: feedReducer,
 });
 
 export default rootReducer;

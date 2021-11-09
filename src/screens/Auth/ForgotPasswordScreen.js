@@ -24,14 +24,14 @@ const ForgotPasswordScreen = ({ navigation, route }) => {
     ) {
       Toast.show({
         type: 'error',
-        topOffset: 60,
+
         text1: 'Thông báo',
         text2: 'Không được để trống.',
       });
     } else if (password.trim() !== newPass.trim()) {
       Toast.show({
         type: 'error',
-        topOffset: 60,
+
         text1: 'Thông báo',
         text2: 'Mật khẩu không giống nhau.',
       });

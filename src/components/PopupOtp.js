@@ -11,7 +11,7 @@ const PopupOtp = ({ showDialog, setShowDialog, navigation }) => {
     if (otp.length === 0) {
       Toast.show({
         type: 'error',
-        topOffset: 60,
+
         text1: 'Thông báo',
         text2: 'Không được để trống.',
       });

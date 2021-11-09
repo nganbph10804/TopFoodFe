@@ -1,20 +1,13 @@
-import { Ionicons } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  Picker,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import {
-  ActivityIndicator,
-  Searchbar,
-  Subheading,
-  TextInput,
-} from 'react-native-paper';
+import { ActivityIndicator, Searchbar, Subheading } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import FilterCtg from '../../../components/store/FilterCtg.js';
 import FilterModal from '../../../components/store/FilterModal.js';
@@ -124,7 +117,6 @@ const FoodListScreen = ({ navigation }) => {
           value={searchValue}
           onChangeText={searchValue => setSearchValue(searchValue)}
           style={styles.search}
-          onIconPress={() => console.log(true)}
           clearIcon={() => (
             <MaterialIcons
               name="cancel"
