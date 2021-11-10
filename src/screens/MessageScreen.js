@@ -1,12 +1,12 @@
 import { Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
-import { Alert, FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
-import { Button, Dialog, Paragraph, Portal, Provider, Searchbar } from 'react-native-paper';
+import { Alert, FlatList, StyleSheet, TouchableOpacity, View, Text, CheckBox } from "react-native";
+import { Button, Dialog, Paragraph, Portal, Provider, Searchbar, Card } from 'react-native-paper';
 import Toast from "react-native-toast-message";
 import { useDispatch, useSelector } from "react-redux";
 import { friendListAction } from "../redux/actions/friendAction";
 import {
-  Card, Container, MessageText, PostTime, TextSection, UserImg, UserImgWrapper, UserInfo, UserInfoText,
+  Cardd, Container, MessageText, PostTime, TextSection, UserImg, UserImgWrapper, UserInfo, UserInfoText,
   UserName
 } from "../styles/MessageStyle";
 import fb from './../Firebase/config';
@@ -20,10 +20,14 @@ const MessagesScreen = ({ navigation }) => {
   const { id, avatar, name } = useSelector(state => state.auth.profile);
   const { friend } = useSelector(state => state.friend);
   const hideDialog = () => setVisible(false)
+  const hideDialogCreate = () => setVisibleCreate(false)
   const [visible, setVisible] = useState(false);
+  const [visibleCreate, setVisibleCreate] = useState(false);
   const [lstRoom, setLstRoom] = useState([]);
   const [lstUser, setLstUser] = useState([]);
   const [lstSuggest, setLstSuggest] = useState([]);
+
+  const [products, setProducts] = useState([]);
   const dispatch = useDispatch();
 
   function toDateTime(secs) {
@@ -76,7 +80,6 @@ const MessagesScreen = ({ navigation }) => {
     }
   }
 
-
   const onDeleteConversation = (uid) => {
     Alert.alert(
       "Thông báo",
@@ -119,6 +122,79 @@ const MessagesScreen = ({ navigation }) => {
     );
   }
 
+  const handleChange = (id) => {
+    let temp = products.map((product) => {
+      if (id === product.id) {
+        return { ...product, isChecked: !product.isChecked };
+      }
+      return product;
+    });
+    setProducts(temp);
+  };
+  const onCreateGroup = () => {
+    try {
+      let selected = products.filter((product) => product.isChecked);
+    // console.log(selected)
+      let lstId = selected.map(lt => lt._id);
+      let strVal = lstId.map(String);
+    const conversation = {
+      nameRoom: `Nhóm của ${name}`,
+      userId: [...strVal,id.toString()],
+      imgRoom: avatar,
+      lastMessage: `${name} đã tạo nhóm!`,
+      lastMessageTime: new Date()
+    };
+    RoomsRef.add(conversation);
+    hideDialogCreate()
+
+        Toast.show({
+          type: 'success',
+          topOffset: 40,
+          text1: 'Thông báo',
+          text2: 'Tạo cuộc trò chuyện thành công!',
+        });
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        topOffset: 40,
+        text1: 'Thông báo',
+        text2: 'Có lỗi không xác định!',
+      });
+    }
+
+  }
+
+
+  const renderFlatList = (renderData) => {
+    return (
+      <FlatList style={{ height: 360 }}
+        keyExtractor={(item) => item.id.toString()}
+        data={renderData}
+        renderItem={({ item }) => (
+          <Cardd>
+            <UserInfo>
+              <UserImgWrapper>
+                <UserImg source={{ uri: item.avatar }} />
+              </UserImgWrapper>
+              <TextSection>
+                <UserInfoText>
+                  <UserName>{item.name}</UserName>
+                </UserInfoText>
+                <CheckBox style={{right:10}}
+                  value={item.isChecked}
+                  onChange={() => {
+                    handleChange(item.id);
+                  }}
+                />
+              </TextSection>
+            </UserInfo>
+          </Cardd>
+        )}
+      />
+    );
+  };
+
+
   useEffect(() => {
     const querySnapshot = RoomsRef.where("userId", "array-contains", `${id}`).orderBy("lastMessageTime", "desc")
     querySnapshot.onSnapshot(snap => {
@@ -145,33 +221,39 @@ const MessagesScreen = ({ navigation }) => {
             "avatar": avatar
           })
         } else {
-          if(avatar == "" || avatar == null) {
+          if (avatar == "" || avatar == null) {
             UserRef.add({
               "_id": id,
               "name": name,
               "avatar": "https://us.123rf.com/450wm/afe207/afe2071602/afe207160200158/52329668-photo-de-profil-d-avatar-masculin-ombre-l%C3%A9g%C3%A8re-de-silhouette.jpg?ver=6"
             })
-          }else{
-          UserRef.add({
-            "_id": id,
-            "name": name, 
-            "avatar": avatar
-          })
+          } else {
+            UserRef.add({
+              "_id": id,
+              "name": name,
+              "avatar": avatar
+            })
+          }
         }
-        }
-
-
         dispatch(friendListAction(0))
         const dataFilter = dataUser.filter(item => item._id !== id);
         setLstSuggest(dataFilter)
-        setLstUser(friend)
-       
       }
 
     )
     return () => { setLstRoom([]); setLstUser([]) }
 
   }, [dispatch])
+
+  setTimeout(() => {
+    setLstUser(friend)
+  }, 600);
+
+  const onOpenPopupCreate = () => {
+    const newLst = lstSuggest.map(el => ({ ...el, isChecked: false }));
+    setProducts(newLst)
+    setVisibleCreate(true);
+  }
 
   return (
     <Provider>
@@ -181,7 +263,8 @@ const MessagesScreen = ({ navigation }) => {
             <Dialog.Title>Tạo cuộc trò chuyện mới</Dialog.Title>
             <Dialog.Content>
               <Paragraph>Tạo nhóm mới</Paragraph>
-              <TouchableOpacity onPress={() => { }}>
+
+              <TouchableOpacity onPress={() => { onOpenPopupCreate() }}>
                 <FontAwesome name='group' size={23} color='blue' style={styles.createGroup} />
               </TouchableOpacity>
 
@@ -193,11 +276,10 @@ const MessagesScreen = ({ navigation }) => {
                     data={lstUser}
                     keyExtractor={(item) => item.accountId.toString()}
                     renderItem={({ item }) => (
-                      <Card
+                      <Cardd
                         onPress={() => {
                           onCreateConverSation(item.accountId, item.profile.name, item.profile.avatar)
-                        }}
-                      >
+                        }}  >
                         <UserInfo>
                           <UserImgWrapper>
                             <UserImg source={{ uri: item.profile.avatar }} />
@@ -208,38 +290,49 @@ const MessagesScreen = ({ navigation }) => {
                             </UserInfoText>
                           </TextSection>
                         </UserInfo>
-                      </Card>
+                      </Cardd>
                     )}
                   />
                 </>)
                 : (<></>)}
-                  
-                <Paragraph>Những người bạn có thể biết</Paragraph>
-                  <FlatList
-                    style={{ height: 200 }}
-                    data={lstSuggest}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={({ item }) => (
-                      <Card
-                        onPress={() => {
-                          onCreateConverSation(item._id, item.name, item.avatar)
-                        }} >
-                        <UserInfo>
-                          <UserImgWrapper>
-                            <UserImg source={{ uri: item.avatar }} />
-                          </UserImgWrapper>
-                          <TextSection>
-                            <UserInfoText>
-                              <UserName>{item.name}</UserName>
-                            </UserInfoText>
-                          </TextSection>
-                        </UserInfo>
-                      </Card>
-                    )}
-                  />
+              <Paragraph>Những người bạn có thể biết</Paragraph>
+              <FlatList
+                style={{ height: 200 }}
+                data={lstSuggest}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                  <Cardd
+                    onPress={() => {
+                      onCreateConverSation(item._id, item.name, item.avatar)
+                    }} >
+                    <UserInfo>
+                      <UserImgWrapper>
+                        <UserImg source={{ uri: item.avatar }} />
+                      </UserImgWrapper>
+                      <TextSection>
+                        <UserInfoText>
+                          <UserName>{item.name}</UserName>
+                        </UserInfoText>
+                      </TextSection>
+                    </UserInfo>
+                  </Cardd>
+                )}
+              />
             </Dialog.Content>
             <Dialog.Actions>
               <Button onPress={hideDialog}>Hủy bỏ</Button>
+            </Dialog.Actions>
+          </Dialog>
+          <Dialog visible={visibleCreate} onDismiss={hideDialogCreate}>
+            <Dialog.Title>Tạo nhóm trò chuyện mới</Dialog.Title>
+            <Dialog.Content>
+              <View>
+                <View>{renderFlatList(products)}</View>
+              </View>
+            </Dialog.Content>
+            <Dialog.Actions>
+              <Button onPress={hideDialogCreate}>Hủy bỏ</Button>
+              <Button onPress={() => { onCreateGroup() }}>Tạo</Button>
             </Dialog.Actions>
           </Dialog>
         </Portal>
@@ -265,7 +358,7 @@ const MessagesScreen = ({ navigation }) => {
           data={lstRoom}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-            <Card
+            <Cardd
               onPress={() =>
                 navigation.navigate("Chat", {
                   userName: item.nameRoom,
@@ -291,7 +384,7 @@ const MessagesScreen = ({ navigation }) => {
                   <Entypo name="dots-three-vertical" style={{ marginTop: 30 }} size={20} />
                 </TouchableOpacity>
               </UserInfo>
-            </Card>
+            </Cardd>
           )}
         />
       </Container>
