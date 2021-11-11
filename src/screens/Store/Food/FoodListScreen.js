@@ -79,10 +79,6 @@ const FoodListScreen = ({ navigation }) => {
     return focus;
   }, [dispatch]);
 
-  useEffect(() => {
-    dispatch(searchTagAction());
-  }, [dispatch]);
-
   return (
     <View style={styles.main}>
       {loading && (
@@ -244,7 +240,7 @@ const styled = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flex: 1,
-    backgroundColor: '#fcfc',
+    backgroundColor: '#aec4e6',
   },
 });
 export default FoodListScreen;

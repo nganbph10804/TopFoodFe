@@ -180,7 +180,6 @@ export const multiFileAction = file => async dispatch => {
       }
     );
     const url = BASE_URL + data.data.map(i => i.path);
-    const type = mime.getType(url);
     setTimeout(() => {
       dispatch({
         type: MULTI_FILE,

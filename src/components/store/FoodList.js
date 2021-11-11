@@ -9,6 +9,7 @@ import { deleteFoodAction } from '../../redux/store/food/actions/foodAction.js';
 
 const FoodList = ({ food, navigation }) => {
   const dispatch = useDispatch();
+  const [isVisible, setIsVisible] = useState(false);
   const handlerOption = () => {
     setIsVisible(true);
   };
@@ -16,7 +17,6 @@ const FoodList = ({ food, navigation }) => {
     dispatch(deleteFoodAction(food.id));
     setIsVisible(false);
   };
-  const [isVisible, setIsVisible] = useState(false);
   const list = [
     {
       title: 'Cập nhật',

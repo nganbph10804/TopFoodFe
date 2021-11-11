@@ -1,3 +1,4 @@
+import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import { authHeader } from '../../../authHeader.js';
 import { CLEAR_FILE } from '../../../types/fileType.js';
@@ -21,10 +22,9 @@ export const feedListAction = () => async dispatch => {
         headers: await authHeader(),
       }
     );
-    console.log(data.data);
     dispatch({
       type: FEED_LIST,
-      payload: data.data.data,
+      payload: data.data,
     });
     dispatch({
       type: CLEAR_FILE,
@@ -72,80 +72,105 @@ export const feedDetailAction = id => async dispatch => {
     });
   }
 };
-export const createFeedAction = (content, files, tagIds) => async dispatch => {
-  dispatch({
-    type: FEED_REQUEST,
-  });
-  try {
-    await axios.post(
-      `http://34.67.241.66:8080/store-profile/post/create`,
-      {
-        content: content,
-        files: files,
-        tagIds: tagIds,
-      },
-      {
-        headers: await authHeader(),
-      }
-    );
+export const createFeedAction =
+  (content, files, tagIds, navigation) => async dispatch => {
     dispatch({
-      type: CLEAR_FILE,
+      type: FEED_REQUEST,
     });
-    Toast.show({
-      type: 'success',
+    try {
+      await axios.post(
+        `http://34.67.241.66:8080/store-profile/post/create`,
+        {
+          content: content,
+          files: files,
+          tagIds: tagIds,
+        },
+        {
+          headers: await authHeader(),
+        }
+      );
+      const { data } = await axios.get(
+        `http://34.67.241.66:8080/store-profile/list-post?page=0&pageSize=200`,
+        {
+          headers: await authHeader(),
+        }
+      );
+      dispatch({
+        type: FEED_LIST,
+        payload: data.data,
+      });
+      dispatch({
+        type: CLEAR_FILE,
+      });
+      Toast.show({
+        type: 'success',
+        text1: 'Thông báo',
+        text2: 'Tạo bài viết thành công',
+      });
+      if (navigation) navigation.navigate('FeedListScreen');
+    } catch (error) {
+      dispatch({
+        type: FEED_FAILURE,
+      });
+      Toast.show({
+        type: 'error',
 
-      text1: 'Thông báo',
-      text2: 'Tạo bài viết thành công',
-    });
-  } catch (error) {
+        text1: 'Thông báo',
+        text2: error.response.data.message,
+      });
+    }
+  };
+export const updateFeedAction =
+  (content, files, id, tags, navigation) => async dispatch => {
     dispatch({
-      type: FEED_FAILURE,
+      type: FEED_REQUEST,
     });
-    Toast.show({
-      type: 'error',
+    try {
+      await axios.put(
+        `http://34.67.241.66:8080/store-profile/post/update`,
+        {
+          content: content,
+          files: files,
+          id: id,
+          tagIds: tags,
+        },
+        {
+          headers: await authHeader(),
+        }
+      );
+      const { data } = await axios.get(
+        `http://34.67.241.66:8080/store-profile/list-post?page=0&pageSize=200`,
+        {
+          headers: await authHeader(),
+        }
+      );
+      dispatch({
+        type: FEED_LIST,
+        payload: data.data,
+      });
+      dispatch({
+        type: CLEAR_FILE,
+      });
+      Toast.show({
+        type: 'success',
 
-      text1: 'Thông báo',
-      text2: error.response.data.message,
-    });
-  }
-};
-export const updateFeedAction = (content, files, tagIds) => async dispatch => {
-  dispatch({
-    type: FEED_REQUEST,
-  });
-  try {
-    await axios.put(
-      `http://34.67.241.66:8080/store-profile/post/update`,
-      {
-        content: content,
-        files: files,
-        tagIds: tagIds,
-      },
-      {
-        headers: await authHeader(),
-      }
-    );
-    dispatch({
-      type: CLEAR_FILE,
-    });
-    Toast.show({
-      type: 'success',
+        text1: 'Thông báo',
+        text2: 'Cập nhật bài viết thành công',
+      });
+      if (navigation) navigation.navigate('FeedListScreen');
+    } catch (error) {
+      console.log('log 🚀 ~ file: feedAction.js ~ line 143 ~ error', error);
+      dispatch({
+        type: FEED_FAILURE,
+      });
+      Toast.show({
+        type: 'error',
 
-      text1: 'Thông báo',
-      text2: 'Cập nhật bài viết thành công',
-    });
-  } catch (error) {
-    dispatch({
-      type: FEED_FAILURE,
-    });
-    Toast.show({
-      type: 'error',
-
-      text1: 'Thông báo',
-      text2: error.response.data.message,
-    });
-  }
-};
+        text1: 'Thông báo',
+        text2: error.response.data.message,
+      });
+    }
+  };
 export const deleteFeedAction = id => async dispatch => {
   dispatch({
     type: FEED_REQUEST,
@@ -153,11 +178,6 @@ export const deleteFeedAction = id => async dispatch => {
   try {
     await axios.delete(
       `http://34.67.241.66:8080/store-profile/post/delete/${id}`,
-      {
-        content: content,
-        files: files,
-        tagIds: tagIds,
-      },
       {
         headers: await authHeader(),
       }
@@ -167,6 +187,7 @@ export const deleteFeedAction = id => async dispatch => {
     });
     dispatch({
       type: DELETE_FEED,
+      payload: id,
     });
     Toast.show({
       type: 'success',

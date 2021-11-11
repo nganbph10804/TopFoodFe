@@ -2,6 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import { COLORS } from '../constants/color.const.js';
 import CreateFeedScreen from '../screens/Store/Feed/CreateFeedScreen.js';
+import EditFeedScreen from '../screens/Store/Feed/EditFeedScreen.js';
 import FeedListScreen from '../screens/Store/Feed/FeedListScreen.js';
 import CreateFoodScreen from '../screens/Store/Food/CreateFoodScreen.js';
 import EditFoodScreen from '../screens/Store/Food/EditFoodScreen.js';
@@ -71,6 +72,13 @@ const StoreNavigation = () => {
         component={CreateFeedScreen}
         options={{
           title: 'Tạo bài viết',
+        }}
+      />
+      <Stack.Screen
+        name="EditFeedScreen"
+        component={EditFeedScreen}
+        options={{
+          title: 'Chỉnh sửa',
         }}
       />
     </Stack.Navigator>

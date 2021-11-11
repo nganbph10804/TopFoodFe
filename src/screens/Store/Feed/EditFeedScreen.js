@@ -4,6 +4,7 @@ import {
   FontAwesome5,
   Ionicons,
   MaterialCommunityIcons,
+  MaterialIcons,
 } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import React, { useEffect, useState } from 'react';
@@ -18,17 +19,19 @@ import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../../constants/color.const.js';
 import { multiFileAction } from '../../../redux/actions/fileAction.js';
-import { updateFoodAction } from '../../../redux/store/food/actions/foodAction.js';
+import { updateFeedAction } from '../../../redux/store/feed/actions/feedAction.js';
 import { InputUpdate, styles } from '../../../styles/paper.js';
 import { styled } from '../../../styles/store.js';
 
-const EditFoodScreen = ({ route, navigation }) => {
-  const { content, files, id, name, price, tag } = route.params;
+const EditFeedScreen = ({ route, navigation }) => {
+  const { content, files, id, tags } = route.params;
+  console.log(
+    'log 🚀 ~ file: EditFeedScreen.js ~ line 28 ~ EditFeedScreen ~ tags',
+    tags.map(i => i.id)
+  );
   const file = useSelector(state => state.file.files);
   const loadingFile = useSelector(state => state.file.loading);
   const [newContent, setNewContent] = useState(content);
-  const [newName, setName] = useState(name);
-  const [newPrice, setPrice] = useState(price);
   const dispatch = useDispatch();
 
   const handlerUpload = async () => {
@@ -42,28 +45,21 @@ const EditFoodScreen = ({ route, navigation }) => {
       dispatch(multiFileAction(result.uri));
     }
   };
-  const handlerCreate = () => {
+  const handlerUpdate = () => {
     file.map(i => files.push(i));
-    if (
-      newContent.trim().length < 1 &&
-      newName.trim().length < 1 &&
-      newPrice.trim().length < 1
-    ) {
+    if (newContent.trim().length < 1) {
       Toast.show({
         type: 'error',
-
         text1: 'Thông báo',
         text2: 'Không được để trống',
       });
     } else {
       dispatch(
-        updateFoodAction(
-          newContent,
+        updateFeedAction(
+          content,
           files,
           id,
-          newName,
-          newPrice,
-          tag.id,
+          tags.map(i => i.id),
           navigation
         )
       );
@@ -134,7 +130,7 @@ const EditFoodScreen = ({ route, navigation }) => {
                         <Image
                           key={index}
                           source={{ uri: i }}
-                          style={{ width: 70, height: 70, margin: 5 }}
+                          style={{ width: 90, height: 90, margin: 5 }}
                         />
                       ))}
                     </View>
@@ -147,7 +143,7 @@ const EditFoodScreen = ({ route, navigation }) => {
                         <Image
                           key={index}
                           source={{ uri: i }}
-                          style={{ width: 70, height: 70, margin: 5 }}
+                          style={{ width: 90, height: 90, margin: 5 }}
                         />
                       ))}
                     </View>
@@ -162,54 +158,25 @@ const EditFoodScreen = ({ route, navigation }) => {
                   size={24}
                   color={`${COLORS.blue[1]}`}
                 />
-                <Subheading style={{ paddingLeft: 10 }}>
-                  Tag món ăn / {tag.tagName}
+                <Subheading
+                  style={{ paddingLeft: 10, color: `${COLORS.purple[3]}` }}
+                >
+                  Tag món ăn
                 </Subheading>
+                {tags.map(i => (
+                  <Subheading
+                    key={i.id}
+                    style={{ color: `${COLORS.purple[3]}` }}
+                  >
+                    \# {i.tagName}{' '}
+                  </Subheading>
+                ))}
               </View>
             </View>
-            <View style={{ position: 'relative' }}>
+            <View style={{ position: 'relative', marginTop: -10 }}>
               <InputUpdate
                 mode="outlined"
-                label="Tên món ăn"
-                value={newName}
-                onChangeText={newName => setName(newName)}
-                left={
-                  <TextInput.Icon
-                    name={() => (
-                      <Ionicons
-                        name="person"
-                        size={24}
-                        color={`${COLORS.blue[1]}`}
-                      />
-                    )}
-                  />
-                }
-              />
-            </View>
-            <View style={{ position: 'relative', paddingTop: 20 }}>
-              <InputUpdate
-                mode="outlined"
-                label="Giá tiền"
-                keyboardType="numeric"
-                value={newPrice.toString()}
-                onChangeText={newPrice => setPrice(newPrice)}
-                left={
-                  <TextInput.Icon
-                    name={() => (
-                      <FontAwesome5
-                        name="money-bill-wave"
-                        size={24}
-                        color={`${COLORS.blue[1]}`}
-                      />
-                    )}
-                  />
-                }
-              />
-            </View>
-            <View style={{ position: 'relative', paddingTop: 20 }}>
-              <InputUpdate
-                mode="outlined"
-                label="Mô tả"
+                label="Nội dung"
                 value={newContent}
                 onChangeText={newContent => setNewContent(newContent)}
                 multiline={true}
@@ -231,9 +198,12 @@ const EditFoodScreen = ({ route, navigation }) => {
               <Button
                 mode="contained"
                 color={COLORS.blue[1]}
-                onPress={() => handlerCreate()}
+                onPress={() => handlerUpdate()}
+                icon={() => (
+                  <MaterialIcons name="update" size={24} color="white" />
+                )}
               >
-                Cập nhật món ăn
+                Cập nhật bài viết
               </Button>
             </View>
           </View>
@@ -243,4 +213,4 @@ const EditFoodScreen = ({ route, navigation }) => {
   );
 };
 
-export default EditFoodScreen;
+export default EditFeedScreen;
