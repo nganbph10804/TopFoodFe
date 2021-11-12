@@ -7,14 +7,12 @@ import { Button } from "react-native";
 
 const Stack = createStackNavigator();
 
-const MessageStack = ({ navigation }) => {
+const MessageStack = () => {
   return (
-    <Stack.Navigator
-  
-    >
+    <Stack.Navigator>
       <Stack.Screen
         name="Messages"
-        options={({ route }) => ({
+        options={() => ({
           headerShown: false,
         })}
         component={MessageScreen}

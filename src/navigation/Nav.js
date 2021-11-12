@@ -24,7 +24,7 @@ const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
 const Nav = () => {
   const role = useSelector(state => state.auth.account.role);
-  const {avatar} = useSelector(state => state.auth.profile)
+  const { avatar } = useSelector(state => state.auth.profile);
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -44,7 +44,7 @@ const Nav = () => {
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        headerShown: route.name == 'message' ? false :true,
+        // headerShown: route.name == 'message' ? false : true,
         tabBarActiveTintColor: 'tomato',
         tabBarInactiveTintColor: 'gray',
         headerStyle: {

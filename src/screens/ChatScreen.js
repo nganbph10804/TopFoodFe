@@ -1,11 +1,15 @@
-import { FontAwesome, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import axios from "axios";
+import {
+  FontAwesome,
+  Ionicons,
+  MaterialCommunityIcons,
+} from '@expo/vector-icons';
+import axios from 'axios';
 import * as Clipboard from 'expo-clipboard';
 import * as handlePickImage from 'expo-image-picker';
 import mime from 'mime';
-import React, { useCallback, useEffect, useState } from "react";
-import { LogBox, View } from "react-native";
-import { Actions, Bubble, GiftedChat, Send } from "react-native-gifted-chat";
+import React, { useCallback, useEffect, useState } from 'react';
+import { LogBox, View } from 'react-native';
+import { Actions, Bubble, GiftedChat, Send } from 'react-native-gifted-chat';
 import Toast from 'react-native-toast-message';
 import fb from './../Firebase/config';
 import deviceStorage from './../redux/deviceStorage ';
@@ -14,10 +18,9 @@ const db = fb.firestore();
 const chatsRef = db.collection('chats');
 const roomRef = db.collection('Rooms');
 
-
 const ChatScreen = ({ navigation, route }) => {
   LogBox.ignoreAllLogs();
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
   const [messages, setMessages] = useState([]);
   const { _id, avt, uname, idRoom } = route.params;
 
@@ -26,28 +29,35 @@ const ChatScreen = ({ navigation, route }) => {
       _id: _id,
       name: uname,
       avatar: avt,
-    })
-    const unsubscribe = chatsRef.where("idRoom", "==", idRoom).onSnapshot((querySnapshot) => {
-      const messagesFirestore = querySnapshot
-        .docChanges()
-        .filter(({ type }) => type == 'added')
-        .map(({ doc }) => {
-          const message = doc.data()
-          return { ...message, createdAt: message.createdAt.toDate() }
-        })
-        .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-      appendMessages(messagesFirestore)
-    })
-    return () => { setMessages([]); unsubscribe() };
+    });
+    const unsubscribe = chatsRef
+      .where('idRoom', '==', idRoom)
+      .onSnapshot(querySnapshot => {
+        const messagesFirestore = querySnapshot
+          .docChanges()
+          .filter(({ type }) => type == 'added')
+          .map(({ doc }) => {
+            const message = doc.data();
+            return { ...message, createdAt: message.createdAt.toDate() };
+          })
+          .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+        appendMessages(messagesFirestore);
+      });
+    return () => {
+      setMessages([]);
+      unsubscribe();
+    };
   }, []);
 
   const appendMessages = useCallback(
-    (messages) => {
-      setMessages((previousMessages) => GiftedChat.append(previousMessages, messages))
+    messages => {
+      setMessages(previousMessages =>
+        GiftedChat.append(previousMessages, messages)
+      );
     },
     [messages]
-  )
-  const renderSend = (props) => {
+  );
+  const renderSend = props => {
     return (
       <Send {...props}>
         <View>
@@ -62,18 +72,18 @@ const ChatScreen = ({ navigation, route }) => {
     );
   };
 
-  const renderBubble = (props) => {
+  const renderBubble = props => {
     return (
       <Bubble
         {...props}
         wrapperStyle={{
           right: {
-            backgroundColor: "#2e64e5",
+            backgroundColor: '#2e64e5',
           },
         }}
         textStyle={{
           right: {
-            color: "#fff",
+            color: '#fff',
           },
         }}
       />
@@ -81,25 +91,24 @@ const ChatScreen = ({ navigation, route }) => {
   };
 
   async function uploadFile(file) {
-
     try {
       let formData = new FormData();
       formData.append('file', {
         uri: file,
         type: mime.getType(file),
         name: file.split('/').pop(),
-      })
+      });
       const token = await deviceStorage.loadJWT();
       const { data } = await axios.post(
-        'http://34.67.241.66:8080/files/uploads'
-        , formData
-        , {
+        'http://34.67.241.66:8080/files/uploads',
+        formData,
+        {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data',
-          }
+          },
         }
-      )
+      );
       return 'http://34.67.241.66:8080' + data.data.map(i => i.path);
     } catch (error) {
       Toast.show({
@@ -109,7 +118,6 @@ const ChatScreen = ({ navigation, route }) => {
         text2: error.response.data.message
       });
     }
-
   }
 
   const scrollToBottomComponent = () => {
@@ -127,28 +135,28 @@ const ChatScreen = ({ navigation, route }) => {
               allowsEditing: true,
               aspect: [4, 3],
               quality: 1,
-            })
+            });
             const path = await uploadFile(result.uri);
             const message = {
-              "_id": (Math.random() + 1).toString(36).substring(2),
-              "image": path,
-              "messageType": "image",
-              "createdAt": new Date(),
-              "idRoom": idRoom,
-              "user": user
+              _id: (Math.random() + 1).toString(36).substring(2),
+              image: path,
+              messageType: 'image',
+              createdAt: new Date(),
+              idRoom: idRoom,
+              user: user,
             };
             if (!result.cancelled) {
               chatsRef.add(message);
               roomRef.doc(idRoom).update({
-                "lastMessageTime": new Date(),
-                "lastMessage": uname + ` đã gửi 1 ảnh.`
-              })
+                lastMessageTime: new Date(),
+                lastMessage: uname + ` đã gửi 1 ảnh.`,
+              });
               useCallback(
-                (messages) => {
-                  GiftedChat.append(messages)
+                messages => {
+                  GiftedChat.append(messages);
                 },
                 [messages]
-              )
+              );
             }
           },
         }}
@@ -156,9 +164,9 @@ const ChatScreen = ({ navigation, route }) => {
           <Ionicons name='ios-image' size={22} color='blue' />
         )}
       />
-    )
+    );
   }
-  const onDelete = (messageIdToDelete) => {
+  const onDelete = messageIdToDelete => {
     let batch = db.batch();
       const deletequery = chatsRef.where("_id","==",messageIdToDelete);
       deletequery.get().then(
@@ -186,61 +194,64 @@ const ChatScreen = ({ navigation, route }) => {
   const onLongPress = (context, message) => {
     const options = ['Coppy', 'Delete Message', 'Cancel'];
     const cancelButtonIndex = options.length - 1;
-    context.actionSheet().showActionSheetWithOptions({
-      options,
-      cancelButtonIndex
-    }, (buttonIndex) => {
-      switch (buttonIndex) {
-        case 0:
-          if(message.tex !== null){
-            Clipboard.setString(message.text)
-          }
-          Toast.show({
-            type: 'success',
-            topOffset: 40,
-            text1: 'Thông báo',
-            text2: 'Đã coppy vào bộ nhớ tạm',
-          });
-          break;
-        case 1:
-          if(message.user._id == _id){
-              onDelete(message._id)
-          }else{
+    context.actionSheet().showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex,
+      },
+      buttonIndex => {
+        switch (buttonIndex) {
+          case 0:
+            if (message.tex !== null) {
+              Clipboard.setString(message.text);
+            }
             Toast.show({
-              type: 'error',
+              type: 'success',
               topOffset: 40,
               text1: 'Thông báo',
-              text2: 'Bạn không có quyền xóa tin nhắn này!',
+              text2: 'Đã coppy vào bộ nhớ tạm',
             });
-          }
-          break;
-        case 2:
-          break;
+            break;
+          case 1:
+            if (message.user._id == _id) {
+              onDelete(message._id);
+            } else {
+              Toast.show({
+                type: 'error',
+                topOffset: 40,
+                text1: 'Thông báo',
+                text2: 'Bạn không có quyền xóa tin nhắn này!',
+              });
+            }
+            break;
+          case 2:
+            break;
+        }
       }
-    });
-  }
-
-
+    );
+  };
 
   async function handleSend(messages) {
-    const writes = messages.map((m) => {
+    const writes = messages.map(m => {
       chatsRef.add({
         ...m,
-        "idRoom": idRoom,
-      })
+        idRoom: idRoom,
+      });
       roomRef.doc(idRoom).update({
-        "lastMessageTime": new Date(),
-        "lastMessage": m.text
-      })
-    })
-    await Promise.all(writes)
+        lastMessageTime: new Date(),
+        lastMessage: m.text,
+      });
+    });
+    await Promise.all(writes);
   }
 
   return (
     <GiftedChat
       onLongPress={onLongPress}
       messages={messages}
-      onSend={(messages) => { handleSend(messages) }}
+      onSend={messages => {
+        handleSend(messages);
+      }}
       user={user}
       renderBubble={renderBubble}
       alwaysShowSend

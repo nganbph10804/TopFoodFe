@@ -127,7 +127,7 @@ const ProfileDetailScreen = ({ navigation }) => {
                   <Avatar.Image
                     style={{
                       borderWidth: 2,
-                      borderColor: `${COLORS.blue[1]}`,
+                      borderColor: `${COLORS.purple[4]}`,
                       overflow: 'hidden',
                     }}
                     source={{

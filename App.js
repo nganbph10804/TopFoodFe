@@ -1,8 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
-import { Image } from 'react-native';
-import { Header } from 'react-native-elements';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 import { Provider } from 'react-redux';
 import GlobalRoute from './src/navigation/GlobalRoute.js';
@@ -10,15 +8,15 @@ import store from './src/redux/store';
 
 function App() {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaProvider>
       <Provider store={store}>
         <NavigationContainer>
-          <Header />
           <GlobalRoute />
           <Toast ref={ref => Toast.setRef(ref)} />
+          {/* <StatusBar backgroundColor={`${COLORS.blue[4]}`} /> */}
         </NavigationContainer>
       </Provider>
-    </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 export default App;

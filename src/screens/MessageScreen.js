@@ -42,13 +42,17 @@ const MessagesScreen = ({ navigation }) => {
         userId: [`${targetId}`, `${id}`],
         imgRoom: targetAvatar,
         lastMessage: `${name} đã tạo nhóm!`,
-        lastMessageTime: new Date()
+        lastMessageTime: new Date(),
       };
       let check = false;
       lstRoom.every(item => {
-        if (conversation.userId.every((value, index) => value === item.userId[index])) {
+        if (
+          conversation.userId.every(
+            (value, index) => value === item.userId[index]
+          )
+        ) {
           check = true;
-          hideDialog()
+          hideDialog();
           Toast.show({
             type: 'error',
             topOffset: 40,
@@ -57,10 +61,10 @@ const MessagesScreen = ({ navigation }) => {
           });
           return false;
         }
-      })
+      });
       if (check == false) {
         RoomsRef.add(conversation);
-        hideDialog()
+        hideDialog();
 
         Toast.show({
           type: 'success',
@@ -69,7 +73,6 @@ const MessagesScreen = ({ navigation }) => {
           text2: 'Tạo cuộc trò chuyện thành công!',
         });
       }
-
     } catch (error) {
       Toast.show({
         type: 'error',
@@ -78,7 +81,7 @@ const MessagesScreen = ({ navigation }) => {
         text2: error.response.data.message,
       });
     }
-  }
+  };
 
   const onDeleteConversation = (uid) => {
     Alert.alert(
@@ -196,15 +199,23 @@ const MessagesScreen = ({ navigation }) => {
 
 
   useEffect(() => {
-    const querySnapshot = RoomsRef.where("userId", "array-contains", `${id}`).orderBy("lastMessageTime", "desc")
+    const querySnapshot = RoomsRef.where(
+      'userId',
+      'array-contains',
+      `${id}`
+    ).orderBy('lastMessageTime', 'desc');
     querySnapshot.onSnapshot(snap => {
       const data = [
         ...snap.docs.map(doc => {
-          return { ...doc.data(), id: doc.id, timeConverter: doc.data().lastMessageTime.toDate() }
-        })
-      ]
+          return {
+            ...doc.data(),
+            id: doc.id,
+            timeConverter: doc.data().lastMessageTime.toDate(),
+          };
+        }),
+      ];
       setLstRoom(data);
-    })
+    });
 
     const querySnapshotUser = UserRef
     querySnapshotUser.get().then(
@@ -338,14 +349,17 @@ const MessagesScreen = ({ navigation }) => {
         </Portal>
 
         <View style={styles.container}>
-          <Searchbar style={styles.searchBarr}
+          <Searchbar
+            style={styles.searchBarr}
             inputStyle={{ fontSize: 16, paddingVertical: 5 }}
             placeholder="Search"
           />
 
           <TouchableOpacity
             style={styles.createBtn}
-            onPress={() => { setVisible(true) }}
+            onPress={() => {
+              setVisible(true);
+            }}
           >
             <Ionicons
               name="ios-create-outline"
@@ -356,16 +370,16 @@ const MessagesScreen = ({ navigation }) => {
         </View>
         <FlatList
           data={lstRoom}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => (
             <Cardd
               onPress={() =>
-                navigation.navigate("Chat", {
+                navigation.navigate('Chat', {
                   userName: item.nameRoom,
                   _id: id,
                   avt: avatar,
                   uname: name,
-                  idRoom: item.id
+                  idRoom: item.id,
                 })
               }
             >
@@ -397,7 +411,7 @@ export default MessagesScreen;
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   searchBarr: {
     marginVertical: 10,
@@ -406,11 +420,11 @@ const styles = StyleSheet.create({
     elevation: 0,
     backgroundColor: '#ebebebeb',
     height: 33,
-    width: '90%'
+    width: '90%',
   },
   createBtn: {
     justifyContent: 'center',
-    marginLeft: 15
+    marginLeft: 15,
   },
   inputt: {
     height: 30,
