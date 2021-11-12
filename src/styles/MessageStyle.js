@@ -8,7 +8,7 @@ export const Container = styled.View`
   background-color: #ffffff;
 `;
 
-export const Card = styled.TouchableOpacity`
+export const Cardd = styled.TouchableOpacity`
   width: 100%;
 `;
 

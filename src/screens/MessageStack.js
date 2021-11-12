@@ -1,7 +1,9 @@
-import { createStackNavigator } from '@react-navigation/stack';
-import React from 'react';
-import ChatScreen from './ChatScreen';
-import MessageScreen from './MessageScreen';
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+
+import MessageScreen from "./MessageScreen";
+import ChatScreen from "./ChatScreen";
+import { Button } from "react-native";
 
 const Stack = createStackNavigator();
 
@@ -21,7 +23,11 @@ const MessageStack = () => {
         options={({ route }) => ({
           title: route.params.userName,
           headerBackTitleVisible: false,
+          headerRight : () => (
+            <Button title="hihi" onPress={() =>{}} />
+          )
         })}
+        
       />
     </Stack.Navigator>
   );
