@@ -44,7 +44,7 @@ const Nav = () => {
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        headerShown: route.name == 'message' ? false : true,
+        // headerShown: route.name == 'message' ? false : true,
         tabBarActiveTintColor: 'tomato',
         tabBarInactiveTintColor: 'gray',
         headerStyle: {

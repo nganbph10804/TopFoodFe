@@ -115,7 +115,7 @@ const ChatScreen = ({ navigation, route }) => {
         type: 'error',
         topOffset: 40,
         text1: 'Thông báo',
-        text2: error.message,
+        text2: error.response.data.message
       });
     }
   }
