@@ -1,9 +1,9 @@
 import axios from 'axios';
 import mime from 'mime';
 import Toast from 'react-native-toast-message';
-import { BASE_URL } from '../../constants/file.const.js';
-import { authHeader } from '../authHeader.js';
-import deviceStorage from '../deviceStorage .js';
+import { BASE_URL } from '../../../constants/file.const.js';
+import { authHeader } from '../../authHeader.js';
+import deviceStorage from '../../deviceStorage .js';
 import {
   FILE_DONE,
   FILE_ERR,
@@ -55,7 +55,7 @@ export const uploadAvatar = (file, profile, navigation) => async dispatch => {
     });
     Toast.show({
       type: 'error',
-      topOffset: 60,
+
       text1: 'Thông báo',
       text2: 'Upload thất bại',
     });
@@ -104,7 +104,7 @@ export const uploadCover = (file, profile, navigation) => async dispatch => {
     });
     Toast.show({
       type: 'error',
-      topOffset: 60,
+
       text1: 'Thông báo',
       text2: 'Upload thất bại',
     });
@@ -138,7 +138,7 @@ const uploadProfile = async (
     .then(resp => {
       Toast.show({
         type: 'success',
-        topOffset: 60,
+
         text1: 'Thông báo',
         text2: 'Cập nhật thành công',
       });
@@ -149,7 +149,7 @@ const uploadProfile = async (
     .catch(err => {
       Toast.show({
         type: 'error',
-        topOffset: 60,
+
         text1: 'Thông báo',
         text2: 'Cập nhật thất bại',
       });
@@ -180,7 +180,6 @@ export const multiFileAction = file => async dispatch => {
       }
     );
     const url = BASE_URL + data.data.map(i => i.path);
-    const type = mime.getType(url);
     setTimeout(() => {
       dispatch({
         type: MULTI_FILE,
@@ -193,7 +192,7 @@ export const multiFileAction = file => async dispatch => {
     });
     Toast.show({
       type: 'error',
-      topOffset: 60,
+
       text1: 'Thông báo',
       text2: 'Upload thất bại',
     });

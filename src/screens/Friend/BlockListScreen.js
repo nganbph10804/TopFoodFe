@@ -4,7 +4,7 @@ import { ActivityIndicator } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import BlockList from '../../components/Friend/BlockList.js';
 import { COLORS } from '../../constants/color.const.js';
-import { blockListAction } from '../../redux/actions/friendAction.js';
+import { blockListAction } from '../../redux/friend/actions/friendAction.js';
 import { styles } from '../../styles/paper.js';
 
 const BlockListScreen = ({ navigation }) => {

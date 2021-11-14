@@ -23,8 +23,11 @@ import {
 import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
-import { updateProfileAction } from '../../redux/actions/authAction.js';
-import { uploadAvatar, uploadCover } from '../../redux/actions/fileAction.js';
+import { updateProfileAction } from '../../redux/auth/actions/authAction.js';
+import {
+  uploadAvatar,
+  uploadCover,
+} from '../../redux/file/actions/fileAction.js';
 import { InputUpdate, styles } from '../../styles/paper.js';
 
 const EditProfileScreen = ({ navigation }) => {
@@ -63,7 +66,7 @@ const EditProfileScreen = ({ navigation }) => {
     ) {
       Toast.show({
         type: 'error',
-        topOffset: 60,
+
         text1: 'Thông báo',
         text2: 'Không được để trống.',
       });

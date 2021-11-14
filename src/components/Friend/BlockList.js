@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Avatar, Button, Title } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { unblockAction } from '../../redux/actions/friendAction.js';
+import { unblockAction } from '../../redux/friend/actions/friendAction.js';
 import { styles } from '../../styles/paper.js';
 
 const Item = styled(View)`

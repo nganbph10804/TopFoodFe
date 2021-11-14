@@ -6,7 +6,7 @@ import { ActivityIndicator, Button, TextInput } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
-import { changePassAction } from '../../redux/actions/authAction.js';
+import { changePassAction } from '../../redux/auth/actions/authAction.js';
 import { InputUpdate, styles } from '../../styles/paper.js';
 
 const ChangePassScreen = () => {
@@ -21,7 +21,7 @@ const ChangePassScreen = () => {
     if (password.trim().length === 0 || newPass.trim().length === 0) {
       Toast.show({
         type: 'error',
-        topOffset: 60,
+
         text1: 'Thông báo',
         text2: 'Không được để trống.',
       });

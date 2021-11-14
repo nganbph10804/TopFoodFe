@@ -4,7 +4,7 @@ import { ActivityIndicator } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import FriendList from '../../components/Friend/FriendList.js';
 import { COLORS } from '../../constants/color.const.js';
-import { friendListAction } from '../../redux/actions/friendAction.js';
+import { friendListAction } from '../../redux/friend/actions/friendAction.js';
 import { styles } from '../../styles/paper.js';
 
 const FriendListScreen = ({ navigation }) => {

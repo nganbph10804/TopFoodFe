@@ -1,44 +1,23 @@
 import { useFonts } from '@expo-google-fonts/inter';
-import { MaterialIcons } from '@expo/vector-icons';
+import { AntDesign, Entypo, Fontisto, MaterialIcons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AppLoading from 'expo-app-loading';
 import React, { useState } from 'react';
-import { Alert } from 'react-native';
 import {
-  ImageBackground,
   KeyboardAvoidingView,
   Platform,
+  StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
-import {
-  Dialog,
-  Portal,
-  TextInput,
-  Button,
-  Provider,
-} from 'react-native-paper';
+import { Card, TextInput } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch } from 'react-redux';
-import styled from 'styled-components';
-import {
-  BtnDate,
-  BtnLogin,
-  InputAuth,
-  ViewDate,
-} from '../../components/index.js';
-import PopupOtp from '../../components/PopupOtp.js';
-import { registerAction } from '../../redux/actions/authAction.js';
+import { BtnLogin } from '../../components/index.js';
+import { COLORS } from '../../constants/color.const.js';
+import { registerAction } from '../../redux/auth/actions/authAction.js';
 import { InputUpdate } from '../../styles/paper.js';
-
-const image = {
-  uri: 'https://raw.githubusercontent.com/Leomin07/img/master/img-register-new.png',
-};
-
-const Page = styled(View)`
-  top: 7%;
-`;
 
 const RegisterScreen = ({ navigation }) => {
   const [name, setName] = useState('');
@@ -88,7 +67,7 @@ const RegisterScreen = ({ navigation }) => {
     ) {
       Toast.show({
         type: 'error',
-        topOffset: 60,
+
         text1: 'Thông báo',
         text2: 'Không được để trống.',
       });
@@ -100,26 +79,6 @@ const RegisterScreen = ({ navigation }) => {
     }
   };
 
-  const hasUnsavedChanges = Boolean(name, text, email, phone, password);
-  React.useEffect(
-    () =>
-      navigation.addListener('beforeRemove', e => {
-        if (!hasUnsavedChanges) {
-          return;
-        }
-        e.preventDefault();
-        Alert.alert('Thông báo', 'Bạn muốn không muốn đăng ký nữa?', [
-          { text: 'Không', style: 'cancel', onPress: () => {} },
-          {
-            text: 'Có',
-            style: 'destructive',
-            onPress: () => navigation.dispatch(e.data.action),
-          },
-        ]);
-      }),
-    [navigation, hasUnsavedChanges]
-  );
-
   let [fontsLoaded] = useFonts({
     'Courgette-Regular': require('../../../assets/fonts/Courgette-Regular.ttf'),
   });
@@ -127,130 +86,190 @@ const RegisterScreen = ({ navigation }) => {
     return <AppLoading />;
   } else {
     return (
-      <Provider>
-        <View>
-          <ImageBackground
-            resizeMode="stretch"
-            source={image}
-            style={{ width: '100%', height: '100%' }}
-          >
-            <Page>
-              <KeyboardAvoidingView>
-                <View>
-                  <PopupOtp
-                    setShowDialog={setShowDialog}
-                    showDialog={showDialog}
-                    navigation={navigation}
-                  />
-                </View>
-                <View>
-                  <Text
-                    style={{
-                      fontFamily: 'Courgette-Regular',
-                      fontSize: 27,
-                      color: '#fff',
-                      paddingLeft: 50,
-                      marginBottom: 20,
-                    }}
-                  >
-                    Hello..
-                  </Text>
-                </View>
-                <View>
-                  <InputAuth
-                    placeholder="Họ Tên"
-                    value={name}
-                    onChangeText={name => setName(name)}
-                  />
-                </View>
-                <View>
-                  <InputAuth
-                    placeholder="Email"
-                    value={email}
-                    onChangeText={email => setEmail(email)}
-                  />
-                </View>
-                <View>
-                  <InputAuth
-                    placeholder="Số Điện Thoại"
-                    keyboardType="number-pad"
-                    value={phone}
-                    onChangeText={phone => setPhone(phone)}
-                    maxLength={10}
-                  />
-                </View>
-                <View>
-                  <InputAuth
-                    placeholder="Username"
-                    value={username}
-                    onChangeText={username => setUsername(username)}
-                  />
-                </View>
-                <View style={{ position: 'relative' }}>
-                  <InputAuth
-                    placeholder="Password"
-                    secureTextEntry={hidden ? false : true}
-                    value={password}
-                    onChangeText={password => setPassword(password)}
-                  />
-                  <Icon
-                    name={hidden ? 'eye' : 'eye-slash'}
-                    size={20}
-                    color="white"
-                    onPress={() => setHidden(!hidden)}
-                    style={{ position: 'absolute', right: 63, top: 15 }}
-                  />
-                </View>
-                <View style={{ marginBottom: 30 }}>
-                  <View
-                    style={{
-                      position: 'relative',
-                    }}
-                  >
-                    <BtnDate onPress={showDatepicker}>
-                      <MaterialIcons
-                        name="date-range"
-                        size={28}
-                        color="white"
-                      />
-                    </BtnDate>
-                    <ViewDate>{text} </ViewDate>
-                  </View>
-                  {show && (
-                    <DateTimePicker
-                      testID="dateTimePicker"
-                      value={date}
-                      mode={mode}
-                      display="default"
-                      onChange={onChange}
+      <Card style={styled.main}>
+        <KeyboardAvoidingView>
+          <View style={{ marginTop: 40 }}>
+            <Text
+              style={{
+                fontFamily: 'Courgette-Regular',
+                fontSize: 27,
+                color: '#000',
+                paddingLeft: 30,
+              }}
+            >
+              Đăng ký
+            </Text>
+          </View>
+          <View style={styled.input}>
+            <InputUpdate
+              mode="outlined"
+              label="Họ và tên"
+              value={name}
+              onChangeText={name => setName(name)}
+              left={
+                <TextInput.Icon
+                  name={() => (
+                    <AntDesign
+                      name="user"
+                      size={24}
+                      color={`${COLORS.purple[3]}`}
                     />
                   )}
-                </View>
-                <View>
-                  <BtnLogin>
-                    <Text
-                      style={{ color: '#fff', fontSize: 22 }}
-                      onPress={() => registerHandler()}
-                    >
-                      Đăng Ký
-                    </Text>
-                  </BtnLogin>
-                </View>
-                <View style={{ alignSelf: 'center', marginTop: 20 }}>
-                  <Text
-                    style={{ color: '#fff', fontSize: 17 }}
-                    onPress={() => navigation.goBack()}
-                  >
-                    Đã có tài khoản?
-                  </Text>
-                </View>
-              </KeyboardAvoidingView>
-            </Page>
-          </ImageBackground>
-        </View>
-      </Provider>
+                />
+              }
+            />
+          </View>
+          <View style={styled.input}>
+            <InputUpdate
+              mode="outlined"
+              label="Email"
+              value={email}
+              onChangeText={email => setEmail(email)}
+              left={
+                <TextInput.Icon
+                  name={() => (
+                    <MaterialIcons
+                      name="email"
+                      size={24}
+                      color={`${COLORS.purple[3]}`}
+                    />
+                  )}
+                />
+              }
+            />
+          </View>
+          <View style={styled.input}>
+            <InputUpdate
+              mode="outlined"
+              label="Số điện thoại"
+              keyboardType="number-pad"
+              value={phone}
+              onChangeText={phone => setPhone(phone)}
+              maxLength={10}
+              left={
+                <TextInput.Icon
+                  name={() => (
+                    <AntDesign
+                      name="phone"
+                      size={24}
+                      color={`${COLORS.purple[3]}`}
+                    />
+                  )}
+                />
+              }
+            />
+          </View>
+          <View style={styled.input}>
+            <InputUpdate
+              mode="outlined"
+              label="Username"
+              value={username}
+              onChangeText={username => setUsername(username)}
+              left={
+                <TextInput.Icon
+                  name={() => (
+                    <AntDesign
+                      name="user"
+                      size={24}
+                      color={`${COLORS.purple[3]}`}
+                    />
+                  )}
+                />
+              }
+            />
+          </View>
+          <View style={styled.input}>
+            <InputUpdate
+              mode="outlined"
+              label="Password"
+              value={password}
+              onChangeText={password => setPassword(password)}
+              secureTextEntry={hidden ? false : true}
+              left={
+                <TextInput.Icon
+                  name={() =>
+                    hidden ? (
+                      <Entypo
+                        name="eye-with-line"
+                        size={24}
+                        color={`${COLORS.purple[3]}`}
+                        onPress={() => setHidden(!hidden)}
+                      />
+                    ) : (
+                      <Entypo
+                        name="eye"
+                        size={24}
+                        color={`${COLORS.purple[3]}`}
+                        onPress={() => setHidden(!hidden)}
+                      />
+                    )
+                  }
+                />
+              }
+            />
+          </View>
+          <View style={styled.input}>
+            <TouchableOpacity onPress={showDatepicker}>
+              <InputUpdate
+                mode="outlined"
+                label="Ngày sinh"
+                disabled={true}
+                value={text}
+                left={
+                  <TextInput.Icon
+                    name={() => (
+                      <Fontisto
+                        name="date"
+                        size={24}
+                        color={`${COLORS.purple[3]}`}
+                        onPress={showDatepicker}
+                      />
+                    )}
+                  />
+                }
+              />
+            </TouchableOpacity>
+            {show && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode={mode}
+                display="default"
+                onChange={onChange}
+              />
+            )}
+          </View>
+          <View>
+            <BtnLogin>
+              <Text
+                style={{ color: '#fff', fontSize: 22 }}
+                onPress={() => registerHandler()}
+              >
+                Đăng Ký
+              </Text>
+            </BtnLogin>
+          </View>
+          <View style={{ alignSelf: 'center', marginTop: 20 }}>
+            <Text
+              style={{ color: '#000', fontSize: 17 }}
+              onPress={() => navigation.goBack()}
+            >
+              Đã có tài khoản?
+            </Text>
+          </View>
+        </KeyboardAvoidingView>
+      </Card>
     );
   }
 };
 
+const styled = StyleSheet.create({
+  input: {
+    marginVertical: 10,
+  },
+  main: {
+    backgroundColor: `${COLORS.blue[2]}`,
+    flex: 1,
+  },
+});
 export default RegisterScreen;

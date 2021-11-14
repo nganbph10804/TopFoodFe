@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import {
   blockFriendAction,
   unfriendAction,
-} from '../../redux/actions/friendAction.js';
+} from '../../redux/friend/actions/friendAction.js';
 import { styles } from '../../styles/paper.js';
 
 const FriendList = ({ item, navigation }) => {

@@ -1,0 +1,9 @@
+export const GET_PROFILE = 'GET_PROFILE';
+export const SEARCH_FRIEND = 'SEARCH_FRIEND';
+export const FRIEND_LIST = 'FRIEND_LIST';
+export const LIST_REQUEST = 'LIST_REQUEST';
+export const BLOCK_LIST = 'BLOCK_LIST';
+export const CLEAR_SEARCH = 'CLEAR_SEARCH';
+export const FRIEND_REQUEST = 'FRIEND_REQUEST';
+export const FRIEND_DONE = 'FRIEND_DONE';
+export const FRIEND_FAILURE = 'FRIEND_FAILURE';

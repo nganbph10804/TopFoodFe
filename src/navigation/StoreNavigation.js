@@ -1,7 +1,9 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import { SafeAreaView } from 'react-native';
 import { COLORS } from '../constants/color.const.js';
+import CreateFeedScreen from '../screens/Store/Feed/CreateFeedScreen.js';
+import EditFeedScreen from '../screens/Store/Feed/EditFeedScreen.js';
+import FeedListScreen from '../screens/Store/Feed/FeedListScreen.js';
 import CreateFoodScreen from '../screens/Store/Food/CreateFoodScreen.js';
 import EditFoodScreen from '../screens/Store/Food/EditFoodScreen.js';
 import FoodDetailScreen from '../screens/Store/Food/FoodDetailScreen.js';
@@ -35,7 +37,6 @@ const StoreNavigation = () => {
         component={FoodListScreen}
         options={{
           title: 'Món ăn',
-          // headerShown: false,
         }}
       />
       <Stack.Screen
@@ -56,7 +57,28 @@ const StoreNavigation = () => {
         name="EditFoodScreen"
         component={EditFoodScreen}
         options={{
-          title: 'Cập nhật',
+          title: 'Chỉnh sửa',
+        }}
+      />
+      <Stack.Screen
+        name="FeedListScreen"
+        component={FeedListScreen}
+        options={{
+          title: 'Bài viết',
+        }}
+      />
+      <Stack.Screen
+        name="CreateFeedScreen"
+        component={CreateFeedScreen}
+        options={{
+          title: 'Tạo bài viết',
+        }}
+      />
+      <Stack.Screen
+        name="EditFeedScreen"
+        component={EditFeedScreen}
+        options={{
+          title: 'Chỉnh sửa',
         }}
       />
     </Stack.Navigator>

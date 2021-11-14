@@ -8,6 +8,7 @@ const TagList = ({ setActive, active, data, handlerFilter }) => {
     setActive(data.indexOf(tag));
     handlerFilter(tag.id);
   };
+
   return (
     <View>
       <View
@@ -25,6 +26,7 @@ const TagList = ({ setActive, active, data, handlerFilter }) => {
             setActive(-1);
             handlerFilter('ALL');
           }}
+          selectedColor={active === -1 ? '#fff' : '#000'}
         >
           Tất cả
         </Chip>
@@ -35,6 +37,7 @@ const TagList = ({ setActive, active, data, handlerFilter }) => {
             selected={data.indexOf(c) === active ? styled.active : false}
             style={data.indexOf(c) === active ? styled.active : styled.inactive}
             onPress={() => handlerSelected(c)}
+            selectedColor={data.indexOf(c) === active ? '#fff' : '#000'}
           >
             {c.tagName}
           </Chip>
@@ -46,7 +49,7 @@ const TagList = ({ setActive, active, data, handlerFilter }) => {
 
 const styled = StyleSheet.create({
   active: {
-    backgroundColor: `${COLORS.blue[5]}`,
+    backgroundColor: `${COLORS.blue[1]}`,
     color: '#fff',
     marginHorizontal: 5,
     paddingHorizontal: 5,

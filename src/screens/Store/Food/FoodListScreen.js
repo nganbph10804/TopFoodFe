@@ -1,20 +1,13 @@
-import { Ionicons } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  Picker,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import {
-  ActivityIndicator,
-  Searchbar,
-  Subheading,
-  TextInput,
-} from 'react-native-paper';
+import { ActivityIndicator, Searchbar, Subheading } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import FilterCtg from '../../../components/store/FilterCtg.js';
 import FilterModal from '../../../components/store/FilterModal.js';
@@ -28,7 +21,6 @@ import {
   foodListAction,
   searchFoodAction,
 } from '../../../redux/store/food/actions/foodAction.js';
-import { searchTagAction } from '../../../redux/store/tag/action/tagAction.js';
 import { styles } from '../../../styles/paper.js';
 
 const FoodListScreen = ({ navigation }) => {
@@ -86,10 +78,6 @@ const FoodListScreen = ({ navigation }) => {
     return focus;
   }, [dispatch]);
 
-  useEffect(() => {
-    dispatch(searchTagAction());
-  }, [dispatch]);
-
   return (
     <View style={styles.main}>
       {loading && (
@@ -124,7 +112,6 @@ const FoodListScreen = ({ navigation }) => {
           value={searchValue}
           onChangeText={searchValue => setSearchValue(searchValue)}
           style={styles.search}
-          onIconPress={() => console.log(true)}
           clearIcon={() => (
             <MaterialIcons
               name="cancel"
@@ -252,7 +239,7 @@ const styled = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flex: 1,
-    backgroundColor: '#fcfc',
+    backgroundColor: '#aec4e6',
   },
 });
 export default FoodListScreen;

@@ -11,7 +11,7 @@ export const styled = StyleSheet.create({
     position: 'relative',
   },
   viewBtn: {
-    padding: 10,
+    padding: 20,
     alignSelf: 'center',
   },
   container: {

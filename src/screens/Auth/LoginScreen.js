@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { BtnLogin, InputAuth } from '../../components/index.js';
 import { COLORS } from '../../constants/color.const.js';
-import { loginAction } from '../../redux/actions/authAction.js';
+import { loginAction } from '../../redux/auth/actions/authAction.js';
 import { styles } from '../../styles/paper.js';
 
 const image = {
@@ -38,7 +38,7 @@ const LoginScreen = ({ navigation }) => {
     if (username.trim().length === 0 || password.trim().length === 0) {
       Toast.show({
         type: 'error',
-        topOffset: 60,
+
         text1: 'Thông báo',
         text2: 'Không được để trống username và password',
       });

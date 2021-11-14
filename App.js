@@ -12,7 +12,12 @@ function App() {
       <Provider store={store}>
         <NavigationContainer>
           <GlobalRoute />
-          <Toast ref={ref => Toast.setRef(ref)} />
+          <Toast
+            ref={ref => Toast.setRef(ref)}
+            visibilityTime={1000}
+            topOffset={40}
+            autoHide={true}
+          />
           {/* <StatusBar backgroundColor={`${COLORS.blue[4]}`} /> */}
         </NavigationContainer>
       </Provider>

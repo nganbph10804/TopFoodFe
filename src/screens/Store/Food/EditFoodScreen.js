@@ -17,7 +17,7 @@ import {
 import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../../constants/color.const.js';
-import { multiFileAction } from '../../../redux/actions/fileAction.js';
+import { multiFileAction } from '../../../redux/file/actions/fileAction.js';
 import { updateFoodAction } from '../../../redux/store/food/actions/foodAction.js';
 import { InputUpdate, styles } from '../../../styles/paper.js';
 import { styled } from '../../../styles/store.js';
@@ -42,9 +42,6 @@ const EditFoodScreen = ({ route, navigation }) => {
       dispatch(multiFileAction(result.uri));
     }
   };
-  // useEffect(() => {
-  //   file.map(i => files.push(i));
-  // }, [file]);
   const handlerCreate = () => {
     file.map(i => files.push(i));
     if (
@@ -54,7 +51,7 @@ const EditFoodScreen = ({ route, navigation }) => {
     ) {
       Toast.show({
         type: 'error',
-        topOffset: 60,
+
         text1: 'Thông báo',
         text2: 'Không được để trống',
       });

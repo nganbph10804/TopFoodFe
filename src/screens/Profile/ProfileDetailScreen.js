@@ -11,7 +11,10 @@ import {
 } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
-import { uploadAvatar, uploadCover } from '../../redux/actions/fileAction.js';
+import {
+  uploadAvatar,
+  uploadCover,
+} from '../../redux/file/actions/fileAction.js';
 import { styles } from '../../styles/paper.js';
 
 const ProfileDetailScreen = ({ navigation }) => {

@@ -39,6 +39,7 @@ export const fileReducer = (state = initState, action) => {
       return {
         ...state,
         files: [],
+        file: [],
       };
     default:
       return state;

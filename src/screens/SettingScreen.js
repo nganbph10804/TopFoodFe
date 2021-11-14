@@ -9,8 +9,9 @@ import React, { useCallback, useState } from 'react';
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Main } from '../components/index.js';
+import { COLORS } from '../constants/color.const.js';
 import { ROLES } from '../constants/role.const.js';
-import { getProfile, logoutAction } from '../redux/actions/authAction.js';
+import { getProfile, logoutAction } from '../redux/auth/actions/authAction.js';
 import HeaderMain from '../shared/HeaderMain.js';
 import { styles } from '../styles/paper.js';
 
@@ -117,8 +118,26 @@ const SettingScreen = ({ navigation }) => {
           </View>
         )}
       </View>
+      <TouchableOpacity>
+        <View style={styles.Item}>
+          <MaterialIcons name="favorite" size={35} color={`${COLORS.red[2]}`} />
+          <Text style={{ paddingLeft: 10 }}>Sở thích</Text>
+          <View style={styles.lastItem}>
+            <Entypo name="chevron-right" size={24} color="black" />
+          </View>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity>
+        <View style={styles.Item}>
+          <MaterialIcons name="support-agent" size={35} color="black" />
+          <Text style={{ paddingLeft: 10 }}>Liên hệ</Text>
+          <View style={styles.lastItem}>
+            <Entypo name="chevron-right" size={24} color="black" />
+          </View>
+        </View>
+      </TouchableOpacity>
       {/* logout */}
-      <TouchableOpacity onPress={() => logout()}>
+      <TouchableOpacity onPress={() => logout()} z>
         <View style={styles.Item}>
           <View>
             <MaterialIcons name="logout" size={35} color={'#d91b0d'} />
