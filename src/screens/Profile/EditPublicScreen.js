@@ -3,7 +3,7 @@ import { KeyboardAvoidingView, View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
-import { updateProfileAction } from '../../redux/actions/authAction.js';
+import { updateProfileAction } from '../../redux/auth/actions/authAction.js';
 import { InputUpdate, styles } from '../../styles/paper.js';
 
 const EditPublicScreen = ({ route, navigation }) => {

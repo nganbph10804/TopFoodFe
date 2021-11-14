@@ -4,7 +4,10 @@ import { View } from 'react-native';
 import { Menu, MenuItem } from 'react-native-material-menu';
 import { Avatar, Title } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
-import { acceptAction, removeActon } from '../../redux/actions/friendAction.js';
+import {
+  acceptAction,
+  removeActon,
+} from '../../redux/friend/actions/friendAction.js';
 import { styles } from '../../styles/paper.js';
 
 const ListRequest = ({ friend, navigation }) => {

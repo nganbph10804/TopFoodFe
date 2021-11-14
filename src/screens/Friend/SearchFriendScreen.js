@@ -8,7 +8,7 @@ import { Main } from '../../components/index.js';
 import {
   listRequestAction,
   searchProfileAction,
-} from '../../redux/actions/friendAction.js';
+} from '../../redux/friend/actions/friendAction.js';
 import { styles } from '../../styles/paper.js';
 
 const SearchFriendScreen = () => {

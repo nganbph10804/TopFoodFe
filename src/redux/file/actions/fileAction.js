@@ -1,9 +1,9 @@
 import axios from 'axios';
 import mime from 'mime';
 import Toast from 'react-native-toast-message';
-import { BASE_URL } from '../../constants/file.const.js';
-import { authHeader } from '../authHeader.js';
-import deviceStorage from '../deviceStorage .js';
+import { BASE_URL } from '../../../constants/file.const.js';
+import { authHeader } from '../../authHeader.js';
+import deviceStorage from '../../deviceStorage .js';
 import {
   FILE_DONE,
   FILE_ERR,

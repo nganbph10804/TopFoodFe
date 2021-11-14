@@ -18,17 +18,13 @@ import {
 import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../../constants/color.const.js';
-import { multiFileAction } from '../../../redux/actions/fileAction.js';
+import { multiFileAction } from '../../../redux/file/actions/fileAction.js';
 import { updateFeedAction } from '../../../redux/store/feed/actions/feedAction.js';
 import { InputUpdate, styles } from '../../../styles/paper.js';
 import { styled } from '../../../styles/store.js';
 
 const EditFeedScreen = ({ route, navigation }) => {
   const { content, files, id, tags } = route.params;
-  console.log(
-    'log 🚀 ~ file: EditFeedScreen.js ~ line 28 ~ EditFeedScreen ~ tags',
-    tags.map(i => i.id)
-  );
   const file = useSelector(state => state.file.files);
   const loadingFile = useSelector(state => state.file.loading);
   const [newContent, setNewContent] = useState(content);

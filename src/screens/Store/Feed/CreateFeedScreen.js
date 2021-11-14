@@ -12,10 +12,9 @@ import {
 } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../../constants/color.const.js';
-import { multiFileAction } from '../../../redux/actions/fileAction.js';
+import { multiFileAction } from '../../../redux/file/actions/fileAction.js';
 import { createFeedAction } from '../../../redux/store/feed/actions/feedAction.js';
 import { InputUpdate } from '../../../styles/paper.js';
-//<AntDesign name="closecircle" size={24} color="black" />
 
 const CreateFeedScreen = ({ navigation }) => {
   const { files } = useSelector(state => state.file);

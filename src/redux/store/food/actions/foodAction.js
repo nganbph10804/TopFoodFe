@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import { authHeader } from '../../../authHeader.js';
-import { CLEAR_FILE } from '../../../types/fileType.js';
+import { CLEAR_FILE } from '../../../file/types/fileType.js';
 import {
   CLEAR_SEARCH,
   DELETE_FOOD,

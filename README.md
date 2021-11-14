@@ -1,7 +1,5 @@
 # TopFood-FE
 
-### Đặt tên branch theo chức năng:
-
 ### Setting Prettier
 
 ```json

@@ -30,9 +30,9 @@ const GlobalRoute = () => {
       {token ? (
         <>
           <Stack.Screen
-            options={{ headerShown: false }}
             name="NAV"
             component={Nav}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name="ChangePassScreen"
@@ -48,7 +48,7 @@ const GlobalRoute = () => {
             name="InformationAccScreen"
             component={InformationAccScreen}
             options={{
-              title: 'Thông tin tài khoản',
+              title: 'Thông tin',
             }}
           />
           <Stack.Screen

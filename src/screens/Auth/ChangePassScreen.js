@@ -6,7 +6,7 @@ import { ActivityIndicator, Button, TextInput } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
-import { changePassAction } from '../../redux/actions/authAction.js';
+import { changePassAction } from '../../redux/auth/actions/authAction.js';
 import { InputUpdate, styles } from '../../styles/paper.js';
 
 const ChangePassScreen = () => {

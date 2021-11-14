@@ -5,7 +5,7 @@ import { KeyboardAvoidingView, Text, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import { useDispatch } from 'react-redux';
-import { forgotAction } from '../../redux/actions/authAction.js';
+import { forgotAction } from '../../redux/auth/actions/authAction.js';
 import { InputUpdate, styles } from '../../styles/paper.js';
 
 const ForgotPasswordScreen = ({ navigation, route }) => {

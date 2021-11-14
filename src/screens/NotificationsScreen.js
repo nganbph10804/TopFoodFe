@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ListRequest from '../components/Friend/ListRequest.js';
 import Notification from '../components/Notification.js';
 import { COLORS } from '../constants/color.const.js';
-import { notificationAction } from '../redux/actions/friendAction.js';
+import { notificationAction } from '../redux/friend/actions/friendAction.js';
 import { styles } from '../styles/paper.js';
 
 const NotificationsScreen = ({ navigation }) => {

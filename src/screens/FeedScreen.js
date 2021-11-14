@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
+import { Card } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import HomeList from '../components/home/HomeList.js';
 import { feedListAction } from '../redux/store/feed/actions/feedAction.js';

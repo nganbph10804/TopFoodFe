@@ -17,7 +17,7 @@ import {
 import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../../constants/color.const.js';
-import { multiFileAction } from '../../../redux/actions/fileAction.js';
+import { multiFileAction } from '../../../redux/file/actions/fileAction.js';
 import { createFoodAction } from '../../../redux/store/food/actions/foodAction.js';
 import { searchTagAction } from '../../../redux/store/tag/action/tagAction.js';
 import { InputUpdate, styles } from '../../../styles/paper.js';

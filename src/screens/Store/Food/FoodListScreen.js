@@ -21,7 +21,6 @@ import {
   foodListAction,
   searchFoodAction,
 } from '../../../redux/store/food/actions/foodAction.js';
-import { searchTagAction } from '../../../redux/store/tag/action/tagAction.js';
 import { styles } from '../../../styles/paper.js';
 
 const FoodListScreen = ({ navigation }) => {
