@@ -21,10 +21,6 @@ const SettingScreen = ({ navigation }) => {
   const [show, setShow] = useState(false);
   const profile = useSelector(state => state.auth.profile);
   const account = useSelector(state => state.auth.account);
-  console.log(
-    'log 🚀 ~ file: SettingScreen.js ~ line 24 ~ SettingScreen ~ account',
-    account
-  );
   const store = useSelector(state => state.auth.account.role);
   const logout = () =>
     Alert.alert('Thông báo', 'Bạn có muốn đăng xuất không?', [
