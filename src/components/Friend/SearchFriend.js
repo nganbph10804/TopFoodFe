@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, Text, View } from 'react-native';
+import { Divider } from 'react-native-elements';
 import { Button } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
@@ -51,6 +52,7 @@ const SearchFriend = ({ item }) => {
           )}
         </View>
       </View>
+      <Divider />
     </View>
   );
 };

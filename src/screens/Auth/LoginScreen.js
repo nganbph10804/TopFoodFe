@@ -1,31 +1,19 @@
-import { useFonts } from '@expo-google-fonts/inter';
-import AppLoading from 'expo-app-loading';
+import { Entypo, Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import {
-  ImageBackground,
-  KeyboardAvoidingView,
-  Text,
-  View,
-} from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
+  ActivityIndicator,
+  Button,
+  Subheading,
+  TextInput,
+  Title,
+} from 'react-native-paper';
 import Toast from 'react-native-toast-message';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
-import { BtnLogin, InputAuth } from '../../components/index.js';
 import { COLORS } from '../../constants/color.const.js';
 import { loginAction } from '../../redux/auth/actions/authAction.js';
+import HeaderShop from '../../shared/HeaderShop.js';
 import { styles } from '../../styles/paper.js';
-
-const image = {
-  uri: 'https://raw.githubusercontent.com/Leomin07/img/master/img-login.png',
-};
-
-const Page = styled(View)`
-  position: absolute;
-  width: 100%;
-  top: 37%;
-`;
 
 const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
@@ -38,7 +26,6 @@ const LoginScreen = ({ navigation }) => {
     if (username.trim().length === 0 || password.trim().length === 0) {
       Toast.show({
         type: 'error',
-
         text1: 'Thông báo',
         text2: 'Không được để trống username và password',
       });
@@ -49,107 +36,137 @@ const LoginScreen = ({ navigation }) => {
     }
   };
 
-  let [fontsLoaded] = useFonts({
-    'Courgette-Regular': require('../../../assets/fonts/Courgette-Regular.ttf'),
-  });
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  } else {
-    return (
-      <View style={{ flex: 1, width: '100%', height: '100%' }}>
-        <ImageBackground
-          resizeMode="cover"
-          source={image}
-          style={{ width: '100%', height: '100%', flex: 1 }}
-        >
-          {loading && (
-            <View style={styles.loading}>
-              <ActivityIndicator
-                animating={true}
-                color={`${COLORS.blue[1]}`}
-                size={'large'}
-              />
-            </View>
-          )}
-          <Page>
-            <KeyboardAvoidingView
-              behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-              keyboardVerticalOffset={100}
-              style={{ flex: 1 }}
+  return (
+    <View style={styles.background}>
+      {loading && (
+        <View style={styles.loading}>
+          <ActivityIndicator
+            animating={true}
+            color={`${COLORS.blue[4]}`}
+            size={'large'}
+            style={{ zIndex: 999999 }}
+          />
+        </View>
+      )}
+      <HeaderShop />
+      <View style={styled.currentBackground}>
+        <ScrollView>
+          <View style={{ alignItems: 'center', marginTop: 40 }}>
+            <Title style={{ fontSize: 26 }}>Đăng nhập</Title>
+          </View>
+          <View style={styled.input}>
+            <Title>Username</Title>
+            <TextInput
+              mode="outlined"
+              outlineColor={`${COLORS.blue[4]}`}
+              selectionColor="blue"
+              placeholder="Username"
+              value={username}
+              onChangeText={username => setUsername(username)}
+              left={
+                <TextInput.Icon
+                  name={() => (
+                    <Ionicons
+                      name="person"
+                      size={24}
+                      color={`${COLORS.blue[4]}`}
+                    />
+                  )}
+                />
+              }
+            />
+          </View>
+          <View style={styled.input}>
+            <Title>Password</Title>
+            <TextInput
+              mode="outlined"
+              outlineColor={`${COLORS.blue[4]}`}
+              selectionColor="blue"
+              placeholder="Password"
+              secureTextEntry={show ? false : true}
+              value={password}
+              onChangeText={password => setPassword(password)}
+              left={
+                <TextInput.Icon
+                  name={() => (
+                    <Entypo name="lock" size={24} color={`${COLORS.blue[4]}`} />
+                  )}
+                />
+              }
+              right={
+                <TextInput.Icon
+                  name={() =>
+                    show ? (
+                      <Entypo
+                        name="eye-with-line"
+                        size={24}
+                        color={`black`}
+                        onPress={() => setShow(!show)}
+                      />
+                    ) : (
+                      <Entypo
+                        name="eye"
+                        size={24}
+                        color={`black`}
+                        onPress={() => setShow(!show)}
+                      />
+                    )
+                  }
+                />
+              }
+            />
+          </View>
+          <View>
+            <Subheading
+              style={{
+                textAlign: 'right',
+                paddingRight: 50,
+                marginVertical: 10,
+                paddingBottom: 30,
+              }}
+              onPress={() => navigation.navigate('VERIFY_OTP')}
             >
-              <View style={{ marginBottom: 10, marginLeft: 33 }}>
-                <Text
-                  style={{
-                    fontFamily: 'Courgette-Regular',
-                    color: '#fff',
-                    fontSize: 35,
-                    textAlign: 'left',
-                  }}
-                >
-                  {' '}
-                  Welcome{'\n'} Back
-                </Text>
-              </View>
-              <View>
-                <InputAuth
-                  placeholder="Username"
-                  value={username}
-                  onChangeText={username => setUsername(username)}
-                />
-              </View>
-              <View style={{ position: 'relative' }}>
-                <InputAuth
-                  placeholder="Password"
-                  secureTextEntry={show ? false : true}
-                  value={password}
-                  onChangeText={password => setPassword(password)}
-                />
-                <Icon
-                  name={show ? 'eye' : 'eye-slash'}
-                  size={20}
-                  color="white"
-                  onPress={() => setShow(!show)}
-                  style={{ position: 'absolute', right: 63, top: 15 }}
-                />
-              </View>
-              <View>
-                <Text
-                  style={{
-                    textAlign: 'right',
-                    paddingRight: 50,
-                    color: '#fff',
-                    marginBottom: 30,
-                    fontSize: 17,
-                  }}
-                  onPress={() => navigation.navigate('VERIFY_OTP')}
-                >
-                  Quên mật khẩu?
-                </Text>
-              </View>
-              <View>
-                <BtnLogin onPress={() => handlerLogin()}>
-                  <Text
-                    style={{ color: '#fff', fontSize: 22 }}
-                    onPress={() => handlerLogin()}
-                  >
-                    Đăng Nhập
-                  </Text>
-                </BtnLogin>
-              </View>
-              <View style={{ alignSelf: 'center', marginTop: 30 }}>
-                <Text
-                  style={{ color: '#fff', fontSize: 17 }}
-                  onPress={() => navigation.navigate('REGISTER')}
-                >
-                  Tạo tài khoản mới?
-                </Text>
-              </View>
-            </KeyboardAvoidingView>
-          </Page>
-        </ImageBackground>
+              Quên mật khẩu?
+            </Subheading>
+          </View>
+          <View style={{ alignItems: 'center' }}>
+            <Button
+              mode="contained"
+              color={COLORS.blue[1]}
+              onPress={() => handlerLogin()}
+            >
+              Đăng Nhập
+            </Button>
+          </View>
+          <View style={{ alignSelf: 'center', marginTop: 30 }}>
+            <Subheading
+              style={{ color: '#000', fontSize: 17 }}
+              onPress={() => navigation.navigate('REGISTER')}
+            >
+              Tạo tài khoản mới?
+            </Subheading>
+          </View>
+        </ScrollView>
       </View>
-    );
-  }
+    </View>
+  );
 };
 
+const styled = StyleSheet.create({
+  currentBackground: {
+    position: 'absolute',
+    marginTop: 120,
+    height: '100%',
+    width: '100%',
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    zIndex: -10,
+    backgroundColor: `${COLORS.white[1]}`,
+  },
+  input: {
+    width: '90%',
+    alignSelf: 'center',
+    marginBottom: 10,
+  },
+});
 export default LoginScreen;

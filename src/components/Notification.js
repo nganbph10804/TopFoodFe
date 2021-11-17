@@ -1,26 +1,16 @@
 import { Entypo } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { Image, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { Menu, MenuItem } from 'react-native-material-menu';
-import styled from 'styled-components';
 import { styles } from '../styles/paper.js';
 
-const Item = styled(View)`
-  background-color: #fff;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 5px 5px 5px 20px;
-  border-radius: 10px;
-  margin: 2px 0;
-`;
 const Notification = () => {
   const [visible, setVisible] = useState(false);
   const hideMenu = () => setVisible(false);
   const showMenu = () => setVisible(true);
   return (
     <View>
-      <Item style={{ marginBottom: 15, marginTop: 10 }}>
+      <View style={styled.item}>
         <Image
           source={{
             uri: `https://fakeimg.pl/300/`,
@@ -74,9 +64,17 @@ const Notification = () => {
             </MenuItem>
           </Menu>
         </View>
-      </Item>
+      </View>
     </View>
   );
 };
 
+const styled = StyleSheet.create({
+  item: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 10,
+    marginLeft: 20,
+  },
+});
 export default Notification;

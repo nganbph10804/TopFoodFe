@@ -1,0 +1,3 @@
+export const COMMENT_REQUEST = 'COMMENT_REQUEST';
+export const COMMENT_FAILURE = 'COMMENT_FAILURE';
+export const COMMENT = 'COMMENT';

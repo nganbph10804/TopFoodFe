@@ -1,6 +1,7 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import React from 'react';
 import { COLORS } from '../../constants/color.const.js';
+import HeaderUser from '../../shared/HeaderUser.js';
 import BlockListScreen from './BlockListScreen.js';
 import FriendListScreen from './FriendListScreen.js';
 const Tab = createMaterialTopTabNavigator();

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import ListButton from '../../../components/store/ListButton.js';
+import { clearFilesAction } from '../../../redux/file/actions/fileAction.js';
 import { feedListAction } from '../../../redux/store/feed/actions/feedAction.js';
 import { searchTagAction } from '../../../redux/store/tag/action/tagAction.js';
 import HeaderStore from '../../../shared/HeaderStore.js';
@@ -14,7 +15,10 @@ const FoodMain = ({ navigation }) => {
     dispatch(searchTagAction(''));
   }, [dispatch]);
   useEffect(() => {
-    dispatch(feedListAction());
+    dispatch(feedListAction(profile.id));
+  }, [dispatch]);
+  useEffect(() => {
+    dispatch(clearFilesAction());
   }, [dispatch]);
   return (
     <View style={styles.main}>

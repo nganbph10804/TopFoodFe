@@ -74,6 +74,10 @@ const EditFeedScreen = ({ route, navigation }) => {
     })();
   }, []);
 
+  useEffect(() => {
+    dispatch(clearFilesAction());
+  }, [dispatch]);
+
   return (
     <View style={styled.main}>
       <ScrollView style={{ width: '100%', height: '100%', marginTop: 20 }}>

@@ -111,19 +111,16 @@ export const notificationAction = page => async dispatch => {
         headers: await authHeader(),
       }
     );
-    setTimeout(() => {
-      dispatch({
-        type: LIST_REQUEST,
-        payload: data.data,
-      });
-    }, 500);
+    dispatch({
+      type: LIST_REQUEST,
+      payload: data.data,
+    });
   } catch (error) {
     dispatch({
       type: FRIEND_FAILURE,
     });
     Toast.show({
       type: 'error',
-
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -140,19 +137,16 @@ export const listRequestAction = page => async dispatch => {
         headers: await authHeader(),
       }
     );
-    setTimeout(() => {
-      dispatch({
-        type: LIST_REQUEST,
-        payload: data.data,
-      });
-    }, 500);
+    dispatch({
+      type: LIST_REQUEST,
+      payload: data.data,
+    });
   } catch (error) {
     dispatch({
       type: FRIEND_FAILURE,
     });
     Toast.show({
       type: 'error',
-
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -178,25 +172,21 @@ export const blockFriendAction = phone => async dispatch => {
         headers: await authHeader(),
       }
     );
-    setTimeout(() => {
-      dispatch({
-        type: FRIEND_LIST,
-        payload: data.data,
-      });
-      Toast.show({
-        type: 'success',
-
-        text1: 'Thông báo',
-        text2: 'Chặn bạn thành công.',
-      });
-    }, 500);
+    dispatch({
+      type: FRIEND_LIST,
+      payload: data.data,
+    });
+    Toast.show({
+      type: 'success',
+      text1: 'Thông báo',
+      text2: 'Chặn bạn thành công.',
+    });
   } catch (error) {
     dispatch({
       type: FRIEND_FAILURE,
     });
     Toast.show({
       type: 'error',
-
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -226,7 +216,6 @@ export const unfriendAction = phone => async dispatch => {
       });
       Toast.show({
         type: 'success',
-
         text1: 'Thông báo',
         text2: 'Huỷ kết bạn thành công.',
       });
@@ -237,7 +226,6 @@ export const unfriendAction = phone => async dispatch => {
     });
     Toast.show({
       type: 'error',
-
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -271,7 +259,6 @@ export const acceptAction = username => async dispatch => {
       });
       Toast.show({
         type: 'success',
-
         text1: 'Thông báo',
         text2: 'Chấp nhận kết bạn thành công.',
       });
@@ -282,7 +269,6 @@ export const acceptAction = username => async dispatch => {
     });
     Toast.show({
       type: 'error',
-
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -316,7 +302,6 @@ export const removeActon = username => async dispatch => {
       });
       Toast.show({
         type: 'success',
-
         text1: 'Thông báo',
         text2: 'Xoá thành công.',
       });
@@ -327,7 +312,6 @@ export const removeActon = username => async dispatch => {
     });
     Toast.show({
       type: 'error',
-
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -350,7 +334,6 @@ export const sendAction = phone => async dispatch => {
     setTimeout(() => {
       Toast.show({
         type: 'success',
-
         text1: 'Thông báo',
         text2: 'Gửi lời mời thành công.',
       });

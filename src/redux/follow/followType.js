@@ -1,0 +1,2 @@
+export const FOLLOW_REQUEST = 'FOLLOW_REQUEST';
+export const FOLLOW_FAILURE = 'FOLLOW_FAILURE';
