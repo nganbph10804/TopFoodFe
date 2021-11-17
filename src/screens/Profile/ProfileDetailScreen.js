@@ -19,10 +19,12 @@ import {
 import { styles } from '../../styles/paper.js';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { ScrollView } from 'react-native';
+import { ROLES } from '../../constants/role.const.js';
 
 const ProfileDetailScreen = ({ navigation }) => {
   const profile = useSelector(state => state.auth.profile);
   const friend = useSelector(state => state.friend.friend);
+  const store = useSelector(state => state.auth.account.role);
   const dispatch = useDispatch();
   const [avatar, setAvatar] = useState(null);
   const [cover, setCover] = useState(null);
@@ -169,24 +171,26 @@ const ProfileDetailScreen = ({ navigation }) => {
               </View>
             </View>
           </View>
-          <View style={{ marginTop: 140 }}>
-            <TouchableOpacity style={styled.item}>
-              <FontAwesome5 name="store-alt" size={24} color="black" />
-              <Subheading style={styled.text}>
-                Đang theo dõi cửa hàng
-              </Subheading>
-            </TouchableOpacity>
-            <Divider />
-            <TouchableOpacity
-              style={styled.item}
-              onPress={() => navigation.navigate('MainFriendScreen')}
-            >
-              <Ionicons name="ios-people" size={24} color="black" />
-              <Subheading style={styled.text}>
-                Đang có {friend.length} bạn bè
-              </Subheading>
-            </TouchableOpacity>
-          </View>
+          {store === ROLES.ROLE_USER && (
+            <View style={{ marginTop: 140 }}>
+              <TouchableOpacity style={styled.item}>
+                <FontAwesome5 name="store-alt" size={24} color="black" />
+                <Subheading style={styled.text}>
+                  Đang theo dõi cửa hàng
+                </Subheading>
+              </TouchableOpacity>
+              <Divider />
+              <TouchableOpacity
+                style={styled.item}
+                onPress={() => navigation.navigate('MainFriendScreen')}
+              >
+                <Ionicons name="ios-people" size={24} color="black" />
+                <Subheading style={styled.text}>
+                  Đang có {friend.length} bạn bè
+                </Subheading>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
       )}
     </View>

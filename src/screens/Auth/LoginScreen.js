@@ -51,7 +51,9 @@ const LoginScreen = ({ navigation }) => {
       <HeaderShop />
       <View style={styled.currentBackground}>
         <ScrollView>
-          <View style={{ alignItems: 'center', marginTop: 40 }}>
+          <View
+            style={{ alignItems: 'center', marginTop: 40, marginBottom: 20 }}
+          >
             <Title style={{ fontSize: 26 }}>Đăng nhập</Title>
           </View>
           <View style={styled.input}>
@@ -122,7 +124,7 @@ const LoginScreen = ({ navigation }) => {
                 textAlign: 'right',
                 paddingRight: 50,
                 marginVertical: 10,
-                paddingBottom: 30,
+                paddingBottom: 10,
               }}
               onPress={() => navigation.navigate('VERIFY_OTP')}
             >

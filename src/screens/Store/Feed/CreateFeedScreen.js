@@ -99,16 +99,20 @@ const CreateFeedScreen = ({ navigation }) => {
             ))}
           </ScrollView>
         </View>
-        <View style={{ flexDirection: 'row', marginLeft: 20 }}>
-          <Subheading>Tag đã chọn: </Subheading>
-          {name &&
-            name.arr.map((i, index) => (
-              <Subheading key={index}>
-                #{i}
-                {'\r'}
-              </Subheading>
-            ))}
-        </View>
+        {name.arr.length > 0 && (
+          <View style={{ flexDirection: 'row', marginLeft: 20 }}>
+            <ScrollView horizontal={true}>
+              <Subheading>Tag đã chọn: </Subheading>
+              {name.arr.map((i, index) => (
+                <Subheading key={index}>
+                  #{i}
+                  {'\r'}
+                </Subheading>
+              ))}
+            </ScrollView>
+          </View>
+        )}
+
         <View>
           <InputUpdate
             mode="outlined"

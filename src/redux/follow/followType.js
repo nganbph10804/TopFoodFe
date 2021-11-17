@@ -1,2 +1,4 @@
 export const FOLLOW_REQUEST = 'FOLLOW_REQUEST';
 export const FOLLOW_FAILURE = 'FOLLOW_FAILURE';
+export const FOLLOW_LIST = 'FOLLOW_LIST';
+export const FOLLOW_LIST_STORE = 'FOLLOW_LIST_STORE';
