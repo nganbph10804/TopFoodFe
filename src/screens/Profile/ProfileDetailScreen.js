@@ -20,11 +20,13 @@ import { styles } from '../../styles/paper.js';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { ScrollView } from 'react-native';
 import { ROLES } from '../../constants/role.const.js';
+import { storeFollowAction } from '../../redux/follow/followAction.js';
 
 const ProfileDetailScreen = ({ navigation }) => {
   const profile = useSelector(state => state.auth.profile);
   const friend = useSelector(state => state.friend.friend);
   const store = useSelector(state => state.auth.account.role);
+  const storeFollow = useSelector(state => state.follow.storeFollow);
   const dispatch = useDispatch();
   const [avatar, setAvatar] = useState(null);
   const [cover, setCover] = useState(null);
@@ -55,6 +57,14 @@ const ProfileDetailScreen = ({ navigation }) => {
       dispatch(uploadCover(result.uri, profile, null));
     }
   };
+
+  useEffect(() => {
+    const focus = navigation.addListener('focus', () => {
+      dispatch(storeFollowAction());
+    });
+    return focus;
+  }, [dispatch]);
+
   useEffect(() => {
     const focus = navigation.addListener('focus', () => {
       if (
@@ -173,10 +183,13 @@ const ProfileDetailScreen = ({ navigation }) => {
           </View>
           {store === ROLES.ROLE_USER && (
             <View style={{ marginTop: 140 }}>
-              <TouchableOpacity style={styled.item}>
+              <TouchableOpacity
+                style={styled.item}
+                onPress={() => navigation.navigate('ListStoreScreen')}
+              >
                 <FontAwesome5 name="store-alt" size={24} color="black" />
                 <Subheading style={styled.text}>
-                  Đang theo dõi cửa hàng
+                  Đang theo dõi {storeFollow.length} cửa hàng
                 </Subheading>
               </TouchableOpacity>
               <Divider />

@@ -9,6 +9,7 @@ import LoginScreen from '../screens/Auth/LoginScreen.js';
 import RegisterScreen from '../screens/Auth/RegisterScreen.js';
 import VerifyScreen from '../screens/Auth/VerifyScreen.js';
 import ContactScreen from '../screens/ContactScreen.js';
+import ListStoreScreen from '../screens/follow/ListStoreScreen.js';
 import MainFriendScreen from '../screens/Friend/MainFriendScreen.js';
 import InformationAccScreen from '../screens/Profile/InformationAccScreen.js';
 import PublicProfileScreen from '../screens/Profile/PublicProfileScreen.js';
@@ -73,7 +74,13 @@ const GlobalRoute = () => {
             name="ContactScreen"
             component={ContactScreen}
             options={{
-              title: 'Trang cá nhân',
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="ListStoreScreen"
+            component={ListStoreScreen}
+            options={{
               headerShown: false,
             }}
           />

@@ -1,7 +1,13 @@
-import { REACT_FAILURE, REACT_REQUEST } from '../types/reactTypes.js';
+import {
+  HEART_LIST,
+  REACT_FAILURE,
+  REACT_REQUEST,
+} from '../types/reactTypes.js';
 
 const initState = {
   loading: false,
+  heart: [],
+  total: null,
 };
 
 export const reactReducer = (state = initState, action) => {
@@ -15,6 +21,13 @@ export const reactReducer = (state = initState, action) => {
       return {
         ...state,
         loading: false,
+      };
+    case HEART_LIST:
+      return {
+        ...state,
+        loading: false,
+        heart: action.payload.data,
+        total: action.payload.totalElements,
       };
 
     default:

@@ -7,7 +7,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { ActivityIndicator, Searchbar, Subheading } from 'react-native-paper';
+import {
+  ActivityIndicator,
+  Button,
+  Searchbar,
+  Subheading,
+} from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import FilterCtg from '../../../components/store/FilterCtg.js';
 import FilterModal from '../../../components/store/FilterModal.js';
@@ -90,19 +95,21 @@ const FoodListScreen = ({ navigation }) => {
         </View>
       )}
       <View style={styled.container}>
-        <TouchableOpacity
+        <Button
+          mode="contained"
           onPress={() => navigation.navigate('CreateFoodScreen')}
-          style={{ flexDirection: 'row', alignItems: 'center' }}
+          color={`${COLORS.blue[1]}`}
+          icon={() => (
+            <Ionicons
+              name="add-circle-sharp"
+              size={24}
+              color="white"
+              style={styled.icon}
+            />
+          )}
         >
-          <Ionicons
-            name="add-circle-sharp"
-            size={24}
-            color="white"
-            style={styled.icon}
-          />
-          <Subheading style={{ paddingLeft: 10 }}>Thêm món</Subheading>
-        </TouchableOpacity>
-        <FilterModal />
+          Thêm món ăn
+        </Button>
       </View>
       <View style={{ padding: 10, zIndex: -15, backgroundColor: '#fff' }}>
         <Searchbar

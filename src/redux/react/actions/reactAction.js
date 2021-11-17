@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Toast from 'react-native-toast-message';
 import { authHeader } from '../../authHeader.js';
 import { REACT_FAILURE, REACT_REQUEST } from '../types/reactTypes.js';
 
@@ -32,6 +33,7 @@ export const reactPostAction = id => async dispatch => {
     });
   }
 };
+
 export const reactCommentAction = id => async dispatch => {
   dispatch({
     type: REACT_REQUEST,
