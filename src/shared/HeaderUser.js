@@ -13,9 +13,9 @@ const HeaderUser = () => {
       <View style={styled.main}>
         <Avatar.Image source={{ uri: avatar }} />
         <Text style={styled.text}>{name} </Text>
-        <View style={styled.lastItem}>
+        {/* <View style={styled.lastItem}>
           <AntDesign name="search1" size={24} color={`${COLORS.blue[4]}`} />
-        </View>
+        </View> */}
       </View>
     </View>
   );

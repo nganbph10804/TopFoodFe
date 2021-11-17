@@ -1,7 +1,7 @@
-import { Entypo } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Menu, MenuItem } from 'react-native-material-menu';
+import { Entypo } from '@expo/vector-icons';
 import { Avatar, Title } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import {
