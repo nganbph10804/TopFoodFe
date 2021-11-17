@@ -1,13 +1,19 @@
-import { useFonts } from '@expo-google-fonts/inter';
-import AppLoading from 'expo-app-loading';
+import { Entypo } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, Text, View } from 'react-native';
-import { ActivityIndicator, Button, TextInput } from 'react-native-paper';
+import { View } from 'react-native';
+import {
+  ActivityIndicator,
+  Button,
+  Subheading,
+  TextInput,
+  Title,
+} from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
 import { changePassAction } from '../../redux/auth/actions/authAction.js';
-import { InputUpdate, styles } from '../../styles/paper.js';
+import HeaderUser from '../../shared/HeaderUser.js';
+import { styles } from '../../styles/paper.js';
 
 const ChangePassScreen = () => {
   const loading = useSelector(state => state.auth.loading);
@@ -21,7 +27,6 @@ const ChangePassScreen = () => {
     if (password.trim().length === 0 || newPass.trim().length === 0) {
       Toast.show({
         type: 'error',
-
         text1: 'Thông báo',
         text2: 'Không được để trống.',
       });
@@ -30,86 +35,107 @@ const ChangePassScreen = () => {
     }
   };
 
-  let [fontsLoaded] = useFonts({
-    'Courgette-Regular': require('../../../assets/fonts/Courgette-Regular.ttf'),
-  });
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  } else {
-    return (
-      <KeyboardAvoidingView style={{ flex: 1 }}>
-        {loading && (
-          <View style={styles.loading}>
-            <ActivityIndicator
-              animating={true}
-              color={`${COLORS.blue[1]}`}
-              size={'large'}
-            />
-          </View>
-        )}
+  return (
+    <View style={styles.background}>
+      {loading && (
+        <View style={styles.loading}>
+          <ActivityIndicator
+            animating={true}
+            color={`${COLORS.blue[1]}`}
+            size={'large'}
+          />
+        </View>
+      )}
+      <HeaderUser />
+      <View style={styles.currentForm}>
         <View
           style={{
-            flex: 1,
-            backgroundColor: '#ADD8E6',
-            alignItems: 'center',
-            justifyContent: 'center',
+            width: '90%',
+            alignSelf: 'center',
+            marginTop: 50,
+            backgroundColor: `${COLORS.white[1]}`,
           }}
         >
-          <View style={styles.card}>
-            <View style={{ paddingTop: 20 }}>
-              <Text
-                style={{
-                  fontFamily: 'Courgette-Regular',
-                  fontSize: 27,
-                  color: '#fff',
-                  paddingLeft: 50,
-                  color: '#000',
-                }}
-              >
-                Đổi mật khẩu.
-              </Text>
-            </View>
-            <View style={{ position: 'relative', paddingTop: 10 }}>
-              <InputUpdate
-                mode="outlined"
-                label="Mật khẩu cũ"
-                secureTextEntry={hidden ? false : true}
-                value={password}
-                onChangeText={password => setPassword(password)}
-                right={
-                  <TextInput.Icon
-                    name="eye"
-                    onPress={() => setHidden(!hidden)}
-                  />
-                }
-              />
-            </View>
-            <View style={{ position: 'relative', paddingTop: 20 }}>
-              <InputUpdate
-                mode="outlined"
-                label="Mật khẩu mới"
-                secureTextEntry={show ? false : true}
-                value={newPass}
-                onChangeText={newPass => setNewPass(newPass)}
-                right={
-                  <TextInput.Icon name="eye" onPress={() => setShow(!show)} />
-                }
-              />
-            </View>
-            <View style={{ alignItems: 'center', padding: 20 }}>
-              <Button
-                mode="contained"
-                color="#3c6dcc"
-                onPress={() => changePassHandler()}
-              >
-                Cập nhật
-              </Button>
-            </View>
+          <View style={{ alignItems: 'center', paddingBottom: 20 }}>
+            <Title>Đổi mật khẩu</Title>
+          </View>
+          <View>
+            <Subheading>Mật khẩu cũ</Subheading>
+            <TextInput
+              mode="outlined"
+              label="Mật khẩu cũ"
+              secureTextEntry={hidden ? false : true}
+              value={password}
+              onChangeText={password => setPassword(password)}
+              outlineColor="blue"
+              left={
+                <TextInput.Icon
+                  name={() =>
+                    hidden ? (
+                      <Entypo
+                        name="eye-with-line"
+                        size={24}
+                        color={`black`}
+                        onPress={() => setHidden(!hidden)}
+                      />
+                    ) : (
+                      <Entypo
+                        name="eye"
+                        size={24}
+                        color={`black`}
+                        onPress={() => setHidden(!hidden)}
+                      />
+                    )
+                  }
+                />
+              }
+            />
+          </View>
+          <View style={{ position: 'relative', paddingTop: 20 }}>
+            <Subheading>Mật khẩu mới</Subheading>
+            <TextInput
+              mode="outlined"
+              label="Mật khẩu mới"
+              secureTextEntry={show ? false : true}
+              value={newPass}
+              onChangeText={newPass => setNewPass(newPass)}
+              outlineColor="blue"
+              left={
+                <TextInput.Icon
+                  name={() =>
+                    show ? (
+                      <Entypo
+                        name="eye-with-line"
+                        size={24}
+                        color={`black`}
+                        onPress={() => setShow(!show)}
+                      />
+                    ) : (
+                      <Entypo
+                        name="eye"
+                        size={24}
+                        color={`black`}
+                        onPress={() => setShow(!show)}
+                      />
+                    )
+                  }
+                />
+              }
+            />
+          </View>
+          <View style={{ alignItems: 'center', padding: 20 }}>
+            <Button
+              mode="contained"
+              color="#3c6dcc"
+              onPress={() => changePassHandler()}
+            >
+              Cập nhật
+            </Button>
           </View>
         </View>
-      </KeyboardAvoidingView>
-    );
-  }
+      </View>
+    </View>
+  );
 };
 
 export default ChangePassScreen;

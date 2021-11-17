@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, Text, View } from 'react-native';
-import { Button } from 'react-native-paper';
+import { View } from 'react-native';
+import { Button, Title } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import { useDispatch } from 'react-redux';
+import { COLORS } from '../../constants/color.const.js';
 import { getOtpAction } from '../../redux/auth/actions/authAction.js';
-import { InputUpdate, styles } from '../../styles/paper.js';
+import HeaderShop from '../../shared/HeaderShop.js';
+import { InputUpdate } from '../../styles/paper.js';
 
 const VerifyScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -13,7 +15,6 @@ const VerifyScreen = ({ navigation }) => {
     if (email.trim().length === 0) {
       Toast.show({
         type: 'error',
-
         text1: 'Thông báo',
         text2: 'Không được để trống email.',
       });
@@ -23,49 +24,51 @@ const VerifyScreen = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: `${COLORS.blue[4]}` }}>
+      <HeaderShop />
       <View
         style={{
-          flex: 1,
-          backgroundColor: '#ADD8E6',
-          alignItems: 'center',
-          justifyContent: 'center',
+          paddingTop: 40,
+          backgroundColor: `${COLORS.white[1]}`,
+          width: '100%',
+          position: 'absolute',
+          zIndex: 900,
+          borderTopLeftRadius: 25,
+          borderTopRightRadius: 25,
+          top: 130,
+          height: '100%',
         }}
       >
-        <View style={styles.card}>
-          <View style={{ paddingTop: 20 }}>
-            <Text
-              style={{
-                fontFamily: 'Courgette-Regular',
-                fontSize: 27,
-                color: '#fff',
-                paddingLeft: 50,
-                color: '#000',
-              }}
-            >
-              Gửi mã xác nhận
-            </Text>
-          </View>
-          <View style={{ position: 'relative', paddingTop: 10 }}>
-            <InputUpdate
-              mode="outlined"
-              label="Email"
-              value={email}
-              onChangeText={email => setEmail(email)}
-            />
-          </View>
-          <View style={{ alignItems: 'center', padding: 20 }}>
-            <Button
-              mode="contained"
-              color="#3c6dcc"
-              onPress={() => verifyHandler()}
-            >
-              Gửi mã xác nhận
-            </Button>
-          </View>
+        <View style={{ paddingTop: 20 }}>
+          <Title
+            style={{
+              fontSize: 27,
+              alignSelf: 'center',
+            }}
+          >
+            Gửi mã xác nhận
+          </Title>
+        </View>
+        <View style={{ position: 'relative', paddingTop: 10 }}>
+          <InputUpdate
+            outlineColor="blue"
+            mode="outlined"
+            label="Email"
+            value={email}
+            onChangeText={email => setEmail(email)}
+          />
+        </View>
+        <View style={{ alignItems: 'center', padding: 20 }}>
+          <Button
+            mode="contained"
+            color="#3c6dcc"
+            onPress={() => verifyHandler()}
+          >
+            Gửi mã xác nhận
+          </Button>
         </View>
       </View>
-    </KeyboardAvoidingView>
+    </View>
   );
 };
 

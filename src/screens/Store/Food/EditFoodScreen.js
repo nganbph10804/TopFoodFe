@@ -7,7 +7,7 @@ import {
 } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import React, { useEffect, useState } from 'react';
-import { Image, ScrollView, Text, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import {
   ActivityIndicator,
   Button,
@@ -20,7 +20,6 @@ import { COLORS } from '../../../constants/color.const.js';
 import { multiFileAction } from '../../../redux/file/actions/fileAction.js';
 import { updateFoodAction } from '../../../redux/store/food/actions/foodAction.js';
 import { InputUpdate, styles } from '../../../styles/paper.js';
-import { styled } from '../../../styles/store.js';
 
 const EditFoodScreen = ({ route, navigation }) => {
   const { content, files, id, name, price, tag } = route.params;
@@ -243,4 +242,7 @@ const EditFoodScreen = ({ route, navigation }) => {
   );
 };
 
+const styled = StyleSheet.create({
+  viewBtn: {},
+});
 export default EditFoodScreen;

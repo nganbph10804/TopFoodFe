@@ -32,7 +32,6 @@ export const loginAction = (username, password) => async dispatch => {
       });
       Toast.show({
         type: 'success',
-
         text1: 'Thông báo',
         text2: 'Đăng nhập thành công.',
       });
@@ -43,7 +42,6 @@ export const loginAction = (username, password) => async dispatch => {
     });
     Toast.show({
       type: 'error',
-
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -81,11 +79,10 @@ export const registerAction =
         deviceStorage.saveJWT(token);
         Toast.show({
           type: 'success',
-
           text1: 'Thông báo',
           text2: 'Đăng ký tài khoản thành công.',
         });
-        navigation.navigate('Active');
+        navigation.navigate('LOGIN');
       }, 1000);
     } catch (error) {
       dispatch({
@@ -93,13 +90,40 @@ export const registerAction =
       });
       Toast.show({
         type: 'error',
-
         text1: 'Thông báo',
         text2: error.response.data.message,
       });
     }
   };
 
+export const activeAction = (email, navigation) => async dispatch => {
+  dispatch({
+    type: AUTH_REQUEST,
+  });
+  try {
+    await axios.get(`http://34.67.241.66:8080/auth/get-otp?email=${email}`);
+    setTimeout(() => {
+      dispatch({
+        type: AUTH_DONE,
+      });
+      Toast.show({
+        type: 'success',
+        text1: 'Thông báo',
+        text2: 'Gửi mã xác nhận thành công.',
+      });
+      navigation.navigate('LoginScreen');
+    }, 1500);
+  } catch (error) {
+    dispatch({
+      type: AUTH_FAILURE,
+    });
+    Toast.show({
+      type: 'error',
+      text1: 'Thông báo',
+      text2: error.response.data.message,
+    });
+  }
+};
 export const getOtpAction = (email, navigation) => async dispatch => {
   dispatch({
     type: AUTH_REQUEST,
@@ -112,7 +136,6 @@ export const getOtpAction = (email, navigation) => async dispatch => {
       });
       Toast.show({
         type: 'success',
-
         text1: 'Thông báo',
         text2: 'Gửi mã xác nhận thành công.',
       });
@@ -288,7 +311,6 @@ export const activeAccAction = (otp, navigation) => async dispatch => {
     });
     Toast.show({
       type: 'error',
-
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -317,7 +339,6 @@ export const getProfile = id => async dispatch => {
     });
     Toast.show({
       type: 'error',
-
       text1: 'Thông báo',
       text2: error.response.data.message,
     });

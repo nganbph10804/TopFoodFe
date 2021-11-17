@@ -159,7 +159,6 @@ const MessagesScreen = ({ navigation }) => {
   const onCreateGroup = () => {
     try {
       let selected = products.filter(product => product.isChecked);
-      // console.log(selected)
       let lstId = selected.map(lt => lt._id);
       let strVal = lstId.map(String);
       const conversation = {

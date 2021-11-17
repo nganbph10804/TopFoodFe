@@ -52,6 +52,10 @@ const Nav = () => {
           elevation: 3,
         },
         headerTitleAlign: 'center',
+        tabBarStyle: {
+          height: 65,
+          paddingBottom: 10,
+        },
       })}
     >
       <Tab.Screen
@@ -59,6 +63,7 @@ const Nav = () => {
         component={FeedScreen}
         options={{
           title: 'Trang chủ',
+          headerShown: false,
         }}
       />
       {role === ROLES.ROLE_STORE && (
@@ -85,6 +90,7 @@ const Nav = () => {
           component={SearchFriendScreen}
           options={{
             title: 'Tìm bạn bè',
+            headerShown: false,
             tabBarIcon: ({ color, size }) => {
               return <AntDesign name="search1" size={size} color={color} />;
             },
@@ -133,6 +139,7 @@ const Nav = () => {
         component={NotificationsScreen}
         options={{
           title: 'Thông báo',
+          headerShown: false,
         }}
       />
       <Tab.Screen

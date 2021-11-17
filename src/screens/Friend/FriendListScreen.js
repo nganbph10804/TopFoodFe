@@ -11,13 +11,12 @@ const FriendListScreen = ({ navigation }) => {
   const { friend } = useSelector(state => state.friend);
   const loading = useSelector(state => state.friend.loading);
   const dispatch = useDispatch();
-  const [page, setPage] = useState(0);
   useEffect(() => {
     const focus = navigation.addListener('focus', () => {
-      dispatch(friendListAction(page));
+      dispatch(friendListAction(0));
     });
     return focus;
-  }, [dispatch, page, navigation]);
+  }, [dispatch, navigation]);
   return (
     <View style={{ flex: 1 }}>
       {loading ? (

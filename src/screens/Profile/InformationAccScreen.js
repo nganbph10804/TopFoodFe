@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Image, View } from 'react-native';
 import { Avatar, Subheading, Title } from 'react-native-paper';
 import { useSelector } from 'react-redux';
+import HeaderUser from '../../shared/HeaderUser.js';
 
 const InformationAccScreen = () => {
   const auth = useSelector(state => state.auth);
@@ -13,6 +14,7 @@ const InformationAccScreen = () => {
         backgroundColor: '#fff',
       }}
     >
+      <HeaderUser />
       <View style={{ backgroundColor: '#fff' }}>
         <View
           style={{
@@ -29,29 +31,10 @@ const InformationAccScreen = () => {
               style={{ width: '100%', height: '100%' }}
             />
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              position: 'absolute',
-              bottom: -55,
-              left: 20,
-            }}
-          >
-            <Avatar.Image
-              size={80}
-              source={{
-                uri: `${auth.profile.avatar}`,
-              }}
-            />
-            <Title style={{ marginLeft: 10 }}>{auth.profile.name}</Title>
-          </View>
         </View>
         <View
           style={{
-            marginTop: 70,
-            borderTopWidth: 1,
-            borderTopColor: '#ccc',
+            marginTop: 20,
             alignItems: 'center',
             flexDirection: 'row',
             paddingTop: 10,

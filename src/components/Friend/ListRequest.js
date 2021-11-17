@@ -1,6 +1,6 @@
 import { Entypo } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Menu, MenuItem } from 'react-native-material-menu';
 import { Avatar, Title } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
@@ -27,7 +27,7 @@ const ListRequest = ({ friend, navigation }) => {
 
   return (
     <View>
-      <View style={styles.Item}>
+      <View style={styled.item}>
         <Avatar.Image
           size={60}
           source={{
@@ -78,4 +78,12 @@ const ListRequest = ({ friend, navigation }) => {
   );
 };
 
+const styled = StyleSheet.create({
+  item: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 20,
+    marginBottom: 10,
+  },
+});
 export default ListRequest;

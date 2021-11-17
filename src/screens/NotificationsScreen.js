@@ -1,19 +1,19 @@
-import { MaterialIcons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback } from 'react';
 import { Text, View } from 'react-native';
-import { ActivityIndicator, Badge, Button, Title } from 'react-native-paper';
+import { Divider } from 'react-native-elements';
+import { Badge, Button, Card, Title } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import ListRequest from '../components/Friend/ListRequest.js';
 import Notification from '../components/Notification.js';
 import { COLORS } from '../constants/color.const.js';
 import { notificationAction } from '../redux/friend/actions/friendAction.js';
+import HeaderUser from '../shared/HeaderUser.js';
 import { styles } from '../styles/paper.js';
 
 const NotificationsScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const request = useSelector(state => state.friend.request);
-  const loading = useSelector(state => state.friend.loading);
 
   useFocusEffect(
     useCallback(() => {
@@ -21,39 +21,23 @@ const NotificationsScreen = ({ navigation }) => {
     }, [dispatch])
   );
   return (
-    <View style={{ flex: 1 }}>
-      {loading ? (
-        <View style={styles.loading}>
-          <ActivityIndicator
-            animating={true}
-            color={`${COLORS.blue[1]}`}
-            size={'large'}
-          />
-        </View>
-      ) : (
+    <View style={styles.background}>
+      <HeaderUser />
+      <Card style={styles.currentBackground}>
         <View style={{ flex: 1 }}>
+          <Title style={{ marginTop: 20, marginLeft: 20 }}>Thông báo</Title>
+          <Divider />
           <View>
             {request.length > 0 ? (
               <View
                 style={{
-                  backgroundColor: '#fff',
                   padding: 10,
-                  marginTop: 10,
                   flexDirection: 'row',
                   alignItems: 'center',
                   position: 'relative',
                 }}
               >
-                <MaterialIcons name="people-alt" size={30} color="black" />
-                <Text
-                  style={{
-                    fontSize: 20,
-                    paddingHorizontal: 5,
-                    fontWeight: 'bold',
-                  }}
-                >
-                  Lời mời kết bạn
-                </Text>
+                <Title style={{ marginHorizontal: 10 }}>Lời mời kết bạn</Title>
                 <Badge size={30}>{request.length}</Badge>
                 <View style={styles.seeAll}>
                   <Button>xem thêm</Button>
@@ -70,26 +54,16 @@ const NotificationsScreen = ({ navigation }) => {
           </View>
           <View
             style={{
-              backgroundColor: '#fff',
-              paddingTop: 10,
-              paddingBottom: 10,
-              marginVertical: 10,
               width: '100%',
             }}
           >
-            <Title
-              style={{ fontSize: 18, fontWeight: 'bold', paddingLeft: 20 }}
-            >
-              Trước đó
-            </Title>
+            <Title style={{ marginLeft: 20 }}>Trước đó</Title>
           </View>
-          <View style={{ backgroundColor: '#fff' }}>
-            <View>
-              <Notification />
-            </View>
+          <View>
+            <Notification />
           </View>
         </View>
-      )}
+      </Card>
     </View>
   );
 };

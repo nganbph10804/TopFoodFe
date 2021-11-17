@@ -192,7 +192,6 @@ export const multiFileAction = file => async dispatch => {
     });
     Toast.show({
       type: 'error',
-
       text1: 'Thông báo',
       text2: 'Upload thất bại',
     });

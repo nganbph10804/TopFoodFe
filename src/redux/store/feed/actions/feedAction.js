@@ -11,13 +11,13 @@ import {
   SEARCH_FEED,
 } from '../types/feedType.js';
 
-export const feedListAction = () => async dispatch => {
+export const feedListAction = id => async dispatch => {
   dispatch({
     type: FEED_REQUEST,
   });
   try {
     const { data } = await axios.get(
-      `http://34.67.241.66:8080/store-profile/list-post?page=0&pageSize=200`,
+      `http://34.67.241.66:8080/store-profile/list-post?accountId=${id}&page=0&pageSize=1000`,
       {
         headers: await authHeader(),
       }
@@ -35,7 +35,6 @@ export const feedListAction = () => async dispatch => {
     });
     Toast.show({
       type: 'error',
-
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -89,16 +88,6 @@ export const createFeedAction =
           headers: await authHeader(),
         }
       );
-      const { data } = await axios.get(
-        `http://34.67.241.66:8080/store-profile/list-post?page=0&pageSize=200`,
-        {
-          headers: await authHeader(),
-        }
-      );
-      dispatch({
-        type: FEED_LIST,
-        payload: data.data,
-      });
       dispatch({
         type: CLEAR_FILE,
       });
@@ -114,7 +103,6 @@ export const createFeedAction =
       });
       Toast.show({
         type: 'error',
-
         text1: 'Thông báo',
         text2: error.response.data.message,
       });
@@ -201,7 +189,6 @@ export const deleteFeedAction = id => async dispatch => {
     });
     Toast.show({
       type: 'error',
-
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
