@@ -1,6 +1,6 @@
 import { Entypo } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Menu, MenuItem } from 'react-native-material-menu';
 import { Avatar, Subheading } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
@@ -16,13 +16,21 @@ const ListStore = ({ store, navigation }) => {
   };
   return (
     <View style={styled.item}>
-      <Avatar.Image
-        size={60}
-        source={{
-          uri: `${store.avatar}`,
-        }}
-      />
-      <Subheading style={styled.text}>{store.name}</Subheading>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('StoreNavigationStore', { screen: 'FoodMain' })
+        }
+      >
+        <Avatar.Image
+          size={60}
+          source={{
+            uri: `${store.avatar}`,
+          }}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity>
+        <Subheading style={styled.text}>{store.name}</Subheading>
+      </TouchableOpacity>
       <View style={styled.lastItem}>
         <Menu
           visible={visible}

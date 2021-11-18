@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect,  useState } from 'react';
 import { View, Text } from 'react-native';
 import { Title } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +10,7 @@ import { styles } from '../../styles/paper.js';
 const ListStoreScreen = ({ navigation }) => {
   const storeFollow = useSelector(state => state.follow.storeFollow);
   const dispatch = useDispatch();
+  const [state, setState] = useState([]);
   useEffect(() => {
     const focus = navigation.addListener('focus', () => {
       dispatch(storeFollowAction());

@@ -18,7 +18,7 @@ export const searchProfileAction = (phone, page) => async dispatch => {
 
   try {
     const { data } = await axios.get(
-      `http://34.67.241.66:8080/profiles/search?page=${page}&search=${phone}`,
+      `http://103.245.251.149:8080/profiles/search?page=${page}&search=${phone}`,
       {
         headers: await authHeader(),
       }
@@ -47,7 +47,7 @@ export const getProfileActon = (id, navigation) => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://34.67.241.66:8080/profiles/${id}`,
+      `http://103.245.251.149:8080/profiles/${id}`,
       {
         headers: await authHeader(),
       }
@@ -77,7 +77,7 @@ export const friendListAction = page => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://34.67.241.66:8080/friends/list-friends?page=${page}`,
+      `http://103.245.251.149:8080/friends/list-friends?page=${page}`,
       {
         headers: await authHeader(),
       }
@@ -106,7 +106,7 @@ export const notificationAction = page => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://34.67.241.66:8080/friends/list-friends-request?page=${page}&pageSize=2`,
+      `http://103.245.251.149:8080/friends/list-friends-request?page=${page}&pageSize=2`,
       {
         headers: await authHeader(),
       }
@@ -132,7 +132,7 @@ export const listRequestAction = page => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://34.67.241.66:8080/friends/list-friends-request?page=${page}&pageSize=10`,
+      `http://103.245.251.149:8080/friends/list-friends-request?page=${page}&pageSize=10`,
       {
         headers: await authHeader(),
       }
@@ -158,7 +158,7 @@ export const blockFriendAction = phone => async dispatch => {
   });
   try {
     await axios.post(
-      'http://34.67.241.66:8080/friends/block-friend',
+      'http://103.245.251.149:8080/friends/block-friend',
       {
         phoneNumberBlockPerson: phone,
       },
@@ -167,7 +167,7 @@ export const blockFriendAction = phone => async dispatch => {
       }
     );
     const { data } = await axios.get(
-      `http://34.67.241.66:8080/friends/list-friends`,
+      `http://103.245.251.149:8080/friends/list-friends`,
       {
         headers: await authHeader(),
       }
@@ -198,13 +198,13 @@ export const unfriendAction = phone => async dispatch => {
   });
   try {
     await axios.delete(
-      `http://34.67.241.66:8080/friends/remove-friend/${phone}`,
+      `http://103.245.251.149:8080/friends/remove-friend/${phone}`,
       {
         headers: await authHeader(),
       }
     );
     const { data } = await axios.get(
-      `http://34.67.241.66:8080/friends/list-friends`,
+      `http://103.245.251.149:8080/friends/list-friends`,
       {
         headers: await authHeader(),
       }
@@ -237,7 +237,7 @@ export const acceptAction = username => async dispatch => {
   });
   try {
     await axios.post(
-      `http://34.67.241.66:8080/friends/reply-friend`,
+      `http://103.245.251.149:8080/friends/reply-friend`,
       {
         statusReply: true,
         usernameSendInvitaionPerson: username,
@@ -247,7 +247,7 @@ export const acceptAction = username => async dispatch => {
       }
     );
     const { data } = await axios.get(
-      `http://34.67.241.66:8080/friends/list-friends-request`,
+      `http://103.245.251.149:8080/friends/list-friends-request`,
       {
         headers: await authHeader(),
       }
@@ -280,7 +280,7 @@ export const removeActon = username => async dispatch => {
   });
   try {
     await axios.post(
-      `http://34.67.241.66:8080/friends/reply-friend`,
+      `http://103.245.251.149:8080/friends/reply-friend`,
       {
         statusReply: false,
         usernameSendInvitaionPerson: username,
@@ -290,7 +290,7 @@ export const removeActon = username => async dispatch => {
       }
     );
     const { data } = await axios.get(
-      `http://34.67.241.66:8080/friends/list-friends-request`,
+      `http://103.245.251.149:8080/friends/list-friends-request`,
       {
         headers: await authHeader(),
       }
@@ -323,7 +323,7 @@ export const sendAction = phone => async dispatch => {
   });
   try {
     await axios.post(
-      `http://34.67.241.66:8080/friends/send-friend-invitations`,
+      `http://103.245.251.149:8080/friends/send-friend-invitations`,
       {
         phoneAddressee: phone,
       },
@@ -360,7 +360,7 @@ export const unblockAction = (id, page) => async dispatch => {
   });
   try {
     await axios.post(
-      `http://34.67.241.66:8080/friends/unblock-friend`,
+      `http://103.245.251.149:8080/friends/unblock-friend`,
       {
         accountIdUnblock: id,
       },
@@ -369,7 +369,7 @@ export const unblockAction = (id, page) => async dispatch => {
       }
     );
     const { data } = await axios.get(
-      `http://34.67.241.66:8080/friends/list-friend-block?page=${page}`,
+      `http://103.245.251.149:8080/friends/list-friend-block?page=${page}`,
       {
         headers: await authHeader(),
       }
@@ -404,7 +404,7 @@ export const blockListAction = page => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://34.67.241.66:8080/friends/list-friend-block?page=${page}`,
+      `http://103.245.251.149:8080/friends/list-friend-block?page=${page}`,
       {
         headers: await authHeader(),
       }

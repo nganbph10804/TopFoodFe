@@ -9,7 +9,7 @@ export const reactPostAction = id => async dispatch => {
   });
   try {
     await axios.post(
-      `http://34.67.241.66:8080/react/reaction-post?id=${id}`,
+      `http://103.245.251.149:8080/react/reaction-post?id=${id}`,
       {
         type: 'ANGRY',
       },
@@ -40,7 +40,7 @@ export const reactCommentAction = id => async dispatch => {
   });
   try {
     await axios.post(
-      `http://34.67.241.66:8080/react/reaction-comment?id=${id}`,
+      `http://103.245.251.149:8080/react/reaction-comment?id=${id}`,
       {
         type: 'ANGRY',
       },

@@ -14,7 +14,7 @@ export const searchTagAction = () => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://34.67.241.66:8080/api/tag/all?tagName`,
+      `http://103.245.251.149:8080/api/tag/all?tagName`,
       {
         headers: await authHeader(),
       }
@@ -43,7 +43,7 @@ export const getTagId = (tagId, foodId) => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://34.67.241.66:8080/api/tag/${tagId}`,
+      `http://103.245.251.149:8080/api/tag/${tagId}`,
       {
         headers: await authHeader(),
       }

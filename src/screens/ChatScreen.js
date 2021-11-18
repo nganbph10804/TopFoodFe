@@ -100,7 +100,7 @@ const ChatScreen = ({ navigation, route }) => {
       });
       const token = await deviceStorage.loadJWT();
       const { data } = await axios.post(
-        'http://34.67.241.66:8080/files/uploads',
+        'http://103.245.251.149:8080/files/uploads',
         formData,
         {
           headers: {
@@ -109,13 +109,13 @@ const ChatScreen = ({ navigation, route }) => {
           },
         }
       );
-      return 'http://34.67.241.66:8080' + data.data.map(i => i.path);
+      return 'http://103.245.251.149:8080' + data.data.map(i => i.path);
     } catch (error) {
       Toast.show({
         type: 'error',
         topOffset: 40,
         text1: 'Thông báo',
-        text2: error.response.data.message
+        text2: error.response.data.message,
       });
     }
   }
@@ -160,36 +160,33 @@ const ChatScreen = ({ navigation, route }) => {
             }
           },
         }}
-        icon={() => (
-          <Ionicons name='ios-image' size={22} color='blue' />
-        )}
+        icon={() => <Ionicons name="ios-image" size={22} color="blue" />}
       />
     );
   }
   const onDelete = messageIdToDelete => {
     let batch = db.batch();
-      const deletequery = chatsRef.where("_id","==",messageIdToDelete);
-      deletequery.get().then(
-        snapshot =>{
-          snapshot.docs.forEach(doc=>{
-            batch.delete(doc.ref)
-          })
-          return batch.commit();
-        }
-      )
-      setMessages(previousState =>
-        previousState.filter(message => message._id !== messageIdToDelete))
-        roomRef.doc(idRoom).update({
-          "lastMessageTime": new Date(),
-          "lastMessage": uname + ` đã xóa 1 tin nhắn`
-        })
-        Toast.show({
-          type: 'success',
-          topOffset: 40,
-          text1: 'Thông báo',
-          text2: 'Đã xóa tin nhắn',
-        });
-  }
+    const deletequery = chatsRef.where('_id', '==', messageIdToDelete);
+    deletequery.get().then(snapshot => {
+      snapshot.docs.forEach(doc => {
+        batch.delete(doc.ref);
+      });
+      return batch.commit();
+    });
+    setMessages(previousState =>
+      previousState.filter(message => message._id !== messageIdToDelete)
+    );
+    roomRef.doc(idRoom).update({
+      lastMessageTime: new Date(),
+      lastMessage: uname + ` đã xóa 1 tin nhắn`,
+    });
+    Toast.show({
+      type: 'success',
+      topOffset: 40,
+      text1: 'Thông báo',
+      text2: 'Đã xóa tin nhắn',
+    });
+  };
 
   const onLongPress = (context, message) => {
     const options = ['Coppy', 'Delete Message', 'Cancel'];

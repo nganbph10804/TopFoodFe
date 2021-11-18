@@ -13,7 +13,7 @@ export const favoriteListAction = () => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      'http://34.67.241.66:8080/profiles/favorite?page=0&pageSize=1000',
+      'http://103.245.251.149:8080/profiles/favorite?page=0&pageSize=1000',
       {
         headers: await authHeader(),
       }
@@ -45,7 +45,7 @@ export const updateFavoriteAction = tag => async dispatch => {
   });
   try {
     await axios.post(
-      'http://34.67.241.66:8080/profiles/favorite/update',
+      'http://103.245.251.149:8080/profiles/favorite/update',
       [tag],
       {
         headers: await authHeader(),

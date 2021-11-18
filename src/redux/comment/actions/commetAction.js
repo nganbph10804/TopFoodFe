@@ -9,7 +9,7 @@ export const commentAction = (id, content, files) => async dispatch => {
   });
   try {
     await axios.post(
-      `http://34.67.241.66:8080/react/comment-post?id=${id}`,
+      `http://103.245.251.149:8080/react/comment-post?id=${id}`,
       {
         content: content,
         files: files,
@@ -40,7 +40,7 @@ export const deleteCommentAction = commentId => async dispatch => {
   });
   try {
     await axios.delete(
-      `http://34.67.241.66:8080/react/comment-post?commentId=${commentId}`,
+      `http://103.245.251.149:8080/react/comment-post?commentId=${commentId}`,
       {
         headers: await authHeader(),
       }
