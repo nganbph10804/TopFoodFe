@@ -17,7 +17,7 @@ export const feedListAction = id => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://34.67.241.66:8080/store-profile/list-post?accountId=${id}&page=0&pageSize=1000`,
+      `http://103.245.251.149:8080/store-profile/list-post?accountId=${id}&page=0&pageSize=1000`,
       {
         headers: await authHeader(),
       }
@@ -46,7 +46,7 @@ export const feedDetailAction = id => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://34.67.241.66:8080/store-profile/post/detail/${id}`,
+      `http://103.245.251.149:8080/store-profile/post/detail/${id}`,
       {
         headers: await authHeader(),
       }
@@ -78,7 +78,7 @@ export const createFeedAction =
     });
     try {
       await axios.post(
-        `http://34.67.241.66:8080/store-profile/post/create`,
+        `http://103.245.251.149:8080/store-profile/post/create`,
         {
           content: content,
           files: files,
@@ -115,7 +115,7 @@ export const updateFeedAction =
     });
     try {
       await axios.put(
-        `http://34.67.241.66:8080/store-profile/post/update`,
+        `http://103.245.251.149:8080/store-profile/post/update`,
         {
           content: content,
           files: files,
@@ -127,7 +127,7 @@ export const updateFeedAction =
         }
       );
       const { data } = await axios.get(
-        `http://34.67.241.66:8080/store-profile/list-post?page=0&pageSize=200`,
+        `http://103.245.251.149:8080/store-profile/list-post?page=0&pageSize=200`,
         {
           headers: await authHeader(),
         }
@@ -165,7 +165,7 @@ export const deleteFeedAction = id => async dispatch => {
   });
   try {
     await axios.delete(
-      `http://34.67.241.66:8080/store-profile/post/delete/${id}`,
+      `http://103.245.251.149:8080/store-profile/post/delete/${id}`,
       {
         headers: await authHeader(),
       }
@@ -179,7 +179,6 @@ export const deleteFeedAction = id => async dispatch => {
     });
     Toast.show({
       type: 'success',
-
       text1: 'Thông báo',
       text2: 'Xoá bài viết thành công',
     });

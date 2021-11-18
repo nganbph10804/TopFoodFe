@@ -14,7 +14,7 @@ export const storeFollowAction = () => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://34.67.241.66:8080/store-profile/list-store-follow?page=0&pageSize=1000`,
+      `http://103.245.251.149:8080/store-profile/list-store-follow?page=0&pageSize=1000`,
       {
         headers: await authHeader(),
       }
@@ -40,7 +40,7 @@ export const userFollowAction = () => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://34.67.241.66:8080/store-profile/list-follow-store?page=0&pageSize=1000`,
+      `http://103.245.251.149:8080/store-profile/list-follow-store?page=0&pageSize=1000`,
       {
         headers: await authHeader(),
       }
@@ -65,7 +65,7 @@ export const followAction = id => async dispatch => {
     type: FOLLOW_REQUEST,
   });
   try {
-    await axios.post(`http://34.67.241.66:8080/store-profile/follow/${id}`, {
+    await axios.post(`http://103.245.251.149:8080/store-profile/follow/${id}`, {
       headers: await authHeader(),
     });
     Toast.show({
@@ -90,7 +90,7 @@ export const unFollowAction = id => async dispatch => {
   });
   try {
     await axios.delete(
-      `http://34.67.241.66:8080/store-profile/un-follow/${id}`,
+      `http://103.245.251.149:8080/store-profile/un-follow/${id}`,
       {
         headers: await authHeader(),
       }

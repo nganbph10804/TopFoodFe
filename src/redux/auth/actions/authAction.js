@@ -17,7 +17,7 @@ export const loginAction = (username, password) => async dispatch => {
   });
   try {
     const { data } = await axios.post(
-      'http://34.67.241.66:8080/auth/login-with-username',
+      'http://103.245.251.149:8080/auth/login-with-username',
       {
         username: username,
         password: password,
@@ -55,7 +55,7 @@ export const registerAction =
       type: AUTH_REQUEST,
     });
     try {
-      await axios.post('http://34.67.241.66:8080/auth/register', {
+      await axios.post('http://103.245.251.149:8080/auth/register', {
         birthday: birthday,
         email: email,
         name: name,
@@ -63,9 +63,11 @@ export const registerAction =
         phoneNumber: phone,
         username: username,
       });
-      await axios.get(`http://34.67.241.66:8080/auth/get-otp?email=${email}`);
+      await axios.get(
+        `http://103.245.251.149:8080/auth/get-otp?email=${email}`
+      );
       const { data } = await axios.post(
-        'http://34.67.241.66:8080/auth/login-with-username',
+        'http://103.245.251.149:8080/auth/login-with-username',
         {
           username: username,
           password: password,
@@ -101,7 +103,7 @@ export const activeAction = (email, navigation) => async dispatch => {
     type: AUTH_REQUEST,
   });
   try {
-    await axios.get(`http://34.67.241.66:8080/auth/get-otp?email=${email}`);
+    await axios.get(`http://103.245.251.149:8080/auth/get-otp?email=${email}`);
     setTimeout(() => {
       dispatch({
         type: AUTH_DONE,
@@ -129,7 +131,7 @@ export const getOtpAction = (email, navigation) => async dispatch => {
     type: AUTH_REQUEST,
   });
   try {
-    await axios.get(`http://34.67.241.66:8080/auth/get-otp?email=${email}`);
+    await axios.get(`http://103.245.251.149:8080/auth/get-otp?email=${email}`);
     setTimeout(() => {
       dispatch({
         type: AUTH_DONE,
@@ -160,7 +162,7 @@ export const forgotAction =
       type: AUTH_REQUEST,
     });
     try {
-      await axios.post('http://34.67.241.66:8080/auth/forgot-password', {
+      await axios.post('http://103.245.251.149:8080/auth/forgot-password', {
         email: email,
         newPassword: newPassword,
         otp: otp,
@@ -209,7 +211,7 @@ export const updateProfileAction =
     });
     try {
       await axios.put(
-        'http://34.67.241.66:8080/profiles/update',
+        'http://103.245.251.149:8080/profiles/update',
         {
           address: address,
           avatar: avatar,
@@ -242,7 +244,7 @@ export const changePassAction =
     });
     try {
       await axios.put(
-        'http://34.67.241.66:8080/account/change-password',
+        'http://103.245.251.149:8080/account/change-password',
         {
           newPassword: newPassword,
           oldPassword: oldPassword,
@@ -284,7 +286,7 @@ export const activeAccAction = (otp, navigation) => async dispatch => {
   });
   try {
     await axios.post(
-      'http://34.67.241.66:8080/account/active',
+      'http://103.245.251.149:8080/account/active',
       {
         otp: otp,
       },
@@ -322,7 +324,7 @@ export const getProfile = id => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://34.67.241.66:8080/profiles/${id}`,
+      `http://103.245.251.149:8080/profiles/${id}`,
       {
         headers: await authHeader(),
       }
