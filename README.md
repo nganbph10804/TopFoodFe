@@ -1,5 +1,31 @@
 # TopFood-FE
 
+### Run
+
+clone project
+
+```
+https://github.com/nganbph10804/TopFoodFe.git
+```
+
+install expo
+
+```
+npm install --global expo-cli
+```
+
+install package
+
+```
+npm install
+```
+
+run project
+
+```
+npm start
+```
+
 ### Setting Prettier
 
 ```json
