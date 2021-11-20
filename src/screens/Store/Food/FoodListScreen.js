@@ -85,16 +85,16 @@ const FoodListScreen = ({ navigation }) => {
 
   return (
     <View style={styles.main}>
-      <ScrollView>
-        {loading && (
-          <View style={styles.loading}>
-            <ActivityIndicator
-              animating={true}
-              color={`${COLORS.blue[1]}`}
-              size={'large'}
-            />
-          </View>
-        )}
+      {loading && (
+        <View style={styles.loading}>
+          <ActivityIndicator
+            animating={true}
+            color={`${COLORS.blue[1]}`}
+            size={'large'}
+          />
+        </View>
+      )}
+      <ScrollView style={{ flex: 1 }}>
         <View style={styled.container}>
           <Button
             mode="contained"

@@ -29,6 +29,7 @@ const StoreNavigation = () => {
         name="FoodMain"
         component={FoodMain}
         options={{
+          title: 'Cửa hàng',
           headerShown: false,
         }}
       />

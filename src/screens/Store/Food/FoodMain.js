@@ -11,6 +11,7 @@ import HeaderStore from '../../../shared/HeaderStore.js';
 import { styles } from '../../../styles/paper.js';
 import { FontAwesome } from '@expo/vector-icons';
 import { COLORS } from '../../../constants/color.const.js';
+import { foodListAction } from '../../../redux/store/food/actions/foodAction.js';
 
 const FoodMain = ({ navigation }) => {
   const profile = useSelector(state => state.auth.profile);
@@ -21,6 +22,7 @@ const FoodMain = ({ navigation }) => {
     dispatch(storeFeedListAction(profile.id));
     dispatch(clearFilesAction());
     dispatch(userFollowAction());
+    dispatch(foodListAction());
   }, [dispatch]);
   return (
     <View style={styles.main}>

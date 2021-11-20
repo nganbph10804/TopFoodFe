@@ -12,6 +12,7 @@ import {
 
 const FilterCtg = ({ foods, navigation, tagName }) => {
   const detail = useSelector(state => state.food.detail);
+  const [isVisible, setIsVisible] = useState(false);
   const food = detail;
   const dispatch = useDispatch();
   const handlerOption = () => {
@@ -24,7 +25,7 @@ const FilterCtg = ({ foods, navigation, tagName }) => {
   useEffect(() => {
     dispatch(foodDetailAction(foods.id));
   }, [dispatch]);
-  const [isVisible, setIsVisible] = useState(false);
+
   const list = [
     {
       title: 'Cập nhật',
