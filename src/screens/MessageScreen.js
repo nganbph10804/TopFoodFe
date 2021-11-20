@@ -2,12 +2,11 @@ import { Entypo, FontAwesome, Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import {
   Alert,
+  CheckBox,
   FlatList,
   StyleSheet,
   TouchableOpacity,
   View,
-  Text,
-  CheckBox,
 } from 'react-native';
 import {
   Button,
@@ -16,11 +15,11 @@ import {
   Portal,
   Provider,
   Searchbar,
-  Card,
 } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
 import { friendListAction } from '../redux/friend/actions/friendAction.js';
+import HeaderUser from '../shared/HeaderUser.js';
 import {
   Cardd,
   Container,
@@ -288,6 +287,7 @@ const MessagesScreen = ({ navigation }) => {
 
   return (
     <Provider>
+      <HeaderUser />
       <Container>
         <Portal>
           <Dialog
@@ -394,7 +394,6 @@ const MessagesScreen = ({ navigation }) => {
             </Dialog.Actions>
           </Dialog>
         </Portal>
-
         <View style={styles.container}>
           <Searchbar
             style={styles.searchBarr}

@@ -9,6 +9,7 @@ import EditFoodScreen from '../screens/Store/Food/EditFoodScreen.js';
 import FoodDetailScreen from '../screens/Store/Food/FoodDetailScreen.js';
 import FoodListScreen from '../screens/Store/Food/FoodListScreen.js';
 import FoodMain from '../screens/Store/Food/FoodMain.js';
+import SubFoodScreen from '../screens/Store/Food/SubFoodScreen.js';
 
 const Stack = createStackNavigator();
 
@@ -28,6 +29,7 @@ const StoreNavigation = () => {
         name="FoodMain"
         component={FoodMain}
         options={{
+          title: 'Cửa hàng',
           headerShown: false,
         }}
       />
@@ -78,6 +80,13 @@ const StoreNavigation = () => {
         component={EditFeedScreen}
         options={{
           title: 'Chỉnh sửa',
+        }}
+      />
+      <Stack.Screen
+        name="SubFoodScreen"
+        component={SubFoodScreen}
+        options={{
+          title: 'Chi tiết món ăn',
         }}
       />
     </Stack.Navigator>

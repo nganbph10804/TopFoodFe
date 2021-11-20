@@ -16,7 +16,7 @@ function App() {
           <GlobalRoute />
           <Toast
             ref={ref => Toast.setRef(ref)}
-            visibilityTime={1000}
+            visibilityTime={900}
             topOffset={30}
             autoHide={true}
           />

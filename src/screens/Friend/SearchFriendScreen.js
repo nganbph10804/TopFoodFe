@@ -1,19 +1,17 @@
-import { useIsFocused } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Card, Searchbar, Title } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import SearchFriend from '../../components/Friend/SearchFriend.js';
-import { COLORS } from '../../constants/color.const.js';
 import {
+  clearSearchAction,
   listRequestAction,
   searchProfileAction,
 } from '../../redux/friend/actions/friendAction.js';
 import HeaderUser from '../../shared/HeaderUser.js';
 import { styles } from '../../styles/paper.js';
 
-const SearchFriendScreen = () => {
-  const isFocused = useIsFocused();
+const SearchFriendScreen = ({ navigation }) => {
   const [searchValue, setSearchValue] = useState('');
   const profile = useSelector(state => state.friend.search);
   const dispatch = useDispatch();
@@ -22,15 +20,19 @@ const SearchFriendScreen = () => {
     dispatch(searchProfileAction(searchValue, 0));
   };
   useEffect(() => {
-    if (isFocused) {
+    const focus = navigation.addListener('focus', () => {
       dispatch(listRequestAction(0));
-    }
+      dispatch(clearSearchAction());
+      setSearchValue('');
+    });
+    return focus;
   }, [dispatch]);
+
   return (
     <View style={styles.background}>
       <HeaderUser />
       <Card style={styles.currentBackground}>
-        <Title style={{ marginTop: 20, marginLeft: 20 }}>Tìm kiếm bạn bè</Title>
+        <Title style={styles.title}>Tìm kiếm bạn bè</Title>
         <View
           style={{
             width: '95%',

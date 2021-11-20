@@ -1,7 +1,10 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import StoreClient from '../components/client/StoreClient.js';
 import { COLORS } from '../constants/color.const.js';
+import { favoriteListAction } from '../redux/favorite/favoriteAction.js';
+import { searchTagAction } from '../redux/store/tag/action/tagAction.js';
 import ActiveAccScreen from '../screens/Auth/ActiveAccScreen.js';
 import ChangePassScreen from '../screens/Auth/ChangePassScreen.js';
 import ForgotPasswordScreen from '../screens/Auth/ForgotPasswordScreen.js';
@@ -11,6 +14,7 @@ import VerifyScreen from '../screens/Auth/VerifyScreen.js';
 import ContactScreen from '../screens/ContactScreen.js';
 import ListStoreScreen from '../screens/follow/ListStoreScreen.js';
 import MainFriendScreen from '../screens/Friend/MainFriendScreen.js';
+import FavoriteScreen from '../screens/Profile/FavoriteScreen.js';
 import InformationAccScreen from '../screens/Profile/InformationAccScreen.js';
 import PublicProfileScreen from '../screens/Profile/PublicProfileScreen.js';
 import Nav from './Nav.js';
@@ -19,7 +23,12 @@ const Stack = createStackNavigator();
 const GlobalRoute = () => {
   const token = useSelector(state => state.auth.token);
   const { status } = useSelector(state => state.auth.account);
-
+  const { total } = useSelector(state => state.favorite);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(favoriteListAction());
+    dispatch(searchTagAction(''));
+  }, [dispatch]);
   return (
     <Stack.Navigator
       screenOptions={{
@@ -80,6 +89,20 @@ const GlobalRoute = () => {
           <Stack.Screen
             name="ListStoreScreen"
             component={ListStoreScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="StoreClient"
+            component={StoreClient}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="FavoriteScreen"
+            component={FavoriteScreen}
             options={{
               headerShown: false,
             }}

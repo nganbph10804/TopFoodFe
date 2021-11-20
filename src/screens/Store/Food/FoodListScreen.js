@@ -94,97 +94,97 @@ const FoodListScreen = ({ navigation }) => {
           />
         </View>
       )}
-      <View style={styled.container}>
-        <Button
-          mode="contained"
-          onPress={() => navigation.navigate('CreateFoodScreen')}
-          color={`${COLORS.blue[1]}`}
-          icon={() => (
-            <Ionicons
-              name="add-circle-sharp"
-              size={24}
-              color="white"
-              style={styled.icon}
-            />
-          )}
-        >
-          Thêm món ăn
-        </Button>
-      </View>
-      <View style={{ padding: 10, zIndex: -15, backgroundColor: '#fff' }}>
-        <Searchbar
-          placeholder="Tìm kiếm"
-          ref={ref}
-          onFocus={onFocus}
-          value={searchValue}
-          onChangeText={searchValue => setSearchValue(searchValue)}
-          style={styles.search}
-          clearIcon={() => (
-            <MaterialIcons
-              name="cancel"
-              size={24}
-              color="black"
-              onPress={onBlur}
-            />
-          )}
-        />
-      </View>
-      <View>
-        <ScrollView horizontal={true}>
-          <View style={styled.filter}>
-            <TagList
-              data={tag}
-              active={active}
-              setActive={setActive}
-              handlerFilter={handlerFilter}
-            />
-          </View>
-        </ScrollView>
-      </View>
-      <View>
-        {focus && search.length < 1
-          ? null
-          : search.map(i => (
-              <SearchFood key={i.id} food={i} navigation={navigation} />
-            ))}
-      </View>
-      <View>
-        {!focus && !ctg && (
-          <View style={{ zIndex: -7 }}>
-            {food.length < 1 ? (
-              <View style={styles.noFriend}>
-                <Text style={styles.textXL}>Không có món ăn</Text>
-              </View>
-            ) : (
-              <ScrollView>
+      <ScrollView style={{ flex: 1 }}>
+        <View style={styled.container}>
+          <Button
+            mode="contained"
+            onPress={() => navigation.navigate('CreateFoodScreen')}
+            color={`${COLORS.blue[1]}`}
+            icon={() => (
+              <Ionicons
+                name="add-circle-sharp"
+                size={24}
+                color="white"
+                style={styled.icon}
+              />
+            )}
+          >
+            Thêm món ăn
+          </Button>
+        </View>
+        <View style={{ padding: 10, zIndex: -15, backgroundColor: '#fff' }}>
+          <Searchbar
+            placeholder="Tìm kiếm"
+            ref={ref}
+            onFocus={onFocus}
+            value={searchValue}
+            onChangeText={searchValue => setSearchValue(searchValue)}
+            style={styles.search}
+            clearIcon={() => (
+              <MaterialIcons
+                name="cancel"
+                size={24}
+                color="black"
+                onPress={onBlur}
+              />
+            )}
+          />
+        </View>
+        <View>
+          <ScrollView horizontal={true}>
+            <View style={styled.filter}>
+              <TagList
+                data={tag}
+                active={active}
+                setActive={setActive}
+                handlerFilter={handlerFilter}
+              />
+            </View>
+          </ScrollView>
+        </View>
+        <View>
+          {focus && search.length < 1
+            ? null
+            : search.map(i => (
+                <SearchFood key={i.id} food={i} navigation={navigation} />
+              ))}
+        </View>
+        <View>
+          {!focus && !ctg && (
+            <View style={{ zIndex: -7 }}>
+              {food.length < 1 ? (
+                <View style={styles.noFriend}>
+                  <Text style={styles.textXL}>Không có món ăn</Text>
+                </View>
+              ) : (
                 <View style={{ flex: 1 }}>
                   {food.map(i => (
                     <FoodList key={i.id} food={i} navigation={navigation} />
                   ))}
                 </View>
+              )}
+            </View>
+          )}
+        </View>
+        <View>
+          {ctg && (
+            <View style={{ zIndex: -7 }}>
+              <ScrollView>
+                <View style={{ flex: 1 }}>
+                  {foods.map(i => (
+                    <FilterCtg
+                      key={i.id}
+                      foods={i}
+                      navigation={navigation}
+                      tagName={tags}
+                    />
+                  ))}
+                </View>
               </ScrollView>
-            )}
-          </View>
-        )}
-      </View>
-      <View>
-        {ctg && (
-          <View style={{ zIndex: -7 }}>
-            <ScrollView>
-              <View style={{ flex: 1 }}>
-                {foods.map(i => (
-                  <FilterCtg
-                    key={i.id}
-                    foods={i}
-                    navigation={navigation}
-                    tagName={tags}
-                  />
-                ))}
-              </View>
-            </ScrollView>
-          </View>
-        )}
-      </View>
+            </View>
+          )}
+        </View>
+      </ScrollView>
     </View>
   );
 };

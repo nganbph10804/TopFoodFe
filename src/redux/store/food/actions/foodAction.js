@@ -38,7 +38,6 @@ export const foodListAction = () => async dispatch => {
     });
     Toast.show({
       type: 'error',
-
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -65,7 +64,6 @@ export const foodDetailAction = id => async dispatch => {
     });
     Toast.show({
       type: 'error',
-
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -94,12 +92,11 @@ export const createFoodAction =
       setTimeout(() => {
         Toast.show({
           type: 'success',
-
           text1: 'Thông báo',
           text2: 'Tạo món ăn thành công',
         });
         if (navigation) {
-          navigation.navigate('FoodMain');
+          navigation.navigate('FoodListScreen');
         }
       }, 1000);
     } catch (error) {
@@ -108,7 +105,6 @@ export const createFoodAction =
       });
       Toast.show({
         type: 'error',
-
         text1: 'Thông báo',
         text2: error.response.data.message,
       });
@@ -120,7 +116,7 @@ export const updateFoodAction =
       type: FOOD_REQUEST,
     });
     try {
-      const { data } = await axios.put(
+      await axios.put(
         'http://103.245.251.149:8080/store-profile/food/update',
         {
           content: content,
@@ -137,7 +133,6 @@ export const updateFoodAction =
       setTimeout(() => {
         Toast.show({
           type: 'success',
-
           text1: 'Thông báo',
           text2: 'Cập nhật món ăn thành công',
         });
@@ -149,7 +144,6 @@ export const updateFoodAction =
       });
       Toast.show({
         type: 'error',
-
         text1: 'Thông báo',
         text2: error.response.data.message,
       });
@@ -173,7 +167,6 @@ export const deleteFoodAction = id => async dispatch => {
       });
       Toast.show({
         type: 'success',
-
         text1: 'Thông báo',
         text2: 'Xoá món ăn thành công',
       });
@@ -184,7 +177,6 @@ export const deleteFoodAction = id => async dispatch => {
     });
     Toast.show({
       type: 'error',
-
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -220,43 +212,13 @@ export const filterFoodAction = tagId => async dispatch => {
     });
   }
 };
-export const filterPriceAction = (min, max) => async dispatch => {
-  dispatch({
-    type: FOOD_REQUEST,
-  });
-  try {
-    const { data } = await axios.get(
-      `http://103.245.251.149:8080/store-profile/search/food?page=0&pageSize=1000`,
-      {
-        headers: await authHeader(),
-      },
-      {
-        foodName: '',
-        maxPrice: 100000,
-        minPrice: 0,
-        tagName: '',
-      }
-    );
-    console.log(data);
-  } catch (error) {
-    dispatch({
-      type: FOOD_FAILURE,
-    });
-    Toast.show({
-      type: 'error',
-      topOffset: 40,
-      text1: 'Thông báo',
-      text2: error.response.data.message,
-    });
-  }
-};
 export const searchFoodAction = value => dispatch => {
   dispatch({
     type: SEARCH_FOOD,
     payload: value,
   });
 };
-export const clearSearchAction = value => dispatch => {
+export const clearSearchAction = () => dispatch => {
   dispatch({
     type: CLEAR_SEARCH,
   });

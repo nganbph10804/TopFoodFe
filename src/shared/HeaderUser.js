@@ -1,4 +1,3 @@
-import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Avatar } from 'react-native-paper';
@@ -13,9 +12,6 @@ const HeaderUser = () => {
       <View style={styled.main}>
         <Avatar.Image source={{ uri: avatar }} />
         <Text style={styled.text}>{name} </Text>
-        {/* <View style={styled.lastItem}>
-          <AntDesign name="search1" size={24} color={`${COLORS.blue[4]}`} />
-        </View> */}
       </View>
     </View>
   );

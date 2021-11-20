@@ -17,6 +17,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     position: 'relative',
+    backgroundColor: '#fff',
   },
   card: {
     shadowColor: 'black',
@@ -118,7 +119,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     width: 150,
     borderRadius: 10,
-    borderColor: '#ccc',
+    borderColor: `${COLORS.blue[4]}`,
   },
   background: {
     backgroundColor: `${COLORS.blue[4]}`,

@@ -11,7 +11,7 @@ import {
   SEARCH_FEED,
 } from '../types/feedType.js';
 
-export const feedListAction = id => async dispatch => {
+export const storeFeedListAction = id => async dispatch => {
   dispatch({
     type: FEED_REQUEST,
   });
@@ -72,7 +72,7 @@ export const feedDetailAction = id => async dispatch => {
   }
 };
 export const createFeedAction =
-  (content, files, tagIds, navigation) => async dispatch => {
+  (content, files, foodIds, tagIds, navigation) => async dispatch => {
     dispatch({
       type: FEED_REQUEST,
     });
@@ -82,6 +82,7 @@ export const createFeedAction =
         {
           content: content,
           files: files,
+          foodIds: foodIds,
           tagIds: tagIds,
         },
         {
@@ -141,13 +142,11 @@ export const updateFeedAction =
       });
       Toast.show({
         type: 'success',
-
         text1: 'Thông báo',
         text2: 'Cập nhật bài viết thành công',
       });
       if (navigation) navigation.navigate('FeedListScreen');
     } catch (error) {
-      console.log('log 🚀 ~ file: feedAction.js ~ line 143 ~ error', error);
       dispatch({
         type: FEED_FAILURE,
       });

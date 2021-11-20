@@ -18,15 +18,9 @@ export const favoriteListAction = () => async dispatch => {
         headers: await authHeader(),
       }
     );
-    console.log(data.totalElements);
     dispatch({
       type: FAVORITE_LIST,
-      payload: data.totalElements,
-    });
-    Toast.show({
-      type: 'success',
-      text1: 'Thông báo',
-      text2: 'Thành công',
+      payload: data,
     });
   } catch (error) {
     dispatch({
@@ -46,7 +40,7 @@ export const updateFavoriteAction = tag => async dispatch => {
   try {
     await axios.post(
       'http://103.245.251.149:8080/profiles/favorite/update',
-      [tag],
+      tag,
       {
         headers: await authHeader(),
       }

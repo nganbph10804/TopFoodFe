@@ -6,6 +6,7 @@ import {
 
 const initState = {
   loading: false,
+  favorite: [],
   total: null,
 };
 
@@ -25,7 +26,8 @@ export const favoriteReducer = (state = initState, action) => {
       return {
         ...state,
         loading: false,
-        total: action.payload,
+        favorite: action.payload.data,
+        total: action.payload.totalElements,
       };
 
     default:

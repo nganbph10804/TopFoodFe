@@ -52,7 +52,7 @@ const NotificationsScreen = ({ navigation }) => {
               <ListRequest key={key} friend={friend} navigation={navigation} />
             ))}
           </View>
-          <View
+          {/* <View
             style={{
               width: '100%',
             }}
@@ -61,7 +61,7 @@ const NotificationsScreen = ({ navigation }) => {
           </View>
           <View>
             <Notification />
-          </View>
+          </View> */}
         </View>
       </Card>
     </View>
