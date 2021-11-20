@@ -8,6 +8,7 @@ import { friendReducer } from './friend/reducers/friendReducer.js';
 import { reactReducer } from './react/reducers/reactReducer.js';
 import { feedReducer } from './store/feed/reducers/feedReducer.js';
 import { foodReducer } from './store/food/reducers/foodReducer.js';
+import { storeProfileReducer } from './store/profile/profileReducer.js';
 import { tagReducer } from './store/tag/reducer/tagReducer.js';
 
 const rootReducer = combineReducers({
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   react: reactReducer,
   favorite: favoriteReducer,
   follow: followReducer,
+  storeProfile: storeProfileReducer,
 });
 
 export default rootReducer;

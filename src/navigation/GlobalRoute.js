@@ -1,6 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import StoreClient from '../components/client/StoreClient.js';
 import { COLORS } from '../constants/color.const.js';
 import ActiveAccScreen from '../screens/Auth/ActiveAccScreen.js';
 import ChangePassScreen from '../screens/Auth/ChangePassScreen.js';
@@ -80,6 +81,13 @@ const GlobalRoute = () => {
           <Stack.Screen
             name="ListStoreScreen"
             component={ListStoreScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="StoreClient"
+            component={StoreClient}
             options={{
               headerShown: false,
             }}

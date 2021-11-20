@@ -8,7 +8,7 @@ import {
 const initState = {
   loading: false,
   tag: [],
-  details: [],
+  detail: [],
 };
 export const tagReducer = (state = initState, action) => {
   switch (action.type) {
@@ -24,11 +24,10 @@ export const tagReducer = (state = initState, action) => {
         tag: action.payload,
       };
     case GET_TAG_ID:
-      const { foodId, datas } = action.payload;
       return {
         ...state,
         loading: false,
-        details: datas.filter(i => i.id !== foodId),
+        detail: action.payload,
       };
     case TAG_FAILURE:
       return {

@@ -54,13 +54,6 @@ const CreateFoodScreen = ({ navigation }) => {
         text1: 'Thông báo',
         text2: 'Phải upload ảnh',
       });
-    } else if (file.length < 2) {
-      Toast.show({
-        type: 'error',
-
-        text1: 'Thông báo',
-        text2: 'Phải upload từ 2 ảnh trở lên',
-      });
     } else if (
       content.trim().length < 1 &&
       name.trim().length < 1 &&
@@ -68,7 +61,6 @@ const CreateFoodScreen = ({ navigation }) => {
     ) {
       Toast.show({
         type: 'error',
-
         text1: 'Thông báo',
         text2: 'Không được để trống',
       });

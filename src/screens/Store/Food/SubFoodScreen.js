@@ -1,31 +1,21 @@
 import { Entypo } from '@expo/vector-icons';
-import React, { useEffect } from 'react';
+import { _ } from 'lodash';
+import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SliderBox } from 'react-native-image-slider-box';
 import { Card, Paragraph, Subheading, Title } from 'react-native-paper';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import FoodByTag from '../../../components/store/FoodByTag.js';
 import { COLORS } from '../../../constants/color.const.js';
 import { formatPrice } from '../../../constants/price.const.js';
-import { getTagId } from '../../../redux/store/tag/action/tagAction.js';
-import { _ } from 'lodash';
 
-const FoodDetailScreen = ({ navigation, route }) => {
-  const { id, name, content, price, files, tag } = route.params.food;
-  const dispatch = useDispatch();
-  const { detail } = useSelector(state => state.tag);
-  const foodByTag = _.filter(detail, i => i.id !== id);
-  useEffect(() => {
-    dispatch(getTagId(tag.id));
-  }, [dispatch]);
+const SubFoodScreen = ({ navigation, route }) => {
+  const { content, name, price, files, id } = route.params.food;
+  const details = useSelector(state => state.tag.detail);
+  const foodByTag = _.filter(details, i => i.id !== id);
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: 'white' }}>
-      <Card
-        style={{
-          marginVertical: 10,
-        }}
-        mode="elevated"
-      >
+    <ScrollView>
+      <Card>
         <SliderBox
           images={files}
           sliderBoxHeight={300}
@@ -34,10 +24,8 @@ const FoodDetailScreen = ({ navigation, route }) => {
         />
         <Card.Content>
           <Title>{name}</Title>
-          <Subheading style={{ color: `${COLORS.purple[2]}` }}>
-            {formatPrice(price)}
-          </Subheading>
-          <Paragraph>Mô tả: {content}</Paragraph>
+          <Subheading>{formatPrice(price)} </Subheading>
+          <Paragraph>{content}</Paragraph>
         </Card.Content>
       </Card>
       {foodByTag.length < 1 ? (
@@ -56,7 +44,7 @@ const FoodDetailScreen = ({ navigation, route }) => {
           >
             <Entypo name="price-tag" size={24} color={`${COLORS.blue[1]}`} />
             <Subheading style={{ paddingLeft: 10 }}>
-              Tag món ăn / {tag.tagName}
+              Tag món ăn / {route.params.tagName}
             </Subheading>
           </View>
           <View style={styled.main}>
@@ -64,9 +52,9 @@ const FoodDetailScreen = ({ navigation, route }) => {
               <FoodByTag
                 key={i.id}
                 food={i}
-                tagId={tag.id}
+                tagId={route.params.tagId}
                 navigation={navigation}
-                tagName={tag.tagName}
+                tagName={route.params.tagName}
               />
             ))}
           </View>
@@ -86,4 +74,4 @@ const styled = StyleSheet.create({
     height: '100%',
   },
 });
-export default FoodDetailScreen;
+export default SubFoodScreen;

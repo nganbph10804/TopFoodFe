@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ListButton from '../../../components/store/ListButton.js';
 import { clearFilesAction } from '../../../redux/file/actions/fileAction.js';
 import { userFollowAction } from '../../../redux/follow/followAction.js';
-import { feedListAction } from '../../../redux/store/feed/actions/feedAction.js';
+import { storeFeedListAction } from '../../../redux/store/feed/actions/feedAction.js';
 import { searchTagAction } from '../../../redux/store/tag/action/tagAction.js';
 import HeaderStore from '../../../shared/HeaderStore.js';
 import { styles } from '../../../styles/paper.js';
@@ -18,7 +18,7 @@ const FoodMain = ({ navigation }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(searchTagAction(''));
-    dispatch(feedListAction(profile.id));
+    dispatch(storeFeedListAction(profile.id));
     dispatch(clearFilesAction());
     dispatch(userFollowAction());
   }, [dispatch]);
@@ -26,10 +26,10 @@ const FoodMain = ({ navigation }) => {
     <View style={styles.main}>
       <HeaderStore image={profile.avatar} name={profile.name} />
       <ListButton navigation={navigation} />
-      <View style={{ backgroundColor: `${COLORS.white[1]}`, marginTop: 30 }}>
+      <View style={{ marginTop: 30 }}>
         <View style={styled.item}>
           <FontAwesome name="users" size={24} color="black" />
-          <Subheading>
+          <Subheading style={styled.text}>
             Đang có {userFollow.length} người dùng theo dõi cửa hàng
           </Subheading>
         </View>
@@ -43,7 +43,10 @@ const styled = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 10,
-    marginLeft: 20,
+    marginLeft: 30,
+  },
+  text: {
+    marginLeft: 10,
   },
 });
 export default FoodMain;

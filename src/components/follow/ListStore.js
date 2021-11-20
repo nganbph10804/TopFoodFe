@@ -7,19 +7,18 @@ import { useDispatch } from 'react-redux';
 import { unFollowAction } from '../../redux/follow/followAction.js';
 
 const ListStore = ({ store, navigation }) => {
+  const { storeId } = store;
   const [visible, setVisible] = useState(false);
   const hideMenu = () => setVisible(false);
   const showMenu = () => setVisible(true);
   const dispatch = useDispatch();
   const handlerUnFollow = () => {
-    dispatch(unFollowAction(store.storeId));
+    dispatch(unFollowAction(storeId));
   };
   return (
     <View style={styled.item}>
       <TouchableOpacity
-        onPress={() =>
-          navigation.navigate('StoreNavigationStore', { screen: 'FoodMain' })
-        }
+        onPress={() => navigation.navigate('StoreClient', { storeId })}
       >
         <Avatar.Image
           size={60}
@@ -28,7 +27,9 @@ const ListStore = ({ store, navigation }) => {
           }}
         />
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('StoreClient', { storeId })}
+      >
         <Subheading style={styled.text}>{store.name}</Subheading>
       </TouchableOpacity>
       <View style={styled.lastItem}>

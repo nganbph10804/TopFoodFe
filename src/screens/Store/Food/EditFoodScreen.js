@@ -243,6 +243,9 @@ const EditFoodScreen = ({ route, navigation }) => {
 };
 
 const styled = StyleSheet.create({
-  viewBtn: {},
+  viewBtn: {
+    alignItems: 'center',
+    marginVertical: 20,
+  },
 });
 export default EditFoodScreen;

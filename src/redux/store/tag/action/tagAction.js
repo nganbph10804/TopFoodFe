@@ -19,12 +19,10 @@ export const searchTagAction = () => async dispatch => {
         headers: await authHeader(),
       }
     );
-    setTimeout(() => {
-      dispatch({
-        type: SEARCH_TAG,
-        payload: data,
-      });
-    }, 500);
+    dispatch({
+      type: SEARCH_TAG,
+      payload: data,
+    });
   } catch (error) {
     dispatch({
       type: TAG_FAILURE,
@@ -37,7 +35,7 @@ export const searchTagAction = () => async dispatch => {
     });
   }
 };
-export const getTagId = (tagId, foodId) => async dispatch => {
+export const getTagId = tagId => async dispatch => {
   dispatch({
     type: TAG_REQUEST,
   });
@@ -48,16 +46,10 @@ export const getTagId = (tagId, foodId) => async dispatch => {
         headers: await authHeader(),
       }
     );
-    setTimeout(() => {
-      const datas = data.foods;
-      dispatch({
-        type: GET_TAG_ID,
-        payload: {
-          datas,
-          foodId,
-        },
-      });
-    }, 500);
+    dispatch({
+      type: GET_TAG_ID,
+      payload: data.foods,
+    });
   } catch (error) {
     dispatch({
       type: TAG_FAILURE,
