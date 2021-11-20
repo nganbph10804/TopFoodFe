@@ -347,7 +347,6 @@ export const sendAction = phone => async dispatch => {
     });
     Toast.show({
       type: 'error',
-
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -426,4 +425,10 @@ export const blockListAction = page => async dispatch => {
       text2: error.response.data.message,
     });
   }
+};
+
+export const clearSearchAction = () => dispatch => {
+  dispatch({
+    type: CLEAR_SEARCH,
+  });
 };

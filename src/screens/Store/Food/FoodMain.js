@@ -32,7 +32,7 @@ const FoodMain = ({ navigation }) => {
         <View style={styled.item}>
           <FontAwesome name="users" size={24} color="black" />
           <Subheading style={styled.text}>
-            Đang có {userFollow.length} người dùng theo dõi cửa hàng
+            Đang có {userFollow.length} người dùng theo dõi
           </Subheading>
         </View>
       </View>
@@ -44,11 +44,12 @@ const styled = StyleSheet.create({
   item: {
     flexDirection: 'row',
     alignItems: 'center',
+    flexWrap: 'wrap',
     marginVertical: 10,
     marginLeft: 30,
   },
   text: {
-    marginLeft: 10,
+    marginHorizontal: 10,
   },
 });
 export default FoodMain;

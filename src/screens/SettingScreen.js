@@ -7,11 +7,12 @@ import {
 import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Divider } from 'react-native-elements';
-import { Card } from 'react-native-paper';
+import { Card, Button } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../constants/color.const.js';
 import { ROLES } from '../constants/role.const.js';
 import { getProfile, logoutAction } from '../redux/auth/actions/authAction.js';
+import { favoriteListAction } from '../redux/favorite/favoriteAction.js';
 import { friendListAction } from '../redux/friend/actions/friendAction.js';
 import HeaderMain from '../shared/HeaderMain.js';
 import { styles } from '../styles/paper.js';
@@ -22,6 +23,11 @@ const SettingScreen = ({ navigation }) => {
   const profile = useSelector(state => state.auth.profile);
   const account = useSelector(state => state.auth.account);
   const store = useSelector(state => state.auth.account.role);
+  const { total } = useSelector(state => state.favorite);
+  console.log(
+    'log 🚀 ~ file: SettingScreen.js ~ line 26 ~ SettingScreen ~ {total}',
+    total
+  );
   const logout = () =>
     Alert.alert('Thông báo', 'Bạn có muốn đăng xuất không?', [
       {
@@ -142,7 +148,9 @@ const SettingScreen = ({ navigation }) => {
           )}
         </View>
         {store === ROLES.ROLE_USER && (
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('FavoriteScreen')}
+          >
             <View style={styles.Item}>
               <MaterialIcons
                 name="favorite"
