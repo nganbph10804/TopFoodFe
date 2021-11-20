@@ -19,6 +19,7 @@ import {
 import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
 import { friendListAction } from '../redux/friend/actions/friendAction.js';
+import HeaderUser from '../shared/HeaderUser.js';
 import {
   Cardd,
   Container,
@@ -286,6 +287,7 @@ const MessagesScreen = ({ navigation }) => {
 
   return (
     <Provider>
+      <HeaderUser />
       <Container>
         <Portal>
           <Dialog
@@ -392,7 +394,6 @@ const MessagesScreen = ({ navigation }) => {
             </Dialog.Actions>
           </Dialog>
         </Portal>
-
         <View style={styles.container}>
           <Searchbar
             style={styles.searchBarr}
