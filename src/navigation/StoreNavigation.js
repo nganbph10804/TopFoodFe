@@ -34,13 +34,6 @@ const StoreNavigation = () => {
         }}
       />
       <Stack.Screen
-        name="FoodListScreen"
-        component={FoodListScreen}
-        options={{
-          title: 'Món ăn',
-        }}
-      />
-      <Stack.Screen
         name="CreateFoodScreen"
         component={CreateFoodScreen}
         options={{
@@ -59,13 +52,6 @@ const StoreNavigation = () => {
         component={EditFoodScreen}
         options={{
           title: 'Chỉnh sửa',
-        }}
-      />
-      <Stack.Screen
-        name="FeedListScreen"
-        component={FeedListScreen}
-        options={{
-          title: 'Bài viết',
         }}
       />
       <Stack.Screen

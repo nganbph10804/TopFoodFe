@@ -7,20 +7,23 @@ import FeedList from '../../../components/store/feed/FeedList.js';
 
 const FeedListScreen = ({ navigation }) => {
   const { feed } = useSelector(state => state.feed);
+  const role = useSelector(state => state.auth.account.role);
   return (
     <View>
       <ScrollView>
-        <View style={{ alignSelf: 'center', paddingVertical: 10 }}>
-          <Button
-            mode="contained"
-            icon={() => (
-              <MaterialIcons name="post-add" size={24} color="white" />
-            )}
-            onPress={() => navigation.navigate('CreateFeedScreen')}
-          >
-            Tạo bài viết
-          </Button>
-        </View>
+        {role === 'ROLE_STORE' && (
+          <View style={{ alignSelf: 'center', paddingVertical: 10 }}>
+            <Button
+              mode="contained"
+              icon={() => (
+                <MaterialIcons name="post-add" size={24} color="white" />
+              )}
+              onPress={() => navigation.navigate('CreateFeedScreen')}
+            >
+              Tạo bài viết
+            </Button>
+          </View>
+        )}
         <View>
           {feed.map((i, index) => (
             <FeedList key={index} feed={i} navigation={navigation} />

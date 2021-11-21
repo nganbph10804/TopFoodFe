@@ -26,6 +26,7 @@ const FoodDetailScreen = ({ navigation, route }) => {
   const { id, name, content, price, files, tag, myReaction, totalReaction } =
     route.params.food;
   const dispatch = useDispatch();
+  const role = useSelector(state => state.auth.account.role);
   const { detail } = useSelector(state => state.tag);
   const { loading } = useSelector(state => state.voteFood);
   const foodByTag = _.filter(detail, i => i.id !== id);
@@ -87,7 +88,19 @@ const FoodDetailScreen = ({ navigation, route }) => {
                   </Subheading>
                 </Chip>
               )}
-              {!myReaction && (
+              {role === 'ROLE_STORE' && (
+                <Chip onPress={() => handlerUnVote(id)}>
+                  <AntDesign
+                    name="star"
+                    size={24}
+                    color={`${COLORS.blue[4]}`}
+                  />
+                  <Subheading style={{ color: `${COLORS.blue[4]}` }}>
+                    {totalReaction} votes
+                  </Subheading>
+                </Chip>
+              )}
+              {!myReaction && role === 'ROLE_USER' && (
                 <Chip onPress={() => handlerVote(id)}>
                   <AntDesign
                     name="staro"

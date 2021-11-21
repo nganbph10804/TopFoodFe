@@ -8,7 +8,6 @@ import { formatPrice } from '../../constants/price.const.js';
 import { styled } from '../../styles/store.js';
 
 const FoodByTag = ({ food, navigation, tagId, tagName }) => {
-  console.log('log 🚀 ~ file: FoodByTag.js ~ line 11 ~ FoodByTag ~ food', food);
   return (
     <TouchableOpacity
       onPress={() =>
