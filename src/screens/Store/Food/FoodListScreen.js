@@ -35,10 +35,11 @@ const FoodListScreen = ({ navigation }) => {
   const foods = useSelector(state => state.food.filter);
   const tags = useSelector(state => state.food.tagName);
   const search = useSelector(state => state.food.search);
+  const role = useSelector(state => state.auth.account.role);
   const ref = useRef(null);
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState(null);
-  const [active, setActive] = useState();
+  const [active, setActive] = useState(-1);
   const [focus, setFocus] = useState();
   const [ctg, setCtg] = useState();
   const [tagId, setTagId] = useState();
@@ -95,23 +96,26 @@ const FoodListScreen = ({ navigation }) => {
         </View>
       )}
       <ScrollView style={{ flex: 1 }}>
-        <View style={styled.container}>
-          <Button
-            mode="contained"
-            onPress={() => navigation.navigate('CreateFoodScreen')}
-            color={`${COLORS.blue[1]}`}
-            icon={() => (
-              <Ionicons
-                name="add-circle-sharp"
-                size={24}
-                color="white"
-                style={styled.icon}
-              />
-            )}
-          >
-            Thêm món ăn
-          </Button>
-        </View>
+        {role === 'K' && (
+          <View style={styled.container}>
+            <Button
+              mode="contained"
+              onPress={() => navigation.navigate('CreateFoodScreen')}
+              color={`${COLORS.blue[1]}`}
+              icon={() => (
+                <Ionicons
+                  name="add-circle-sharp"
+                  size={24}
+                  color="white"
+                  style={styled.icon}
+                />
+              )}
+            >
+              Thêm món ăn
+            </Button>
+          </View>
+        )}
+
         <View style={{ padding: 10, zIndex: -15, backgroundColor: '#fff' }}>
           <Searchbar
             placeholder="Tìm kiếm"

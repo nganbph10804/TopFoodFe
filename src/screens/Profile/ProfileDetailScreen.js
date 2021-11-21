@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
@@ -12,21 +12,19 @@ import {
 } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
+import { ROLES } from '../../constants/role.const.js';
 import {
   uploadAvatar,
   uploadCover,
 } from '../../redux/file/actions/fileAction.js';
+import { listStoreFollowAction } from '../../redux/follow/followAction.js';
 import { styles } from '../../styles/paper.js';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { ScrollView } from 'react-native';
-import { ROLES } from '../../constants/role.const.js';
-import { storeFollowAction } from '../../redux/follow/followAction.js';
 
 const ProfileDetailScreen = ({ navigation }) => {
   const profile = useSelector(state => state.auth.profile);
   const friend = useSelector(state => state.friend.friend);
   const store = useSelector(state => state.auth.account.role);
-  const storeFollow = useSelector(state => state.follow.storeFollow);
+  const followListStore = useSelector(state => state.follow.followListStore);
   const dispatch = useDispatch();
   const [avatar, setAvatar] = useState(null);
   const [cover, setCover] = useState(null);
@@ -60,7 +58,7 @@ const ProfileDetailScreen = ({ navigation }) => {
 
   useEffect(() => {
     const focus = navigation.addListener('focus', () => {
-      dispatch(storeFollowAction());
+      dispatch(listStoreFollowAction());
     });
     return focus;
   }, [dispatch]);
@@ -189,7 +187,7 @@ const ProfileDetailScreen = ({ navigation }) => {
               >
                 <FontAwesome5 name="store-alt" size={24} color="black" />
                 <Subheading style={styled.text}>
-                  Đang theo dõi {storeFollow.length} cửa hàng
+                  Đang theo dõi {followListStore.length} cửa hàng
                 </Subheading>
               </TouchableOpacity>
               <Divider />

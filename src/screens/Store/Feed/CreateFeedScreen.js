@@ -35,8 +35,8 @@ const CreateFeedScreen = ({ navigation }) => {
   const { tag } = useSelector(state => state.tag);
   const dispatch = useDispatch();
   const [content, setContent] = useState('');
-  const [tagData, setTagData] = useState([]);
   const [data, setData] = useState([]);
+  const [tagData, setTagData] = useState([]);
   const [tagSelected, setTagSelected] = useState([]);
   const [foodSelected, setFoodSelected] = useState([]);
   const [visible, setVisible] = useState(false);

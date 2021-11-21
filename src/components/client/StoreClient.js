@@ -1,14 +1,18 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { COLORS } from '../../constants/color.const.js';
 import { getProfileStoreAction } from '../../redux/store/profile/profileAction.js';
 import HeaderStore from '../../shared/HeaderStore.js';
 import { styles } from '../../styles/paper.js';
 import ListButton from '../store/ListButton.js';
+import { Feather, FontAwesome } from '@expo/vector-icons';
+import { Subheading } from 'react-native-paper';
 
 const StoreClient = ({ route, navigation }) => {
   const { storeId } = route.params;
   const { profile } = useSelector(state => state.storeProfile);
+  const { listUserFollowStore } = useSelector(state => state.follow);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -18,14 +22,18 @@ const StoreClient = ({ route, navigation }) => {
     <View style={styled.main}>
       <HeaderStore image={profile.avatar} name={profile.name} />
       <ListButton navigation={navigation} />
-      {/* <View style={{ backgroundColor: `${COLORS.white[1]}`, marginTop: 30 }}>
+      <View style={{ marginTop: 30 }}>
         <View style={styled.item}>
           <FontAwesome name="users" size={24} color="black" />
-          <Subheading>
-            Đang có {userFollow.length} người dùng theo dõi cửa hàng
+          <Subheading style={styled.text}>
+            Đang có {listUserFollowStore.length} người dùng theo dõi
           </Subheading>
         </View>
-      </View> */}
+        <View style={styled.item}>
+          <FontAwesome name="address-book" size={24} color="black" />
+          <Subheading style={styled.text}>{profile.address}</Subheading>
+        </View>
+      </View>
     </View>
   );
 };
@@ -39,8 +47,12 @@ const styled = StyleSheet.create({
   item: {
     flexDirection: 'row',
     alignItems: 'center',
+    flexWrap: 'wrap',
     marginVertical: 10,
-    marginLeft: 20,
+    marginLeft: 30,
+  },
+  text: {
+    marginHorizontal: 10,
   },
 });
 export default StoreClient;

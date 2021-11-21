@@ -87,8 +87,17 @@ const CreateFoodScreen = ({ navigation }) => {
   }, []);
   return (
     <Card>
-      <ScrollView style={{ width: '100%', height: '100%', marginTop: 20 }}>
+      <ScrollView style={{ width: '100%', height: '100%' }}>
         <View style={{ paddingHorizontal: 20, paddingTop: 15 }}>
+          <View style={styled.viewBtn}>
+            <Button
+              mode="contained"
+              color={COLORS.blue[1]}
+              onPress={() => handlerCreate()}
+            >
+              Tạo món ăn
+            </Button>
+          </View>
           <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
             <Entypo name="images" size={30} color={`${COLORS.blue[1]}`} />
             <Subheading style={{ paddingLeft: 10 }}>Chọn ảnh</Subheading>
@@ -130,7 +139,7 @@ const CreateFoodScreen = ({ navigation }) => {
                   <Image
                     key={index}
                     source={{ uri: i }}
-                    style={{ width: 70, height: 70, margin: 5 }}
+                    style={{ width: 90, height: 90, margin: 5 }}
                   />
                 ))}
               </ScrollView>
@@ -197,7 +206,7 @@ const CreateFoodScreen = ({ navigation }) => {
             }
           />
         </View>
-        <View style={{ position: 'relative', paddingTop: 20 }}>
+        <View style={{ position: 'relative', marginTop: 20 }}>
           <InputUpdate
             outlineColor={`${COLORS.blue[4]}`}
             mode="outlined"
@@ -219,15 +228,7 @@ const CreateFoodScreen = ({ navigation }) => {
             }
           />
         </View>
-        <View style={styled.viewBtn}>
-          <Button
-            mode="contained"
-            color={COLORS.blue[1]}
-            onPress={() => handlerCreate()}
-          >
-            Tạo món ăn
-          </Button>
-        </View>
+        <View style={{ marginBottom: 40 }}></View>
       </ScrollView>
     </Card>
   );

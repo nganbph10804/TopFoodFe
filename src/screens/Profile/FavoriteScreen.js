@@ -3,7 +3,6 @@ import { _ } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Chip, Title } from 'react-native-paper';
-import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
 import { updateFavoriteAction } from '../../redux/favorite/favoriteAction.js';

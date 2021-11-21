@@ -17,6 +17,8 @@ import MainFriendScreen from '../screens/Friend/MainFriendScreen.js';
 import FavoriteScreen from '../screens/Profile/FavoriteScreen.js';
 import InformationAccScreen from '../screens/Profile/InformationAccScreen.js';
 import PublicProfileScreen from '../screens/Profile/PublicProfileScreen.js';
+import FeedListScreen from '../screens/Store/Feed/FeedListScreen.js';
+import FoodListScreen from '../screens/Store/Food/FoodListScreen.js';
 import Nav from './Nav.js';
 
 const Stack = createStackNavigator();
@@ -52,7 +54,7 @@ const GlobalRoute = () => {
           <Stack.Screen
             name="NAV"
             component={Nav}
-            options={{ headerShown: false }}
+            options={{ headerShown: false, title: 'Back' }}
           />
           <Stack.Screen
             name="ChangePassScreen"
@@ -105,6 +107,20 @@ const GlobalRoute = () => {
             component={FavoriteScreen}
             options={{
               headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="FoodListScreen"
+            component={FoodListScreen}
+            options={{
+              title: 'Món ăn',
+            }}
+          />
+          <Stack.Screen
+            name="FeedListScreen"
+            component={FeedListScreen}
+            options={{
+              title: 'Bài viết',
             }}
           />
         </>

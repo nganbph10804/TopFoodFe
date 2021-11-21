@@ -10,6 +10,7 @@ import { feedReducer } from './store/feed/reducers/feedReducer.js';
 import { foodReducer } from './store/food/reducers/foodReducer.js';
 import { storeProfileReducer } from './store/profile/profileReducer.js';
 import { tagReducer } from './store/tag/reducer/tagReducer.js';
+import { voteFoodReducer } from './vote/voteReducer.js';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   favorite: favoriteReducer,
   follow: followReducer,
   storeProfile: storeProfileReducer,
+  voteFood: voteFoodReducer,
 });
 
 export default rootReducer;

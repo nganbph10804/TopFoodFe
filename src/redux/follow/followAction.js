@@ -3,12 +3,13 @@ import Toast from 'react-native-toast-message';
 import { authHeader } from '../authHeader.js';
 import {
   FOLLOW_FAILURE,
-  FOLLOW_LIST,
+  LIST_USER_FOLLOW_STORE,
   FOLLOW_LIST_STORE,
   FOLLOW_REQUEST,
 } from './followType.js';
 
-export const storeFollowAction = () => async dispatch => {
+//API danh sách cửa hàng follow của account
+export const listStoreFollowAction = () => async dispatch => {
   dispatch({
     type: FOLLOW_REQUEST,
   });
@@ -34,6 +35,8 @@ export const storeFollowAction = () => async dispatch => {
     });
   }
 };
+
+//API account follow của cửa hàng
 export const userFollowAction = () => async dispatch => {
   dispatch({
     type: FOLLOW_REQUEST,
@@ -46,7 +49,7 @@ export const userFollowAction = () => async dispatch => {
       }
     );
     dispatch({
-      type: FOLLOW_LIST,
+      type: LIST_USER_FOLLOW_STORE,
       payload: data.data.data,
     });
   } catch (e) {

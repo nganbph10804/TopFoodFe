@@ -24,10 +24,6 @@ const SettingScreen = ({ navigation }) => {
   const account = useSelector(state => state.auth.account);
   const store = useSelector(state => state.auth.account.role);
   const { total } = useSelector(state => state.favorite);
-  console.log(
-    'log 🚀 ~ file: SettingScreen.js ~ line 26 ~ SettingScreen ~ {total}',
-    total
-  );
   const logout = () =>
     Alert.alert('Thông báo', 'Bạn có muốn đăng xuất không?', [
       {

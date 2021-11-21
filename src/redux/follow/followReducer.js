@@ -1,14 +1,14 @@
 import {
   FOLLOW_FAILURE,
-  FOLLOW_LIST,
+  LIST_USER_FOLLOW_STORE,
   FOLLOW_LIST_STORE,
   FOLLOW_REQUEST,
 } from './followType.js';
 
 const initState = {
   loading: false,
-  userFollow: [],
-  storeFollow: [],
+  listUserFollowStore: [],
+  followListStore: [],
 };
 export const followReducer = (state = initState, action) => {
   switch (action.type) {
@@ -26,13 +26,13 @@ export const followReducer = (state = initState, action) => {
       return {
         ...state,
         loading: false,
-        storeFollow: action.payload,
+        followListStore: action.payload,
       };
-    case FOLLOW_LIST:
+    case LIST_USER_FOLLOW_STORE:
       return {
         ...state,
         loading: false,
-        userFollow: action.payload,
+        listUserFollowStore: action.payload,
       };
 
     default:

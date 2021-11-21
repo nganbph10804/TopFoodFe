@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { BottomSheet, ListItem } from 'react-native-elements';
-import { Divider } from 'react-native-paper';
+import { Chip, Divider, Subheading } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
 import { formatPrice } from '../../constants/price.const.js';
 import { deleteFoodAction } from '../../redux/store/food/actions/foodAction.js';
 import { _ } from 'lodash';
+import { AntDesign } from '@expo/vector-icons';
 
 const FoodList = ({ food, navigation }) => {
   const dispatch = useDispatch();
@@ -62,6 +63,16 @@ const FoodList = ({ food, navigation }) => {
             <Text style={styled.textName}>{food.name}</Text>
             <Text style={styled.textTag}>{food.tag.tagName} </Text>
             <Text style={styled.textPrice}>{formatPrice(food.price)} </Text>
+          </View>
+          <View
+            style={{ alignSelf: 'center', position: 'absolute', right: 20 }}
+          >
+            <Chip>
+              <AntDesign name="star" size={24} color={`${COLORS.blue[4]}`} />
+              <Subheading style={{ color: `${COLORS.blue[4]}` }}>
+                {food.totalReaction} votes
+              </Subheading>
+            </Chip>
           </View>
         </View>
         <Divider />
