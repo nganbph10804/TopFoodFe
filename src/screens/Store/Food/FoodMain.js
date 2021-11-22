@@ -42,7 +42,7 @@ const FoodMain = ({ navigation }) => {
           <Subheading style={styled.text}>{account.phoneNumber}</Subheading>
         </View>
         <View style={styled.item}>
-          <FontAwesome name="address-book" size={24} color="black" />
+          <Feather name="map-pin" size={24} color="black" />
           <Subheading style={styled.text}>{profile.address}</Subheading>
         </View>
       </View>

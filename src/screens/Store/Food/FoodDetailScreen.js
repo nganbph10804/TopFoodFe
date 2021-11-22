@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import FoodByTag from '../../../components/store/FoodByTag.js';
 import { COLORS } from '../../../constants/color.const.js';
 import { formatPrice } from '../../../constants/price.const.js';
+import { foodDetailAction } from '../../../redux/store/food/actions/foodAction.js';
 import { getTagId } from '../../../redux/store/tag/action/tagAction.js';
 import {
   unVoteFoodAction,
@@ -28,6 +29,8 @@ const FoodDetailScreen = ({ navigation, route }) => {
   const dispatch = useDispatch();
   const role = useSelector(state => state.auth.account.role);
   const { detail } = useSelector(state => state.tag);
+  const foodDetail = useSelector(state => state.food.detail);
+  console.log(foodDetail.totalReaction);
   const { loading } = useSelector(state => state.voteFood);
   const foodByTag = _.filter(detail, i => i.id !== id);
 
@@ -42,6 +45,10 @@ const FoodDetailScreen = ({ navigation, route }) => {
   useEffect(() => {
     dispatch(getTagId(tag.id));
   }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(foodDetailAction(id));
+  }, [dispatch, id]);
 
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -76,7 +83,7 @@ const FoodDetailScreen = ({ navigation, route }) => {
             </Subheading>
             <Paragraph>Mô tả: {content}</Paragraph>
             <View style={{ position: 'absolute', right: 20, top: 30 }}>
-              {myReaction && (
+              {foodDetail.myReaction && (
                 <Chip onPress={() => handlerUnVote(id)}>
                   <AntDesign
                     name="star"
@@ -84,23 +91,11 @@ const FoodDetailScreen = ({ navigation, route }) => {
                     color={`${COLORS.blue[4]}`}
                   />
                   <Subheading style={{ color: `${COLORS.blue[4]}` }}>
-                    {totalReaction} votes
+                    {foodDetail.totalReaction} votes
                   </Subheading>
                 </Chip>
               )}
-              {role === 'ROLE_STORE' && (
-                <Chip onPress={() => handlerUnVote(id)}>
-                  <AntDesign
-                    name="star"
-                    size={24}
-                    color={`${COLORS.blue[4]}`}
-                  />
-                  <Subheading style={{ color: `${COLORS.blue[4]}` }}>
-                    {totalReaction} votes
-                  </Subheading>
-                </Chip>
-              )}
-              {!myReaction && role === 'ROLE_USER' && (
+              {!foodDetail.myReaction && (
                 <Chip onPress={() => handlerVote(id)}>
                   <AntDesign
                     name="staro"

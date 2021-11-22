@@ -34,6 +34,20 @@ const StoreNavigation = () => {
         }}
       />
       <Stack.Screen
+        name="FoodListScreen"
+        component={FoodListScreen}
+        options={{
+          title: 'Món ăn',
+        }}
+      />
+      <Stack.Screen
+        name="FeedListScreen"
+        component={FeedListScreen}
+        options={{
+          title: 'Bài viết',
+        }}
+      />
+      <Stack.Screen
         name="CreateFoodScreen"
         component={CreateFoodScreen}
         options={{

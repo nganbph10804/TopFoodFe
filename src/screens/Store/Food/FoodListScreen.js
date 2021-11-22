@@ -96,7 +96,7 @@ const FoodListScreen = ({ navigation }) => {
         </View>
       )}
       <ScrollView style={{ flex: 1 }}>
-        {role === 'K' && (
+        {role === 'ROLE_STORE' && (
           <View style={styled.container}>
             <Button
               mode="contained"
