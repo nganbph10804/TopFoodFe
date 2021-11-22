@@ -12,13 +12,12 @@ import LoginScreen from '../screens/Auth/LoginScreen.js';
 import RegisterScreen from '../screens/Auth/RegisterScreen.js';
 import VerifyScreen from '../screens/Auth/VerifyScreen.js';
 import ContactScreen from '../screens/ContactScreen.js';
+import EditFavoriteScreen from '../screens/favorite/EditFavoriteScreen.js';
+import FavoriteScreen from '../screens/favorite/FavoriteScreen.js';
 import ListStoreScreen from '../screens/follow/ListStoreScreen.js';
 import MainFriendScreen from '../screens/Friend/MainFriendScreen.js';
-import FavoriteScreen from '../screens/Profile/FavoriteScreen.js';
 import InformationAccScreen from '../screens/Profile/InformationAccScreen.js';
 import PublicProfileScreen from '../screens/Profile/PublicProfileScreen.js';
-import FeedListScreen from '../screens/Store/Feed/FeedListScreen.js';
-import FoodListScreen from '../screens/Store/Food/FoodListScreen.js';
 import Nav from './Nav.js';
 
 const Stack = createStackNavigator();
@@ -110,17 +109,10 @@ const GlobalRoute = () => {
             }}
           />
           <Stack.Screen
-            name="FoodListScreen"
-            component={FoodListScreen}
+            name="EditFavoriteScreen"
+            component={EditFavoriteScreen}
             options={{
-              title: 'Món ăn',
-            }}
-          />
-          <Stack.Screen
-            name="FeedListScreen"
-            component={FeedListScreen}
-            options={{
-              title: 'Bài viết',
+              headerShown: false,
             }}
           />
         </>

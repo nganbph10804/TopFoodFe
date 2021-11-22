@@ -5,19 +5,24 @@ import { StyleSheet, View } from 'react-native';
 import { Button, Chip, Title } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
-import { updateFavoriteAction } from '../../redux/favorite/favoriteAction.js';
+import {
+  favoriteListAction,
+  updateFavoriteAction,
+} from '../../redux/favorite/favoriteAction.js';
 import HeaderShop from '../../shared/HeaderShop.js';
 import { styles } from '../../styles/paper.js';
 
-const FavoriteScreen = () => {
+const FavoriteScreen = ({ navigation }) => {
   const { tag } = useSelector(state => state.tag);
   const [tagData, setTagData] = useState([]);
   const [tagSelected, setTagSelected] = useState([]);
-  const { total } = useSelector(state => state.favorite);
+  const favorites = useSelector(state => state.favorite.favorite);
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
-    dispatch(updateFavoriteAction(_.map(tagSelected, 'id')));
+    dispatch(
+      updateFavoriteAction(_.map(tagSelected, i => i.isSelected === false))
+    );
   };
 
   const handlerChecked = id => {
@@ -36,12 +41,18 @@ const FavoriteScreen = () => {
   }, [tagData]);
 
   useEffect(() => {
-    let arr2 = tag.map(i => {
+    let arr1 = tag.map(i => {
       i.isSelected = false;
       return { ...i };
     });
-    setTagData(arr2);
+    setTagData(arr1);
+    let arr2 = favorites.map(i => {
+      i.isSelected = false;
+      return { ...i };
+    });
+    setFavorite(arr2);
   }, []);
+
   return (
     <View style={styles.background}>
       <HeaderShop />

@@ -15,7 +15,6 @@ import { styles } from '../../../styles/paper.js';
 const FoodMain = ({ navigation }) => {
   const profile = useSelector(state => state.auth.profile);
   const account = useSelector(state => state.auth.account);
-  console.log(account);
   const role = useSelector(state => state.auth.account.role);
   const { listUserFollowStore } = useSelector(state => state.follow);
   const dispatch = useDispatch();
@@ -42,7 +41,7 @@ const FoodMain = ({ navigation }) => {
           <Subheading style={styled.text}>{account.phoneNumber}</Subheading>
         </View>
         <View style={styled.item}>
-          <FontAwesome name="address-book" size={24} color="black" />
+          <Feather name="map-pin" size={24} color="black" />
           <Subheading style={styled.text}>{profile.address}</Subheading>
         </View>
       </View>

@@ -1,13 +1,11 @@
+import { Feather, FontAwesome } from '@expo/vector-icons';
 import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { Subheading } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
-import { COLORS } from '../../constants/color.const.js';
 import { getProfileStoreAction } from '../../redux/store/profile/profileAction.js';
 import HeaderStore from '../../shared/HeaderStore.js';
-import { styles } from '../../styles/paper.js';
 import ListButton from '../store/ListButton.js';
-import { Feather, FontAwesome } from '@expo/vector-icons';
-import { Subheading } from 'react-native-paper';
 
 const StoreClient = ({ route, navigation }) => {
   const { storeId } = route.params;
@@ -30,7 +28,7 @@ const StoreClient = ({ route, navigation }) => {
           </Subheading>
         </View>
         <View style={styled.item}>
-          <FontAwesome name="address-book" size={24} color="black" />
+          <Feather name="map-pin" size={24} color="black" />
           <Subheading style={styled.text}>{profile.address}</Subheading>
         </View>
       </View>

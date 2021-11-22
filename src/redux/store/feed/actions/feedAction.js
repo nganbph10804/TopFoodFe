@@ -51,7 +51,6 @@ export const feedDetailAction = id => async dispatch => {
         headers: await authHeader(),
       }
     );
-    console.log(data.data);
     dispatch({
       type: FEED_DETAIL,
       payload: data.data.data,

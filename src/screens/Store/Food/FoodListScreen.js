@@ -1,28 +1,16 @@
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { _ } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {
-  ActivityIndicator,
-  Button,
-  Searchbar,
-  Subheading,
-} from 'react-native-paper';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Button, Searchbar } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import FilterCtg from '../../../components/store/FilterCtg.js';
-import FilterModal from '../../../components/store/FilterModal.js';
 import FoodList from '../../../components/store/FoodList.js';
 import SearchFood from '../../../components/store/SearchFood.js';
 import TagList from '../../../components/store/TagList.js';
 import { COLORS } from '../../../constants/color.const.js';
 import {
   clearSearchAction,
-  filterFoodAction,
   foodListAction,
   searchFoodAction,
 } from '../../../redux/store/food/actions/foodAction.js';
@@ -32,7 +20,6 @@ const FoodListScreen = ({ navigation }) => {
   const { tag } = useSelector(state => state.tag);
   const food = useSelector(state => state.food.food);
   const loading = useSelector(state => state.food.loading);
-  const foods = useSelector(state => state.food.filter);
   const tags = useSelector(state => state.food.tagName);
   const search = useSelector(state => state.food.search);
   const role = useSelector(state => state.auth.account.role);
@@ -43,6 +30,7 @@ const FoodListScreen = ({ navigation }) => {
   const [focus, setFocus] = useState();
   const [ctg, setCtg] = useState();
   const [tagId, setTagId] = useState();
+  const [tagData, setTagData] = useState([]);
 
   const handlerFilter = id => {
     if (id === 'ALL') {
@@ -66,8 +54,11 @@ const FoodListScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    if (tagId) dispatch(filterFoodAction(tagId));
-  }, [dispatch, tagId]);
+    if (tagId) {
+      let data = _.filter(food, i => i.tag.id === tagId);
+      setTagData(data);
+    }
+  }, [tagId]);
 
   useEffect(() => {
     if (searchValue) {
@@ -96,7 +87,7 @@ const FoodListScreen = ({ navigation }) => {
         </View>
       )}
       <ScrollView style={{ flex: 1 }}>
-        {role === 'K' && (
+        {role === 'ROLE_STORE' && (
           <View style={styled.container}>
             <Button
               mode="contained"
@@ -175,7 +166,7 @@ const FoodListScreen = ({ navigation }) => {
             <View style={{ zIndex: -7 }}>
               <ScrollView>
                 <View style={{ flex: 1 }}>
-                  {foods.map(i => (
+                  {tagData.map(i => (
                     <FilterCtg
                       key={i.id}
                       foods={i}

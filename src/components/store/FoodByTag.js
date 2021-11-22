@@ -29,7 +29,7 @@ const FoodByTag = ({ food, navigation, tagId, tagName }) => {
           <Chip>
             <AntDesign name="star" size={24} color={`${COLORS.blue[4]}`} />
             <Subheading style={{ color: `${COLORS.blue[4]}` }}>
-              26 votes
+              {food.totalReaction} votes
             </Subheading>
           </Chip>
         </View>

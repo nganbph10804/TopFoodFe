@@ -20,7 +20,7 @@ export const favoriteListAction = () => async dispatch => {
     );
     dispatch({
       type: FAVORITE_LIST,
-      payload: data,
+      payload: data.data,
     });
   } catch (error) {
     dispatch({
