@@ -13,6 +13,9 @@ import { Actions, Bubble, GiftedChat, Send } from 'react-native-gifted-chat';
 import Toast from 'react-native-toast-message';
 import fb from './../Firebase/config';
 import deviceStorage from './../redux/deviceStorage ';
+import * as Notifications from 'expo-notifications'
+import * as Permissions from 'expo-permissions'
+import * as Constants from 'expo-constants'
 
 const db = fb.firestore();
 const chatsRef = db.collection('chats');
@@ -24,7 +27,66 @@ const ChatScreen = ({ navigation, route }) => {
   const [messages, setMessages] = useState([]);
   const { _id, avt, uname, idRoom } = route.params;
 
+ const registerForPushNotificationsAsync = async () => {
+    let token;
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+       token = (await Notifications.getExpoPushTokenAsync()).data;
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+
+   if(token){
+     const res = chatsRef.doc('2UhNNn0DkT8IAmm2GHHk').set({ token }, { merge: true });
+   }
+  
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+    return token;
+    };
+
+    const sendNotification = async (token) =>{
+      const message = {
+        to: token,
+        sound: 'default',
+        title: 'Tin nhắn',
+        body: 'tin nhan nay!',
+        data: { someData: 'goes here' },
+      };
+    
+      await fetch('https://exp.host/--/api/v2/push/send', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Accept-encoding': 'gzip, deflate',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(message),
+      });
+    }
+
+    const sendNotificationToAllUsers = async () =>{
+          const user = await chatsRef.get();
+          user.docs.map(user => sendNotification(user.data().token));
+    }
+
   useEffect(() => {
+    (()=>registerForPushNotificationsAsync())();
     setUser({
       _id: _id,
       name: uname,

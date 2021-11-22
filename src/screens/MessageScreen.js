@@ -65,7 +65,6 @@ const MessagesScreen = ({ navigation }) => {
       if (check == false) {
         RoomsRef.add(conversation);
         hideDialog();
-
         Toast.show({
           type: 'success',
           topOffset: 40,
@@ -137,7 +136,6 @@ const MessagesScreen = ({ navigation }) => {
   const onCreateGroup = () => {
     try {
       let selected = products.filter((product) => product.isChecked);
-    // console.log(selected)
       let lstId = selected.map(lt => lt._id);
       let strVal = lstId.map(String);
     const conversation = {
@@ -199,6 +197,9 @@ const MessagesScreen = ({ navigation }) => {
 
 
   useEffect(() => {
+
+    
+
     const querySnapshot = RoomsRef.where(
       'userId',
       'array-contains',
