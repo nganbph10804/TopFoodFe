@@ -14,28 +14,27 @@ import { COLORS } from '../constants/color.const.js';
 import HeaderUser from '../shared/HeaderUser.js';
 import { styles } from '../styles/paper.js';
 import { _ } from 'lodash';
+import { FontAwesome } from '@expo/vector-icons';
 
 const FeedScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const { feed } = useSelector(state => state.feed);
   const [city, setCity] = useState([]);
   const [visible, setVisible] = useState(false);
-  const [citySelected, setCitySelected] = useState([]);
+  const [citySelected, setCitySelected] = useState({
+    code: 1,
+    codename: 'thanh_pho_ha_noi',
+    districts: [],
+    division_type: 'thành phố trung ương',
+    isSelected: false,
+    name: 'Thành phố Hà Nội',
+    phone_code: 24,
+  });
 
-  const handlerChecked = id => {
-    let arr = city.map((i, idx) => {
-      if (i.code === id) {
-        i.isSelected = !i.isSelected;
-      }
-      return { ...i };
-    });
+  const handlerChecked = item => {
+    setCitySelected(item);
     setVisible(false);
   };
-
-  useEffect(() => {
-    let arr2 = _.filter(city, 'isSelected');
-    setCitySelected(arr2);
-  }, [city]);
 
   useEffect(() => {
     fetch('https://provinces.open-api.vn/api/p/')
@@ -49,6 +48,7 @@ const FeedScreen = ({ navigation }) => {
       })
       .catch(e => console.log(e));
   }, []);
+
   return (
     <View style={styles.background}>
       <HeaderUser />
@@ -57,27 +57,23 @@ const FeedScreen = ({ navigation }) => {
           <Button onPress={() => setVisible(false)}>Đóng</Button>
           <ScrollView>
             {city.map((i, idx) => (
-              <View
+              <TouchableOpacity
                 key={idx}
                 style={{ marginHorizontal: 40, marginVertical: 5 }}
+                onPress={() => handlerChecked(i)}
               >
                 <Chip
-                  onPress={() => handlerChecked(i.code)}
+                  onPress={() => handlerChecked(i)}
                   mode="outlined"
-                  selected={i.isSelected ? true : false}
-                  style={i.isSelected ? styled.active : styled.inactive}
-                  selectedColor={i.isSelected ? '#fff' : '#000'}
+                  style={styled.inactive}
+                  selectedColor={'#000'}
                   icon={() => (
-                    <Ionicons
-                      name="checkbox"
-                      size={24}
-                      color={i.isSelected ? '#fff' : '#000'}
-                    />
+                    <FontAwesome name="map-marker" size={24} color="black" />
                   )}
                 >
                   {i.name}
                 </Chip>
-              </View>
+              </TouchableOpacity>
             ))}
           </ScrollView>
         </Modal>
@@ -92,6 +88,7 @@ const FeedScreen = ({ navigation }) => {
                 alignItems: 'center',
                 alignSelf: 'flex-end',
                 marginRight: 30,
+                marginTop: 5,
               }}
               onPress={() => setVisible(true)}
             >
@@ -101,7 +98,7 @@ const FeedScreen = ({ navigation }) => {
                 <Subheading
                   style={{ color: `${COLORS.blue[4]}`, fontWeight: 'bold' }}
                 >
-                  Hà nội
+                  {citySelected.name}
                 </Subheading>
               </Subheading>
             </TouchableOpacity>
@@ -125,6 +122,7 @@ const styled = StyleSheet.create({
   inactive: {
     marginHorizontal: 10,
     paddingHorizontal: 10,
+    borderColor: `${COLORS.blue[1]}`,
   },
 });
 
