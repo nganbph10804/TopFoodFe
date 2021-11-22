@@ -15,7 +15,6 @@ import { styles } from '../../../styles/paper.js';
 const FoodMain = ({ navigation }) => {
   const profile = useSelector(state => state.auth.profile);
   const account = useSelector(state => state.auth.account);
-  console.log(account);
   const role = useSelector(state => state.auth.account.role);
   const { listUserFollowStore } = useSelector(state => state.follow);
   const dispatch = useDispatch();

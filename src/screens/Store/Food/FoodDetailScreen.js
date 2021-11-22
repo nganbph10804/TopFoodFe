@@ -1,6 +1,6 @@
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import { _ } from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SliderBox } from 'react-native-image-slider-box';
 import {
@@ -24,15 +24,15 @@ import {
 import { styles } from '../../../styles/paper.js';
 
 const FoodDetailScreen = ({ navigation, route }) => {
-  const { id, name, content, price, files, tag, myReaction, totalReaction } =
-    route.params.food;
+  const { id, name, content, price, files, tag } = route.params.food;
+  const food = useSelector(state => state.food.food);
   const dispatch = useDispatch();
-  const role = useSelector(state => state.auth.account.role);
-  const { detail } = useSelector(state => state.tag);
   const foodDetail = useSelector(state => state.food.detail);
-  console.log(foodDetail.totalReaction);
   const { loading } = useSelector(state => state.voteFood);
-  const foodByTag = _.filter(detail, i => i.id !== id);
+  const foodByTag = _.filter(
+    _.filter(food, i => i.tag.id === tag.id),
+    i => i.id !== id
+  );
 
   const handlerVote = id => {
     dispatch(voteFoodAction(id));
@@ -103,7 +103,7 @@ const FoodDetailScreen = ({ navigation, route }) => {
                     color={`${COLORS.blue[4]}`}
                   />
                   <Subheading style={{ color: `#000` }}>
-                    {totalReaction} votes
+                    {foodDetail.totalReaction} votes
                   </Subheading>
                 </Chip>
               )}

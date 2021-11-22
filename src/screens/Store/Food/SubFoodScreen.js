@@ -1,18 +1,40 @@
-import { Entypo } from '@expo/vector-icons';
+import { AntDesign, Entypo } from '@expo/vector-icons';
 import { _ } from 'lodash';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SliderBox } from 'react-native-image-slider-box';
-import { Card, Paragraph, Subheading, Title } from 'react-native-paper';
-import { useSelector } from 'react-redux';
+import { Card, Chip, Paragraph, Subheading, Title } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
 import FoodByTag from '../../../components/store/FoodByTag.js';
 import { COLORS } from '../../../constants/color.const.js';
 import { formatPrice } from '../../../constants/price.const.js';
+import { foodDetailAction } from '../../../redux/store/food/actions/foodAction.js';
+import {
+  unVoteFoodAction,
+  voteFoodAction,
+} from '../../../redux/vote/voteAction.js';
 
 const SubFoodScreen = ({ navigation, route }) => {
-  const { content, name, price, files, id } = route.params.food;
-  const details = useSelector(state => state.tag.detail);
-  const foodByTag = _.filter(details, i => i.id !== id);
+  const { content, name, price, files, id, tag } = route.params.food;
+  const dispatch = useDispatch();
+  const foodDetail = useSelector(state => state.food.detail);
+  const food = useSelector(state => state.food.food);
+  const foodByTag = _.filter(
+    _.filter(food, i => i.tag.id === tag.id),
+    i => i.id !== id
+  );
+
+  const handlerVote = id => {
+    dispatch(voteFoodAction(id));
+  };
+
+  const handlerUnVote = id => {
+    dispatch(unVoteFoodAction(id));
+  };
+
+  useEffect(() => {
+    dispatch(foodDetailAction(id));
+  }, [dispatch, id]);
   return (
     <ScrollView>
       <Card>
@@ -26,6 +48,24 @@ const SubFoodScreen = ({ navigation, route }) => {
           <Title>{name}</Title>
           <Subheading>{formatPrice(price)} </Subheading>
           <Paragraph>{content}</Paragraph>
+          <View style={{ position: 'absolute', right: 20, top: 30 }}>
+            {foodDetail.myReaction && (
+              <Chip onPress={() => handlerUnVote(id)}>
+                <AntDesign name="star" size={24} color={`${COLORS.blue[4]}`} />
+                <Subheading style={{ color: `${COLORS.blue[4]}` }}>
+                  {foodDetail.totalReaction} votes
+                </Subheading>
+              </Chip>
+            )}
+            {!foodDetail.myReaction && (
+              <Chip onPress={() => handlerVote(id)}>
+                <AntDesign name="staro" size={24} color={`${COLORS.blue[4]}`} />
+                <Subheading style={{ color: `#000` }}>
+                  {foodDetail.totalReaction} votes
+                </Subheading>
+              </Chip>
+            )}
+          </View>
         </Card.Content>
       </Card>
       {foodByTag.length < 1 ? (

@@ -21,10 +21,6 @@ const FeedScreen = ({ navigation }) => {
   const [city, setCity] = useState([]);
   const [visible, setVisible] = useState(false);
   const [citySelected, setCitySelected] = useState([]);
-  console.log(
-    'log 🚀 ~ file: FeedScreen.js ~ line 23 ~ FeedScreen ~ citySelected',
-    citySelected
-  );
 
   const handlerChecked = id => {
     let arr = city.map((i, idx) => {
