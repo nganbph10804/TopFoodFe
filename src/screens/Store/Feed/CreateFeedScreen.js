@@ -3,6 +3,7 @@ import {
   Entypo,
   MaterialCommunityIcons,
   MaterialIcons,
+  Ionicons,
 } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { _ } from 'lodash';
@@ -21,11 +22,12 @@ import {
   Checkbox,
   Subheading,
   TextInput,
+  Chip,
 } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../../constants/color.const.js';
+import { createFeedAction } from '../../../redux/feed/feedAction.js';
 import { multiFileAction } from '../../../redux/file/actions/fileAction.js';
-import { createFeedAction } from '../../../redux/store/feed/actions/feedAction.js';
 import { InputUpdate } from '../../../styles/paper.js';
 
 const CreateFeedScreen = ({ navigation }) => {
@@ -201,39 +203,60 @@ const CreateFeedScreen = ({ navigation }) => {
         </View>
         <View style={styled.item}>
           <Button onPress={() => setVisible(true)}>Chọn món ăn đính kèm</Button>
-          {foodSelected.map((i, idx) => (
-            <View
-              key={idx}
-              style={{
-                marginLeft: 20,
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-            >
-              <MaterialIcons
-                name="fastfood"
-                size={30}
-                color={`${COLORS.blue[1]}`}
-              />
-              <Subheading style={{ marginLeft: 15 }}>{i.name} </Subheading>
-            </View>
-          ))}
+          <ScrollView horizontal={true}>
+            {foodSelected.map((i, idx) => (
+              <View
+                key={idx}
+                style={{
+                  marginTop: 10,
+                }}
+              >
+                <Chip
+                  mode="outlined"
+                  selectedColor="#fff"
+                  selected={true}
+                  style={styled.active}
+                  icon={() => (
+                    <Ionicons name="checkbox" size={24} color={'#fff'} />
+                  )}
+                >
+                  {i.name}
+                </Chip>
+              </View>
+            ))}
+          </ScrollView>
         </View>
         <View style={styled.item}>
           <Button onPress={() => setShow(true)}>Chọn tag đính kèm</Button>
-          {tagSelected.map((i, idx) => (
-            <View
-              key={idx}
-              style={{
-                marginLeft: 20,
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-            >
-              <Entypo name="price-tag" size={24} color={`${COLORS.blue[1]}`} />
-              <Subheading style={{ marginLeft: 15 }}>{i.tagName} </Subheading>
-            </View>
-          ))}
+          <ScrollView horizontal={true}>
+            {tagSelected.map((i, idx) => (
+              <View
+                key={idx}
+                style={{
+                  marginTop: 10,
+                }}
+              >
+                <View
+                  key={idx}
+                  style={{
+                    marginTop: 10,
+                  }}
+                >
+                  <Chip
+                    mode="outlined"
+                    selectedColor="#fff"
+                    selected={true}
+                    style={styled.active}
+                    icon={() => (
+                      <Ionicons name="checkbox" size={24} color={'#fff'} />
+                    )}
+                  >
+                    {i.tagName}
+                  </Chip>
+                </View>
+              </View>
+            ))}
+          </ScrollView>
         </View>
         {loadingFile ? (
           <View style={{ alignSelf: 'center', marginTop: 15 }}>
@@ -300,6 +323,12 @@ const styled = StyleSheet.create({
     alignSelf: 'flex-start',
     paddingLeft: 30,
     marginTop: 20,
+  },
+  active: {
+    backgroundColor: `${COLORS.blue[1]}`,
+    color: '#fff',
+    marginHorizontal: 10,
+    paddingHorizontal: 10,
   },
 });
 export default CreateFeedScreen;

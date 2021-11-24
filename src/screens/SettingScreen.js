@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../constants/color.const.js';
 import { ROLES } from '../constants/role.const.js';
 import { getProfile, logoutAction } from '../redux/auth/actions/authAction.js';
+import { clearTotalAction } from '../redux/favorite/favoriteAction.js';
 import { friendListAction } from '../redux/friend/actions/friendAction.js';
 import HeaderMain from '../shared/HeaderMain.js';
 import { styles } from '../styles/paper.js';
@@ -32,6 +33,7 @@ const SettingScreen = ({ navigation }) => {
         text: 'Đồng ý',
         onPress: () => {
           dispatch(logoutAction());
+          dispatch(clearTotalAction());
         },
       },
     ]);

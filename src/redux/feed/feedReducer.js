@@ -5,7 +5,7 @@ import {
   FEED_LIST,
   FEED_REQUEST,
   SEARCH_FEED,
-} from '../types/feedType.js';
+} from './feedType.js';
 
 const initState = {
   loading: false,

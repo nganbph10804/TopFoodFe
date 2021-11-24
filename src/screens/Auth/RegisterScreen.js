@@ -69,7 +69,6 @@ const RegisterScreen = ({ navigation }) => {
     ) {
       Toast.show({
         type: 'error',
-
         text1: 'Thông báo',
         text2: 'Không được để trống.',
       });

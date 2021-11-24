@@ -2,6 +2,7 @@ import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import { authHeader } from '../authHeader.js';
 import {
+  CLEAR_TOTAL,
   FAVORITE_FAILURE,
   FAVORITE_LIST,
   FAVORITE_REQUEST,
@@ -20,7 +21,7 @@ export const favoriteListAction = () => async dispatch => {
     );
     dispatch({
       type: FAVORITE_LIST,
-      payload: data.data,
+      payload: data,
     });
   } catch (error) {
     dispatch({
@@ -60,4 +61,10 @@ export const updateFavoriteAction = tag => async dispatch => {
       text2: error.response.data.message,
     });
   }
+};
+
+export const clearTotalAction = () => dispatch => {
+  dispatch({
+    type: CLEAR_TOTAL,
+  });
 };

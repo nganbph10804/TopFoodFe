@@ -1,13 +1,22 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Button, Card } from 'react-native-paper';
-import { useSelector } from 'react-redux';
+import { Button } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
 import FeedList from '../../../components/store/feed/FeedList.js';
+import { storeFeedListAction } from '../../../redux/feed/feedAction.js';
 
 const FeedListScreen = ({ navigation }) => {
   const { feed } = useSelector(state => state.feed);
   const role = useSelector(state => state.auth.account.role);
+  const account = useSelector(state => state.auth.account);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const focus = navigation.addListener('focus', () => {
+      dispatch(storeFeedListAction(account.id));
+    });
+    return focus;
+  }, [dispatch]);
   return (
     <View>
       <ScrollView>

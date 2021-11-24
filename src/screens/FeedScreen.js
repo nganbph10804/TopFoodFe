@@ -1,5 +1,5 @@
-import { Feather, Ionicons } from '@expo/vector-icons';
-import React, { useEffect, useState } from 'react';
+import { Feather, FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Modal,
   ScrollView,
@@ -7,47 +7,65 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Button, Chip, Subheading, Title } from 'react-native-paper';
+import { Button, Chip, Searchbar, Subheading, Title } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import HomeList from '../components/home/HomeList.js';
 import { COLORS } from '../constants/color.const.js';
+import { favoriteListAction } from '../redux/favorite/favoriteAction.js';
+import { postListAction } from '../redux/post/postAction.js';
+import { searchTagAction } from '../redux/store/tag/action/tagAction.js';
 import HeaderUser from '../shared/HeaderUser.js';
 import { styles } from '../styles/paper.js';
-import { _ } from 'lodash';
-import { FontAwesome } from '@expo/vector-icons';
 
 const FeedScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const { feed } = useSelector(state => state.feed);
+  const { post } = useSelector(state => state.post);
+  const { total } = useSelector(state => state.favorite);
   const [city, setCity] = useState([]);
   const [visible, setVisible] = useState(false);
   const [citySelected, setCitySelected] = useState({
     code: 1,
     codename: 'thanh_pho_ha_noi',
-    districts: [],
-    division_type: 'thành phố trung ương',
-    isSelected: false,
     name: 'Thành phố Hà Nội',
     phone_code: 24,
   });
+  const [searchValue, setSearchValue] = useState('');
+  const [focus, setFocus] = useState(false);
+  const ref = useRef(null);
 
   const handlerChecked = item => {
     setCitySelected(item);
     setVisible(false);
   };
 
+  const onFocus = () => {
+    setFocus(true);
+  };
+
+  const onBlur = () => {
+    setFocus(false);
+    ref.current.blur();
+    ref.current.clear();
+    dispatch(clearSearchAction());
+  };
+
   useEffect(() => {
     fetch('https://provinces.open-api.vn/api/p/')
       .then(resp => resp.json())
       .then(resp => {
-        let arr2 = resp.map(i => {
-          i.isSelected = false;
-          return { ...i };
-        });
-        setCity(arr2);
+        setCity(resp);
       })
       .catch(e => console.log(e));
   }, []);
+
+  useEffect(() => {
+    const focus = navigation.addListener('focus', () => {
+      dispatch(favoriteListAction());
+      dispatch(searchTagAction(''));
+      dispatch(postListAction());
+    });
+    return focus;
+  }, [dispatch]);
 
   return (
     <View style={styles.background}>
@@ -79,16 +97,23 @@ const FeedScreen = ({ navigation }) => {
         </Modal>
       )}
       <View style={styles.currentBackground}>
-        <ScrollView>
-          <View>
-            <Title style={styles.title}>Trang chủ</Title>
+        <ScrollView style={{ marginBottom: 100 }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginHorizontal: 20,
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <View>
+              <Title style={styles.title}>Trang chủ</Title>
+            </View>
             <TouchableOpacity
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                alignSelf: 'flex-end',
-                marginRight: 30,
-                marginTop: 5,
+                marginTop: 30,
               }}
               onPress={() => setVisible(true)}
             >
@@ -103,8 +128,26 @@ const FeedScreen = ({ navigation }) => {
               </Subheading>
             </TouchableOpacity>
           </View>
-          {feed.map((i, index) => (
-            <HomeList key={index} feed={i} navigation={navigation} />
+          <View style={{ margin: 20 }}>
+            <Searchbar
+              placeholder="Tìm kiếm"
+              ref={ref}
+              onFocus={onFocus}
+              value={searchValue}
+              onChangeText={searchValue => setSearchValue(searchValue)}
+              style={styles.search}
+              clearIcon={() => (
+                <MaterialIcons
+                  name="cancel"
+                  size={24}
+                  color="black"
+                  onPress={onBlur}
+                />
+              )}
+            />
+          </View>
+          {post.map((i, index) => (
+            <HomeList key={index} post={i} navigation={navigation} />
           ))}
         </ScrollView>
       </View>

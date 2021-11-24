@@ -30,7 +30,7 @@ const ActiveAccScreen = ({ navigation }) => {
   useEffect(() => {
     const focus = navigation.addListener('focus', () => {
       if (status === 'WAIT_ACTIVE') {
-        dispatch(activeAction(auth.email, navigation));
+        dispatch(activeAction(auth.email));
       }
     });
     return focus;

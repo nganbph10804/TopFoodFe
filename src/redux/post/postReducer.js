@@ -1,41 +1,39 @@
 import {
-  COMMENT_LIST,
-  REACT_FAILURE,
-  REACT_REQUEST,
-  REPLY_LIST,
-} from '../types/reactTypes.js';
+  POST_DETAIL,
+  POST_FAILURE,
+  POST_LIST,
+  POST_REQUEST,
+} from './postType.js';
 
 const initState = {
   loading: false,
-  comment: [],
-  reply: [],
+  post: [],
+  detail: [],
 };
-
-export const reactReducer = (state = initState, action) => {
+export const postReducer = (state = initState, action) => {
   switch (action.type) {
-    case REACT_FAILURE:
+    case POST_REQUEST:
       return {
         ...state,
         loading: true,
       };
-    case REACT_REQUEST:
+    case POST_FAILURE:
       return {
         ...state,
         loading: false,
       };
-    case COMMENT_LIST:
+    case POST_LIST:
       return {
         ...state,
         loading: false,
-        comment: action.payload,
+        post: action.payload,
       };
-    case REPLY_LIST:
+    case POST_DETAIL:
       return {
         ...state,
         loading: false,
-        reply: action.payload,
+        detail: action.payload,
       };
-
     default:
       return state;
   }
