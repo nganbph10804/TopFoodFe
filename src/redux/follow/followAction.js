@@ -68,9 +68,13 @@ export const followAction = id => async dispatch => {
     type: FOLLOW_REQUEST,
   });
   try {
-    await axios.post(`http://103.245.251.149:8080/store-profile/follow/${id}`, {
-      headers: await authHeader(),
-    });
+    await axios.post(
+      `http://103.245.251.149:8080/store-profile/follow/${id}`,
+      {},
+      {
+        headers: await authHeader(),
+      }
+    );
     Toast.show({
       type: 'success',
       text1: 'Thông báo',

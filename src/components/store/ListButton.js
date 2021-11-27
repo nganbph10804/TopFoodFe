@@ -1,9 +1,11 @@
 import { AntDesign, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSelector } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
 
 const ListButton = ({ navigation }) => {
+  const { role } = useSelector(state => state.auth.account);
   return (
     <View style={styles.main}>
       <TouchableOpacity
@@ -30,15 +32,17 @@ const ListButton = ({ navigation }) => {
         />
         <Text style={styles.text}>Bài viết</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.manager}>
-        <AntDesign
-          name="slack-square"
-          size={30}
-          color={`${COLORS.blue[5]}`}
-          style={styles.icon}
-        />
-        <Text style={styles.text}>Thống kê</Text>
-      </TouchableOpacity>
+      {role === 'ROLE_STORE' && (
+        <TouchableOpacity style={styles.manager}>
+          <AntDesign
+            name="slack-square"
+            size={30}
+            color={`${COLORS.blue[5]}`}
+            style={styles.icon}
+          />
+          <Text style={styles.text}>Thống kê</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

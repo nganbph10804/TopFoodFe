@@ -2,7 +2,12 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { _ } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { ActivityIndicator, Button, Searchbar } from 'react-native-paper';
+import {
+  ActivityIndicator,
+  Button,
+  Searchbar,
+  Title,
+} from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import FilterCtg from '../../../components/store/FilterCtg.js';
 import FoodList from '../../../components/store/FoodList.js';
@@ -17,6 +22,7 @@ import {
 import { styles } from '../../../styles/paper.js';
 
 const FoodListScreen = ({ navigation }) => {
+  const account = useSelector(state => state.auth.account);
   const { tag } = useSelector(state => state.tag);
   const food = useSelector(state => state.food.food);
   const loading = useSelector(state => state.food.loading);
@@ -34,7 +40,7 @@ const FoodListScreen = ({ navigation }) => {
 
   const handlerFilter = id => {
     if (id === 'ALL') {
-      dispatch(foodListAction());
+      dispatch(foodListAction(account.id));
       setCtg(false);
     } else {
       setTagId(id);
@@ -70,7 +76,7 @@ const FoodListScreen = ({ navigation }) => {
 
   useEffect(() => {
     const focus = navigation.addListener('focus', () => {
-      dispatch(foodListAction());
+      dispatch(foodListAction(account.id));
     });
     return focus;
   }, [dispatch]);
@@ -137,48 +143,38 @@ const FoodListScreen = ({ navigation }) => {
             </View>
           </ScrollView>
         </View>
-        <View>
-          {focus && search.length < 1
-            ? null
-            : search.map(i => (
-                <SearchFood key={i.id} food={i} navigation={navigation} />
-              ))}
-        </View>
-        <View>
-          {!focus && !ctg && (
-            <View style={{ zIndex: -7 }}>
-              {food.length < 1 ? (
-                <View style={styles.noFriend}>
-                  <Text style={styles.textXL}>Không có món ăn</Text>
-                </View>
-              ) : (
-                <View style={{ flex: 1 }}>
-                  {food.map(i => (
-                    <FoodList key={i.id} food={i} navigation={navigation} />
-                  ))}
-                </View>
-              )}
-            </View>
-          )}
-        </View>
-        <View>
-          {ctg && (
-            <View style={{ zIndex: -7 }}>
-              <ScrollView>
-                <View style={{ flex: 1 }}>
-                  {tagData.map(i => (
-                    <FilterCtg
-                      key={i.id}
-                      foods={i}
-                      navigation={navigation}
-                      tagName={tags}
-                    />
-                  ))}
-                </View>
-              </ScrollView>
-            </View>
-          )}
-        </View>
+        {focus && search.length < 1
+          ? null
+          : search.map(i => (
+              <SearchFood key={i.id} food={i} navigation={navigation} />
+            ))}
+        {!focus && !ctg && (
+          <View>
+            {food.length < 1 ? (
+              <View style={styled.noFood}>
+                <Title>Không có món ăn</Title>
+              </View>
+            ) : (
+              <View style={{ flex: 1 }}>
+                {food.map(i => (
+                  <FoodList key={i.id} food={i} navigation={navigation} />
+                ))}
+              </View>
+            )}
+          </View>
+        )}
+        {ctg && (
+          <View style={{ flex: 1 }}>
+            {tagData.map(i => (
+              <FilterCtg
+                key={i.id}
+                foods={i}
+                navigation={navigation}
+                tagName={tags}
+              />
+            ))}
+          </View>
+        )}
       </ScrollView>
     </View>
   );
@@ -227,8 +223,8 @@ const styled = StyleSheet.create({
     backgroundColor: '#fff',
     width: '100%',
     justifyContent: 'space-evenly',
-    paddingLeft: 30,
     paddingVertical: 10,
+    marginTop: 10,
   },
   picker: {
     borderWidth: 1,
@@ -242,6 +238,12 @@ const styled = StyleSheet.create({
     justifyContent: 'space-between',
     flex: 1,
     backgroundColor: '#aec4e6',
+  },
+  noFood: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '50%',
   },
 });
 export default FoodListScreen;

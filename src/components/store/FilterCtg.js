@@ -1,3 +1,5 @@
+import { AntDesign } from '@expo/vector-icons';
+import { _ } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { BottomSheet, ListItem } from 'react-native-elements';
@@ -9,7 +11,6 @@ import {
   deleteFoodAction,
   foodDetailAction,
 } from '../../redux/store/food/actions/foodAction.js';
-import { AntDesign } from '@expo/vector-icons';
 
 const FilterCtg = ({ foods, navigation, tagName }) => {
   const detail = useSelector(state => state.food.detail);
@@ -51,7 +52,10 @@ const FilterCtg = ({ foods, navigation, tagName }) => {
       <View style={styled.container}>
         <View style={styled.main}>
           <View style={{ width: '32%' }}>
-            <Image source={{ uri: `${foods.files[1]}` }} style={styled.image} />
+            <Image
+              source={{ uri: `${_.head(foods.files)}` }}
+              style={styled.image}
+            />
           </View>
           <View>
             <Text style={styled.textName}>{foods.name}</Text>

@@ -4,9 +4,9 @@ import { StyleSheet, View } from 'react-native';
 import { Subheading } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import ListButton from '../../../components/store/ListButton.js';
+import { storeFeedListAction } from '../../../redux/feed/feedAction.js';
 import { clearFilesAction } from '../../../redux/file/actions/fileAction.js';
 import { userFollowAction } from '../../../redux/follow/followAction.js';
-import { storeFeedListAction } from '../../../redux/store/feed/actions/feedAction.js';
 import { foodListAction } from '../../../redux/store/food/actions/foodAction.js';
 import { searchTagAction } from '../../../redux/store/tag/action/tagAction.js';
 import HeaderStore from '../../../shared/HeaderStore.js';
@@ -23,7 +23,7 @@ const FoodMain = ({ navigation }) => {
     dispatch(storeFeedListAction(profile.id));
     dispatch(clearFilesAction());
     dispatch(userFollowAction());
-    dispatch(foodListAction());
+    dispatch(foodListAction(account.id));
   }, [dispatch]);
   return (
     <View style={styles.main}>

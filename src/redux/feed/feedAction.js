@@ -1,15 +1,14 @@
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
-import { authHeader } from '../../../authHeader.js';
-import { CLEAR_FILE } from '../../../file/types/fileType.js';
+import { authHeader } from '../authHeader.js';
+import { CLEAR_FILE } from '../file/types/fileType.js';
 import {
   DELETE_FEED,
   FEED_DETAIL,
   FEED_FAILURE,
   FEED_LIST,
   FEED_REQUEST,
-  SEARCH_FEED,
-} from '../types/feedType.js';
+} from './feedType.js';
 
 export const storeFeedListAction = id => async dispatch => {
   dispatch({
@@ -109,7 +108,8 @@ export const createFeedAction =
     }
   };
 export const updateFeedAction =
-  (content, files, id, tags, navigation) => async dispatch => {
+  (content, files, foodIds, id, tagIds, navigation) => async dispatch => {
+    console.log(content, files, foodIds, id, tagIds);
     dispatch({
       type: FEED_REQUEST,
     });
@@ -119,23 +119,14 @@ export const updateFeedAction =
         {
           content: content,
           files: files,
+          foodIds: foodIds,
           id: id,
-          tagIds: tags,
+          tagIds: tagIds,
         },
         {
           headers: await authHeader(),
         }
       );
-      const { data } = await axios.get(
-        `http://103.245.251.149:8080/store-profile/list-post?page=0&pageSize=200`,
-        {
-          headers: await authHeader(),
-        }
-      );
-      dispatch({
-        type: FEED_LIST,
-        payload: data.data,
-      });
       dispatch({
         type: CLEAR_FILE,
       });
@@ -146,6 +137,7 @@ export const updateFeedAction =
       });
       if (navigation) navigation.navigate('FeedListScreen');
     } catch (error) {
+      console.log(error.response.data.message);
       dispatch({
         type: FEED_FAILURE,
       });
@@ -181,6 +173,7 @@ export const deleteFeedAction = id => async dispatch => {
       text2: 'Xoá bài viết thành công',
     });
   } catch (error) {
+    console.log(error.response.data.message);
     dispatch({
       type: FEED_FAILURE,
     });

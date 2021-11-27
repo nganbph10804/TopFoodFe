@@ -22,7 +22,7 @@ const EditFavoriteScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
-    dispatch(updateFavoriteAction(_.map(tagSelected, 'id')));
+    dispatch(updateFavoriteAction(_.map(tagSelected, 'id'), navigation));
   };
 
   const handlerChecked = id => {
@@ -59,7 +59,10 @@ const EditFavoriteScreen = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    dispatch(favoriteListAction());
+    const focus = navigation.addListener('focus', () => {
+      dispatch(favoriteListAction());
+    });
+    return focus;
   }, [dispatch]);
 
   return (
