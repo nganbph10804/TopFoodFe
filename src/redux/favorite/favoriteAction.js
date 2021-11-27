@@ -34,7 +34,7 @@ export const favoriteListAction = () => async dispatch => {
     });
   }
 };
-export const updateFavoriteAction = tag => async dispatch => {
+export const updateFavoriteAction = (tag, navigation) => async dispatch => {
   dispatch({
     type: FAVORITE_REQUEST,
   });
@@ -51,6 +51,7 @@ export const updateFavoriteAction = tag => async dispatch => {
       text1: 'Thông báo',
       text2: 'Cập nhật sở thích thành công',
     });
+    if (navigation) navigation.navigate('NAV');
   } catch (error) {
     dispatch({
       type: FAVORITE_FAILURE,

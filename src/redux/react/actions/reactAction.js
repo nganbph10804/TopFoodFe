@@ -142,6 +142,38 @@ export const commentPostAction = (id, content, files) => async dispatch => {
     });
   }
 };
+export const removeCommentAction = (id, postId) => async dispatch => {
+  dispatch({
+    type: REACT_REQUEST,
+  });
+  try {
+    await axios.delete(
+      `http://103.245.251.149:8080/react/comment-post?commentId=${id}`,
+      {
+        headers: await authHeader(),
+      }
+    );
+    const { data } = await axios.get(
+      `http://103.245.251.149:8080/react/list-comment-post?id=${postId}&page=0&pageSize=1000`,
+      {
+        headers: await authHeader(),
+      }
+    );
+    dispatch({
+      type: COMMENT_LIST,
+      payload: data.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: REACT_FAILURE,
+    });
+    Toast.show({
+      type: 'error',
+      text1: 'Thông báo',
+      text2: error.response.data.message,
+    });
+  }
+};
 export const replyListAction = commentId => async dispatch => {
   dispatch({
     type: REACT_REQUEST,
@@ -169,13 +201,13 @@ export const replyListAction = commentId => async dispatch => {
   }
 };
 export const replyCommentAction =
-  (id, content, files, commentId) => async dispatch => {
+  (commentId, content, files) => async dispatch => {
     dispatch({
       type: REACT_REQUEST,
     });
     try {
       await axios.post(
-        `http://103.245.251.149:8080/react/comment-reply?id=${id}`,
+        `http://103.245.251.149:8080/react/comment-reply?id=${commentId}`,
         {
           content: content,
           files: files,

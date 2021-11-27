@@ -21,6 +21,7 @@ const FeedScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const { post } = useSelector(state => state.post);
   const { total } = useSelector(state => state.favorite);
+  const role = useSelector(state => state.auth.account.role);
   const [city, setCity] = useState([]);
   const [visible, setVisible] = useState(false);
   const [citySelected, setCitySelected] = useState({
@@ -54,8 +55,7 @@ const FeedScreen = ({ navigation }) => {
       .then(resp => resp.json())
       .then(resp => {
         setCity(resp);
-      })
-      .catch(e => console.log(e));
+      });
   }, []);
 
   useEffect(() => {
@@ -66,6 +66,14 @@ const FeedScreen = ({ navigation }) => {
     });
     return focus;
   }, [dispatch]);
+
+  useEffect(() => {
+    if (role === 'ROLE_USER') {
+      if (total.length < 5) {
+        navigation.navigate('FavoriteScreen');
+      }
+    }
+  }, [total]);
 
   return (
     <View style={styles.background}>

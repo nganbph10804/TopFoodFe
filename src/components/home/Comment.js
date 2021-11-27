@@ -1,4 +1,4 @@
-import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
+import { AntDesign, Entypo, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { _ } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
@@ -30,6 +30,7 @@ import {
   commentListAction,
   commentPostAction,
   likeCommentAction,
+  replyCommentAction,
 } from '../../redux/react/actions/reactAction.js';
 import ActionComment from './ActionComment.js';
 import RemoveComment from './RemoveComment.js';
@@ -42,6 +43,9 @@ const Comment = ({ navigation, post, setShow }) => {
   const commentList = useSelector(state => state.react.comment);
   const [height, setHeight] = useState();
   const [comment, setComment] = useState('');
+  const [visible, setVisible] = useState(false);
+  const [reply, setReply] = useState('');
+  const [commentId, setCommentId] = useState();
 
   const handlerSend = () => {
     if (file) {
@@ -63,9 +67,20 @@ const Comment = ({ navigation, post, setShow }) => {
     setHeight(size);
   };
 
+  const handlerSubmit = () => {
+    setVisible(true);
+  };
+
   const handlerReply = () => {
-    ref.current.focus();
-    setReply(true);
+    if (file) {
+      dispatch(replyCommentAction(commentId, reply, file));
+      setReply('');
+      dispatch(clearFilesAction());
+    } else {
+      dispatch(replyCommentAction(commentId, reply, ''));
+      setReply('');
+      dispatch(clearFilesAction());
+    }
   };
 
   const handlerUpload = async () => {
@@ -109,7 +124,14 @@ const Comment = ({ navigation, post, setShow }) => {
       <Button
         onPress={() => setShow(false)}
         style={styled.back}
-        icon={() => <AntDesign name="back" size={24} color="black" />}
+        icon={() => (
+          <AntDesign
+            name="back"
+            size={24}
+            color="black"
+            onPress={() => setShow(false)}
+          />
+        )}
         color={'#000'}
       >
         Quay lại
@@ -146,7 +168,7 @@ const Comment = ({ navigation, post, setShow }) => {
           <Title>Bình luận ({commentList.length})</Title>
           <View>
             {commentList.map((i, idx) => (
-              <View key={idx} style={{ paddingBottom: 10 }}>
+              <View key={idx} style={{ paddingBottom: 10, paddingTop: 10 }}>
                 <View style={{ flexDirection: 'row' }}>
                   <Avatar.Image
                     source={{ uri: `${i.profile.profile.avatar}` }}
@@ -178,13 +200,14 @@ const Comment = ({ navigation, post, setShow }) => {
                           }}
                         />
                       ))}
-                    <RemoveComment />
+                    <RemoveComment id={i.id} postId={post.id} />
                   </Card>
                 </View>
                 <ActionComment
                   i={i}
                   likeComment={likeComment}
-                  handlerReply={handlerReply}
+                  handlerSubmit={handlerSubmit}
+                  setCommentId={setCommentId}
                 />
               </View>
             ))}
@@ -210,28 +233,75 @@ const Comment = ({ navigation, post, setShow }) => {
             color={`${COLORS.blue[4]}`}
             onPress={() => handlerUpload()}
           />
-          <TextInput
-            ref={ref}
-            mode="outlined"
-            value={comment}
-            onChangeText={comment => setComment(comment)}
-            outlineColor={`${COLORS.blue[4]}`}
-            selectionColor={`${COLORS.blue[4]}`}
-            placeholder="Nội dung"
-            onContentSizeChange={e =>
-              updateHeight(e.nativeEvent.contentSize.height)
-            }
-            multiline={true}
-            style={styled.input}
-            autoFocus={true}
-            right={<TextInput.Affix text={`${comment.length}/1000`} />}
-          />
-          <Ionicons
-            name="send"
-            size={24}
-            color={`${COLORS.blue[4]}`}
-            onPress={() => handlerSend()}
-          />
+          {!visible && (
+            <TextInput
+              ref={ref}
+              mode="outlined"
+              value={comment}
+              onChangeText={comment => setComment(comment)}
+              outlineColor={`${COLORS.blue[4]}`}
+              selectionColor={`${COLORS.blue[4]}`}
+              placeholder="Nội dung"
+              onContentSizeChange={e =>
+                updateHeight(e.nativeEvent.contentSize.height)
+              }
+              multiline={true}
+              style={styled.input}
+              autoFocus={true}
+              right={<TextInput.Affix text={`${comment.length}/1000`} />}
+            />
+          )}
+          {visible && (
+            <TextInput
+              mode="outlined"
+              value={reply}
+              onChangeText={reply => setReply(reply)}
+              outlineColor={`${COLORS.blue[4]}`}
+              selectionColor={`${COLORS.blue[4]}`}
+              placeholder="Nội dung"
+              onContentSizeChange={e =>
+                updateHeight(e.nativeEvent.contentSize.height)
+              }
+              multiline={true}
+              style={styled.input}
+              autoFocus={true}
+              right={
+                <TextInput.Icon
+                  name={() => (
+                    <MaterialIcons
+                      name="cancel"
+                      size={24}
+                      color="black"
+                      onPress={() => {
+                        setVisible(false), setReply('');
+                      }}
+                    />
+                  )}
+                />
+              }
+              onBlur={() => {
+                setTimeout(() => {
+                  setVisible(false), setReply('');
+                }, 3000);
+              }}
+            />
+          )}
+          {!visible && (
+            <Ionicons
+              name="send"
+              size={24}
+              color={`${COLORS.blue[4]}`}
+              onPress={() => handlerSend()}
+            />
+          )}
+          {visible && (
+            <Ionicons
+              name="send"
+              size={24}
+              color={`${COLORS.blue[4]}`}
+              onPress={() => handlerReply()}
+            />
+          )}
         </View>
       </View>
     </Modal>

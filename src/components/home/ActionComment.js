@@ -1,23 +1,11 @@
 import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Chip, Subheading } from 'react-native-paper';
-import { useDispatch, useSelector } from 'react-redux';
+import { Chip } from 'react-native-paper';
 import { COLORS } from '../../constants/color.const.js';
-import { replyListAction } from '../../redux/react/actions/reactAction.js';
 import ReplyComment from './ReplyComment.js';
 
-const ActionComment = ({ i, likeComment, handlerReply }) => {
-  const [show, setShow] = useState(false);
-  const { reply } = useSelector(state => state.react);
-  console.log(
-    'log 🚀 ~ file: ActionComment.js ~ line 13 ~ ActionComment ~ react',
-    reply
-  );
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(replyListAction(i.id));
-  }, []);
+const ActionComment = ({ i, likeComment, handlerSubmit, setCommentId }) => {
   return (
     <View style={styled.main}>
       <View style={styled.action}>
@@ -37,9 +25,10 @@ const ActionComment = ({ i, likeComment, handlerReply }) => {
           </Chip>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => likeComment(i.id)}
           style={{ marginLeft: 10 }}
-          onPress={() => handlerReply()}
+          onPress={() => {
+            handlerSubmit(), setCommentId(i.id);
+          }}
         >
           <Chip
             icon={() => (
@@ -47,21 +36,20 @@ const ActionComment = ({ i, likeComment, handlerReply }) => {
                 name="reply-all"
                 size={24}
                 color={`${COLORS.blue[4]}`}
-                onPress={() => likeComment(i.id)}
+                onPress={() => {
+                  handlerSubmit(), setCommentId(i.id);
+                }}
               />
             )}
-            onPress={() => handlerReply()}
+            onPress={() => {
+              handlerSubmit(), setCommentId(i.id);
+            }}
           >
             Phản hồi
           </Chip>
         </TouchableOpacity>
       </View>
-      {show && (
-        <TouchableOpacity style={styled.reply}>
-          <Subheading>Xem thêm phản hồi</Subheading>
-          <ReplyComment />
-        </TouchableOpacity>
-      )}
+      <ReplyComment i={i} />
     </View>
   );
 };
@@ -73,9 +61,6 @@ const styled = StyleSheet.create({
   },
   action: {
     flexDirection: 'row',
-  },
-  reply: {
-    // marginBottom: -30,
   },
 });
 

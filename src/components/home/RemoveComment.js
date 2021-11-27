@@ -2,12 +2,17 @@ import { Entypo } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Menu, MenuItem } from 'react-native-material-menu';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeCommentAction } from '../../redux/react/actions/reactAction.js';
 
-const RemoveComment = () => {
+const RemoveComment = ({ id, postId }) => {
   const [visible, setVisible] = useState(false);
-
+  const dispatch = useDispatch();
   const hideMenu = () => setVisible(false);
   const showMenu = () => setVisible(true);
+  const removeComment = () => {
+    dispatch(removeCommentAction(id, postId));
+  };
   return (
     <View style={{ position: 'absolute', right: 10 }}>
       <Menu
@@ -25,6 +30,14 @@ const RemoveComment = () => {
         <MenuItem
           onPress={() => {
             hideMenu();
+          }}
+        >
+          Báo cáo
+        </MenuItem>
+        <MenuItem
+          onPress={() => {
+            hideMenu();
+            removeComment();
           }}
         >
           Xoá
