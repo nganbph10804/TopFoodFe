@@ -56,12 +56,7 @@ const EditProfileScreen = ({ navigation }) => {
     showMode('date');
   };
   const updateHandler = () => {
-    if (
-      newCover === null ||
-      newAvatar === null ||
-      newBio === null ||
-      newAddress === null
-    ) {
+    if (newBio === null || newAddress === null) {
       Toast.show({
         type: 'error',
         text1: 'Thông báo',
@@ -76,8 +71,7 @@ const EditProfileScreen = ({ navigation }) => {
           date,
           newCover,
           profile.name,
-          navigation,
-          id
+          navigation
         )
       );
     }
@@ -92,7 +86,7 @@ const EditProfileScreen = ({ navigation }) => {
     });
     if (!result.cancelled) {
       setNewAvatar(result.uri);
-      dispatch(uploadAvatar(result.uri, profile, null));
+      dispatch(uploadAvatar(result.uri, profile, navigation));
     }
   };
 
@@ -105,7 +99,7 @@ const EditProfileScreen = ({ navigation }) => {
     });
     if (!result.cancelled) {
       setNewCover(result.uri);
-      dispatch(uploadCover(result.uri, profile, null));
+      dispatch(uploadCover(result.uri, profile, navigation));
     }
   };
 

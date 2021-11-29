@@ -16,13 +16,10 @@ const FavoriteScreen = ({ navigation }) => {
   const { tag } = useSelector(state => state.tag);
   const [tagData, setTagData] = useState([]);
   const [tagSelected, setTagSelected] = useState([]);
-  const favorites = useSelector(state => state.favorite.favorite);
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
-    dispatch(
-      updateFavoriteAction(_.map(tagSelected, i => i.isSelected === false))
-    );
+    dispatch(updateFavoriteAction(_.map(tagSelected, 'id'), navigation));
   };
 
   const handlerChecked = id => {
@@ -46,13 +43,11 @@ const FavoriteScreen = ({ navigation }) => {
       return { ...i };
     });
     setTagData(arr1);
-    let arr2 = favorites.map(i => {
-      i.isSelected = false;
-      return { ...i };
-    });
-    setFavorite(arr2);
-  }, []);
+  }, [tag]);
 
+  useEffect(() => {
+    dispatch(favoriteListAction());
+  }, [dispatch]);
   return (
     <View style={styles.background}>
       <HeaderShop />

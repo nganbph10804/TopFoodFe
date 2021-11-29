@@ -62,3 +62,31 @@ export const getTagId = tagId => async dispatch => {
     });
   }
 };
+export const findTagIdByStoreAction = tagId => async dispatch => {
+  dispatch({
+    type: TAG_REQUEST,
+  });
+  try {
+    const { data } = await axios.get(
+      `http://103.245.251.149:8080/api/tag/store/${tagId}`,
+      {
+        headers: await authHeader(),
+      }
+    );
+    console.log(data);
+    // dispatch({
+    //   type: GET_TAG_ID,
+    //   payload: data.foods,
+    // });
+  } catch (error) {
+    dispatch({
+      type: TAG_FAILURE,
+    });
+    Toast.show({
+      type: 'error',
+      topOffset: 40,
+      text1: 'Thông báo',
+      text2: error.response.data.message,
+    });
+  }
+};

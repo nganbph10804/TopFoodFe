@@ -19,7 +19,7 @@ const FoodMain = ({ navigation }) => {
   const { listUserFollowStore } = useSelector(state => state.follow);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(searchTagAction(''));
+    dispatch(searchTagAction());
     dispatch(storeFeedListAction(profile.id));
     dispatch(clearFilesAction());
     dispatch(userFollowAction());

@@ -10,7 +10,6 @@ import { _ } from 'lodash';
 import { AntDesign } from '@expo/vector-icons';
 
 const FoodList = ({ food, navigation }) => {
-  console.log(food.id);
   const dispatch = useDispatch();
   const [isVisible, setIsVisible] = useState(false);
   const handlerOption = () => {

@@ -138,7 +138,6 @@ const uploadProfile = async (
     .then(resp => {
       Toast.show({
         type: 'success',
-
         text1: 'Thông báo',
         text2: 'Cập nhật thành công',
       });
@@ -149,7 +148,6 @@ const uploadProfile = async (
     .catch(err => {
       Toast.show({
         type: 'error',
-
         text1: 'Thông báo',
         text2: 'Cập nhật thất bại',
       });
