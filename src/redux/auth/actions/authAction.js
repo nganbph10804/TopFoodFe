@@ -284,12 +284,10 @@ export const activeAccAction = (otp, navigation) => async dispatch => {
       });
       Toast.show({
         type: 'success',
-
         text1: 'Thông báo',
         text2: 'Kích hoạt tài khoản thành công.',
       });
-      navigation.navigate('LOGIN');
-      deviceStorage.deleteJWT();
+      navigation.navigate('NAV');
     }, 1500);
   } catch (error) {
     dispatch({

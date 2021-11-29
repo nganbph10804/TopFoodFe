@@ -71,7 +71,7 @@ const CreateFoodScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    dispatch(searchTagAction(''));
+    dispatch(searchTagAction());
   }, [dispatch]);
 
   useEffect(() => {

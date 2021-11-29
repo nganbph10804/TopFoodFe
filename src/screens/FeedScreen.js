@@ -20,7 +20,7 @@ import { styles } from '../styles/paper.js';
 const FeedScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const { post } = useSelector(state => state.post);
-  const { total } = useSelector(state => state.favorite);
+  const total = useSelector(state => state.favorite.total);
   const role = useSelector(state => state.auth.account.role);
   const [city, setCity] = useState([]);
   const [visible, setVisible] = useState(false);
@@ -59,20 +59,27 @@ const FeedScreen = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    const focus = navigation.addListener('focus', () => {
-      dispatch(favoriteListAction());
-      dispatch(searchTagAction(''));
-      dispatch(postListAction());
-    });
+    const focus = navigation.addListener(
+      'focus',
+      () => {
+        dispatch(favoriteListAction());
+        dispatch(searchTagAction());
+        dispatch(postListAction());
+      },
+      2000
+    );
     return focus;
   }, [dispatch]);
 
   useEffect(() => {
-    if (role === 'ROLE_USER') {
-      if (total.length < 5) {
-        navigation.navigate('FavoriteScreen');
+    const focus = navigation.addListener('focus', () => {
+      if (role === 'ROLE_USER') {
+        if (total < 5) {
+          navigation.navigate('FavoriteScreen');
+        }
       }
-    }
+    });
+    return focus;
   }, [total]);
 
   return (

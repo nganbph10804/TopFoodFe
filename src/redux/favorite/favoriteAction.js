@@ -46,6 +46,16 @@ export const updateFavoriteAction = (tag, navigation) => async dispatch => {
         headers: await authHeader(),
       }
     );
+    const { data } = await axios.get(
+      'http://103.245.251.149:8080/profiles/favorite?page=0&pageSize=1000',
+      {
+        headers: await authHeader(),
+      }
+    );
+    dispatch({
+      type: FAVORITE_LIST,
+      payload: data,
+    });
     Toast.show({
       type: 'success',
       text1: 'Thông báo',
