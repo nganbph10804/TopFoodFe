@@ -5,7 +5,7 @@ import { KeyboardAvoidingView, Text, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import { useDispatch } from 'react-redux';
-import { forgotAction } from '../../redux/actions/authAction.js';
+import { forgotAction } from '../../redux/auth/actions/authAction.js';
 import { InputUpdate, styles } from '../../styles/paper.js';
 
 const ForgotPasswordScreen = ({ navigation, route }) => {
@@ -24,14 +24,14 @@ const ForgotPasswordScreen = ({ navigation, route }) => {
     ) {
       Toast.show({
         type: 'error',
-        topOffset: 60,
+
         text1: 'Thông báo',
         text2: 'Không được để trống.',
       });
     } else if (password.trim() !== newPass.trim()) {
       Toast.show({
         type: 'error',
-        topOffset: 60,
+
         text1: 'Thông báo',
         text2: 'Mật khẩu không giống nhau.',
       });

@@ -1,7 +1,7 @@
 import {
   FontAwesome,
   Ionicons,
-  MaterialCommunityIcons,
+  MaterialCommunityIcons
 } from '@expo/vector-icons';
 import axios from 'axios';
 import * as Clipboard from 'expo-clipboard';
@@ -13,80 +13,49 @@ import { Actions, Bubble, GiftedChat, Send } from 'react-native-gifted-chat';
 import Toast from 'react-native-toast-message';
 import fb from './../Firebase/config';
 import deviceStorage from './../redux/deviceStorage ';
-import * as Notifications from 'expo-notifications'
-import * as Permissions from 'expo-permissions'
-import * as Constants from 'expo-constants'
 
 const db = fb.firestore();
 const chatsRef = db.collection('chats');
 const roomRef = db.collection('Rooms');
 
+
+
 const ChatScreen = ({ navigation, route }) => {
   LogBox.ignoreAllLogs();
   const [user, setUser] = useState(null);
   const [messages, setMessages] = useState([]);
-  const { _id, avt, uname, idRoom } = route.params;
+  const { _id, avt, uname, idRoom, opened } = route.params;
 
- const registerForPushNotificationsAsync = async () => {
-    let token;
-    if (Constants.isDevice) {
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
-      let finalStatus = existingStatus;
-      if (existingStatus !== 'granted') {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
-      }
-      if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!');
-        return;
-      }
-       token = (await Notifications.getExpoPushTokenAsync()).data;
-    } else {
-      alert('Must use physical device for Push Notifications');
-    }
+console.log(opened)
 
-   if(token){
-     const res = chatsRef.doc('2UhNNn0DkT8IAmm2GHHk').set({ token }, { merge: true });
-   }
-  
-    if (Platform.OS === 'android') {
-      Notifications.setNotificationChannelAsync('default', {
-        name: 'default',
-        importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: '#FF231F7C',
-      });
-    }
-    return token;
+  const sendNotification = async (token) => {
+    const message = {
+      to: token,
+      sound: 'default',
+      title: 'Tin nhắn',
+      body: 'tin nhan nay!',
+      data: { someData: 'goes here' },
     };
 
-    const sendNotification = async (token) =>{
-      const message = {
-        to: token,
-        sound: 'default',
-        title: 'Tin nhắn',
-        body: 'tin nhan nay!',
-        data: { someData: 'goes here' },
-      };
-    
-      await fetch('https://exp.host/--/api/v2/push/send', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Accept-encoding': 'gzip, deflate',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(message),
-      });
-    }
+    await fetch('https://exp.host/--/api/v2/push/send', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Accept-encoding': 'gzip, deflate',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(message),
+    });
+  }
 
-    const sendNotificationToAllUsers = async () =>{
-          const user = await chatsRef.get();
-          user.docs.map(user => sendNotification(user.data().token));
-    }
+  const sendNotificationToAllUsers = () => {
+    const lstRoom = roomRef.doc(idRoom);
+    lstRoom.get().then((doc) => {
+      sendNotification(doc.data().token);
+    })
+  }
 
   useEffect(() => {
-    (()=>registerForPushNotificationsAsync())();
     setUser({
       _id: _id,
       name: uname,
@@ -152,7 +121,7 @@ const ChatScreen = ({ navigation, route }) => {
     );
   };
 
-  async function uploadFile(file) {
+   const uploadFile = async (file) => {
     try {
       let formData = new FormData();
       formData.append('file', {
@@ -162,7 +131,7 @@ const ChatScreen = ({ navigation, route }) => {
       });
       const token = await deviceStorage.loadJWT();
       const { data } = await axios.post(
-        'http://34.67.241.66:8080/files/uploads',
+        'http://103.245.251.149:8080/files/uploads',
         formData,
         {
           headers: {
@@ -171,13 +140,13 @@ const ChatScreen = ({ navigation, route }) => {
           },
         }
       );
-      return 'http://34.67.241.66:8080' + data.data.map(i => i.path);
+      return 'http://103.245.251.149:8080' + data.data.map(i => i.path);
     } catch (error) {
       Toast.show({
         type: 'error',
         topOffset: 40,
         text1: 'Thông báo',
-        text2: error.response.data.message
+        text2: error.response.data.message,
       });
     }
   }
@@ -186,7 +155,7 @@ const ChatScreen = ({ navigation, route }) => {
     return <FontAwesome name="angle-double-down" size={22} color="#333" />;
   };
 
-  function renderActions(props) {
+  const renderActions = (props) => {
     return (
       <Actions
         {...props}
@@ -222,36 +191,33 @@ const ChatScreen = ({ navigation, route }) => {
             }
           },
         }}
-        icon={() => (
-          <Ionicons name='ios-image' size={22} color='blue' />
-        )}
+        icon={() => <Ionicons name="ios-image" size={22} color="blue" />}
       />
     );
   }
   const onDelete = messageIdToDelete => {
     let batch = db.batch();
-      const deletequery = chatsRef.where("_id","==",messageIdToDelete);
-      deletequery.get().then(
-        snapshot =>{
-          snapshot.docs.forEach(doc=>{
-            batch.delete(doc.ref)
-          })
-          return batch.commit();
-        }
-      )
-      setMessages(previousState =>
-        previousState.filter(message => message._id !== messageIdToDelete))
-        roomRef.doc(idRoom).update({
-          "lastMessageTime": new Date(),
-          "lastMessage": uname + ` đã xóa 1 tin nhắn`
-        })
-        Toast.show({
-          type: 'success',
-          topOffset: 40,
-          text1: 'Thông báo',
-          text2: 'Đã xóa tin nhắn',
-        });
-  }
+    const deletequery = chatsRef.where('_id', '==', messageIdToDelete);
+    deletequery.get().then(snapshot => {
+      snapshot.docs.forEach(doc => {
+        batch.delete(doc.ref);
+      });
+      return batch.commit();
+    });
+    setMessages(previousState =>
+      previousState.filter(message => message._id !== messageIdToDelete)
+    );
+    roomRef.doc(idRoom).update({
+      lastMessageTime: new Date(),
+      lastMessage: uname + ` đã xóa 1 tin nhắn`,
+    });
+    Toast.show({
+      type: 'success',
+      topOffset: 40,
+      text1: 'Thông báo',
+      text2: 'Đã xóa tin nhắn',
+    });
+  };
 
   const onLongPress = (context, message) => {
     const options = ['Coppy', 'Delete Message', 'Cancel'];
@@ -293,7 +259,8 @@ const ChatScreen = ({ navigation, route }) => {
     );
   };
 
-  async function handleSend(messages) {
+   const handleSend = async (messages) => {
+    sendNotificationToAllUsers();
     const writes = messages.map(m => {
       chatsRef.add({
         ...m,

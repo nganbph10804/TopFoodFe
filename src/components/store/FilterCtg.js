@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { BottomSheet, ListItem } from 'react-native-elements';
-import { Divider } from 'react-native-paper';
+import { Chip, Divider, Subheading } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
 import { formatPrice } from '../../constants/price.const.js';
@@ -9,9 +9,11 @@ import {
   deleteFoodAction,
   foodDetailAction,
 } from '../../redux/store/food/actions/foodAction.js';
+import { AntDesign } from '@expo/vector-icons';
 
 const FilterCtg = ({ foods, navigation, tagName }) => {
   const detail = useSelector(state => state.food.detail);
+  const [isVisible, setIsVisible] = useState(false);
   const food = detail;
   const dispatch = useDispatch();
   const handlerOption = () => {
@@ -24,7 +26,7 @@ const FilterCtg = ({ foods, navigation, tagName }) => {
   useEffect(() => {
     dispatch(foodDetailAction(foods.id));
   }, [dispatch]);
-  const [isVisible, setIsVisible] = useState(false);
+
   const list = [
     {
       title: 'Cập nhật',
@@ -55,6 +57,16 @@ const FilterCtg = ({ foods, navigation, tagName }) => {
             <Text style={styled.textName}>{foods.name}</Text>
             <Text style={styled.textTag}>{tagName} </Text>
             <Text style={styled.textPrice}>{formatPrice(foods.price)} </Text>
+          </View>
+          <View
+            style={{ alignSelf: 'center', position: 'absolute', right: 20 }}
+          >
+            <Chip>
+              <AntDesign name="star" size={24} color={`${COLORS.blue[4]}`} />
+              <Subheading style={{ color: `${COLORS.blue[4]}` }}>
+                {food.totalReaction} votes
+              </Subheading>
+            </Chip>
           </View>
         </View>
         <Divider />

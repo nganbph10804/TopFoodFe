@@ -1,21 +1,30 @@
-import { Ionicons } from '@expo/vector-icons';
+import { FontAwesome5, Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import React, { useEffect, useState } from 'react';
-import { Image, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import {
   ActivityIndicator,
   Avatar,
   Button,
+  Divider,
   Subheading,
   Title,
 } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
-import { uploadAvatar, uploadCover } from '../../redux/actions/fileAction.js';
+import { ROLES } from '../../constants/role.const.js';
+import {
+  uploadAvatar,
+  uploadCover,
+} from '../../redux/file/actions/fileAction.js';
+import { listStoreFollowAction } from '../../redux/follow/followAction.js';
 import { styles } from '../../styles/paper.js';
 
 const ProfileDetailScreen = ({ navigation }) => {
   const profile = useSelector(state => state.auth.profile);
+  const friend = useSelector(state => state.friend.friend);
+  const store = useSelector(state => state.auth.account.role);
+  const followListStore = useSelector(state => state.follow.followListStore);
   const dispatch = useDispatch();
   const [avatar, setAvatar] = useState(null);
   const [cover, setCover] = useState(null);
@@ -46,6 +55,14 @@ const ProfileDetailScreen = ({ navigation }) => {
       dispatch(uploadCover(result.uri, profile, null));
     }
   };
+
+  useEffect(() => {
+    const focus = navigation.addListener('focus', () => {
+      dispatch(listStoreFollowAction());
+    });
+    return focus;
+  }, [dispatch]);
+
   useEffect(() => {
     const focus = navigation.addListener('focus', () => {
       if (
@@ -153,31 +170,54 @@ const ProfileDetailScreen = ({ navigation }) => {
                 </Title>
                 <Subheading style={{ fontSize: 18 }}>{profile.bio} </Subheading>
               </View>
-              <View>
-                <View
-                  style={{
-                    borderWidth: 1,
-                    borderColor: `${COLORS.blue[1]}`,
-                    padding: 5,
-                    borderRadius: 10,
-                    marginTop: '100%',
-                  }}
+              <View style={{ marginTop: 100 }}>
+                <Button
+                  onPress={() => navigation.navigate('EditPublic', { profile })}
                 >
-                  <Button
-                    onPress={() =>
-                      navigation.navigate('EditPublic', { profile })
-                    }
-                  >
-                    Chỉnh sửa
-                  </Button>
-                </View>
+                  Chỉnh sửa
+                </Button>
               </View>
             </View>
           </View>
+          {store === ROLES.ROLE_USER && (
+            <View style={{ marginTop: 140 }}>
+              <TouchableOpacity
+                style={styled.item}
+                onPress={() => navigation.navigate('ListStoreScreen')}
+              >
+                <FontAwesome5 name="store-alt" size={24} color="black" />
+                <Subheading style={styled.text}>
+                  Đang theo dõi {followListStore.length} cửa hàng
+                </Subheading>
+              </TouchableOpacity>
+              <Divider />
+              <TouchableOpacity
+                style={styled.item}
+                onPress={() => navigation.navigate('MainFriendScreen')}
+              >
+                <Ionicons name="ios-people" size={24} color="black" />
+                <Subheading style={styled.text}>
+                  Đang có {friend.length} bạn bè
+                </Subheading>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
       )}
     </View>
   );
 };
+
+const styled = StyleSheet.create({
+  item: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    marginLeft: 30,
+  },
+  text: {
+    marginLeft: 10,
+  },
+});
 
 export default ProfileDetailScreen;

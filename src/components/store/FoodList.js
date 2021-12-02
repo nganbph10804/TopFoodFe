@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { BottomSheet, ListItem } from 'react-native-elements';
-import { Divider } from 'react-native-paper';
+import { Chip, Divider, Subheading } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
 import { formatPrice } from '../../constants/price.const.js';
 import { deleteFoodAction } from '../../redux/store/food/actions/foodAction.js';
+import { _ } from 'lodash';
+import { AntDesign } from '@expo/vector-icons';
 
 const FoodList = ({ food, navigation }) => {
   const dispatch = useDispatch();
+  const [isVisible, setIsVisible] = useState(false);
   const handlerOption = () => {
     setIsVisible(true);
   };
@@ -16,23 +19,33 @@ const FoodList = ({ food, navigation }) => {
     dispatch(deleteFoodAction(food.id));
     setIsVisible(false);
   };
-  const [isVisible, setIsVisible] = useState(false);
   const list = [
     {
       title: 'Cập nhật',
       titleStyle: { color: `${COLORS.blue[1]}` },
-      onPress: () => navigation.navigate('EditFoodScreen', food),
+      onPress: () => {
+        navigation.navigate('EditFoodScreen', food), setIsVisible(false);
+      },
     },
     {
       title: 'Xoá',
       titleStyle: { color: 'red' },
-      onPress: () => handlerRemove(),
+      onPress: () => {
+        handlerRemove(), setIsVisible(false);
+      },
     },
     {
       title: 'Cancel',
       onPress: () => setIsVisible(false),
     },
   ];
+
+  useEffect(() => {
+    const focus = navigation.addListener('focus', () => {
+      setIsVisible(false);
+    });
+    return focus;
+  }, [dispatch, navigation]);
   return (
     <TouchableOpacity
       onLongPress={() => handlerOption()}
@@ -41,12 +54,25 @@ const FoodList = ({ food, navigation }) => {
       <View style={styled.container}>
         <View style={styled.main}>
           <View style={{ width: '32%' }}>
-            <Image source={{ uri: `${food.files[1]}` }} style={styled.image} />
+            <Image
+              source={{ uri: `${_.head(food.files)}` }}
+              style={styled.image}
+            />
           </View>
           <View>
             <Text style={styled.textName}>{food.name}</Text>
             <Text style={styled.textTag}>{food.tag.tagName} </Text>
             <Text style={styled.textPrice}>{formatPrice(food.price)} </Text>
+          </View>
+          <View
+            style={{ alignSelf: 'center', position: 'absolute', right: 20 }}
+          >
+            <Chip>
+              <AntDesign name="star" size={24} color={`${COLORS.blue[4]}`} />
+              <Subheading style={{ color: `${COLORS.blue[4]}` }}>
+                {food.totalReaction} votes
+              </Subheading>
+            </Chip>
           </View>
         </View>
         <Divider />

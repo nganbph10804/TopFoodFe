@@ -19,6 +19,7 @@ import { useSelector } from 'react-redux';
 import { ROLES } from '../constants/role.const.js';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import StoreNavigation from './StoreNavigation.js';
+import HeaderUser from '../shared/HeaderUser.js';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -30,7 +31,6 @@ const Nav = () => {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-
           if (route.name === 'FeedScreen') {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'notification') {
@@ -52,6 +52,10 @@ const Nav = () => {
           elevation: 3,
         },
         headerTitleAlign: 'center',
+        tabBarStyle: {
+          height: 65,
+          paddingBottom: 10,
+        },
       })}
     >
       <Tab.Screen
@@ -59,6 +63,7 @@ const Nav = () => {
         component={FeedScreen}
         options={{
           title: 'Trang chủ',
+          headerShown: false,
         }}
       />
       {role === ROLES.ROLE_STORE && (
@@ -85,6 +90,7 @@ const Nav = () => {
           component={SearchFriendScreen}
           options={{
             title: 'Tìm bạn bè',
+            headerShown: false,
             tabBarIcon: ({ color, size }) => {
               return <AntDesign name="search1" size={size} color={color} />;
             },
@@ -95,37 +101,8 @@ const Nav = () => {
         name="message"
         component={MessageStack}
         options={{
-          headerRight: () => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  Alert.alert('create new');
-                }}
-              >
-                <Ionicons
-                  name="ios-create-outline"
-                  size={23}
-                  style={{
-                    paddingRight: 15,
-                  }}
-                />
-              </TouchableOpacity>
-            );
-          },
-          headerLeft: () => {
-            return (
-              <Avatar.Image
-                size={34}
-                source={{
-                  uri: avatar,
-                }}
-                style={{
-                  marginLeft: 10,
-                }}
-              />
-            );
-          },
           title: 'Nhắn tin',
+          headerShown: false,
         }}
       />
       <Tab.Screen
@@ -133,6 +110,7 @@ const Nav = () => {
         component={NotificationsScreen}
         options={{
           title: 'Thông báo',
+          headerShown: false,
         }}
       />
       <Tab.Screen

@@ -1,7 +1,9 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Divider } from 'react-native-paper';
+import { Chip, Divider, Subheading } from 'react-native-paper';
+import { COLORS } from '../../constants/color.const.js';
 import { formatPrice } from '../../constants/price.const.js';
+import { AntDesign } from '@expo/vector-icons';
 
 const SearchFood = ({ food, navigation }) => {
   return (
@@ -18,6 +20,16 @@ const SearchFood = ({ food, navigation }) => {
             <Text style={styled.textName}>{food.name}</Text>
             <Text style={styled.textTag}>{food.tag.tagName} </Text>
             <Text style={styled.textPrice}>{formatPrice(food.price)} </Text>
+          </View>
+          <View
+            style={{ alignSelf: 'center', position: 'absolute', right: 20 }}
+          >
+            <Chip>
+              <AntDesign name="star" size={24} color={`${COLORS.blue[4]}`} />
+              <Subheading style={{ color: `${COLORS.blue[4]}` }}>
+                {food.totalReaction} votes
+              </Subheading>
+            </Chip>
           </View>
         </View>
         <Divider />

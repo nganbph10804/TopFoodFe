@@ -14,17 +14,15 @@ export const searchTagAction = () => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://34.67.241.66:8080/api/tag/all?tagName`,
+      `http://103.245.251.149:8080/api/tag/all?tagName`,
       {
         headers: await authHeader(),
       }
     );
-    setTimeout(() => {
-      dispatch({
-        type: SEARCH_TAG,
-        payload: data,
-      });
-    }, 500);
+    dispatch({
+      type: SEARCH_TAG,
+      payload: data,
+    });
   } catch (error) {
     dispatch({
       type: TAG_FAILURE,
@@ -37,27 +35,21 @@ export const searchTagAction = () => async dispatch => {
     });
   }
 };
-export const getTagId = (tagId, foodId) => async dispatch => {
+export const getTagId = tagId => async dispatch => {
   dispatch({
     type: TAG_REQUEST,
   });
   try {
     const { data } = await axios.get(
-      `http://34.67.241.66:8080/api/tag/${tagId}`,
+      `http://103.245.251.149:8080/api/tag/${tagId}`,
       {
         headers: await authHeader(),
       }
     );
-    setTimeout(() => {
-      const datas = data.foods;
-      dispatch({
-        type: GET_TAG_ID,
-        payload: {
-          datas,
-          foodId,
-        },
-      });
-    }, 500);
+    dispatch({
+      type: GET_TAG_ID,
+      payload: data.foods,
+    });
   } catch (error) {
     dispatch({
       type: TAG_FAILURE,

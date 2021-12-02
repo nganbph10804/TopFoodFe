@@ -23,15 +23,17 @@ import {
 import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
-import { updateProfileAction } from '../../redux/actions/authAction.js';
-import { uploadAvatar, uploadCover } from '../../redux/actions/fileAction.js';
+import { updateProfileAction } from '../../redux/auth/actions/authAction.js';
+import {
+  uploadAvatar,
+  uploadCover,
+} from '../../redux/file/actions/fileAction.js';
 import { InputUpdate, styles } from '../../styles/paper.js';
 
 const EditProfileScreen = ({ navigation }) => {
   const profile = useSelector(state => state.auth.profile);
   const loading = useSelector(state => state.auth.loading);
   const [newCover, setNewCover] = useState(profile.cover);
-  const [newName, setNewName] = useState(profile.name);
   const [newAvatar, setNewAvatar] = useState(profile.avatar);
   const [newBio, setNewBio] = useState(profile.bio);
   const [newAddress, setNewAddress] = useState(profile.address);
@@ -56,14 +58,12 @@ const EditProfileScreen = ({ navigation }) => {
   const updateHandler = () => {
     if (
       newCover === null ||
-      newName === null ||
       newAvatar === null ||
       newBio === null ||
       newAddress === null
     ) {
       Toast.show({
         type: 'error',
-        topOffset: 60,
         text1: 'Thông báo',
         text2: 'Không được để trống.',
       });
@@ -75,7 +75,7 @@ const EditProfileScreen = ({ navigation }) => {
           newBio,
           date,
           newCover,
-          newName,
+          profile.name,
           navigation,
           id
         )
@@ -122,7 +122,7 @@ const EditProfileScreen = ({ navigation }) => {
   }, []);
 
   return (
-    <View style={style.main}>
+    <View style={styled.main}>
       {loading && (
         <View style={styles.loading}>
           <ActivityIndicator
@@ -134,7 +134,7 @@ const EditProfileScreen = ({ navigation }) => {
       )}
       <ScrollView>
         <View>
-          <View>
+          <TouchableOpacity onPress={handlerUploadCover}>
             <Image
               source={{
                 uri:
@@ -142,29 +142,18 @@ const EditProfileScreen = ({ navigation }) => {
                     ? 'https://fakeimg.pl/350x200/?text=Hello'
                     : newCover,
               }}
-              style={style.image}
+              style={styled.image}
             />
-            <TouchableOpacity
-              style={style.iconCover}
-              onPress={handlerUploadCover}
-            >
-              <Ionicons
-                name="camera-outline"
-                size={24}
-                color="black"
-                style={{ padding: 5 }}
-                onPress={handlerUploadCover}
-              />
-            </TouchableOpacity>
-          </View>
+          </TouchableOpacity>
           <View
             style={{
               position: 'absolute',
               width: '100%',
-              bottom: -100,
+              bottom: -80,
+              alignItems: 'center',
             }}
           >
-            <View style={{ alignItems: 'center' }}>
+            <TouchableOpacity onPress={handlerUploadAvatar}>
               <Avatar.Image
                 style={{
                   borderWidth: 2,
@@ -179,121 +168,114 @@ const EditProfileScreen = ({ navigation }) => {
                 }}
                 size={120}
               />
-              <TouchableOpacity
-                style={style.touch}
-                onPress={handlerUploadAvatar}
-              >
-                <Ionicons
-                  name="camera-outline"
-                  size={24}
-                  color="black"
-                  style={{ padding: 5 }}
-                  onPress={handlerUploadAvatar}
-                />
-              </TouchableOpacity>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
-        <View style={style.fill}>
-          <View style={styles.card}>
-            <View style={{ position: 'relative', paddingTop: 10 }}>
-              <InputUpdate
-                mode="outlined"
-                label="Họ và tên"
-                value={newName}
-                onChangeText={newName => setNewName(newName)}
-                left={
-                  <TextInput.Icon
-                    name={() => (
-                      <Ionicons name="person" size={24} color="black" />
-                    )}
-                  />
-                }
-              />
-            </View>
-            <View style={{ position: 'relative', paddingTop: 20 }}>
-              <InputUpdate
-                mode="outlined"
-                label="Địa chỉ"
-                value={newAddress}
-                onChangeText={newAddress => setNewAddress(newAddress)}
-                left={
-                  <TextInput.Icon
-                    name={() => (
-                      <FontAwesome5
-                        name="address-card"
-                        size={24}
-                        color="black"
-                      />
-                    )}
-                  />
-                }
-              />
-            </View>
-            <View style={{ position: 'relative', paddingTop: 20 }}>
-              <InputUpdate
-                mode="outlined"
-                label="Giới thiệu"
-                value={newBio}
-                onChangeText={newBio => setNewBio(newBio)}
-                left={
-                  <TextInput.Icon
-                    name={() => (
-                      <MaterialCommunityIcons
-                        name="file-edit-outline"
-                        size={24}
-                        color="black"
-                      />
-                    )}
-                  />
-                }
-              />
-            </View>
-            <View style={{ position: 'relative', paddingTop: 20 }}>
-              <TouchableOpacity onPress={showDatepicker}>
-                <InputUpdate
-                  mode="outlined"
-                  label="Ngày sinh"
-                  value={birthday}
-                  disabled="true"
-                  left={
-                    <TextInput.Icon
-                      name={() => (
-                        <MaterialIcons
-                          name="date-range"
-                          size={24}
-                          color="black"
-                          onPress={showDatepicker}
-                        />
-                      )}
+        <View style={styled.fill}>
+          <View style={styled.input}>
+            <InputUpdate
+              mode="outlined"
+              label="Địa chỉ"
+              outlineColor={`${COLORS.blue[4]}`}
+              value={newAddress}
+              onChangeText={newAddress => setNewAddress(newAddress)}
+              left={
+                <TextInput.Icon
+                  name={() => (
+                    <FontAwesome5
+                      name="address-card"
+                      size={24}
+                      color={`${COLORS.blue[4]}`}
                     />
-                  }
+                  )}
                 />
-              </TouchableOpacity>
-              {show && (
-                <DateTimePicker
-                  testID="dateTimePicker"
-                  value={date}
-                  mode={mode}
-                  display="default"
-                  onChange={onChange}
+              }
+            />
+          </View>
+          <View style={styled.input}>
+            <InputUpdate
+              mode="outlined"
+              label="Giới thiệu"
+              outlineColor={`${COLORS.blue[4]}`}
+              value={newBio}
+              onChangeText={newBio => setNewBio(newBio)}
+              left={
+                <TextInput.Icon
+                  name={() => (
+                    <MaterialCommunityIcons
+                      name="file-edit-outline"
+                      size={24}
+                      color={`${COLORS.blue[4]}`}
+                    />
+                  )}
                 />
-              )}
-            </View>
-            <View style={style.viewBtn}>
-              <Button
-                mode="contained"
-                color={COLORS.blue[1]}
-                onPress={() => updateHandler()}
-              >
-                Cập nhật
-              </Button>
-            </View>
+              }
+            />
+          </View>
+          <View style={styled.input}>
+            <TouchableOpacity onPress={showDatepicker}>
+              <InputUpdate
+                mode="outlined"
+                label="Ngày sinh"
+                value={birthday}
+                disabled="true"
+                outlineColor={`${COLORS.blue[4]}`}
+                left={
+                  <TextInput.Icon
+                    name={() => (
+                      <MaterialIcons
+                        name="date-range"
+                        size={24}
+                        color={`${COLORS.blue[4]}`}
+                        onPress={showDatepicker}
+                      />
+                    )}
+                  />
+                }
+              />
+            </TouchableOpacity>
+            {show && (
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode={mode}
+                display="default"
+                onChange={onChange}
+              />
+            )}
+          </View>
+          <View style={styled.viewBtn}>
+            <Button
+              mode="contained"
+              color={COLORS.blue[1]}
+              onPress={() => updateHandler()}
+            >
+              Cập nhật
+            </Button>
           </View>
         </View>
       </ScrollView>
     </View>
   );
 };
-
+const styled = StyleSheet.create({
+  main: {
+    height: ' 100%',
+    width: '100%',
+  },
+  image: {
+    width: '100%',
+    height: 200,
+  },
+  fill: {
+    marginTop: 60,
+  },
+  input: {
+    marginTop: 20,
+  },
+  viewBtn: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+});
 export default EditProfileScreen;

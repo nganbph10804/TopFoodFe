@@ -1,10 +1,14 @@
 import React from 'react';
 import { Image, Text, View } from 'react-native';
+import { Divider } from 'react-native-elements';
 import { Button } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
 import { FRIENDS } from '../../constants/friend.const.js';
-import { acceptAction, sendAction } from '../../redux/actions/friendAction.js';
+import {
+  acceptAction,
+  sendAction,
+} from '../../redux/friend/actions/friendAction.js';
 import { styles } from '../../styles/paper.js';
 
 const SearchFriend = ({ item }) => {
@@ -48,6 +52,7 @@ const SearchFriend = ({ item }) => {
           )}
         </View>
       </View>
+      <Divider />
     </View>
   );
 };

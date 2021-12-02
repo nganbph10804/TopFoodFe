@@ -18,7 +18,10 @@ const ListButton = ({ navigation }) => {
         />
         <Text style={styles.text}>Món ăn</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.feed}>
+      <TouchableOpacity
+        style={styles.feed}
+        onPress={() => navigation.navigate('FeedListScreen')}
+      >
         <Ionicons
           name="md-newspaper-outline"
           size={30}

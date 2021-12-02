@@ -4,7 +4,7 @@ import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { Avatar, Text } from 'react-native-paper';
 import { COLORS } from '../constants/color.const.js';
 
-const HeaderMain = ({ image, name }) => {
+const HeaderMain = ({ image, name, phone }) => {
   return (
     <SafeAreaView style={styles.header}>
       <View style={styles.main}>
@@ -16,7 +16,10 @@ const HeaderMain = ({ image, name }) => {
           }}
           style={styles.image}
         />
-        <Text style={styles.text}>{name}</Text>
+        <View>
+          <Text style={styles.text}>{name}</Text>
+          <Text style={styles.phone}>{phone}</Text>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -26,10 +29,11 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     backgroundColor: `${COLORS.blue[4]}`,
-    height: 200,
+    height: 150,
   },
   image: {
-    marginHorizontal: 30,
+    marginLeft: 30,
+    marginRight: 10,
   },
   main: {
     flexDirection: 'row',
@@ -39,6 +43,11 @@ const styles = StyleSheet.create({
   text: {
     color: '#fff',
     fontSize: 24,
+  },
+  phone: {
+    fontSize: 18,
+    color: '#fff',
+    paddingLeft: 5,
   },
 });
 export default HeaderMain;

@@ -1,50 +1,36 @@
-import { Ionicons } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { _ } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  Picker,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import {
-  ActivityIndicator,
-  Searchbar,
-  Subheading,
-  TextInput,
-} from 'react-native-paper';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Button, Searchbar } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import FilterCtg from '../../../components/store/FilterCtg.js';
-import FilterModal from '../../../components/store/FilterModal.js';
 import FoodList from '../../../components/store/FoodList.js';
 import SearchFood from '../../../components/store/SearchFood.js';
 import TagList from '../../../components/store/TagList.js';
 import { COLORS } from '../../../constants/color.const.js';
 import {
   clearSearchAction,
-  filterFoodAction,
   foodListAction,
   searchFoodAction,
 } from '../../../redux/store/food/actions/foodAction.js';
-import { searchTagAction } from '../../../redux/store/tag/action/tagAction.js';
 import { styles } from '../../../styles/paper.js';
 
 const FoodListScreen = ({ navigation }) => {
   const { tag } = useSelector(state => state.tag);
   const food = useSelector(state => state.food.food);
   const loading = useSelector(state => state.food.loading);
-  const foods = useSelector(state => state.food.filter);
   const tags = useSelector(state => state.food.tagName);
   const search = useSelector(state => state.food.search);
+  const role = useSelector(state => state.auth.account.role);
   const ref = useRef(null);
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState(null);
-  const [active, setActive] = useState();
+  const [active, setActive] = useState(-1);
   const [focus, setFocus] = useState();
   const [ctg, setCtg] = useState();
   const [tagId, setTagId] = useState();
+  const [tagData, setTagData] = useState([]);
 
   const handlerFilter = id => {
     if (id === 'ALL') {
@@ -68,8 +54,11 @@ const FoodListScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-    if (tagId) dispatch(filterFoodAction(tagId));
-  }, [dispatch, tagId]);
+    if (tagId) {
+      let data = _.filter(food, i => i.tag.id === tagId);
+      setTagData(data);
+    }
+  }, [tagId]);
 
   useEffect(() => {
     if (searchValue) {
@@ -86,10 +75,6 @@ const FoodListScreen = ({ navigation }) => {
     return focus;
   }, [dispatch]);
 
-  useEffect(() => {
-    dispatch(searchTagAction());
-  }, [dispatch]);
-
   return (
     <View style={styles.main}>
       {loading && (
@@ -101,96 +86,100 @@ const FoodListScreen = ({ navigation }) => {
           />
         </View>
       )}
-      <View style={styled.container}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('CreateFoodScreen')}
-          style={{ flexDirection: 'row', alignItems: 'center' }}
-        >
-          <Ionicons
-            name="add-circle-sharp"
-            size={24}
-            color="white"
-            style={styled.icon}
-          />
-          <Subheading style={{ paddingLeft: 10 }}>Thêm món</Subheading>
-        </TouchableOpacity>
-        <FilterModal />
-      </View>
-      <View style={{ padding: 10, zIndex: -15, backgroundColor: '#fff' }}>
-        <Searchbar
-          placeholder="Tìm kiếm"
-          ref={ref}
-          onFocus={onFocus}
-          value={searchValue}
-          onChangeText={searchValue => setSearchValue(searchValue)}
-          style={styles.search}
-          onIconPress={() => console.log(true)}
-          clearIcon={() => (
-            <MaterialIcons
-              name="cancel"
-              size={24}
-              color="black"
-              onPress={onBlur}
-            />
-          )}
-        />
-      </View>
-      <View>
-        <ScrollView horizontal={true}>
-          <View style={styled.filter}>
-            <TagList
-              data={tag}
-              active={active}
-              setActive={setActive}
-              handlerFilter={handlerFilter}
-            />
+      <ScrollView style={{ flex: 1 }}>
+        {role === 'ROLE_STORE' && (
+          <View style={styled.container}>
+            <Button
+              mode="contained"
+              onPress={() => navigation.navigate('CreateFoodScreen')}
+              color={`${COLORS.blue[1]}`}
+              icon={() => (
+                <Ionicons
+                  name="add-circle-sharp"
+                  size={24}
+                  color="white"
+                  style={styled.icon}
+                />
+              )}
+            >
+              Thêm món ăn
+            </Button>
           </View>
-        </ScrollView>
-      </View>
-      <View>
-        {focus && search.length < 1
-          ? null
-          : search.map(i => (
-              <SearchFood key={i.id} food={i} navigation={navigation} />
-            ))}
-      </View>
-      <View>
-        {!focus && !ctg && (
-          <View style={{ zIndex: -7 }}>
-            {food.length < 1 ? (
-              <View style={styles.noFriend}>
-                <Text style={styles.textXL}>Không có món ăn</Text>
-              </View>
-            ) : (
-              <ScrollView>
+        )}
+
+        <View style={{ padding: 10, zIndex: -15, backgroundColor: '#fff' }}>
+          <Searchbar
+            placeholder="Tìm kiếm"
+            ref={ref}
+            onFocus={onFocus}
+            value={searchValue}
+            onChangeText={searchValue => setSearchValue(searchValue)}
+            style={styles.search}
+            clearIcon={() => (
+              <MaterialIcons
+                name="cancel"
+                size={24}
+                color="black"
+                onPress={onBlur}
+              />
+            )}
+          />
+        </View>
+        <View>
+          <ScrollView horizontal={true}>
+            <View style={styled.filter}>
+              <TagList
+                data={tag}
+                active={active}
+                setActive={setActive}
+                handlerFilter={handlerFilter}
+              />
+            </View>
+          </ScrollView>
+        </View>
+        <View>
+          {focus && search.length < 1
+            ? null
+            : search.map(i => (
+                <SearchFood key={i.id} food={i} navigation={navigation} />
+              ))}
+        </View>
+        <View>
+          {!focus && !ctg && (
+            <View style={{ zIndex: -7 }}>
+              {food.length < 1 ? (
+                <View style={styles.noFriend}>
+                  <Text style={styles.textXL}>Không có món ăn</Text>
+                </View>
+              ) : (
                 <View style={{ flex: 1 }}>
                   {food.map(i => (
                     <FoodList key={i.id} food={i} navigation={navigation} />
                   ))}
                 </View>
+              )}
+            </View>
+          )}
+        </View>
+        <View>
+          {ctg && (
+            <View style={{ zIndex: -7 }}>
+              <ScrollView>
+                <View style={{ flex: 1 }}>
+                  {tagData.map(i => (
+                    <FilterCtg
+                      key={i.id}
+                      foods={i}
+                      navigation={navigation}
+                      tagName={tags}
+                    />
+                  ))}
+                </View>
               </ScrollView>
-            )}
-          </View>
-        )}
-      </View>
-      <View>
-        {ctg && (
-          <View style={{ zIndex: -7 }}>
-            <ScrollView>
-              <View style={{ flex: 1 }}>
-                {foods.map(i => (
-                  <FilterCtg
-                    key={i.id}
-                    foods={i}
-                    navigation={navigation}
-                    tagName={tags}
-                  />
-                ))}
-              </View>
-            </ScrollView>
-          </View>
-        )}
-      </View>
+            </View>
+          )}
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -252,7 +241,7 @@ const styled = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flex: 1,
-    backgroundColor: '#fcfc',
+    backgroundColor: '#aec4e6',
   },
 });
 export default FoodListScreen;

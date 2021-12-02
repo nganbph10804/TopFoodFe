@@ -14,11 +14,21 @@ export const COLORS = {
     6: '#7ED321',
     7: '#4c59a5',
     8: '#2089dc',
+    9: '#c7e7f1',
   },
   orange: '#F5A623',
-  red: '#D0021B',
+  red: {
+    1: '#D0021B',
+    2: '#e21a1a',
+  },
   yellow: '#F8E71C',
   green: {
     1: '#2ad2b9',
+  },
+  white: {
+    1: '#eef1f8',
+  },
+  gray: {
+    1: '#919095',
   },
 };
