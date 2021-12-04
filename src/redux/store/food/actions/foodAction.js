@@ -19,7 +19,7 @@ export const foodListAction = id => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://103.245.251.149:8080/store-profile/list-food?accountId=${id}&page=0&pageSize=1000`,
+      `http://58.84.1.32:8080/store-profile/list-food?accountId=${id}&page=0&pageSize=1000`,
       {
         headers: await authHeader(),
       }
@@ -32,6 +32,7 @@ export const foodListAction = id => async dispatch => {
       type: CLEAR_FILE,
     });
   } catch (error) {
+    console.log(error.response.data.message);
     dispatch({
       type: FOOD_FAILURE,
     });
@@ -48,7 +49,7 @@ export const foodDetailAction = id => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://103.245.251.149:8080/store-profile/food/${id}`,
+      `http://58.84.1.32:8080/store-profile/food/${id}`,
       {
         headers: await authHeader(),
       }
@@ -76,7 +77,7 @@ export const createFoodAction =
     });
     try {
       await axios.post(
-        'http://103.245.251.149:8080/store-profile/food/create',
+        'http://58.84.1.32:8080/store-profile/food/create',
         {
           content: content,
           files: files,
@@ -116,7 +117,7 @@ export const updateFoodAction =
     });
     try {
       await axios.put(
-        'http://103.245.251.149:8080/store-profile/food/update',
+        'http://58.84.1.32:8080/store-profile/food/update',
         {
           content: content,
           files: files,
@@ -154,7 +155,7 @@ export const deleteFoodAction = id => async dispatch => {
   });
   try {
     await axios.delete(
-      `http://103.245.251.149:8080/store-profile/food/delete/${id}`,
+      `http://58.84.1.32:8080/store-profile/food/delete/${id}`,
       {
         headers: await authHeader(),
       }
@@ -188,7 +189,7 @@ export const filterFoodAction = tagId => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://103.245.251.149:8080/api/tag/${tagId}`,
+      `http://58.84.1.32:8080/api/tag/${tagId}`,
       {
         headers: await authHeader(),
       }

@@ -14,7 +14,7 @@ export const searchTagAction = () => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://103.245.251.149:8080/api/tag/all?tagName`,
+      `http://58.84.1.32:8080/api/tag/all?tagName`,
       {
         headers: await authHeader(),
       }
@@ -41,7 +41,7 @@ export const getTagId = tagId => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://103.245.251.149:8080/api/tag/${tagId}`,
+      `http://58.84.1.32:8080/api/tag/${tagId}`,
       {
         headers: await authHeader(),
       }
@@ -68,7 +68,7 @@ export const findTagIdByStoreAction = tagId => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://103.245.251.149:8080/api/tag/store/${tagId}`,
+      `http://58.84.1.32:8080/api/tag/store/${tagId}`,
       {
         headers: await authHeader(),
       }

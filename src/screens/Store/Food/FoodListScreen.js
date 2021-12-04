@@ -25,6 +25,7 @@ const FoodListScreen = ({ navigation }) => {
   const account = useSelector(state => state.auth.account);
   const { tag } = useSelector(state => state.tag);
   const food = useSelector(state => state.food.food);
+  const { hot } = useSelector(state => state.hot);
   const loading = useSelector(state => state.food.loading);
   const tags = useSelector(state => state.food.tagName);
   const search = useSelector(state => state.food.search);

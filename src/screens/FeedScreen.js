@@ -12,23 +12,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import HomeList from '../components/home/HomeList.js';
 import { COLORS } from '../constants/color.const.js';
 import { favoriteListAction } from '../redux/favorite/favoriteAction.js';
-import { postListAction } from '../redux/post/postAction.js';
+import {
+  postListAction,
+  postListByCityAction,
+} from '../redux/post/postAction.js';
 import { searchTagAction } from '../redux/store/tag/action/tagAction.js';
 import HeaderUser from '../shared/HeaderUser.js';
 import { styles } from '../styles/paper.js';
 
 const FeedScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const { post } = useSelector(state => state.post);
+  const postCity = useSelector(state => state.post.city);
   const total = useSelector(state => state.favorite.total);
   const role = useSelector(state => state.auth.account.role);
   const [city, setCity] = useState([]);
   const [visible, setVisible] = useState(false);
   const [citySelected, setCitySelected] = useState({
     code: 1,
-    codename: 'thanh_pho_ha_noi',
     name: 'Thành phố Hà Nội',
-    phone_code: 24,
   });
   const [searchValue, setSearchValue] = useState('');
   const [focus, setFocus] = useState(false);
@@ -59,22 +60,22 @@ const FeedScreen = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    const focus = navigation.addListener(
-      'focus',
-      () => {
-        dispatch(favoriteListAction());
-        dispatch(searchTagAction());
-        dispatch(postListAction());
-      },
-      2000
-    );
+    const focus = navigation.addListener('focus', () => {
+      dispatch(favoriteListAction());
+      dispatch(searchTagAction());
+      dispatch(postListAction());
+    });
     return focus;
   }, [dispatch]);
 
   useEffect(() => {
+    dispatch(postListByCityAction(citySelected.code));
+  }, [dispatch, citySelected.code]);
+
+  useEffect(() => {
     const focus = navigation.addListener('focus', () => {
       if (role === 'ROLE_USER') {
-        if (total < 5) {
+        if (total < 1) {
           navigation.navigate('FavoriteScreen');
         }
       }
@@ -116,7 +117,7 @@ const FeedScreen = ({ navigation }) => {
           <View
             style={{
               flexDirection: 'row',
-              marginHorizontal: 20,
+              paddingHorizontal: 20,
               alignItems: 'center',
               justifyContent: 'space-between',
             }}
@@ -133,10 +134,11 @@ const FeedScreen = ({ navigation }) => {
               onPress={() => setVisible(true)}
             >
               <Feather name="map-pin" size={24} color={`${COLORS.blue[4]}`} />
-              <Subheading>
+              <Subheading ellipsizeMode="tail">
                 Xem tại,{' '}
                 <Subheading
                   style={{ color: `${COLORS.blue[4]}`, fontWeight: 'bold' }}
+                  ellipsizeMode="tail"
                 >
                   {citySelected.name}
                 </Subheading>
@@ -161,9 +163,20 @@ const FeedScreen = ({ navigation }) => {
               )}
             />
           </View>
-          {post.map((i, index) => (
-            <HomeList key={index} post={i} navigation={navigation} />
-          ))}
+          {postCity.length > 0 ? (
+            postCity.map((i, index) => (
+              <HomeList
+                key={index}
+                post={i}
+                navigation={navigation}
+                citySelected={citySelected}
+              />
+            ))
+          ) : (
+            <View style={styled.noPost}>
+              <Title>Không có bài viết nào</Title>
+            </View>
+          )}
         </ScrollView>
       </View>
     </View>
@@ -181,6 +194,10 @@ const styled = StyleSheet.create({
     marginHorizontal: 10,
     paddingHorizontal: 10,
     borderColor: `${COLORS.blue[1]}`,
+  },
+  noPost: {
+    marginLeft: 30,
+    marginTop: 20,
   },
 });
 

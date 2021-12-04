@@ -10,7 +10,7 @@ export const voteFoodAction = id => async dispatch => {
   });
   try {
     await axios.post(
-      `http://103.245.251.149:8080/store-profile/food-reaction`,
+      `http://58.84.1.32:8080/store-profile/food-reaction`,
       {
         foodId: id,
       },
@@ -19,7 +19,7 @@ export const voteFoodAction = id => async dispatch => {
       }
     );
     const { data } = await axios.get(
-      `http://103.245.251.149:8080/store-profile/food/${id}`,
+      `http://58.84.1.32:8080/store-profile/food/${id}`,
       {
         headers: await authHeader(),
       }
@@ -54,15 +54,12 @@ export const unVoteFoodAction = id => async dispatch => {
     type: VOTE_REQUEST,
   });
   try {
-    await axios.delete(
-      `http://103.245.251.149:8080/store-profile/food-reaction`,
-      {
-        data: { foodId: id },
-        headers: await authHeader(),
-      }
-    );
+    await axios.delete(`http://58.84.1.32:8080/store-profile/food-reaction`, {
+      data: { foodId: id },
+      headers: await authHeader(),
+    });
     const { data } = await axios.get(
-      `http://103.245.251.149:8080/store-profile/food/${id}`,
+      `http://58.84.1.32:8080/store-profile/food/${id}`,
       {
         headers: await authHeader(),
       }

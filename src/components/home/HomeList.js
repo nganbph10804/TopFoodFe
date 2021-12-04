@@ -13,14 +13,14 @@ import {
 import Comment from './Comment.js';
 import { _ } from 'lodash';
 
-const HomeList = ({ post, navigation }) => {
+const HomeList = ({ post, navigation, citySelected }) => {
   const storeId = post.profile.profile.id;
-  const { files, content, tags, id, totalReaction } = post;
+  const { files, content, tags, id, totalReaction, foods } = post;
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
 
   const handlerHeart = () => {
-    dispatch(likePostAction(id));
+    dispatch(likePostAction(id, citySelected.code));
   };
 
   useEffect(() => {
@@ -62,6 +62,8 @@ const HomeList = ({ post, navigation }) => {
                   color: `${COLORS.blue[4]}`,
                   marginHorizontal: 5,
                   marginTop: 10,
+                  fontWeight: 'bold',
+                  fontStyle: 'italic',
                 }}
               >
                 {`#`}
@@ -85,6 +87,7 @@ const HomeList = ({ post, navigation }) => {
                       name="like1"
                       size={24}
                       color={`${COLORS.blue[4]}`}
+                      onPress={() => handlerHeart()}
                     />
                   )}
                   onPress={() => handlerHeart()}

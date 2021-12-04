@@ -8,6 +8,7 @@ import { formatPrice } from '../../constants/price.const.js';
 import { deleteFoodAction } from '../../redux/store/food/actions/foodAction.js';
 import { _ } from 'lodash';
 import { AntDesign } from '@expo/vector-icons';
+import { addHotAction } from '../../redux/foodHot/foodHotActions.js';
 
 const FoodList = ({ food, navigation }) => {
   const dispatch = useDispatch();
@@ -19,7 +20,20 @@ const FoodList = ({ food, navigation }) => {
     dispatch(deleteFoodAction(food.id));
     setIsVisible(false);
   };
+
+  const addHot = () => {
+    dispatch(addHotAction(food.id));
+    setIsVisible(false);
+  };
+
   const list = [
+    {
+      title: 'Thêm món ăn hot',
+      titleStyle: { color: `${COLORS.red[2]}` },
+      onPress: () => {
+        addHot();
+      },
+    },
     {
       title: 'Cập nhật',
       titleStyle: { color: `${COLORS.blue[1]}` },

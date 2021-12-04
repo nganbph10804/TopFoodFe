@@ -20,6 +20,7 @@ export const COLORS = {
   red: {
     1: '#D0021B',
     2: '#e21a1a',
+    3: '#fe2c55',
   },
   yellow: '#F8E71C',
   green: {

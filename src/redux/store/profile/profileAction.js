@@ -9,7 +9,7 @@ export const getProfileStoreAction = id => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://103.245.251.149:8080/store-profile/wall/${id}`,
+      `http://58.84.1.32:8080/store-profile/wall/${id}`,
       {
         headers: await authHeader(),
       }

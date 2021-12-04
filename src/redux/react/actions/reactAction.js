@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import { authHeader } from '../../authHeader.js';
-import { POST_LIST } from '../../post/postType.js';
+import { POST_LIST_BY_CITY } from '../../post/postType.js';
 import {
   COMMENT_LIST,
   REACT_FAILURE,
@@ -9,13 +9,13 @@ import {
   REPLY_LIST,
 } from '../types/reactTypes.js';
 
-export const likePostAction = id => async dispatch => {
+export const likePostAction = (id, addressId) => async dispatch => {
   dispatch({
     type: REACT_REQUEST,
   });
   try {
     await axios.post(
-      `http://103.245.251.149:8080/react/reaction-post?id=${id}`,
+      `http://58.84.1.32:8080/react/reaction-post?id=${id}`,
       {
         type: 'ANGRY',
       },
@@ -24,13 +24,13 @@ export const likePostAction = id => async dispatch => {
       }
     );
     const { data } = await axios.get(
-      'http://103.245.251.149:8080/store-profile/list-post-all?page=0&pageSize=1000',
+      `http://58.84.1.32:8080/store-profile/list-post-address?address=${addressId}&page=0&pageSize=1000`,
       {
         headers: await authHeader(),
       }
     );
     dispatch({
-      type: POST_LIST,
+      type: POST_LIST_BY_CITY,
       payload: data.data,
     });
   } catch (error) {
@@ -50,7 +50,7 @@ export const likeCommentAction = (id, postId) => async dispatch => {
   });
   try {
     await axios.post(
-      `http://103.245.251.149:8080/react/reaction-comment?id=${id}`,
+      `http://58.84.1.32:8080/react/reaction-comment?id=${id}`,
       {
         type: 'ANGRY',
       },
@@ -59,7 +59,7 @@ export const likeCommentAction = (id, postId) => async dispatch => {
       }
     );
     const { data } = await axios.get(
-      `http://103.245.251.149:8080/react/list-comment-post?id=${postId}&page=0&pageSize=1000`,
+      `http://58.84.1.32:8080/react/list-comment-post?id=${postId}&page=0&pageSize=1000`,
       {
         headers: await authHeader(),
       }
@@ -86,7 +86,7 @@ export const commentListAction = id => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://103.245.251.149:8080/react/list-comment-post?id=${id}&page=0&pageSize=1000`,
+      `http://58.84.1.32:8080/react/list-comment-post?id=${id}&page=0&pageSize=1000`,
       {
         headers: await authHeader(),
       }
@@ -112,7 +112,7 @@ export const commentPostAction = (id, content, files) => async dispatch => {
   });
   try {
     await axios.post(
-      `http://103.245.251.149:8080/react/comment-post?id=${id}`,
+      `http://58.84.1.32:8080/react/comment-post?id=${id}`,
       {
         content: content,
         files: files,
@@ -122,7 +122,7 @@ export const commentPostAction = (id, content, files) => async dispatch => {
       }
     );
     const { data } = await axios.get(
-      `http://103.245.251.149:8080/react/list-comment-post?id=${id}&page=0&pageSize=1000`,
+      `http://58.84.1.32:8080/react/list-comment-post?id=${id}&page=0&pageSize=1000`,
       {
         headers: await authHeader(),
       }
@@ -148,13 +148,13 @@ export const removeCommentAction = (id, postId) => async dispatch => {
   });
   try {
     await axios.delete(
-      `http://103.245.251.149:8080/react/comment-post?commentId=${id}`,
+      `http://58.84.1.32:8080/react/comment-post?commentId=${id}`,
       {
         headers: await authHeader(),
       }
     );
     const { data } = await axios.get(
-      `http://103.245.251.149:8080/react/list-comment-post?id=${postId}&page=0&pageSize=1000`,
+      `http://58.84.1.32:8080/react/list-comment-post?id=${postId}&page=0&pageSize=1000`,
       {
         headers: await authHeader(),
       }
@@ -180,7 +180,7 @@ export const replyListAction = commentId => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://103.245.251.149:8080/react/list-reply-comment?id=${commentId}&page=0&pageSize=1000`,
+      `http://58.84.1.32:8080/react/list-reply-comment?id=${commentId}&page=0&pageSize=1000`,
       {
         headers: await authHeader(),
       }
@@ -207,7 +207,7 @@ export const replyCommentAction =
     });
     try {
       await axios.post(
-        `http://103.245.251.149:8080/react/comment-reply?id=${commentId}`,
+        `http://58.84.1.32:8080/react/comment-reply?id=${commentId}`,
         {
           content: content,
           files: files,
@@ -217,7 +217,7 @@ export const replyCommentAction =
         }
       );
       const { data } = await axios.get(
-        `http://103.245.251.149:8080/react/list-reply-comment?id=${commentId}&page=0&pageSize=1000`,
+        `http://58.84.1.32:8080/react/list-reply-comment?id=${commentId}&page=0&pageSize=1000`,
         {
           headers: await authHeader(),
         }

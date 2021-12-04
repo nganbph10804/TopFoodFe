@@ -5,6 +5,7 @@ import { favoriteReducer } from './favorite/favoriteReducer.js';
 import { feedReducer } from './feed/feedReducer.js';
 import { fileReducer } from './file/reducers/fileReducer.js';
 import { followReducer } from './follow/followReducer.js';
+import { hotReducer } from './foodHot/foodHotReducer.js';
 import { friendReducer } from './friend/reducers/friendReducer.js';
 import { postReducer } from './post/postReducer.js';
 import { reactReducer } from './react/reducers/reactReducer.js';
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   storeProfile: storeProfileReducer,
   voteFood: voteFoodReducer,
   post: postReducer,
+  hot: hotReducer,
 });
 
 export default rootReducer;

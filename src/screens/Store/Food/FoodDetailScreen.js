@@ -51,7 +51,7 @@ const FoodDetailScreen = ({ navigation, route }) => {
   }, [dispatch, id]);
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'white' }}>
+    <View style={{ flex: 1 }}>
       {loading && (
         <View style={styles.loading}>
           <ActivityIndicator
@@ -124,16 +124,10 @@ const FoodDetailScreen = ({ navigation, route }) => {
                 paddingTop: 10,
               }}
             >
-              <Entypo
-                name="price-tag"
-                size={24}
-                color={`${COLORS.purple[3]}`}
-              />
-              <Subheading
-                style={{ paddingLeft: 10, color: `${COLORS.purple[3]}` }}
-              >
+              <Entypo name="price-tag" size={24} color={`black`} />
+              <Title style={{ paddingLeft: 10, color: `black` }}>
                 Tag món ăn: #{tag.tagName}
-              </Subheading>
+              </Title>
             </View>
             <View style={styled.main}>
               {foodByTag.map(i => (

@@ -1,6 +1,8 @@
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import { authHeader } from '../authHeader.js';
+import { getProfileStoreAction } from '../store/profile/profileAction.js';
+import { PROFILE } from '../store/profile/profileType.js';
 import {
   FOLLOW_FAILURE,
   LIST_USER_FOLLOW_STORE,
@@ -15,7 +17,7 @@ export const listStoreFollowAction = () => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://103.245.251.149:8080/store-profile/list-store-follow?page=0&pageSize=1000`,
+      `http://58.84.1.32:8080/store-profile/list-store-follow?page=0&pageSize=1000`,
       {
         headers: await authHeader(),
       }
@@ -43,7 +45,7 @@ export const userFollowAction = () => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://103.245.251.149:8080/store-profile/list-follow-store?page=0&pageSize=1000`,
+      `http://58.84.1.32:8080/store-profile/list-follow-store?page=0&pageSize=1000`,
       {
         headers: await authHeader(),
       }
@@ -69,12 +71,22 @@ export const followAction = id => async dispatch => {
   });
   try {
     await axios.post(
-      `http://103.245.251.149:8080/store-profile/follow/${id}`,
+      `http://58.84.1.32:8080/store-profile/follow/${id}`,
       {},
       {
         headers: await authHeader(),
       }
     );
+    const { data } = await axios.get(
+      `http://58.84.1.32:8080/store-profile/wall/${id}`,
+      {
+        headers: await authHeader(),
+      }
+    );
+    dispatch({
+      type: PROFILE,
+      payload: data.data,
+    });
     Toast.show({
       type: 'success',
       text1: 'Thông báo',
@@ -96,12 +108,19 @@ export const unFollowAction = id => async dispatch => {
     type: FOLLOW_REQUEST,
   });
   try {
-    await axios.delete(
-      `http://103.245.251.149:8080/store-profile/un-follow/${id}`,
+    await axios.delete(`http://58.84.1.32:8080/store-profile/un-follow/${id}`, {
+      headers: await authHeader(),
+    });
+    const { data } = await axios.get(
+      `http://58.84.1.32:8080/store-profile/wall/${id}`,
       {
         headers: await authHeader(),
       }
     );
+    dispatch({
+      type: PROFILE,
+      payload: data.data,
+    });
     Toast.show({
       type: 'success',
       text1: 'Thông báo',

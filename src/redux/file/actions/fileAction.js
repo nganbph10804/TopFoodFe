@@ -26,7 +26,7 @@ export const uploadAvatar = (file, profile, navigation) => async dispatch => {
       name: newImageUri.split('/').pop(),
     });
     const { data } = await axios.post(
-      'http://103.245.251.149:8080/files/uploads',
+      'http://58.84.1.32:8080/files/uploads',
       formData,
       {
         headers: {
@@ -75,7 +75,7 @@ export const uploadCover = (file, profile, navigation) => async dispatch => {
       name: newImageUri.split('/').pop(),
     });
     const { data } = await axios.post(
-      'http://103.245.251.149:8080/files/uploads',
+      'http://58.84.1.32:8080/files/uploads',
       formData,
       {
         headers: {
@@ -122,7 +122,7 @@ const uploadProfile = async (
 ) => {
   axios
     .put(
-      'http://103.245.251.149:8080/profiles/update',
+      'http://58.84.1.32:8080/profiles/update',
       {
         address: address,
         avatar: avatar,
@@ -168,7 +168,7 @@ export const multiFileAction = file => async dispatch => {
       name: newImageUri.split('/').pop(),
     });
     const { data } = await axios.post(
-      'http://103.245.251.149:8080/files/uploads',
+      'http://58.84.1.32:8080/files/uploads',
       formData,
       {
         headers: {

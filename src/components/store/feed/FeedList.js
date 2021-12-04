@@ -50,18 +50,23 @@ const FeedList = ({ feed, navigation }) => {
           inactiveDotColor="#90A4AE"
         />
         <Card.Content style={{ paddingVertical: 20 }}>
-          {tags.map(i => (
-            <Text
-              key={i.id}
-              style={{
-                color: `${COLORS.purple[3]}`,
-                fontSize: 17,
-              }}
-            >
-              {`#`}
-              {i.tagName}
-            </Text>
-          ))}
+          <ScrollView horizontal={true}>
+            {tags.map(i => (
+              <Subheading
+                key={i.id}
+                style={{
+                  color: `${COLORS.blue[4]}`,
+                  marginHorizontal: 5,
+                  marginTop: 10,
+                  fontWeight: 'bold',
+                  fontStyle: 'italic',
+                }}
+              >
+                {`#`}
+                {i.tagName}
+              </Subheading>
+            ))}
+          </ScrollView>
           <Subheading style={{ fontSize: 18 }}>{content}</Subheading>
           <View style={{ position: 'absolute', right: 30, top: '30%' }}>
             <Chip
@@ -72,20 +77,22 @@ const FeedList = ({ feed, navigation }) => {
               {totalReaction} Likes
             </Chip>
           </View>
-          <View>
-            <Subheading>Món ăn đính kèm:</Subheading>
-            <ScrollView horizontal={true}>
-              {foods.map((i, idx) => (
-                <View key={idx} style={{ padding: 5, alignItems: 'center' }}>
-                  <Image
-                    source={{ uri: `${_.head(i.files)}` }}
-                    style={{ width: 80, height: 80 }}
-                  />
-                  <Subheading>{i.name}</Subheading>
-                </View>
-              ))}
-            </ScrollView>
-          </View>
+          {foods.length > 0 && (
+            <View>
+              <Subheading>Món ăn đính kèm:</Subheading>
+              <ScrollView horizontal={true}>
+                {foods.map((i, idx) => (
+                  <View key={idx} style={{ padding: 5, alignItems: 'center' }}>
+                    <Image
+                      source={{ uri: `${_.head(i.files)}` }}
+                      style={{ width: 80, height: 80, borderRadius: 10 }}
+                    />
+                    <Subheading>{i.name}</Subheading>
+                  </View>
+                ))}
+              </ScrollView>
+            </View>
+          )}
         </Card.Content>
       </Card>
       <BottomSheet
