@@ -17,7 +17,7 @@ export const loginAction = (username, password) => async dispatch => {
   });
   try {
     const { data } = await axios.post(
-      'http://103.245.251.149:8080/auth/login-with-username',
+      'http://58.84.1.32:8080/auth/login-with-username',
       {
         username: username,
         password: password,
@@ -55,7 +55,7 @@ export const registerAction =
       type: AUTH_REQUEST,
     });
     try {
-      await axios.post('http://103.245.251.149:8080/auth/register', {
+      await axios.post('http://58.84.1.32:8080/auth/register', {
         birthday: birthday,
         email: email,
         name: name,
@@ -91,7 +91,7 @@ export const activeAction = email => async dispatch => {
     type: AUTH_REQUEST,
   });
   try {
-    await axios.get(`http://103.245.251.149:8080/auth/get-otp?email=${email}`);
+    await axios.get(`http://58.84.1.32:8080/auth/get-otp?email=${email}`);
     dispatch({
       type: AUTH_DONE,
     });
@@ -116,7 +116,7 @@ export const getOtpAction = (email, navigation) => async dispatch => {
     type: AUTH_REQUEST,
   });
   try {
-    await axios.get(`http://103.245.251.149:8080/auth/get-otp?email=${email}`);
+    await axios.get(`http://58.84.1.32:8080/auth/get-otp?email=${email}`);
     setTimeout(() => {
       dispatch({
         type: AUTH_DONE,
@@ -146,7 +146,7 @@ export const forgotAction =
       type: AUTH_REQUEST,
     });
     try {
-      await axios.post('http://103.245.251.149:8080/auth/forgot-password', {
+      await axios.post('http://58.84.1.32:8080/auth/forgot-password', {
         email: email,
         newPassword: newPassword,
         otp: otp,
@@ -195,7 +195,7 @@ export const updateProfileAction =
     });
     try {
       await axios.put(
-        'http://103.245.251.149:8080/profiles/update',
+        'http://58.84.1.32:8080/profiles/update',
         {
           address: address,
           avatar: avatar,
@@ -228,7 +228,7 @@ export const changePassAction =
     });
     try {
       await axios.put(
-        'http://103.245.251.149:8080/account/change-password',
+        'http://58.84.1.32:8080/account/change-password',
         {
           newPassword: newPassword,
           oldPassword: oldPassword,
@@ -270,7 +270,7 @@ export const activeAccAction = (otp, navigation) => async dispatch => {
   });
   try {
     await axios.post(
-      'http://103.245.251.149:8080/account/active',
+      'http://58.84.1.32:8080/account/active',
       {
         otp: otp,
       },
@@ -305,12 +305,9 @@ export const getProfile = id => async dispatch => {
     type: AUTH_REQUEST,
   });
   try {
-    const { data } = await axios.get(
-      `http://103.245.251.149:8080/profiles/${id}`,
-      {
-        headers: await authHeader(),
-      }
-    );
+    const { data } = await axios.get(`http://58.84.1.32:8080/profiles/${id}`, {
+      headers: await authHeader(),
+    });
     setTimeout(() => {
       dispatch({
         type: EDIT_PROFILE,

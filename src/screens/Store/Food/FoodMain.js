@@ -7,6 +7,7 @@ import ListButton from '../../../components/store/ListButton.js';
 import { storeFeedListAction } from '../../../redux/feed/feedAction.js';
 import { clearFilesAction } from '../../../redux/file/actions/fileAction.js';
 import { userFollowAction } from '../../../redux/follow/followAction.js';
+import { hotListAction } from '../../../redux/foodHot/foodHotActions.js';
 import { foodListAction } from '../../../redux/store/food/actions/foodAction.js';
 import { searchTagAction } from '../../../redux/store/tag/action/tagAction.js';
 import HeaderStore from '../../../shared/HeaderStore.js';
@@ -24,6 +25,7 @@ const FoodMain = ({ navigation }) => {
     dispatch(clearFilesAction());
     dispatch(userFollowAction());
     dispatch(foodListAction(account.id));
+    dispatch(hotListAction(account.id));
   }, [dispatch]);
   return (
     <View style={styles.main}>

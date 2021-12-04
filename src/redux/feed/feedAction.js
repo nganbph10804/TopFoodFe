@@ -16,7 +16,7 @@ export const storeFeedListAction = id => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://103.245.251.149:8080/store-profile/list-post?accountId=${id}&page=0&pageSize=1000`,
+      `http://58.84.1.32:8080/store-profile/list-post?accountId=${id}&page=0&pageSize=1000`,
       {
         headers: await authHeader(),
       }
@@ -45,7 +45,7 @@ export const feedDetailAction = id => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      `http://103.245.251.149:8080/store-profile/post/detail/${id}`,
+      `http://58.84.1.32:8080/store-profile/post/detail/${id}`,
       {
         headers: await authHeader(),
       }
@@ -76,7 +76,7 @@ export const createFeedAction =
     });
     try {
       await axios.post(
-        `http://103.245.251.149:8080/store-profile/post/create`,
+        `http://58.84.1.32:8080/store-profile/post/create`,
         {
           content: content,
           files: files,
@@ -115,7 +115,7 @@ export const updateFeedAction =
     });
     try {
       await axios.put(
-        `http://103.245.251.149:8080/store-profile/post/update`,
+        `http://58.84.1.32:8080/store-profile/post/update`,
         {
           content: content,
           files: files,
@@ -155,7 +155,7 @@ export const deleteFeedAction = id => async dispatch => {
   });
   try {
     await axios.delete(
-      `http://103.245.251.149:8080/store-profile/post/delete/${id}`,
+      `http://58.84.1.32:8080/store-profile/post/delete/${id}`,
       {
         headers: await authHeader(),
       }

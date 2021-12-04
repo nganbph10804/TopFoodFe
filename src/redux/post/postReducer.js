@@ -2,6 +2,7 @@ import {
   POST_DETAIL,
   POST_FAILURE,
   POST_LIST,
+  POST_LIST_BY_CITY,
   POST_REQUEST,
 } from './postType.js';
 
@@ -9,6 +10,7 @@ const initState = {
   loading: false,
   post: [],
   detail: [],
+  city: [],
 };
 export const postReducer = (state = initState, action) => {
   switch (action.type) {
@@ -27,6 +29,12 @@ export const postReducer = (state = initState, action) => {
         ...state,
         loading: false,
         post: action.payload,
+      };
+    case POST_LIST_BY_CITY:
+      return {
+        ...state,
+        loading: false,
+        city: action.payload,
       };
     case POST_DETAIL:
       return {

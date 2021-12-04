@@ -14,7 +14,7 @@ export const favoriteListAction = () => async dispatch => {
   });
   try {
     const { data } = await axios.get(
-      'http://103.245.251.149:8080/profiles/favorite?page=0&pageSize=1000',
+      'http://58.84.1.32:8080/profiles/favorite?page=0&pageSize=1000',
       {
         headers: await authHeader(),
       }
@@ -39,15 +39,11 @@ export const updateFavoriteAction = (tag, navigation) => async dispatch => {
     type: FAVORITE_REQUEST,
   });
   try {
-    await axios.post(
-      'http://103.245.251.149:8080/profiles/favorite/update',
-      tag,
-      {
-        headers: await authHeader(),
-      }
-    );
+    await axios.post('http://58.84.1.32:8080/profiles/favorite/update', tag, {
+      headers: await authHeader(),
+    });
     const { data } = await axios.get(
-      'http://103.245.251.149:8080/profiles/favorite?page=0&pageSize=1000',
+      'http://58.84.1.32:8080/profiles/favorite?page=0&pageSize=1000',
       {
         headers: await authHeader(),
       }

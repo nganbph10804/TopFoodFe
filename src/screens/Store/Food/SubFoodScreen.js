@@ -79,15 +79,13 @@ const SubFoodScreen = ({ navigation, route }) => {
               flexDirection: 'row',
               paddingHorizontal: 10,
               paddingBottom: 20,
-              paddingTop: 10,
+              paddingTop: 20,
             }}
           >
-            <Entypo name="price-tag" size={24} color={`${COLORS.purple[3]}`} />
-            <Subheading
-              style={{ paddingLeft: 10, color: `${COLORS.purple[3]}` }}
-            >
+            <Entypo name="price-tag" size={24} color={`black`} />
+            <Title style={{ paddingLeft: 10, color: `black` }}>
               Tag món ăn: #{tag.tagName}
-            </Subheading>
+            </Title>
           </View>
           <View style={styled.main}>
             {foodByTag.map(i => (

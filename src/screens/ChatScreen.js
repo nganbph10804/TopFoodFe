@@ -100,7 +100,7 @@ const ChatScreen = ({ navigation, route }) => {
       });
       const token = await deviceStorage.loadJWT();
       const { data } = await axios.post(
-        'http://103.245.251.149:8080/files/uploads',
+        'http://58.84.1.32:8080/files/uploads',
         formData,
         {
           headers: {

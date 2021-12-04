@@ -23,6 +23,7 @@ import {
   Subheading,
   TextInput,
   Chip,
+  Title,
 } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../../constants/color.const.js';
@@ -159,7 +160,9 @@ const CreateFeedScreen = ({ navigation }) => {
                 style={styled.food}
               >
                 <Checkbox status={i.isSelected ? 'checked' : 'unchecked'} />
-                <Subheading>{i.tagName}</Subheading>
+                <Subheading style={{ fontWeight: 'bold' }}>
+                  #{i.tagName}
+                </Subheading>
               </TouchableOpacity>
             ))}
           </ScrollView>
@@ -176,6 +179,35 @@ const CreateFeedScreen = ({ navigation }) => {
           >
             Tạo bài viết
           </Button>
+        </View>
+        <View style={styled.item}>
+          <Button onPress={() => setShow(true)}>Chọn tag đính kèm</Button>
+          <ScrollView horizontal={true}>
+            {tagSelected.map((i, idx) => (
+              <View
+                key={idx}
+                style={{
+                  marginTop: 10,
+                }}
+              >
+                <View
+                  style={{
+                    marginLeft: 10,
+                  }}
+                >
+                  <Subheading
+                    style={{
+                      color: '#000',
+                      fontWeight: 'bold',
+                      paddingLeft: 10,
+                    }}
+                  >
+                    #{i.tagName}
+                  </Subheading>
+                </View>
+              </View>
+            ))}
+          </ScrollView>
         </View>
         <View>
           <Subheading style={{ marginLeft: 20 }}>Nội dung bài viết</Subheading>
@@ -209,51 +241,15 @@ const CreateFeedScreen = ({ navigation }) => {
                 key={idx}
                 style={{
                   marginTop: 10,
+                  alignItems: 'center',
+                  marginLeft: 15,
                 }}
               >
-                <Chip
-                  mode="outlined"
-                  selectedColor="#fff"
-                  selected={true}
-                  style={styled.active}
-                  icon={() => (
-                    <Ionicons name="checkbox" size={24} color={'#fff'} />
-                  )}
-                >
-                  {i.name}
-                </Chip>
-              </View>
-            ))}
-          </ScrollView>
-        </View>
-        <View style={styled.item}>
-          <Button onPress={() => setShow(true)}>Chọn tag đính kèm</Button>
-          <ScrollView horizontal={true}>
-            {tagSelected.map((i, idx) => (
-              <View
-                key={idx}
-                style={{
-                  marginTop: 10,
-                }}
-              >
-                <View
-                  key={idx}
-                  style={{
-                    marginTop: 10,
-                  }}
-                >
-                  <Chip
-                    mode="outlined"
-                    selectedColor="#fff"
-                    selected={true}
-                    style={styled.active}
-                    icon={() => (
-                      <Ionicons name="checkbox" size={24} color={'#fff'} />
-                    )}
-                  >
-                    {i.tagName}
-                  </Chip>
-                </View>
+                <Image
+                  source={{ uri: `${_.head(i.files)}` }}
+                  style={{ width: 80, height: 80, borderRadius: 10 }}
+                />
+                <Subheading>{i.name}</Subheading>
               </View>
             ))}
           </ScrollView>
