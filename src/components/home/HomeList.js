@@ -1,9 +1,23 @@
 import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { Divider } from 'react-native-elements';
 import { SliderBox } from 'react-native-image-slider-box';
-import { Card, Chip, Subheading, Avatar, Title } from 'react-native-paper';
+import {
+  Card,
+  Chip,
+  Subheading,
+  Avatar,
+  Title,
+  Paragraph,
+} from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
 import {
@@ -12,6 +26,7 @@ import {
 } from '../../redux/react/actions/reactAction.js';
 import Comment from './Comment.js';
 import { _ } from 'lodash';
+import moment from 'moment';
 
 const HomeList = ({ post, navigation, citySelected }) => {
   const storeId = post.profile.profile.id;
@@ -43,9 +58,14 @@ const HomeList = ({ post, navigation, citySelected }) => {
             source={{ uri: `${post.profile.profile.avatar}` }}
             size={60}
           />
-          <Title style={{ fontWeight: 'bold', marginLeft: 10 }}>
-            {post.profile.profile.name}
-          </Title>
+          <View>
+            <Title style={{ fontWeight: 'bold', marginLeft: 10 }}>
+              {post.profile.profile.name}
+            </Title>
+            <Paragraph style={{ marginLeft: 10 }}>
+              {moment(post.time).locale('vi').fromNow()}
+            </Paragraph>
+          </View>
         </TouchableOpacity>
         <SliderBox
           images={files}
@@ -72,6 +92,27 @@ const HomeList = ({ post, navigation, citySelected }) => {
             ))}
           </View>
           <Subheading style={styled.content}>{content}</Subheading>
+          {foods.length > 0 && (
+            <View>
+              <Subheading>Món ăn đính kèm:</Subheading>
+              <ScrollView horizontal={true}>
+                {foods.map((i, idx) => (
+                  <View key={idx} style={{ padding: 5, alignItems: 'center' }}>
+                    <Image
+                      source={{ uri: `${_.head(i.files)}` }}
+                      style={{ width: 80, height: 80, borderRadius: 10 }}
+                    />
+                    <Subheading>{i.name}</Subheading>
+                  </View>
+                ))}
+              </ScrollView>
+            </View>
+          )}
+          <View>
+            <Subheading>
+              Địa chỉ quán ăn: {post.profile.profile.address}
+            </Subheading>
+          </View>
         </Card.Content>
         <Divider />
         <Card.Actions>

@@ -32,7 +32,7 @@ const ListButton = ({ navigation }) => {
         />
         <Text style={styles.text}>Bài viết</Text>
       </TouchableOpacity>
-      {role === 'ROLE_STORE' && (
+      {/* {role === 'ROLE_STORE' && (
         <TouchableOpacity style={styles.manager}>
           <AntDesign
             name="slack-square"
@@ -42,7 +42,7 @@ const ListButton = ({ navigation }) => {
           />
           <Text style={styles.text}>Thống kê</Text>
         </TouchableOpacity>
-      )}
+      )} */}
     </View>
   );
 };
