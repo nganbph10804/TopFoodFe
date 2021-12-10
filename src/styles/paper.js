@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     position: 'relative',
-    backgroundColor: '#fff',
+    backgroundColor: `${COLORS.white[1]}`,
   },
   card: {
     shadowColor: 'black',
@@ -133,7 +133,7 @@ export const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     zIndex: -10,
-    backgroundColor: `#fff`,
+    backgroundColor: `${COLORS.white[1]}`,
   },
   currentForm: {
     position: 'absolute',
