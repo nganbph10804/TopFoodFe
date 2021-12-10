@@ -109,7 +109,7 @@ const ChatScreen = ({ navigation, route }) => {
           },
         }
       );
-      return 'http://103.245.251.149:8080' + data.data.map(i => i.path);
+      return 'http://58.84.1.32:8080:8080' + data.data.map(i => i.path);
     } catch (error) {
       Toast.show({
         type: 'error',

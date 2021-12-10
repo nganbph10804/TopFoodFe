@@ -174,7 +174,7 @@ const Comment = ({ navigation, post, setShow }) => {
                     source={{ uri: `${i.profile.profile.avatar}` }}
                     size={60}
                   />
-                  <Card
+                  <View
                     style={{
                       zIndex: 80,
                       padding: 10,
@@ -201,7 +201,7 @@ const Comment = ({ navigation, post, setShow }) => {
                         />
                       ))}
                     <RemoveComment id={i.id} postId={post.id} />
-                  </Card>
+                  </View>
                 </View>
                 <ActionComment
                   i={i}

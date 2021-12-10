@@ -1,28 +1,32 @@
 import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Chip } from 'react-native-paper';
+import { Chip, Paragraph, Subheading } from 'react-native-paper';
 import { COLORS } from '../../constants/color.const.js';
 import ReplyComment from './ReplyComment.js';
+import moment from 'moment';
 
 const ActionComment = ({ i, likeComment, handlerSubmit, setCommentId }) => {
   return (
     <View style={styled.main}>
-      <View style={styled.action}>
-        <TouchableOpacity onPress={() => likeComment(i.id)}>
-          <Chip
-            icon={() => (
-              <AntDesign
-                name="like1"
-                size={24}
-                color={`${COLORS.blue[4]}`}
-                onPress={() => likeComment(i.id)}
-              />
-            )}
+      {i.totalReaction > 0 && (
+        <View style={styled.like}>
+          <Subheading>{i.totalReaction}</Subheading>
+          <AntDesign
+            name="like1"
+            size={24}
+            color={`${COLORS.blue[4]}`}
             onPress={() => likeComment(i.id)}
-          >
-            {i.totalReaction} Likes
-          </Chip>
+          />
+        </View>
+      )}
+
+      <View style={styled.action}>
+        <Paragraph style={{ marginLeft: 10 }}>
+          {moment(i.createAt).locale('vi').fromNow()}{' '}
+        </Paragraph>
+        <TouchableOpacity onPress={() => likeComment(i.id)}>
+          <Chip onPress={() => likeComment(i.id)}>Likes</Chip>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ marginLeft: 10 }}
@@ -31,16 +35,6 @@ const ActionComment = ({ i, likeComment, handlerSubmit, setCommentId }) => {
           }}
         >
           <Chip
-            icon={() => (
-              <FontAwesome5
-                name="reply-all"
-                size={24}
-                color={`${COLORS.blue[4]}`}
-                onPress={() => {
-                  handlerSubmit(), setCommentId(i.id);
-                }}
-              />
-            )}
             onPress={() => {
               handlerSubmit(), setCommentId(i.id);
             }}
@@ -49,7 +43,7 @@ const ActionComment = ({ i, likeComment, handlerSubmit, setCommentId }) => {
           </Chip>
         </TouchableOpacity>
       </View>
-      <ReplyComment i={i} />
+      {/* <ReplyComment i={i} /> */}
     </View>
   );
 };
@@ -61,6 +55,14 @@ const styled = StyleSheet.create({
   },
   action: {
     flexDirection: 'row',
+    alignItems: 'center',
+  },
+  like: {
+    flexDirection: 'row',
+    position: 'absolute',
+    right: -60,
+    top: -10,
+    zIndex: 100,
   },
 });
 
