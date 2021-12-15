@@ -109,7 +109,6 @@ export const createFeedAction =
   };
 export const updateFeedAction =
   (content, files, foodIds, id, tagIds, navigation) => async dispatch => {
-    console.log(content, files, foodIds, id, tagIds);
     dispatch({
       type: FEED_REQUEST,
     });
@@ -137,7 +136,6 @@ export const updateFeedAction =
       });
       if (navigation) navigation.navigate('FeedListScreen');
     } catch (error) {
-      console.log(error.response.data.message);
       dispatch({
         type: FEED_FAILURE,
       });
@@ -173,7 +171,6 @@ export const deleteFeedAction = id => async dispatch => {
       text2: 'Xoá bài viết thành công',
     });
   } catch (error) {
-    console.log(error.response.data.message);
     dispatch({
       type: FEED_FAILURE,
     });

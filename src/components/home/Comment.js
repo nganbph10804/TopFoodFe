@@ -13,7 +13,6 @@ import {
 import {
   Avatar,
   Button,
-  Card,
   Chip,
   Divider,
   Subheading,
@@ -35,7 +34,13 @@ import {
 import ActionComment from './ActionComment.js';
 import RemoveComment from './RemoveComment.js';
 
-const Comment = ({ navigation, post, setShow }) => {
+const Comment = ({
+  navigation,
+  post,
+  setShow,
+  handlerHeart,
+  totalReaction,
+}) => {
   const { id } = post;
   const file = useSelector(state => state.file.files);
   const dispatch = useDispatch();
@@ -140,14 +145,30 @@ const Comment = ({ navigation, post, setShow }) => {
         style={styled.actionContainer}
         onPress={() => handlerHeart()}
       >
-        <Chip
-          icon={() => (
-            <AntDesign name="like1" size={24} color={`${COLORS.blue[4]}`} />
-          )}
-          onPress={() => handlerHeart()}
-        >
-          {post.totalReaction} Likes
-        </Chip>
+        {post.myReaction ? (
+          <Chip
+            icon={() => (
+              <AntDesign
+                name="like1"
+                size={24}
+                color={`${COLORS.blue[4]}`}
+                onPress={() => handlerHeart()}
+              />
+            )}
+            onPress={() => handlerHeart()}
+          >
+            {totalReaction > 0 && totalReaction} Likes
+          </Chip>
+        ) : (
+          <Chip
+            icon={() => (
+              <AntDesign name="like2" size={24} color={`${COLORS.blue[4]}`} />
+            )}
+            onPress={() => handlerHeart()}
+          >
+            {totalReaction > 0 && totalReaction} Likes
+          </Chip>
+        )}
       </TouchableOpacity>
       <ScrollView style={styled.container}>
         <View style={styled.post}>

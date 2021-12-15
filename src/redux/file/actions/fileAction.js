@@ -10,6 +10,7 @@ import {
   FILE_REQ,
   MULTI_FILE,
   CLEAR_FILE,
+  DELETE_FILE,
 } from '../types/fileType.js';
 
 export const uploadAvatar = (file, profile, navigation) => async dispatch => {
@@ -135,7 +136,7 @@ const uploadProfile = async (
         headers: await authHeader(),
       }
     )
-    .then(resp => {
+    .then(() => {
       Toast.show({
         type: 'success',
         text1: 'Thông báo',
@@ -145,7 +146,7 @@ const uploadProfile = async (
         navigation.navigate('SettingScreen');
       }
     })
-    .catch(err => {
+    .catch(() => {
       Toast.show({
         type: 'error',
         text1: 'Thông báo',
@@ -199,5 +200,12 @@ export const multiFileAction = file => async dispatch => {
 export const clearFilesAction = () => dispatch => {
   dispatch({
     type: CLEAR_FILE,
+  });
+};
+
+export const deleteImageAction = item => dispatch => {
+  dispatch({
+    type: DELETE_FILE,
+    payload: item,
   });
 };

@@ -32,17 +32,6 @@ const ListButton = ({ navigation }) => {
         />
         <Text style={styles.text}>Bài viết</Text>
       </TouchableOpacity>
-      {/* {role === 'ROLE_STORE' && (
-        <TouchableOpacity style={styles.manager}>
-          <AntDesign
-            name="slack-square"
-            size={30}
-            color={`${COLORS.blue[5]}`}
-            style={styles.icon}
-          />
-          <Text style={styles.text}>Thống kê</Text>
-        </TouchableOpacity>
-      )} */}
     </View>
   );
 };

@@ -1,28 +1,42 @@
 import {
-  Entypo,
   FontAwesome,
   FontAwesome5,
   Ionicons,
   MaterialCommunityIcons,
+  MaterialIcons,
 } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import { _ } from 'lodash';
 import React, { useEffect, useState } from 'react';
-import { Image, Picker, ScrollView, Text, View } from 'react-native';
+import {
+  Alert,
+  Image,
+  Modal,
+  Picker,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {
   ActivityIndicator,
   Button,
   Card,
+  Checkbox,
   Subheading,
   TextInput,
 } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../../constants/color.const.js';
-import { multiFileAction } from '../../../redux/file/actions/fileAction.js';
+import {
+  deleteImageAction,
+  multiFileAction,
+} from '../../../redux/file/actions/fileAction.js';
 import { createFoodAction } from '../../../redux/store/food/actions/foodAction.js';
 import { searchTagAction } from '../../../redux/store/tag/action/tagAction.js';
 import { InputUpdate, styles } from '../../../styles/paper.js';
-import { styled } from '../../../styles/store.js';
 
 const CreateFoodScreen = ({ navigation }) => {
   const { tag } = useSelector(state => state.tag);
@@ -32,7 +46,12 @@ const CreateFoodScreen = ({ navigation }) => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [tagList, setTagList] = useState('');
+  console.log(
+    '😂🤣 ~ file: CreateFoodScreen.js ~ line 48 ~ CreateFoodScreen ~ tagList',
+    tagList
+  );
   const [pickerValue, setPickerValue] = useState('');
+
   const dispatch = useDispatch();
 
   const handlerUpload = async () => {
@@ -45,6 +64,10 @@ const CreateFoodScreen = ({ navigation }) => {
     if (!result.cancelled) {
       dispatch(multiFileAction(result.uri));
     }
+  };
+
+  const removeImage = item => {
+    dispatch(deleteImageAction(item));
   };
 
   const handlerCreate = () => {
@@ -64,10 +87,33 @@ const CreateFoodScreen = ({ navigation }) => {
         text1: 'Thông báo',
         text2: 'Không được để trống',
       });
+    } else if (price < 0) {
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Giá món ăn phải lớn hơn 0đ',
+      });
+    } else if (!tagList) {
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Phải chọn tối thiểu 1 Hash Tag',
+      });
     } else
-      dispatch(
-        createFoodAction(content, file, name, price, tagList, navigation)
-      );
+      Alert.alert('Thông báo', 'Bạn có muốn thêm món ăn không?', [
+        {
+          text: 'Huỷ',
+          style: 'cancel',
+        },
+        {
+          text: 'Đồng ý',
+          onPress: () => {
+            dispatch(
+              createFoodAction(content, file, name, price, tagList, navigation)
+            );
+          },
+        },
+      ]);
   };
 
   useEffect(() => {
@@ -89,27 +135,14 @@ const CreateFoodScreen = ({ navigation }) => {
     <Card>
       <ScrollView style={{ width: '100%', height: '100%' }}>
         <View style={{ paddingHorizontal: 20, paddingTop: 15 }}>
-          <View style={styled.viewBtn}>
-            <Button
-              mode="contained"
-              color={COLORS.blue[1]}
-              onPress={() => handlerCreate()}
-            >
-              Tạo món ăn
-            </Button>
-          </View>
-          <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
-            <Entypo name="images" size={30} color={`${COLORS.blue[1]}`} />
-            <Subheading style={{ paddingLeft: 10 }}>Chọn ảnh</Subheading>
-          </View>
-          <View
-            style={{
-              alignSelf: 'flex-start',
-              justifyContent: 'center',
-              paddingTop: 15,
-              paddingLeft: 10,
-            }}
+          <Button
+            mode="contained"
+            color={COLORS.blue[1]}
+            onPress={() => handlerCreate()}
           >
+            Tạo món ăn
+          </Button>
+          <View style={styled.file}>
             {loadingFile ? (
               <View style={{ alignSelf: 'center', marginTop: 15 }}>
                 <ActivityIndicator
@@ -126,7 +159,7 @@ const CreateFoodScreen = ({ navigation }) => {
                 mode="contained"
                 onPress={() => handlerUpload()}
               >
-                Upload
+                Upload Ảnh
               </Button>
             )}
           </View>
@@ -136,21 +169,32 @@ const CreateFoodScreen = ({ navigation }) => {
             <View style={{ flexDirection: 'row', paddingTop: 10 }}>
               <ScrollView horizontal={true}>
                 {file.map((i, index) => (
-                  <Image
-                    key={index}
-                    source={{ uri: i }}
-                    style={{ width: 90, height: 90, margin: 5 }}
-                  />
+                  <View key={index} style={{ padding: 10 }}>
+                    <Image
+                      source={{ uri: i }}
+                      style={{
+                        width: 165,
+                        height: 165,
+                        margin: 15,
+                        borderRadius: 10,
+                      }}
+                    />
+                    <MaterialIcons
+                      name="highlight-remove"
+                      size={30}
+                      color="red"
+                      style={{ position: 'absolute', top: 5, right: 0 }}
+                      onPress={() => removeImage(i)}
+                    />
+                  </View>
                 ))}
               </ScrollView>
             </View>
           )}
         </View>
-        <View style={{ paddingHorizontal: 20, paddingBottom: 15 }}>
-          <View style={{ flexDirection: 'row', padding: 10 }}>
-            <Entypo name="price-tag" size={24} color={`${COLORS.blue[1]}`} />
-            <Subheading style={{ paddingLeft: 10 }}>Tag món ăn</Subheading>
-          </View>
+        <View
+          style={{ paddingHorizontal: 20, marginBottom: 15, marginTop: 10 }}
+        >
           <View style={styles.picker}>
             <Picker
               mode="dialog"
@@ -158,7 +202,7 @@ const CreateFoodScreen = ({ navigation }) => {
               selectedValue={pickerValue}
               onValueChange={e => [setPickerValue(e), setTagList(e)]}
             >
-              <Picker.Item label="Chọn tag" />
+              <Picker.Item label="Chọn Hash tag" />
               {tag.map(c => (
                 <Picker.Item key={c.id} label={c.tagName} value={c.id} />
               ))}
@@ -233,5 +277,28 @@ const CreateFoodScreen = ({ navigation }) => {
     </Card>
   );
 };
+
+const styled = StyleSheet.create({
+  file: {
+    alignSelf: 'flex-start',
+    justifyContent: 'center',
+    paddingTop: 15,
+    paddingLeft: 10,
+  },
+  hashTag: {
+    fontWeight: 'bold',
+    alignSelf: 'center',
+    fontSize: 20,
+  },
+  tag: {
+    flexDirection: 'row',
+    marginLeft: 40,
+  },
+  tagName: {
+    fontWeight: 'bold',
+    fontStyle: 'italic',
+    marginHorizontal: 10,
+  },
+});
 
 export default CreateFoodScreen;

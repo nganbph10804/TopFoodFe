@@ -1,7 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import React, { useEffect } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Button } from 'react-native-paper';
+import { Button, Subheading } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import FeedList from '../../../components/store/feed/FeedList.js';
 import { storeFeedListAction } from '../../../redux/feed/feedAction.js';
@@ -34,9 +34,22 @@ const FeedListScreen = ({ navigation }) => {
           </View>
         )}
         <View>
-          {feed.map((i, index) => (
-            <FeedList key={index} feed={i} navigation={navigation} />
-          ))}
+          {feed.length > 1 ? (
+            feed.map((i, index) => (
+              <FeedList key={index} feed={i} navigation={navigation} />
+            ))
+          ) : (
+            <Subheading
+              style={{
+                fontWeight: 'bold',
+                alignSelf: 'center',
+                marginTop: '50%',
+                fontSize: 22,
+              }}
+            >
+              Không có bài viết
+            </Subheading>
+          )}
         </View>
       </ScrollView>
     </View>

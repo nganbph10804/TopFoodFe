@@ -5,6 +5,7 @@ import { Chip, Paragraph, Subheading } from 'react-native-paper';
 import { COLORS } from '../../constants/color.const.js';
 import ReplyComment from './ReplyComment.js';
 import moment from 'moment';
+import 'moment/locale/vi';
 
 const ActionComment = ({ i, likeComment, handlerSubmit, setCommentId }) => {
   return (
@@ -23,7 +24,7 @@ const ActionComment = ({ i, likeComment, handlerSubmit, setCommentId }) => {
 
       <View style={styled.action}>
         <Paragraph style={{ marginLeft: 10 }}>
-          {moment(i.createAt).locale('vi').fromNow()}{' '}
+          {moment(i.createAt).fromNow()}{' '}
         </Paragraph>
         <TouchableOpacity onPress={() => likeComment(i.id)}>
           <Chip onPress={() => likeComment(i.id)}>Likes</Chip>

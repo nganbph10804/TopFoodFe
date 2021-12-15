@@ -117,7 +117,7 @@ export const styles = StyleSheet.create({
   },
   picker: {
     borderWidth: 1,
-    width: 150,
+    width: 250,
     borderRadius: 10,
     borderColor: `${COLORS.blue[4]}`,
   },

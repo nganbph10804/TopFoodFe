@@ -1,31 +1,28 @@
-import { Ionicons } from '@expo/vector-icons';
+import {
+  AntDesign,
+  Ionicons,
+  MaterialCommunityIcons,
+} from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import { Alert } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Avatar } from 'react-native-paper';
-import EditProfileScreen from '../screens/Profile/EditProfileScreen.js';
+import { useSelector } from 'react-redux';
+import { ROLES } from '../constants/role.const.js';
 import FeedScreen from '../screens/FeedScreen.js';
+import SearchFriendScreen from '../screens/Friend/SearchFriendScreen.js';
+import MessageStack from '../screens/MessageStack';
+import NotificationsScreen from '../screens/NotificationsScreen';
+import EditProfileScreen from '../screens/Profile/EditProfileScreen.js';
 import EditPublicScreen from '../screens/Profile/EditPublicScreen.js';
 import ProfileDetailScreen from '../screens/Profile/ProfileDetailScreen.js';
 import PublicProfileScreen from '../screens/Profile/PublicProfileScreen.js';
-import MessageStack from '../screens/MessageStack';
-import NotificationsScreen from '../screens/NotificationsScreen';
 import SettingScreen from '../screens/SettingScreen';
-import SearchFriendScreen from '../screens/Friend/SearchFriendScreen.js';
-import { AntDesign } from '@expo/vector-icons';
-import { useSelector } from 'react-redux';
-import { ROLES } from '../constants/role.const.js';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import StoreNavigation from './StoreNavigation.js';
-import HeaderUser from '../shared/HeaderUser.js';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
 const Nav = () => {
   const role = useSelector(state => state.auth.account.role);
-  const { avatar } = useSelector(state => state.auth.profile);
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -44,7 +41,6 @@ const Nav = () => {
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        // headerShown: route.name == 'message' ? false : true,
         tabBarActiveTintColor: 'tomato',
         tabBarInactiveTintColor: 'gray',
         headerStyle: {
@@ -101,36 +97,6 @@ const Nav = () => {
         name="message"
         component={MessageStack}
         options={{
-          // headerRight: () => {
-          //   return (
-          //     <TouchableOpacity
-          //       onPress={() => {
-          //         Alert.alert('create new');
-          //       }}
-          //     >
-          //       <Ionicons
-          //         name="ios-create-outline"
-          //         size={23}
-          //         style={{
-          //           paddingRight: 15,
-          //         }}
-          //       />
-          //     </TouchableOpacity>
-          //   );
-          // },
-          // headerLeft: () => {
-          //   return (
-          //     <Avatar.Image
-          //       size={34}
-          //       source={{
-          //         uri: avatar,
-          //       }}
-          //       style={{
-          //         marginLeft: 10,
-          //       }}
-          //     />
-          //   );
-          // },
           title: 'Nhắn tin',
           headerShown: false,
         }}
