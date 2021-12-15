@@ -4,6 +4,7 @@ import {
   FILE_REQ,
   MULTI_FILE,
   CLEAR_FILE,
+  DELETE_FILE,
 } from '../types/fileType.js';
 
 const initState = {
@@ -40,6 +41,11 @@ export const fileReducer = (state = initState, action) => {
         ...state,
         files: [],
         file: [],
+      };
+    case DELETE_FILE:
+      return {
+        ...state,
+        files: state.files.filter(i => i !== action.payload),
       };
     default:
       return state;

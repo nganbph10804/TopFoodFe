@@ -1,11 +1,12 @@
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { _ } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import {
   ActivityIndicator,
   Button,
   Searchbar,
+  Subheading,
   Title,
 } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,12 +21,12 @@ import {
   searchFoodAction,
 } from '../../../redux/store/food/actions/foodAction.js';
 import { styles } from '../../../styles/paper.js';
+import FoodsHot from '../../../components/store/FoodsHot.js';
 
 const FoodListScreen = ({ navigation }) => {
   const account = useSelector(state => state.auth.account);
   const { tag } = useSelector(state => state.tag);
   const food = useSelector(state => state.food.food);
-  const { hot } = useSelector(state => state.hot);
   const loading = useSelector(state => state.food.loading);
   const tags = useSelector(state => state.food.tagName);
   const search = useSelector(state => state.food.search);
@@ -38,6 +39,9 @@ const FoodListScreen = ({ navigation }) => {
   const [ctg, setCtg] = useState();
   const [tagId, setTagId] = useState();
   const [tagData, setTagData] = useState([]);
+
+  const [hot, setHot] = useState([]);
+  const [foods, setFoods] = useState([]);
 
   const handlerFilter = id => {
     if (id === 'ALL') {
@@ -59,6 +63,11 @@ const FoodListScreen = ({ navigation }) => {
     ref.current.clear();
     dispatch(clearSearchAction());
   };
+
+  useEffect(() => {
+    setHot(_.filter(food, i => i.foodHot));
+    setFoods(_.filter(food, i => !i.foodHot));
+  }, [food]);
 
   useEffect(() => {
     if (tagId) {
@@ -149,15 +158,24 @@ const FoodListScreen = ({ navigation }) => {
           : search.map(i => (
               <SearchFood key={i.id} food={i} navigation={navigation} />
             ))}
+        <View>
+          {hot && <Subheading style={styled.hot}>Món ăn hot</Subheading>}
+          <ScrollView horizontal={true}>
+            {hot.map((i, index) => (
+              <FoodsHot key={index} food={i} navigation={navigation} />
+            ))}
+          </ScrollView>
+        </View>
         {!focus && !ctg && (
           <View>
             {food.length < 1 ? (
               <View style={styled.noFood}>
-                <Title>Không có món ăn</Title>
+                <Title key={idx}>Không có món ăn</Title>
               </View>
             ) : (
               <View style={{ flex: 1 }}>
-                {food.map(i => (
+                <Subheading style={styled.normal}>Món ăn</Subheading>
+                {foods.map(i => (
                   <FoodList key={i.id} food={i} navigation={navigation} />
                 ))}
               </View>
@@ -245,6 +263,18 @@ const styled = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: '50%',
+  },
+  hot: {
+    fontWeight: 'bold',
+    marginLeft: 15,
+    fontSize: 20,
+    marginVertical: 10,
+  },
+  normal: {
+    fontWeight: 'bold',
+    marginLeft: 15,
+    fontSize: 20,
+    marginVertical: 10,
   },
 });
 export default FoodListScreen;

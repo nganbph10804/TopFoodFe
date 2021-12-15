@@ -27,6 +27,7 @@ import {
 import Comment from './Comment.js';
 import { _ } from 'lodash';
 import moment from 'moment';
+import 'moment/locale/vi';
 
 const HomeList = ({ post, navigation, citySelected }) => {
   const storeId = post.profile.profile.id;
@@ -109,9 +110,7 @@ const HomeList = ({ post, navigation, citySelected }) => {
             </View>
           )}
           <View>
-            <Subheading>
-              Địa chỉ quán ăn: {post.profile.profile.address}
-            </Subheading>
+            <Subheading>Địa chỉ: {post.profile.profile.address}</Subheading>
           </View>
         </Card.Content>
         <Divider />
@@ -133,7 +132,7 @@ const HomeList = ({ post, navigation, citySelected }) => {
                   )}
                   onPress={() => handlerHeart()}
                 >
-                  {totalReaction} Likes
+                  {totalReaction > 0 && totalReaction} Likes
                 </Chip>
               ) : (
                 <Chip
@@ -146,7 +145,7 @@ const HomeList = ({ post, navigation, citySelected }) => {
                   )}
                   onPress={() => handlerHeart()}
                 >
-                  {totalReaction} Likes
+                  {totalReaction > 0 && totalReaction} Likes
                 </Chip>
               )}
             </TouchableOpacity>
@@ -176,6 +175,7 @@ const HomeList = ({ post, navigation, citySelected }) => {
           setShow={setShow}
           navigation={navigation}
           handlerHeart={handlerHeart}
+          totalReaction={totalReaction}
         />
       )}
     </View>

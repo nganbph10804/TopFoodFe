@@ -1,17 +1,15 @@
-import { AntDesign, Entypo } from '@expo/vector-icons';
-import { _ } from 'lodash';
 import React, { useState } from 'react';
-import { Alert, Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
+import { Card, Chip, Paragraph, Subheading } from 'react-native-paper';
+import { _ } from 'lodash';
+import { formatPrice } from '../../constants/price.const';
+import { AntDesign, Entypo } from '@expo/vector-icons';
+import { COLORS } from '../../constants/color.const';
 import { Menu, MenuItem } from 'react-native-material-menu';
-import { Card, Chip, Subheading } from 'react-native-paper';
-import { useDispatch } from 'react-redux';
-import { COLORS } from '../../constants/color.const.js';
-import { formatPrice } from '../../constants/price.const.js';
-import { addHotAction } from '../../redux/foodHot/foodHotActions.js';
-import { deleteFoodAction } from '../../redux/store/food/actions/foodAction.js';
+import { deleteFoodAction } from '../../redux/store/food/actions/foodAction';
+import { View } from 'react-native';
 
-const FoodList = ({ food, navigation }) => {
-  const dispatch = useDispatch();
+const FoodsHot = ({ food, navigation }) => {
   const [visible, setVisible] = useState(false);
   const hideMenu = () => setVisible(false);
   const showMenu = () => setVisible(true);
@@ -40,7 +38,7 @@ const FoodList = ({ food, navigation }) => {
       {
         text: 'Đồng ý',
         onPress: () => {
-          dispatch(addHotAction(food.id, account.id));
+          // dispatch(addHotAction(food.id, account.id));
         },
       },
     ]);
@@ -48,10 +46,10 @@ const FoodList = ({ food, navigation }) => {
 
   return (
     <Card
-      style={styled.container}
       onPress={() => navigation.navigate('FoodDetailScreen', { food })}
+      style={styled.main}
     >
-      <Card.Content style={styled.main}>
+      <Card.Content>
         <View style={styled.menu}>
           <Menu
             visible={visible}
@@ -71,7 +69,7 @@ const FoodList = ({ food, navigation }) => {
                 addHot();
               }}
             >
-              Thêm món ăn hot
+              Bỏ món ăn hot
             </MenuItem>
             <MenuItem
               onPress={() => {
@@ -91,17 +89,12 @@ const FoodList = ({ food, navigation }) => {
             </MenuItem>
           </Menu>
         </View>
-        <View style={{ width: '32%' }}>
-          <Image
-            source={{ uri: `${_.head(food.files)}` }}
-            style={styled.image}
-          />
-        </View>
-        <View>
-          <Text style={styled.textName}>{food.name}</Text>
-          <Text style={styled.textTag}>{food.tag.tagName} </Text>
-          <Text style={styled.textPrice}>{formatPrice(food.price)} </Text>
-        </View>
+        <Image
+          source={{ uri: `${_.head(food.files)}` }}
+          style={{ width: 150, height: 150, borderRadius: 10 }}
+        />
+        <Subheading>{food.name} </Subheading>
+        <Paragraph style={styled.price}>{formatPrice(food.price)} </Paragraph>
       </Card.Content>
       <Card.Actions>
         {food.totalReaction > 0 && (
@@ -109,11 +102,8 @@ const FoodList = ({ food, navigation }) => {
             icon={() => (
               <AntDesign name="star" size={24} color={`${COLORS.blue[4]}`} />
             )}
-            style={styled.vote}
           >
-            <Subheading style={{ color: `${COLORS.blue[4]}` }}>
-              {food.totalReaction} votes
-            </Subheading>
+            {food.totalReaction} votes
           </Chip>
         )}
       </Card.Actions>
@@ -122,40 +112,16 @@ const FoodList = ({ food, navigation }) => {
 };
 
 const styled = StyleSheet.create({
+  price: {
+    fontWeight: 'bold',
+  },
   main: {
-    flexDirection: 'row',
-    padding: 10,
-    backgroundColor: '#fff',
-  },
-  image: {
-    borderColor: '#ccc',
-    borderRadius: 10,
-    width: 110,
-    height: 110,
-  },
-  textName: {
-    fontSize: 17,
-  },
-  textTag: {
-    fontSize: 13,
-    color: '#968299',
-    marginTop: 5,
-  },
-  textPrice: {
-    fontSize: 16,
-    marginTop: 20,
-  },
-  container: {
     margin: 10,
-  },
-  vote: {
-    position: 'absolute',
-    right: 20,
   },
   menu: {
     position: 'absolute',
-    right: 20,
-    top: 10,
+    right: 10,
   },
 });
-export default FoodList;
+
+export default FoodsHot;

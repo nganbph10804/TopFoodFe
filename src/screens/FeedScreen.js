@@ -76,14 +76,11 @@ const FeedScreen = ({ navigation }) => {
   }, [dispatch, citySelected.code]);
 
   useEffect(() => {
-    const focus = navigation.addListener('focus', () => {
-      if (role === 'ROLE_USER') {
-        if (total < 1) {
-          navigation.navigate('FavoriteScreen');
-        }
+    if (role === 'ROLE_USER') {
+      if (total < 5) {
+        navigation.navigate('FavoriteScreen');
       }
-    });
-    return focus;
+    }
   }, [total]);
 
   return (
@@ -96,7 +93,10 @@ const FeedScreen = ({ navigation }) => {
             {city.map((i, idx) => (
               <TouchableOpacity
                 key={idx}
-                style={{ marginHorizontal: 40, marginVertical: 5 }}
+                style={{
+                  marginHorizontal: 40,
+                  marginVertical: 5,
+                }}
                 onPress={() => handlerChecked(i)}
               >
                 <Chip
@@ -140,7 +140,10 @@ const FeedScreen = ({ navigation }) => {
               <Subheading ellipsizeMode="tail">
                 Xem tại,{' '}
                 <Subheading
-                  style={{ color: `${COLORS.blue[4]}`, fontWeight: 'bold' }}
+                  style={{
+                    color: `${COLORS.blue[4]}`,
+                    fontWeight: 'bold',
+                  }}
                   ellipsizeMode="tail"
                 >
                   {citySelected.name}

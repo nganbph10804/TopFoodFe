@@ -33,6 +33,13 @@ import {
   UserName,
 } from '../styles/MessageStyle';
 import fb from './../Firebase/config';
+import { LogBox } from 'react-native';
+
+// Ignore log notification by message:
+LogBox.ignoreLogs(['Warning: ...']);
+
+// Ignore all log notifications:
+LogBox.ignoreAllLogs();
 
 const db = fb.firestore();
 const RoomsRef = db.collection('Rooms');

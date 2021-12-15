@@ -55,7 +55,6 @@ const styled = StyleSheet.create({
   item: {
     flexDirection: 'row',
     alignItems: 'center',
-    flexWrap: 'wrap',
     marginVertical: 10,
     marginLeft: 30,
   },

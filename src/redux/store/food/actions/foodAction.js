@@ -32,7 +32,6 @@ export const foodListAction = id => async dispatch => {
       type: CLEAR_FILE,
     });
   } catch (error) {
-    console.log(error.response.data.message);
     dispatch({
       type: FOOD_FAILURE,
     });
@@ -110,6 +109,7 @@ export const createFoodAction =
       });
     }
   };
+
 export const updateFoodAction =
   (content, files, id, name, price, tagId, navigation) => async dispatch => {
     dispatch({

@@ -4,6 +4,7 @@ import {
   FontAwesome5,
   Ionicons,
   MaterialCommunityIcons,
+  MaterialIcons,
 } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import React, { useEffect, useState } from 'react';
@@ -18,7 +19,10 @@ import {
 import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../../constants/color.const.js';
-import { multiFileAction } from '../../../redux/file/actions/fileAction.js';
+import {
+  deleteImageAction,
+  multiFileAction,
+} from '../../../redux/file/actions/fileAction.js';
 import { updateFoodAction } from '../../../redux/store/food/actions/foodAction.js';
 import { InputUpdate, styles } from '../../../styles/paper.js';
 
@@ -42,6 +46,11 @@ const EditFoodScreen = ({ route, navigation }) => {
       dispatch(multiFileAction(result.uri));
     }
   };
+
+  const removeImage = item => {
+    dispatch(deleteImageAction(item));
+  };
+
   const handlerCreate = () => {
     file.map(i => files.push(i));
     if (
@@ -51,7 +60,6 @@ const EditFoodScreen = ({ route, navigation }) => {
     ) {
       Toast.show({
         type: 'error',
-
         text1: 'Thông báo',
         text2: 'Không được để trống',
       });
@@ -86,10 +94,13 @@ const EditFoodScreen = ({ route, navigation }) => {
     <Card>
       <ScrollView style={{ width: '100%', height: '100%', marginTop: 20 }}>
         <View style={{ paddingHorizontal: 20, paddingTop: 15 }}>
-          <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
-            <Entypo name="images" size={30} color={`${COLORS.blue[1]}`} />
-            <Subheading style={{ paddingLeft: 10 }}>Chọn ảnh</Subheading>
-          </View>
+          <Button
+            mode="contained"
+            color={COLORS.blue[1]}
+            onPress={() => handlerCreate()}
+          >
+            Cập nhật món ăn
+          </Button>
           <View
             style={{
               alignSelf: 'flex-start',
@@ -114,7 +125,7 @@ const EditFoodScreen = ({ route, navigation }) => {
                 mode="contained"
                 onPress={() => handlerUpload()}
               >
-                Upload
+                Upload Ảnh
               </Button>
             )}
           </View>
@@ -125,11 +136,24 @@ const EditFoodScreen = ({ route, navigation }) => {
               ) : (
                 <View style={{ flexDirection: 'row', paddingTop: 10 }}>
                   {file.map((i, index) => (
-                    <Image
-                      key={index}
-                      source={{ uri: i }}
-                      style={{ width: 70, height: 70, margin: 5 }}
-                    />
+                    <View key={index} style={{ padding: 10 }}>
+                      <Image
+                        source={{ uri: i }}
+                        style={{
+                          width: 165,
+                          height: 165,
+                          margin: 15,
+                          borderRadius: 10,
+                        }}
+                      />
+                      <MaterialIcons
+                        name="highlight-remove"
+                        size={30}
+                        color="red"
+                        style={{ position: 'absolute', top: 5, right: 0 }}
+                        onPress={() => removeImage(i)}
+                      />
+                    </View>
                   ))}
                 </View>
               )}
@@ -153,7 +177,7 @@ const EditFoodScreen = ({ route, navigation }) => {
           <View style={{ flexDirection: 'row', padding: 10 }}>
             <Entypo name="price-tag" size={24} color={`${COLORS.blue[1]}`} />
             <Subheading style={{ paddingLeft: 10 }}>
-              Tag món ăn / {tag.tagName}
+              Tag món ăn: #{tag.tagName}
             </Subheading>
           </View>
         </View>
@@ -219,15 +243,6 @@ const EditFoodScreen = ({ route, navigation }) => {
               />
             }
           />
-        </View>
-        <View style={styled.viewBtn}>
-          <Button
-            mode="contained"
-            color={COLORS.blue[1]}
-            onPress={() => handlerCreate()}
-          >
-            Cập nhật món ăn
-          </Button>
         </View>
       </ScrollView>
     </Card>
