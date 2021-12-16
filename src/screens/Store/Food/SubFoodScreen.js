@@ -48,8 +48,10 @@ const SubFoodScreen = ({ navigation, route }) => {
           <Title>{name}</Title>
           <Subheading>{formatPrice(price)} </Subheading>
           <Paragraph>{content}</Paragraph>
-          <View style={{ position: 'absolute', right: 20, top: 30 }}>
-            {foodDetail.myReaction && (
+        </Card.Content>
+        <Card.Actions>
+          <View style={{ position: 'absolute', right: 20 }}>
+            {foodDetail.myReaction && foodDetail.totalReaction > 0 && (
               <Chip onPress={() => handlerUnVote(id)}>
                 <AntDesign name="star" size={24} color={`${COLORS.blue[4]}`} />
                 <Subheading style={{ color: `${COLORS.blue[4]}` }}>
@@ -57,7 +59,7 @@ const SubFoodScreen = ({ navigation, route }) => {
                 </Subheading>
               </Chip>
             )}
-            {!foodDetail.myReaction && (
+            {!foodDetail.myReaction && foodDetail.totalReaction > 0 && (
               <Chip onPress={() => handlerVote(id)}>
                 <AntDesign name="staro" size={24} color={`${COLORS.blue[4]}`} />
                 <Subheading style={{ color: `#000` }}>
@@ -66,7 +68,7 @@ const SubFoodScreen = ({ navigation, route }) => {
               </Chip>
             )}
           </View>
-        </Card.Content>
+        </Card.Actions>
       </Card>
       {foodByTag.length < 1 ? (
         <View>

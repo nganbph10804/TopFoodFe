@@ -170,7 +170,7 @@ const FoodListScreen = ({ navigation }) => {
           <View>
             {food.length < 1 ? (
               <View style={styled.noFood}>
-                <Title key={idx}>Không có món ăn</Title>
+                <Title>Không có món ăn</Title>
               </View>
             ) : (
               <View style={{ flex: 1 }}>

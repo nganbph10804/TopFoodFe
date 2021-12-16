@@ -79,7 +79,6 @@ export const deleteHotAction = (foodId, storeId) => async dispatch => {
   try {
     await axios.delete(
       `http://58.84.1.32:8080/store-profile/food-hot/delete/${foodId}`,
-      {},
       {
         headers: await authHeader(),
       }
@@ -96,17 +95,16 @@ export const deleteHotAction = (foodId, storeId) => async dispatch => {
     });
     Toast.show({
       type: 'success',
-      topOffset: 40,
       text1: 'Thông báo',
-      text2: 'Thêm món ăn hot thành công',
+      text2: 'Bỏ món ăn hot thành công',
     });
   } catch (error) {
+    console.log('😂🤣 ~ file: foodHotActions.js ~ line 103 ~ error', error);
     dispatch({
       type: FAILURE,
     });
     Toast.show({
       type: 'error',
-      topOffset: 40,
       text1: 'Thông báo',
       text2: error.response.data.message,
     });

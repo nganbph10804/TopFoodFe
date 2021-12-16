@@ -170,7 +170,7 @@ export const removeCommentAction = (id, postId) => async dispatch => {
     Toast.show({
       type: 'error',
       text1: 'Thông báo',
-      text2: error.response.data.message,
+      text2: 'Bạn không có quyền xoá bình luận',
     });
   }
 };

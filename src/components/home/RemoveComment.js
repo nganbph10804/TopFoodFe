@@ -30,13 +30,6 @@ const RemoveComment = ({ id, postId }) => {
         <MenuItem
           onPress={() => {
             hideMenu();
-          }}
-        >
-          Báo cáo
-        </MenuItem>
-        <MenuItem
-          onPress={() => {
-            hideMenu();
             removeComment();
           }}
         >

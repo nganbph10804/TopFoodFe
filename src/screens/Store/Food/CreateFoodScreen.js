@@ -46,10 +46,6 @@ const CreateFoodScreen = ({ navigation }) => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [tagList, setTagList] = useState('');
-  console.log(
-    '😂🤣 ~ file: CreateFoodScreen.js ~ line 48 ~ CreateFoodScreen ~ tagList',
-    tagList
-  );
   const [pickerValue, setPickerValue] = useState('');
 
   const dispatch = useDispatch();

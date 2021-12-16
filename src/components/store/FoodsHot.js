@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
-import { Image, StyleSheet } from 'react-native';
-import { Card, Chip, Paragraph, Subheading } from 'react-native-paper';
-import { _ } from 'lodash';
-import { formatPrice } from '../../constants/price.const';
 import { AntDesign, Entypo } from '@expo/vector-icons';
-import { COLORS } from '../../constants/color.const';
+import { _ } from 'lodash';
+import React, { useState } from 'react';
+import { Alert, Image, StyleSheet, View } from 'react-native';
 import { Menu, MenuItem } from 'react-native-material-menu';
+import { Card, Chip, Paragraph, Subheading } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
+import { COLORS } from '../../constants/color.const';
+import { formatPrice } from '../../constants/price.const';
+import { deleteHotAction } from '../../redux/foodHot/foodHotActions';
 import { deleteFoodAction } from '../../redux/store/food/actions/foodAction';
-import { View } from 'react-native';
 
 const FoodsHot = ({ food, navigation }) => {
+  const account = useSelector(state => state.auth.account);
+  const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const hideMenu = () => setVisible(false);
   const showMenu = () => setVisible(true);
@@ -29,8 +32,8 @@ const FoodsHot = ({ food, navigation }) => {
     ]);
   };
 
-  const addHot = () => {
-    Alert.alert('Thông báo', 'Bạn có muốn thêm món ăn hot không?', [
+  const removeHot = () => {
+    Alert.alert('Thông báo', 'Bạn có muốn bỏ món ăn hot không?', [
       {
         text: 'Huỷ',
         style: 'cancel',
@@ -38,7 +41,7 @@ const FoodsHot = ({ food, navigation }) => {
       {
         text: 'Đồng ý',
         onPress: () => {
-          // dispatch(addHotAction(food.id, account.id));
+          dispatch(deleteHotAction(food.id, account.id));
         },
       },
     ]);
@@ -66,7 +69,7 @@ const FoodsHot = ({ food, navigation }) => {
             <MenuItem
               onPress={() => {
                 hideMenu();
-                addHot();
+                removeHot();
               }}
             >
               Bỏ món ăn hot

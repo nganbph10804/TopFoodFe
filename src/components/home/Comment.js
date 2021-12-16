@@ -195,15 +195,7 @@ const Comment = ({
                     source={{ uri: `${i.profile.profile.avatar}` }}
                     size={60}
                   />
-                  <View
-                    style={{
-                      zIndex: 80,
-                      padding: 10,
-                      backgroundColor: '#f5f5f5',
-                      marginLeft: 5,
-                      width: '83%',
-                    }}
-                  >
+                  <View style={styled.profile}>
                     <Subheading style={{ fontWeight: 'bold' }}>
                       {i.profile.profile.name}
                     </Subheading>
@@ -213,12 +205,7 @@ const Comment = ({
                         <Image
                           key={idx}
                           source={{ uri: `${i.path}` }}
-                          style={{
-                            width: '100%',
-                            height: 200,
-                            marginVertical: 5,
-                            borderRadius: 10,
-                          }}
+                          style={styled.image}
                         />
                       ))}
                     <RemoveComment id={i.id} postId={post.id} />
@@ -333,6 +320,19 @@ const styled = StyleSheet.create({
   container: {
     flex: 1,
     zIndex: 1000,
+  },
+  profile: {
+    zIndex: 80,
+    padding: 10,
+    backgroundColor: '#f5f5f5',
+    marginLeft: 5,
+    width: '83%',
+  },
+  image: {
+    width: '100%',
+    height: 200,
+    marginVertical: 5,
+    borderRadius: 10,
   },
   back: {
     alignSelf: 'flex-start',

@@ -1,42 +1,66 @@
 import { AntDesign } from '@expo/vector-icons';
 import { _ } from 'lodash';
 import React from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
-import { Chip, Divider, Subheading } from 'react-native-paper';
+import { Image, View, StyleSheet } from 'react-native';
+import { Card, Chip, Paragraph, Subheading, Title } from 'react-native-paper';
 import { COLORS } from '../../constants/color.const.js';
 import { formatPrice } from '../../constants/price.const.js';
-import { styled } from '../../styles/store.js';
 
 const FoodByTag = ({ food, navigation, tagId, tagName }) => {
   return (
-    <TouchableOpacity
+    <Card
       onPress={() =>
         navigation.navigate('SubFoodScreen', { tagId, food, tagName })
       }
+      style={styled.main}
     >
-      <View style={styled.container}>
-        <View style={{ width: '25%' }}>
+      <Card.Content style={styled.item}>
+        <View style={{ width: '35%' }}>
           <Image
             source={{ uri: `${_.head(food.files)}` }}
             style={styled.image}
           />
         </View>
         <View>
-          <Text style={styled.textName}>{food.name}</Text>
-          <Text style={styled.textPrice}>{formatPrice(food.price)} </Text>
+          <Title>{food.name}</Title>
+          <Paragraph style={styled.price}>{formatPrice(food.price)} </Paragraph>
         </View>
-        <View style={{ position: 'absolute', right: 20, top: 30 }}>
-          <Chip>
-            <AntDesign name="star" size={24} color={`${COLORS.blue[4]}`} />
+      </Card.Content>
+      <Card.Actions>
+        {food.totalReaction > 0 && (
+          <Chip
+            style={{ position: 'absolute', right: 10 }}
+            icon={() => (
+              <AntDesign name="star" size={24} color={`${COLORS.blue[4]}`} />
+            )}
+          >
             <Subheading style={{ color: `${COLORS.blue[4]}` }}>
               {food.totalReaction} votes
             </Subheading>
           </Chip>
-        </View>
-      </View>
-      <Divider />
-    </TouchableOpacity>
+        )}
+      </Card.Actions>
+    </Card>
   );
 };
+
+const styled = StyleSheet.create({
+  item: {
+    flexDirection: 'row',
+    flex: 1,
+    padding: 15,
+  },
+  price: {
+    fontSize: 16,
+  },
+  image: {
+    borderRadius: 10,
+    width: 120,
+    height: 120,
+  },
+  main: {
+    margin: 10,
+  },
+});
 
 export default FoodByTag;

@@ -4,13 +4,14 @@ import React, { useState } from 'react';
 import { Alert, Image, StyleSheet, Text, View } from 'react-native';
 import { Menu, MenuItem } from 'react-native-material-menu';
 import { Card, Chip, Subheading } from 'react-native-paper';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
 import { formatPrice } from '../../constants/price.const.js';
 import { addHotAction } from '../../redux/foodHot/foodHotActions.js';
 import { deleteFoodAction } from '../../redux/store/food/actions/foodAction.js';
 
 const FoodList = ({ food, navigation }) => {
+  const account = useSelector(state => state.auth.account);
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const hideMenu = () => setVisible(false);

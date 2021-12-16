@@ -8,7 +8,6 @@ export const styled = StyleSheet.create({
     backgroundColor: `${COLORS.blue[2]}`,
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'relative',
   },
   viewBtn: {
     alignSelf: 'center',
