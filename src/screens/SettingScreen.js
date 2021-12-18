@@ -33,7 +33,7 @@ const SettingScreen = ({ navigation }) => {
         text: 'Đồng ý',
         onPress: () => {
           dispatch(logoutAction());
-          dispatch(clearTotalAction());
+          // dispatch(clearTotalAction());
         },
       },
     ]);

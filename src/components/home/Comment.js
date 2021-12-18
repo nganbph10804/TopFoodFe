@@ -100,12 +100,12 @@ const Comment = ({
     }
   };
 
-  useEffect(() => {
-    const focus = navigation.addListener('focus', () => {
-      ref.current.focus();
-    });
-    return focus;
-  }, []);
+  // useEffect(() => {
+  //   const focus = navigation.addListener('focus', () => {
+  //     ref.current.focus();
+  //   });
+  //   return focus;
+  // }, []);
 
   useEffect(() => {
     (async () => {
@@ -189,25 +189,19 @@ const Comment = ({
           <Title>Bình luận ({commentList.length})</Title>
           <View>
             {commentList.map((i, idx) => (
-              <View key={idx} style={{ paddingBottom: 10, paddingTop: 10 }}>
+              <View
+                key={idx}
+                style={{ marginVertical: 10, flexDirection: 'column' }}
+              >
                 <View style={{ flexDirection: 'row' }}>
                   <Avatar.Image
                     source={{ uri: `${i.profile.profile.avatar}` }}
                     size={60}
                   />
-                  <View
-                    style={{
-                      zIndex: 80,
-                      padding: 10,
-                      backgroundColor: '#f5f5f5',
-                      marginLeft: 5,
-                      width: '83%',
-                    }}
-                  >
+                  <View style={styled.listComments}>
                     <Subheading style={{ fontWeight: 'bold' }}>
                       {i.profile.profile.name}
                     </Subheading>
-                    <Subheading>{i.content} </Subheading>
                     {i.files &&
                       i.files.map((i, idx) => (
                         <Image
@@ -221,8 +215,20 @@ const Comment = ({
                           }}
                         />
                       ))}
+                    <Subheading>{i.content} </Subheading>
                     <RemoveComment id={i.id} postId={post.id} />
                   </View>
+                  {i.totalReaction > 0 && (
+                    <View style={styled.like}>
+                      <Subheading>{i.totalReaction}</Subheading>
+                      <AntDesign
+                        name="like1"
+                        size={24}
+                        color={`${COLORS.blue[4]}`}
+                        onPress={() => likeComment(i.id)}
+                      />
+                    </View>
+                  )}
                 </View>
                 <ActionComment
                   i={i}
@@ -334,6 +340,13 @@ const styled = StyleSheet.create({
     flex: 1,
     zIndex: 1000,
   },
+  listComments: {
+    zIndex: 80,
+    padding: 10,
+    backgroundColor: '#f5f5f5',
+    marginLeft: 5,
+    width: '83%',
+  },
   back: {
     alignSelf: 'flex-start',
     marginTop: 10,
@@ -376,6 +389,13 @@ const styled = StyleSheet.create({
     position: 'absolute',
     right: 30,
     top: 10,
+  },
+  like: {
+    flexDirection: 'row',
+    position: 'absolute',
+    right: -60,
+    top: -10,
+    zIndex: 100,
   },
 });
 
