@@ -1,8 +1,8 @@
 import { Entypo } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 import { Menu, MenuItem } from 'react-native-material-menu';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { removeCommentAction } from '../../redux/react/actions/reactAction.js';
 
 const RemoveComment = ({ id, postId }) => {
@@ -11,7 +11,18 @@ const RemoveComment = ({ id, postId }) => {
   const hideMenu = () => setVisible(false);
   const showMenu = () => setVisible(true);
   const removeComment = () => {
-    dispatch(removeCommentAction(id, postId));
+    Alert.alert('Thông báo', 'Bạn có muốn xoá bình luận không?', [
+      {
+        text: 'Huỷ',
+        style: 'cancel',
+      },
+      {
+        text: 'Đồng ý',
+        onPress: () => {
+          dispatch(removeCommentAction(id, postId));
+        },
+      },
+    ]);
   };
   return (
     <View style={{ position: 'absolute', right: 10 }}>
@@ -27,13 +38,6 @@ const RemoveComment = ({ id, postId }) => {
         }
         onRequestClose={hideMenu}
       >
-        <MenuItem
-          onPress={() => {
-            hideMenu();
-          }}
-        >
-          Báo cáo
-        </MenuItem>
         <MenuItem
           onPress={() => {
             hideMenu();

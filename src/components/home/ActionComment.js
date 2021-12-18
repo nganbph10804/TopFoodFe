@@ -1,11 +1,8 @@
-import { AntDesign } from '@expo/vector-icons';
 import moment from 'moment';
 import 'moment/locale/vi';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Chip, Paragraph, Subheading } from 'react-native-paper';
-import { COLORS } from '../../constants/color.const.js';
-import ReplyComment from './ReplyComment.js';
+import { Chip, Paragraph } from 'react-native-paper';
 
 const ActionComment = ({ i, likeComment, handlerSubmit, setCommentId }) => {
   return (
@@ -17,7 +14,7 @@ const ActionComment = ({ i, likeComment, handlerSubmit, setCommentId }) => {
         <TouchableOpacity onPress={() => likeComment(i.id)}>
           <Chip onPress={() => likeComment(i.id)}>Like</Chip>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{ marginLeft: 10 }}
           onPress={() => {
             handlerSubmit(), setCommentId(i.id);
@@ -30,8 +27,7 @@ const ActionComment = ({ i, likeComment, handlerSubmit, setCommentId }) => {
           >
             Phản hồi
           </Chip>
-        </TouchableOpacity>
-        {/* <ReplyComment i={i} /> */}
+        </TouchableOpacity> */}
       </View>
     </View>
   );
@@ -40,7 +36,7 @@ const ActionComment = ({ i, likeComment, handlerSubmit, setCommentId }) => {
 const styled = StyleSheet.create({
   main: {
     paddingTop: 10,
-    // alignSelf: 'center',
+    marginLeft: 80,
   },
   action: {
     flexDirection: 'row',

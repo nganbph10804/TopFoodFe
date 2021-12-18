@@ -11,8 +11,10 @@ import {
   View,
 } from 'react-native';
 import {
+  ActivityIndicator,
   Avatar,
   Button,
+  Card,
   Chip,
   Divider,
   Subheading,
@@ -30,7 +32,9 @@ import {
   commentPostAction,
   likeCommentAction,
   replyCommentAction,
+  replyListAction,
 } from '../../redux/react/actions/reactAction.js';
+import { styles } from '../../styles/paper.js';
 import ActionComment from './ActionComment.js';
 import RemoveComment from './RemoveComment.js';
 
@@ -46,6 +50,7 @@ const Comment = ({
   const dispatch = useDispatch();
   const ref = useRef(null);
   const commentList = useSelector(state => state.react.comment);
+  const loading = useSelector(state => state.react.loading);
   const [height, setHeight] = useState();
   const [comment, setComment] = useState('');
   const [visible, setVisible] = useState(false);
@@ -83,6 +88,7 @@ const Comment = ({
       dispatch(clearFilesAction());
     } else {
       dispatch(replyCommentAction(commentId, reply, ''));
+      dispatch(replyListAction(commentId));
       setReply('');
       dispatch(clearFilesAction());
     }
@@ -99,13 +105,6 @@ const Comment = ({
       dispatch(multiFileAction(result.uri));
     }
   };
-
-  // useEffect(() => {
-  //   const focus = navigation.addListener('focus', () => {
-  //     ref.current.focus();
-  //   });
-  //   return focus;
-  // }, []);
 
   useEffect(() => {
     (async () => {
@@ -126,6 +125,16 @@ const Comment = ({
 
   return (
     <Modal style={{ flex: 1 }}>
+      {loading && (
+        <View style={styles.loading}>
+          <ActivityIndicator
+            animating={true}
+            color={`${COLORS.blue[4]}`}
+            size={'large'}
+            style={{ zIndex: 999999 }}
+          />
+        </View>
+      )}
       <Button
         onPress={() => setShow(false)}
         style={styled.back}
@@ -157,7 +166,7 @@ const Comment = ({
             )}
             onPress={() => handlerHeart()}
           >
-            {totalReaction > 0 && totalReaction} Likes
+            {totalReaction > 0 && totalReaction} Like
           </Chip>
         ) : (
           <Chip
@@ -166,7 +175,7 @@ const Comment = ({
             )}
             onPress={() => handlerHeart()}
           >
-            {totalReaction > 0 && totalReaction} Likes
+            {totalReaction > 0 && totalReaction} Like
           </Chip>
         )}
       </TouchableOpacity>
@@ -193,42 +202,46 @@ const Comment = ({
                 key={idx}
                 style={{ marginVertical: 10, flexDirection: 'column' }}
               >
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', flex: 1 }}>
                   <Avatar.Image
                     source={{ uri: `${i.profile.profile.avatar}` }}
                     size={60}
                   />
-                  <View style={styled.listComments}>
-                    <Subheading style={{ fontWeight: 'bold' }}>
-                      {i.profile.profile.name}
-                    </Subheading>
-                    {i.files &&
-                      i.files.map((i, idx) => (
-                        <Image
-                          key={idx}
-                          source={{ uri: `${i.path}` }}
-                          style={{
-                            width: '100%',
-                            height: 200,
-                            marginVertical: 5,
-                            borderRadius: 10,
-                          }}
-                        />
-                      ))}
-                    <Subheading>{i.content} </Subheading>
-                    <RemoveComment id={i.id} postId={post.id} />
-                  </View>
-                  {i.totalReaction > 0 && (
-                    <View style={styled.like}>
-                      <Subheading>{i.totalReaction}</Subheading>
-                      <AntDesign
-                        name="like1"
-                        size={24}
-                        color={`${COLORS.blue[4]}`}
-                        onPress={() => likeComment(i.id)}
-                      />
-                    </View>
-                  )}
+                  <Card style={styled.listComments}>
+                    <Card.Content>
+                      <Subheading style={{ fontWeight: 'bold' }}>
+                        {i.profile.profile.name}
+                      </Subheading>
+                      {i.files &&
+                        i.files.map((i, idx) => (
+                          <Image
+                            key={idx}
+                            source={{ uri: `${i.path}` }}
+                            style={{
+                              width: '100%',
+                              height: 200,
+                              marginVertical: 5,
+                              borderRadius: 10,
+                            }}
+                          />
+                        ))}
+                      <Subheading>{i.content} </Subheading>
+                      <RemoveComment id={i.id} postId={post.id} />
+                    </Card.Content>
+                    <Card.Actions>
+                      {i.totalReaction > 0 && (
+                        <View style={styled.like}>
+                          <Subheading>{i.totalReaction}</Subheading>
+                          <AntDesign
+                            name="like1"
+                            size={24}
+                            color={`${COLORS.blue[4]}`}
+                            onPress={() => likeComment(i.id)}
+                          />
+                        </View>
+                      )}
+                    </Card.Actions>
+                  </Card>
                 </View>
                 <ActionComment
                   i={i}
@@ -338,7 +351,7 @@ const Comment = ({
 const styled = StyleSheet.create({
   container: {
     flex: 1,
-    zIndex: 1000,
+    // zIndex: 1000,
   },
   listComments: {
     zIndex: 80,
@@ -379,23 +392,16 @@ const styled = StyleSheet.create({
     marginHorizontal: 10,
     marginBottom: 100,
   },
-  action: {
-    position: 'absolute',
-    bottom: -40,
-    left: 100,
-    flexDirection: 'row',
-  },
   actionContainer: {
     position: 'absolute',
     right: 30,
     top: 10,
   },
   like: {
-    flexDirection: 'row',
     position: 'absolute',
-    right: -60,
-    top: -10,
-    zIndex: 100,
+    flexDirection: 'row',
+    right: 20,
+    top: 10,
   },
 });
 

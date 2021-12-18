@@ -181,25 +181,33 @@ const ProfileDetailScreen = ({ navigation }) => {
           </View>
           {store === ROLES.ROLE_USER && (
             <View style={{ marginTop: 140 }}>
-              <TouchableOpacity
-                style={styled.item}
-                onPress={() => navigation.navigate('ListStoreScreen')}
-              >
-                <FontAwesome5 name="store-alt" size={24} color="black" />
-                <Subheading style={styled.text}>
-                  Đang theo dõi {followListStore.length} cửa hàng
-                </Subheading>
-              </TouchableOpacity>
+              {followListStore.length > 0 && (
+                <TouchableOpacity
+                  style={styled.item}
+                  onPress={() => navigation.navigate('ListStoreScreen')}
+                >
+                  <FontAwesome5 name="store-alt" size={24} color="black" />
+                  <Subheading style={styled.text}>
+                    Đang theo dõi {followListStore.length} cửa hàng
+                  </Subheading>
+                </TouchableOpacity>
+              )}
               <Divider />
-              <TouchableOpacity
-                style={styled.item}
-                onPress={() => navigation.navigate('MainFriendScreen')}
-              >
-                <Ionicons name="ios-people" size={24} color="black" />
-                <Subheading style={styled.text}>
-                  Đang có {friend.length} bạn bè
-                </Subheading>
-              </TouchableOpacity>
+              {friend.length > 0 ? (
+                <TouchableOpacity
+                  style={styled.item}
+                  onPress={() => navigation.navigate('MainFriendScreen')}
+                >
+                  <Ionicons name="ios-people" size={24} color="black" />
+                  <Subheading style={styled.text}>
+                    Đang có {friend.length} bạn bè
+                  </Subheading>
+                </TouchableOpacity>
+              ) : (
+                <View style={{ alignItems: 'center', fontWeight: 'bold' }}>
+                  <Subheading>Không có bạn bè </Subheading>
+                </View>
+              )}
             </View>
           )}
         </View>

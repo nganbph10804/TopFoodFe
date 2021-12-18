@@ -121,19 +121,30 @@ export const unFollowAction = id => async dispatch => {
       type: PROFILE,
       payload: data.data,
     });
+    const data1 = await axios.get(
+      `http://58.84.1.32:8080/store-profile/list-store-follow?page=0&pageSize=1000`,
+      {
+        headers: await authHeader(),
+      }
+    );
+    dispatch({
+      type: FOLLOW_LIST_STORE,
+      payload: data1.data.data.data,
+    });
     Toast.show({
       type: 'success',
       text1: 'Thông báo',
       text2: 'Bỏ theo dõi cửa hàng thành công',
     });
   } catch (e) {
+    console.log('😂🤣 ~ file: followAction.js ~ line 138 ~ e', e);
     dispatch({
       type: FOLLOW_FAILURE,
     });
     Toast.show({
       type: 'error',
       text1: 'Thông báo',
-      text2: error.response.data.message,
+      text2: e.response.data.message,
     });
   }
 };

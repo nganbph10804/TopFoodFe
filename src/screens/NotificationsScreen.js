@@ -52,16 +52,6 @@ const NotificationsScreen = ({ navigation }) => {
               <ListRequest key={key} friend={friend} navigation={navigation} />
             ))}
           </View>
-          {/* <View
-            style={{
-              width: '100%',
-            }}
-          >
-            <Title style={{ marginLeft: 20 }}>Trước đó</Title>
-          </View>
-          <View>
-            <Notification />
-          </View> */}
         </View>
       </Card>
     </View>
