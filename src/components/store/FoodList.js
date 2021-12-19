@@ -50,50 +50,54 @@ const FoodList = ({ food, navigation, storeId }) => {
   return (
     <Card
       style={styled.container}
-      onPress={() => navigation.navigate('FoodDetailScreen', { food })}
+      onPress={() =>
+        account.role === 'ROLE_STORE' &&
+        navigation.navigate('FoodDetailScreen', { food })
+      }
     >
       <Card.Content style={styled.main}>
-        {storeId === account.id && (
-          <View style={styled.menu}>
-            <Menu
-              visible={visible}
-              anchor={
-                <Entypo
-                  name="dots-three-horizontal"
-                  size={24}
-                  color="black"
-                  onPress={showMenu}
-                />
-              }
-              onRequestClose={hideMenu}
-            >
-              <MenuItem
-                onPress={() => {
-                  hideMenu();
-                  addHot();
-                }}
+        {storeId === account.id ||
+          (account.role === 'ROLE_STORE' && (
+            <View style={styled.menu}>
+              <Menu
+                visible={visible}
+                anchor={
+                  <Entypo
+                    name="dots-three-horizontal"
+                    size={24}
+                    color="black"
+                    onPress={showMenu}
+                  />
+                }
+                onRequestClose={hideMenu}
               >
-                Thêm món ăn hot
-              </MenuItem>
-              <MenuItem
-                onPress={() => {
-                  hideMenu();
-                  navigation.navigate('EditFoodScreen', food);
-                }}
-              >
-                Cập nhật
-              </MenuItem>
-              <MenuItem
-                onPress={() => {
-                  hideMenu();
-                  handlerRemove();
-                }}
-              >
-                Xoá
-              </MenuItem>
-            </Menu>
-          </View>
-        )}
+                <MenuItem
+                  onPress={() => {
+                    hideMenu();
+                    addHot();
+                  }}
+                >
+                  Thêm món ăn hot
+                </MenuItem>
+                <MenuItem
+                  onPress={() => {
+                    hideMenu();
+                    navigation.navigate('EditFoodScreen', food);
+                  }}
+                >
+                  Cập nhật
+                </MenuItem>
+                <MenuItem
+                  onPress={() => {
+                    hideMenu();
+                    handlerRemove();
+                  }}
+                >
+                  Xoá
+                </MenuItem>
+              </Menu>
+            </View>
+          ))}
         <View style={{ width: '32%' }}>
           <Image
             source={{ uri: `${_.head(food.files)}` }}

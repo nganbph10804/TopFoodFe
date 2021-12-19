@@ -9,10 +9,6 @@ import FeedList from '../store/feed/FeedList';
 const PostClient = ({ storeId, navigation }) => {
   const dispatch = useDispatch();
   const { feed } = useSelector(state => state.feed);
-  console.log(
-    '😂🤣 ~ file: PostClient.js ~ line 8 ~ PostClient ~ feed',
-    feed.length
-  );
   useEffect(() => {
     dispatch(storeFeedListAction(storeId));
   }, [dispatch]);
