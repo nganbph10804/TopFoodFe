@@ -12,6 +12,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import FilterCtg from '../../../components/store/FilterCtg.js';
 import FoodList from '../../../components/store/FoodList.js';
+import FoodsHot from '../../../components/store/FoodsHot.js';
 import SearchFood from '../../../components/store/SearchFood.js';
 import TagList from '../../../components/store/TagList.js';
 import { COLORS } from '../../../constants/color.const.js';
@@ -20,15 +21,15 @@ import {
   foodListAction,
   searchFoodAction,
 } from '../../../redux/store/food/actions/foodAction.js';
+import { findTagIdByStoreAction } from '../../../redux/store/tag/action/tagAction.js';
 import { styles } from '../../../styles/paper.js';
-import FoodsHot from '../../../components/store/FoodsHot.js';
 
 const FoodListScreen = ({ navigation }) => {
   const account = useSelector(state => state.auth.account);
   const { tag } = useSelector(state => state.tag);
+  const { detail } = useSelector(state => state.tag);
   const food = useSelector(state => state.food.food);
   const loading = useSelector(state => state.food.loading);
-  const tags = useSelector(state => state.food.tagName);
   const search = useSelector(state => state.food.search);
   const role = useSelector(state => state.auth.account.role);
   const ref = useRef(null);
@@ -38,7 +39,6 @@ const FoodListScreen = ({ navigation }) => {
   const [focus, setFocus] = useState();
   const [ctg, setCtg] = useState();
   const [tagId, setTagId] = useState();
-  const [tagData, setTagData] = useState([]);
 
   const [hot, setHot] = useState([]);
   const [foods, setFoods] = useState([]);
@@ -65,16 +65,15 @@ const FoodListScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
+    if (tagId > 0) {
+      dispatch(findTagIdByStoreAction(tagId));
+    }
+  }, [tagId]);
+
+  useEffect(() => {
     setHot(_.filter(food, i => i.foodHot));
     setFoods(_.filter(food, i => !i.foodHot));
   }, [food]);
-
-  useEffect(() => {
-    if (tagId) {
-      let data = _.filter(food, i => i.tag.id === tagId);
-      setTagData(data);
-    }
-  }, [tagId]);
 
   useEffect(() => {
     if (searchValue) {
@@ -159,7 +158,9 @@ const FoodListScreen = ({ navigation }) => {
               <SearchFood key={i.id} food={i} navigation={navigation} />
             ))}
         <View>
-          {hot && <Subheading style={styled.hot}>Món ăn hot</Subheading>}
+          {hot.length > 0 && (
+            <Subheading style={styled.hot}>Món ăn hot</Subheading>
+          )}
           <ScrollView horizontal={true}>
             {hot.map((i, index) => (
               <FoodsHot key={index} food={i} navigation={navigation} />
@@ -170,26 +171,27 @@ const FoodListScreen = ({ navigation }) => {
           <View>
             {food.length < 1 ? (
               <View style={styled.noFood}>
-                <Title key={idx}>Không có món ăn</Title>
+                <Title>Không có món ăn</Title>
               </View>
             ) : (
               <View style={{ flex: 1 }}>
                 <Subheading style={styled.normal}>Món ăn</Subheading>
-                {foods.map(i => (
-                  <FoodList key={i.id} food={i} navigation={navigation} />
+                {foods.map((i, index) => (
+                  <FoodList key={index} food={i} navigation={navigation} />
                 ))}
               </View>
             )}
           </View>
         )}
-        {ctg && (
+        {ctg && detail.foods && (
           <View style={{ flex: 1 }}>
-            {tagData.map(i => (
+            {detail.foods.map((i, index) => (
               <FilterCtg
-                key={i.id}
-                foods={i}
+                key={index}
+                food={i}
                 navigation={navigation}
-                tagName={tags}
+                tagName={detail.tagName}
+                tagId={tagId}
               />
             ))}
           </View>

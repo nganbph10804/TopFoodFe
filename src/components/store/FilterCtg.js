@@ -1,97 +1,123 @@
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Entypo } from '@expo/vector-icons';
 import { _ } from 'lodash';
-import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { BottomSheet, ListItem } from 'react-native-elements';
-import { Chip, Divider, Subheading } from 'react-native-paper';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { Alert, Image, StyleSheet, Text, View } from 'react-native';
+import { Menu, MenuItem } from 'react-native-material-menu';
+import { Card, Chip, Subheading } from 'react-native-paper';
+import { useDispatch } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
 import { formatPrice } from '../../constants/price.const.js';
-import {
-  deleteFoodAction,
-  foodDetailAction,
-} from '../../redux/store/food/actions/foodAction.js';
+import { addHotAction } from '../../redux/foodHot/foodHotActions.js';
+import { deleteFoodAction } from '../../redux/store/food/actions/foodAction.js';
 
-const FilterCtg = ({ foods, navigation, tagName }) => {
-  const detail = useSelector(state => state.food.detail);
-  const [isVisible, setIsVisible] = useState(false);
-  const food = detail;
+const FilterCtg = ({ food, navigation, tagName, tagId }) => {
   const dispatch = useDispatch();
-  const handlerOption = () => {
-    setIsVisible(true);
-  };
-  const handlerRemove = () => {
-    dispatch(deleteFoodAction(foods.id));
-    setIsVisible(false);
-  };
-  useEffect(() => {
-    dispatch(foodDetailAction(foods.id));
-  }, [dispatch]);
+  const [visible, setVisible] = useState(false);
+  const hideMenu = () => setVisible(false);
+  const showMenu = () => setVisible(true);
 
-  const list = [
-    {
-      title: 'Cập nhật',
-      titleStyle: { color: `${COLORS.blue[1]}` },
-      onPress: () => navigation.navigate('EditFoodScreen', foods),
-    },
-    {
-      title: 'Xoá',
-      titleStyle: { color: 'red' },
-      onPress: () => handlerRemove(),
-    },
-    {
-      title: 'Cancel',
-      onPress: () => setIsVisible(false),
-    },
-  ];
+  const handlerRemove = () => {
+    Alert.alert('Thông báo', 'Bạn có muốn xoá món ăn không?', [
+      {
+        text: 'Huỷ',
+        style: 'cancel',
+      },
+      {
+        text: 'Đồng ý',
+        onPress: () => {
+          dispatch(deleteFoodAction(food.id, tagId));
+        },
+      },
+    ]);
+  };
+
+  const addHot = () => {
+    Alert.alert('Thông báo', 'Bạn có muốn thêm món ăn hot không?', [
+      {
+        text: 'Huỷ',
+        style: 'cancel',
+      },
+      {
+        text: 'Đồng ý',
+        onPress: () => {
+          dispatch(addHotAction(food.id, account.id));
+        },
+      },
+    ]);
+  };
+
   return (
-    <TouchableOpacity
-      onLongPress={() => handlerOption()}
-      onPress={() => navigation.navigate('FoodDetailScreen', { food })}
+    <Card
+      style={styled.container}
+      onPress={() => navigation.navigate('FoodDetailScreen', { food, tagId })}
     >
-      <View style={styled.container}>
-        <View style={styled.main}>
-          <View style={{ width: '32%' }}>
-            <Image
-              source={{ uri: `${_.head(foods.files)}` }}
-              style={styled.image}
-            />
-          </View>
-          <View>
-            <Text style={styled.textName}>{foods.name}</Text>
-            <Text style={styled.textTag}>{tagName} </Text>
-            <Text style={styled.textPrice}>{formatPrice(foods.price)} </Text>
-          </View>
-          <View
-            style={{ alignSelf: 'center', position: 'absolute', right: 20 }}
+      <Card.Content style={styled.main}>
+        <View style={styled.menu}>
+          <Menu
+            visible={visible}
+            anchor={
+              <Entypo
+                name="dots-three-horizontal"
+                size={24}
+                color="black"
+                onPress={showMenu}
+              />
+            }
+            onRequestClose={hideMenu}
           >
-            <Chip>
-              <AntDesign name="star" size={24} color={`${COLORS.blue[4]}`} />
-              <Subheading style={{ color: `${COLORS.blue[4]}` }}>
-                {food.totalReaction} votes
-              </Subheading>
-            </Chip>
-          </View>
+            <MenuItem
+              onPress={() => {
+                hideMenu();
+                addHot();
+              }}
+            >
+              Thêm món ăn hot
+            </MenuItem>
+            <MenuItem
+              onPress={() => {
+                hideMenu();
+                navigation.navigate('EditFoodScreen', food);
+              }}
+            >
+              Cập nhật
+            </MenuItem>
+            <MenuItem
+              onPress={() => {
+                hideMenu();
+                handlerRemove();
+              }}
+            >
+              Xoá
+            </MenuItem>
+          </Menu>
         </View>
-        <Divider />
-      </View>
-      <BottomSheet
-        isVisible={isVisible}
-        containerStyle={{ backgroundColor: 'rgba(0.5, 0.25, 0, 0.2)' }}
-      >
-        {list.map((l, i) => (
-          <ListItem
-            key={i}
-            containerStyle={l.containerStyle}
-            onPress={l.onPress}
+        <View style={{ width: '32%' }}>
+          <Image
+            source={{ uri: `${_.head(food.files)}` }}
+            style={styled.image}
+          />
+        </View>
+        <View>
+          <Text style={styled.textName}>{food.name}</Text>
+          <Text style={styled.textTag}>{tagName} </Text>
+          <Text style={styled.textPrice}>{formatPrice(food.price)} </Text>
+        </View>
+      </Card.Content>
+      <Card.Actions>
+        {food.totalReaction > 0 && (
+          <Chip
+            icon={() => (
+              <AntDesign name="star" size={24} color={`${COLORS.blue[4]}`} />
+            )}
+            style={styled.vote}
           >
-            <ListItem.Content>
-              <ListItem.Title style={l.titleStyle}>{l.title}</ListItem.Title>
-            </ListItem.Content>
-          </ListItem>
-        ))}
-      </BottomSheet>
-    </TouchableOpacity>
+            <Subheading style={{ color: `${COLORS.blue[4]}` }}>
+              {food.totalReaction} votes
+            </Subheading>
+          </Chip>
+        )}
+      </Card.Actions>
+    </Card>
   );
 };
 
@@ -120,7 +146,16 @@ const styled = StyleSheet.create({
     marginTop: 20,
   },
   container: {
-    backgroundColor: '#fff',
+    margin: 10,
+  },
+  vote: {
+    position: 'absolute',
+    right: 20,
+  },
+  menu: {
+    position: 'absolute',
+    right: 20,
+    top: 10,
   },
 });
 export default FilterCtg;

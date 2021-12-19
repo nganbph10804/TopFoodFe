@@ -34,7 +34,7 @@ const FeedListScreen = ({ navigation }) => {
           </View>
         )}
         <View>
-          {feed.length > 1 ? (
+          {feed.length > 0 ? (
             feed.map((i, index) => (
               <FeedList key={index} feed={i} navigation={navigation} />
             ))

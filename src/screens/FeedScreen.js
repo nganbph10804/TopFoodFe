@@ -69,11 +69,15 @@ const FeedScreen = ({ navigation }) => {
   }, [dispatch]);
 
   useEffect(() => {
+    dispatch(postListByCityAction(citySelected.code));
+  }, [dispatch, citySelected.code]);
+
+  useEffect(() => {
     const focus = navigation.addListener('focus', () => {
       dispatch(postListByCityAction(citySelected.code));
     });
     return focus;
-  }, [dispatch, citySelected.code]);
+  }, []);
 
   useEffect(() => {
     if (role === 'ROLE_USER') {

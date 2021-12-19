@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image, View } from 'react-native';
+import { Image, ScrollView, View } from 'react-native';
 import { Avatar, Subheading, Title } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 import HeaderUser from '../../shared/HeaderUser.js';
@@ -82,7 +82,9 @@ const InformationAccScreen = () => {
           }}
         >
           <Title style={{ marginLeft: 20, marginRight: 45 }}>Địa chỉ</Title>
-          <Subheading>{auth.profile.address}</Subheading>
+          <ScrollView horizontal={true}>
+            <Subheading>{auth.profile.address}</Subheading>
+          </ScrollView>
         </View>
         <View
           style={{

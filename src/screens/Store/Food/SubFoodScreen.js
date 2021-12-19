@@ -9,28 +9,31 @@ import FoodByTag from '../../../components/store/FoodByTag.js';
 import { COLORS } from '../../../constants/color.const.js';
 import { formatPrice } from '../../../constants/price.const.js';
 import { foodDetailAction } from '../../../redux/store/food/actions/foodAction.js';
+import { findTagIdByStoreAction } from '../../../redux/store/tag/action/tagAction.js';
 import {
   unVoteFoodAction,
   voteFoodAction,
 } from '../../../redux/vote/voteAction.js';
 
 const SubFoodScreen = ({ navigation, route }) => {
-  const { content, name, price, files, id, tag } = route.params.food;
+  const { content, name, price, files, id } = route.params.food;
+  const { tagId } = route.params;
   const dispatch = useDispatch();
   const foodDetail = useSelector(state => state.food.detail);
-  const food = useSelector(state => state.food.food);
-  const foodByTag = _.filter(
-    _.filter(food, i => i.tag.id === tag.id),
-    i => i.id !== id
-  );
+  const detail = useSelector(state => state.tag.detail);
+  const foodByTag = _.filter(_.filter(detail.foods, i => i.id !== id));
 
   const handlerVote = id => {
-    dispatch(voteFoodAction(id));
+    dispatch(voteFoodAction(id, tagId));
   };
 
   const handlerUnVote = id => {
-    dispatch(unVoteFoodAction(id));
+    dispatch(unVoteFoodAction(id, tagId));
   };
+
+  useEffect(() => {
+    dispatch(findTagIdByStoreAction(tagId));
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(foodDetailAction(id));
@@ -46,14 +49,21 @@ const SubFoodScreen = ({ navigation, route }) => {
         />
         <Card.Content>
           <Title>{name}</Title>
-          <Subheading>{formatPrice(price)} </Subheading>
+          <Subheading
+            style={{ color: `${COLORS.purple[2]}`, fontStyle: 'italic' }}
+          >
+            {formatPrice(price)}
+          </Subheading>
           <Paragraph>{content}</Paragraph>
-          <View style={{ position: 'absolute', right: 20, top: 30 }}>
+        </Card.Content>
+        <Card.Actions>
+          <View style={{ position: 'absolute', right: 20 }}>
             {foodDetail.myReaction && (
               <Chip onPress={() => handlerUnVote(id)}>
                 <AntDesign name="star" size={24} color={`${COLORS.blue[4]}`} />
                 <Subheading style={{ color: `${COLORS.blue[4]}` }}>
-                  {foodDetail.totalReaction} votes
+                  {foodDetail.totalReaction > 0 && foodDetail.totalReaction}
+                  votes
                 </Subheading>
               </Chip>
             )}
@@ -61,12 +71,13 @@ const SubFoodScreen = ({ navigation, route }) => {
               <Chip onPress={() => handlerVote(id)}>
                 <AntDesign name="staro" size={24} color={`${COLORS.blue[4]}`} />
                 <Subheading style={{ color: `#000` }}>
-                  {foodDetail.totalReaction} votes
+                  {foodDetail.totalReaction > 0 && foodDetail.totalReaction}
+                  votes
                 </Subheading>
               </Chip>
             )}
           </View>
-        </Card.Content>
+        </Card.Actions>
       </Card>
       {foodByTag.length < 1 ? (
         <View>
@@ -77,24 +88,38 @@ const SubFoodScreen = ({ navigation, route }) => {
           <View
             style={{
               flexDirection: 'row',
-              paddingHorizontal: 10,
-              paddingBottom: 20,
-              paddingTop: 20,
+              padding: 20,
+              backgroundColor: '#aec4e6',
             }}
           >
-            <Entypo name="price-tag" size={24} color={`black`} />
-            <Title style={{ paddingLeft: 10, color: `black` }}>
-              Tag món ăn: #{tag.tagName}
-            </Title>
+            <Subheading
+              style={{
+                paddingLeft: 10,
+                color: `black`,
+                fontWeight: 'bold',
+                fontSize: 20,
+              }}
+            >
+              Hash Tag món ăn:{' '}
+              <Subheading
+                style={{
+                  color: `black`,
+                  fontWeight: 'bold',
+                  fontSize: 20,
+                  fontStyle: 'italic',
+                }}
+              >
+                #{detail.tagName}
+              </Subheading>
+            </Subheading>
           </View>
           <View style={styled.main}>
             {foodByTag.map(i => (
               <FoodByTag
                 key={i.id}
                 food={i}
-                tagId={route.params.tagId}
+                tagId={tagId}
                 navigation={navigation}
-                tagName={route.params.tagName}
               />
             ))}
           </View>

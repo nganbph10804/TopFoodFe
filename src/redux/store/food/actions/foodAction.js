@@ -2,6 +2,7 @@ import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import { authHeader } from '../../../authHeader.js';
 import { CLEAR_FILE } from '../../../file/types/fileType.js';
+import { GET_TAG_ID } from '../../tag/type/tagType.js';
 import {
   CLEAR_SEARCH,
   DELETE_FOOD,
@@ -149,7 +150,7 @@ export const updateFoodAction =
       });
     }
   };
-export const deleteFoodAction = id => async dispatch => {
+export const deleteFoodAction = (id, tagId) => async dispatch => {
   dispatch({
     type: FOOD_REQUEST,
   });
@@ -160,6 +161,16 @@ export const deleteFoodAction = id => async dispatch => {
         headers: await authHeader(),
       }
     );
+    const { data } = await axios.get(
+      `http://58.84.1.32:8080/api/tag/store/${tagId}`,
+      {
+        headers: await authHeader(),
+      }
+    );
+    dispatch({
+      type: GET_TAG_ID,
+      payload: data,
+    });
     setTimeout(() => {
       dispatch({
         type: DELETE_FOOD,

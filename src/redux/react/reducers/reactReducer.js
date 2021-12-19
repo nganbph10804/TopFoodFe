@@ -16,12 +16,12 @@ export const reactReducer = (state = initState, action) => {
     case REACT_FAILURE:
       return {
         ...state,
-        loading: true,
+        loading: false,
       };
     case REACT_REQUEST:
       return {
         ...state,
-        loading: false,
+        loading: true,
       };
     case COMMENT_LIST:
       return {

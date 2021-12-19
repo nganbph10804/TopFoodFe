@@ -4,13 +4,14 @@ import React, { useState } from 'react';
 import { Alert, Image, StyleSheet, Text, View } from 'react-native';
 import { Menu, MenuItem } from 'react-native-material-menu';
 import { Card, Chip, Subheading } from 'react-native-paper';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
 import { formatPrice } from '../../constants/price.const.js';
 import { addHotAction } from '../../redux/foodHot/foodHotActions.js';
 import { deleteFoodAction } from '../../redux/store/food/actions/foodAction.js';
 
-const FoodList = ({ food, navigation }) => {
+const FoodList = ({ food, navigation, storeId }) => {
+  const account = useSelector(state => state.auth.account);
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const hideMenu = () => setVisible(false);
@@ -49,48 +50,54 @@ const FoodList = ({ food, navigation }) => {
   return (
     <Card
       style={styled.container}
-      onPress={() => navigation.navigate('FoodDetailScreen', { food })}
+      onPress={() =>
+        account.role === 'ROLE_STORE' &&
+        navigation.navigate('FoodDetailScreen', { food })
+      }
     >
       <Card.Content style={styled.main}>
-        <View style={styled.menu}>
-          <Menu
-            visible={visible}
-            anchor={
-              <Entypo
-                name="dots-three-horizontal"
-                size={24}
-                color="black"
-                onPress={showMenu}
-              />
-            }
-            onRequestClose={hideMenu}
-          >
-            <MenuItem
-              onPress={() => {
-                hideMenu();
-                addHot();
-              }}
-            >
-              Thêm món ăn hot
-            </MenuItem>
-            <MenuItem
-              onPress={() => {
-                hideMenu();
-                navigation.navigate('EditFoodScreen', food);
-              }}
-            >
-              Cập nhật
-            </MenuItem>
-            <MenuItem
-              onPress={() => {
-                hideMenu();
-                handlerRemove();
-              }}
-            >
-              Xoá
-            </MenuItem>
-          </Menu>
-        </View>
+        {storeId === account.id ||
+          (account.role === 'ROLE_STORE' && (
+            <View style={styled.menu}>
+              <Menu
+                visible={visible}
+                anchor={
+                  <Entypo
+                    name="dots-three-horizontal"
+                    size={24}
+                    color="black"
+                    onPress={showMenu}
+                  />
+                }
+                onRequestClose={hideMenu}
+              >
+                <MenuItem
+                  onPress={() => {
+                    hideMenu();
+                    addHot();
+                  }}
+                >
+                  Thêm món ăn hot
+                </MenuItem>
+                <MenuItem
+                  onPress={() => {
+                    hideMenu();
+                    navigation.navigate('EditFoodScreen', food);
+                  }}
+                >
+                  Cập nhật
+                </MenuItem>
+                <MenuItem
+                  onPress={() => {
+                    hideMenu();
+                    handlerRemove();
+                  }}
+                >
+                  Xoá
+                </MenuItem>
+              </Menu>
+            </View>
+          ))}
         <View style={{ width: '32%' }}>
           <Image
             source={{ uri: `${_.head(food.files)}` }}

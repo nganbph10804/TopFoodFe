@@ -4,7 +4,10 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Menu, MenuItem } from 'react-native-material-menu';
 import { Avatar, Subheading } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
-import { unFollowAction } from '../../redux/follow/followAction.js';
+import {
+  listStoreFollowAction,
+  unFollowAction,
+} from '../../redux/follow/followAction.js';
 
 const ListStore = ({ store, navigation }) => {
   const { storeId } = store;

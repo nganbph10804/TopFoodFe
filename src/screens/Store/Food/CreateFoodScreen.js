@@ -46,10 +46,6 @@ const CreateFoodScreen = ({ navigation }) => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [tagList, setTagList] = useState('');
-  console.log(
-    '😂🤣 ~ file: CreateFoodScreen.js ~ line 48 ~ CreateFoodScreen ~ tagList',
-    tagList
-  );
   const [pickerValue, setPickerValue] = useState('');
 
   const dispatch = useDispatch();
@@ -77,15 +73,23 @@ const CreateFoodScreen = ({ navigation }) => {
         text1: 'Thông báo',
         text2: 'Phải upload ảnh',
       });
-    } else if (
-      content.trim().length < 1 &&
-      name.trim().length < 1 &&
-      price.trim().length < 1
-    ) {
+    } else if (content.trim().length < 1) {
       Toast.show({
         type: 'error',
         text1: 'Thông báo',
-        text2: 'Không được để trống',
+        text2: 'Không được để trống mô tả',
+      });
+    } else if (name.trim().length < 1) {
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Không được để trống tên món ăn',
+      });
+    } else if (price.trim().length < 1) {
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Không được để trống giá tiền',
       });
     } else if (price < 0) {
       Toast.show({
@@ -204,7 +208,7 @@ const CreateFoodScreen = ({ navigation }) => {
             >
               <Picker.Item label="Chọn Hash tag" />
               {tag.map(c => (
-                <Picker.Item key={c.id} label={c.tagName} value={c.id} />
+                <Picker.Item key={c.id} label={'#' + c.tagName} value={c.id} />
               ))}
             </Picker>
           </View>
