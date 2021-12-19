@@ -35,33 +35,6 @@ export const searchTagAction = () => async dispatch => {
     });
   }
 };
-export const getTagId = tagId => async dispatch => {
-  dispatch({
-    type: TAG_REQUEST,
-  });
-  try {
-    const { data } = await axios.get(
-      `http://58.84.1.32:8080/api/tag/${tagId}`,
-      {
-        headers: await authHeader(),
-      }
-    );
-    dispatch({
-      type: GET_TAG_ID,
-      payload: data.foods,
-    });
-  } catch (error) {
-    dispatch({
-      type: TAG_FAILURE,
-    });
-    Toast.show({
-      type: 'error',
-      topOffset: 40,
-      text1: 'Thông báo',
-      text2: error.response.data.message,
-    });
-  }
-};
 export const findTagIdByStoreAction = tagId => async dispatch => {
   dispatch({
     type: TAG_REQUEST,
@@ -73,11 +46,10 @@ export const findTagIdByStoreAction = tagId => async dispatch => {
         headers: await authHeader(),
       }
     );
-    console.log(data);
-    // dispatch({
-    //   type: GET_TAG_ID,
-    //   payload: data.foods,
-    // });
+    dispatch({
+      type: GET_TAG_ID,
+      payload: data,
+    });
   } catch (error) {
     dispatch({
       type: TAG_FAILURE,

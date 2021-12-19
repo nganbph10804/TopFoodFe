@@ -137,7 +137,6 @@ export const unFollowAction = id => async dispatch => {
       text2: 'Bỏ theo dõi cửa hàng thành công',
     });
   } catch (e) {
-    console.log('😂🤣 ~ file: followAction.js ~ line 138 ~ e', e);
     dispatch({
       type: FOLLOW_FAILURE,
     });

@@ -1,7 +1,7 @@
-import { AntDesign, Entypo } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { _ } from 'lodash';
 import React, { useEffect } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { SliderBox } from 'react-native-image-slider-box';
 import {
   ActivityIndicator,
@@ -16,7 +16,7 @@ import FoodByTag from '../../../components/store/FoodByTag.js';
 import { COLORS } from '../../../constants/color.const.js';
 import { formatPrice } from '../../../constants/price.const.js';
 import { foodDetailAction } from '../../../redux/store/food/actions/foodAction.js';
-import { getTagId } from '../../../redux/store/tag/action/tagAction.js';
+import { findTagIdByStoreAction } from '../../../redux/store/tag/action/tagAction.js';
 import {
   unVoteFoodAction,
   voteFoodAction,
@@ -25,25 +25,22 @@ import { styles } from '../../../styles/paper.js';
 
 const FoodDetailScreen = ({ navigation, route }) => {
   const { id, name, content, price, files, tag } = route.params.food;
-  const food = useSelector(state => state.food.food);
   const dispatch = useDispatch();
   const foodDetail = useSelector(state => state.food.detail);
   const { loading } = useSelector(state => state.voteFood);
-  const foodByTag = _.filter(
-    _.filter(food, i => i.tag.id === tag.id),
-    i => i.id !== id
-  );
+  const detail = useSelector(state => state.tag.detail);
+  const foodByTag = _.filter(_.filter(detail.foods, i => i.id !== id));
 
   const handlerVote = id => {
-    dispatch(voteFoodAction(id));
+    dispatch(voteFoodAction(id, tag.id));
   };
 
   const handlerUnVote = id => {
-    dispatch(unVoteFoodAction(id));
+    dispatch(unVoteFoodAction(id, tag.id));
   };
 
   useEffect(() => {
-    dispatch(getTagId(tag.id));
+    dispatch(findTagIdByStoreAction(tag.id));
   }, [dispatch]);
 
   useEffect(() => {
@@ -51,7 +48,9 @@ const FoodDetailScreen = ({ navigation, route }) => {
   }, [dispatch, id]);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View
+      style={{ flex: 1, backgroundColor: `${COLORS.white[1]}`, height: '100%' }}
+    >
       {loading && (
         <View style={styles.loading}>
           <ActivityIndicator
@@ -78,21 +77,25 @@ const FoodDetailScreen = ({ navigation, route }) => {
           />
           <Card.Content>
             <Title>{name}</Title>
-            <Subheading style={{ color: `${COLORS.purple[2]}` }}>
+            <Subheading
+              style={{ color: `${COLORS.purple[2]}`, fontStyle: 'italic' }}
+            >
               {formatPrice(price)}
             </Subheading>
             <Paragraph>Mô tả: {content}</Paragraph>
-            <View style={{ position: 'absolute', right: 20, top: 30 }}>
+          </Card.Content>
+          <Card.Actions>
+            <View style={{ position: 'absolute', right: 20 }}>
               {foodDetail.myReaction && (
                 <Chip onPress={() => handlerUnVote(id)}>
                   <AntDesign
                     name="star"
                     size={24}
                     color={`${COLORS.blue[4]}`}
+                    onPress={() => handlerUnVote(id)}
                   />
-                  <Subheading style={{ color: `${COLORS.blue[4]}` }}>
-                    {foodDetail.totalReaction} votes
-                  </Subheading>
+                  {foodDetail.totalReaction > 0 && foodDetail.totalReaction}
+                  Vote
                 </Chip>
               )}
               {!foodDetail.myReaction && (
@@ -101,33 +104,44 @@ const FoodDetailScreen = ({ navigation, route }) => {
                     name="staro"
                     size={24}
                     color={`${COLORS.blue[4]}`}
+                    onPress={() => handlerVote(id)}
                   />
-                  <Subheading style={{ color: `#000` }}>
-                    {foodDetail.totalReaction} votes
-                  </Subheading>
+                  {foodDetail.totalReaction > 0 && foodDetail.totalReaction}
+                  Vote
                 </Chip>
               )}
             </View>
-          </Card.Content>
+          </Card.Actions>
         </Card>
-        {foodByTag.length < 1 ? (
-          <View>
-            <Text></Text>
-          </View>
-        ) : (
+        {foodByTag.length < 1 ? null : (
           <View>
             <View
               style={{
                 flexDirection: 'row',
-                paddingHorizontal: 10,
-                paddingBottom: 20,
-                paddingTop: 10,
+                padding: 20,
+                backgroundColor: '#aec4e6',
               }}
             >
-              <Entypo name="price-tag" size={24} color={`black`} />
-              <Title style={{ paddingLeft: 10, color: `black` }}>
-                Tag món ăn: #{tag.tagName}
-              </Title>
+              <Subheading
+                style={{
+                  paddingLeft: 10,
+                  color: `black`,
+                  fontWeight: 'bold',
+                  fontSize: 20,
+                }}
+              >
+                Hash Tag món ăn:{' '}
+                <Subheading
+                  style={{
+                    color: `black`,
+                    fontWeight: 'bold',
+                    fontSize: 20,
+                    fontStyle: 'italic',
+                  }}
+                >
+                  #{tag.tagName}
+                </Subheading>
+              </Subheading>
             </View>
             <View style={styled.main}>
               {foodByTag.map(i => (
@@ -136,7 +150,6 @@ const FoodDetailScreen = ({ navigation, route }) => {
                   food={i}
                   tagId={tag.id}
                   navigation={navigation}
-                  tagName={tag.tagName}
                 />
               ))}
             </View>

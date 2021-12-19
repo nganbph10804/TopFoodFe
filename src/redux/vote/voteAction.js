@@ -2,9 +2,10 @@ import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import { authHeader } from '../authHeader.js';
 import { FOOD_DETAIL } from '../store/food/types/foodType.js';
+import { GET_TAG_ID } from '../store/tag/type/tagType.js';
 import { UN_VOTE, VOTE_FAILURE, VOTE_FOOD, VOTE_REQUEST } from './voteType.js';
 
-export const voteFoodAction = id => async dispatch => {
+export const voteFoodAction = (id, tagId) => async dispatch => {
   dispatch({
     type: VOTE_REQUEST,
   });
@@ -18,7 +19,7 @@ export const voteFoodAction = id => async dispatch => {
         headers: await authHeader(),
       }
     );
-    const { data } = await axios.get(
+    const data1 = await axios.get(
       `http://58.84.1.32:8080/store-profile/food/${id}`,
       {
         headers: await authHeader(),
@@ -26,7 +27,17 @@ export const voteFoodAction = id => async dispatch => {
     );
     dispatch({
       type: FOOD_DETAIL,
-      payload: data.data,
+      payload: data1.data.data,
+    });
+    const { data } = await axios.get(
+      `http://58.84.1.32:8080/api/tag/store/${tagId}`,
+      {
+        headers: await authHeader(),
+      }
+    );
+    dispatch({
+      type: GET_TAG_ID,
+      payload: data,
     });
     dispatch({
       type: VOTE_FOOD,
@@ -49,7 +60,7 @@ export const voteFoodAction = id => async dispatch => {
     });
   }
 };
-export const unVoteFoodAction = id => async dispatch => {
+export const unVoteFoodAction = (id, tagId) => async dispatch => {
   dispatch({
     type: VOTE_REQUEST,
   });
@@ -58,7 +69,7 @@ export const unVoteFoodAction = id => async dispatch => {
       data: { foodId: id },
       headers: await authHeader(),
     });
-    const { data } = await axios.get(
+    const data1 = await axios.get(
       `http://58.84.1.32:8080/store-profile/food/${id}`,
       {
         headers: await authHeader(),
@@ -66,7 +77,17 @@ export const unVoteFoodAction = id => async dispatch => {
     );
     dispatch({
       type: FOOD_DETAIL,
-      payload: data.data,
+      payload: data1.data.data,
+    });
+    const { data } = await axios.get(
+      `http://58.84.1.32:8080/api/tag/store/${tagId}`,
+      {
+        headers: await authHeader(),
+      }
+    );
+    dispatch({
+      type: GET_TAG_ID,
+      payload: data,
     });
     dispatch({
       type: UN_VOTE,

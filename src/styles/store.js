@@ -23,11 +23,12 @@ export const styled = StyleSheet.create({
   image: {
     borderColor: '#ccc',
     borderRadius: 10,
-    width: 90,
-    height: 90,
+    width: 120,
+    height: 120,
   },
   textName: {
-    fontSize: 17,
+    fontSize: 19,
+    fontWeight: 'bold',
   },
   textTag: {
     fontSize: 13,
@@ -35,7 +36,8 @@ export const styled = StyleSheet.create({
     marginTop: 5,
   },
   textPrice: {
-    fontSize: 16,
+    fontSize: 17,
     marginTop: 20,
+    fontStyle: 'italic',
   },
 });

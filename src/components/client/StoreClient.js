@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Divider } from 'react-native-elements';
-import { Avatar, Button, Subheading, Title } from 'react-native-paper';
+import { Avatar, Button, Card, Subheading, Title } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
 import {
@@ -33,7 +33,13 @@ const StoreClient = ({ route, navigation }) => {
 
   return (
     <View style={styled.main}>
-      <View style={{ marginLeft: 30, marginVertical: 10 }}>
+      <View
+        style={{
+          paddingLeft: 30,
+          paddingVertical: 10,
+          backgroundColor: 'white',
+        }}
+      >
         <View>
           <View style={styled.card}>
             <Avatar.Image source={{ uri: `${profile.avatar}` }} size={100} />
@@ -72,12 +78,10 @@ const StoreClient = ({ route, navigation }) => {
             )}
           </View>
         </View>
-        <Divider />
         <View>
           <Subheading
             style={{
               alignSelf: 'center',
-              fontSize: 20,
               fontStyle: 'italic',
               marginVertical: 10,
             }}
@@ -95,6 +99,7 @@ const StoreClient = ({ route, navigation }) => {
           </Subheading>
         </View>
       </View>
+
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <View style={toggleTab === 1 ? styled.active : styled.inactive}>
           <Button onPress={() => setToggleTab(1)}>Món ăn </Button>
