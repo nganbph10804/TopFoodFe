@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { ScrollView } from 'react-native';
 import { StyleSheet, View } from 'react-native';
 import { Divider } from 'react-native-elements';
 import { Avatar, Button, Card, Subheading, Title } from 'react-native-paper';
@@ -32,7 +33,7 @@ const StoreClient = ({ route, navigation }) => {
   }, [dispatch, storeId]);
 
   return (
-    <View style={styled.main}>
+    <ScrollView style={styled.main}>
       <View
         style={{
           paddingLeft: 30,
@@ -111,15 +112,15 @@ const StoreClient = ({ route, navigation }) => {
 
       {toggleTab === 1 && (
         <View>
-          <FoodClient />
+          <FoodClient storeId={storeId} navigation={navigation} />
         </View>
       )}
       {toggleTab === 2 && (
         <View>
-          <PostClient />
+          <PostClient storeId={storeId} navigation={navigation} />
         </View>
       )}
-    </View>
+    </ScrollView>
   );
 };
 

@@ -1,103 +1,93 @@
-import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { View, Text, Modal, TouchableOpacity } from 'react-native';
-import { Button, Checkbox, Chip, Subheading, Title } from 'react-native-paper';
-import { useSelector } from 'react-redux';
-import { COLORS } from '../../constants/color.const';
 import { _ } from 'lodash';
+import React, { useEffect, useState } from 'react';
+import { ScrollView } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Subheading, Title } from 'react-native-paper';
+import { useDispatch, useSelector } from 'react-redux';
+import { COLORS } from '../../constants/color.const';
+import { foodListAction } from '../../redux/store/food/actions/foodAction';
+import { styles } from '../../styles/paper';
+import FoodList from '../store/FoodList';
+import FoodsHot from '../store/FoodsHot';
 
-const FoodClient = () => {
-  const { tag } = useSelector(state => state.tag);
-  const [visible, setVisible] = useState(false);
-  const [active, setActive] = useState({
-    id: 1,
-    tagName: 'Phở',
-  });
+const FoodClient = ({ storeId, navigation }) => {
+  const dispatch = useDispatch();
+  const food = useSelector(state => state.food.food);
+  const loading = useSelector(state => state.food.loading);
+
+  const [hot, setHot] = useState([]);
+  const [foods, setFoods] = useState([]);
+
+  useEffect(() => {
+    dispatch(foodListAction(storeId));
+  }, [dispatch, storeId]);
+
+  useEffect(() => {
+    setHot(_.filter(food, i => i.foodHot));
+    setFoods(_.filter(food, i => !i.foodHot));
+  }, [food]);
+
   return (
-    <View>
-      <View style={{ flexDirection: 'row', marginLeft: 20, marginTop: 20 }}>
-        <Subheading
-          style={{ fontWeight: 'bold', fontStyle: 'italic', fontSize: 18 }}
-        >
-          Hash Tag:
-        </Subheading>
-        <TouchableOpacity onPress={() => setVisible(true)}>
-          <Subheading
-            style={{ fontWeight: 'bold', fontStyle: 'italic', fontSize: 18 }}
-          >
-            {' '}
-            #{active.tagName}
-          </Subheading>
-        </TouchableOpacity>
+    <ScrollView>
+      {loading && (
+        <View style={styles.loading}>
+          <ActivityIndicator
+            animating={true}
+            color={`${COLORS.blue[1]}`}
+            size={'large'}
+          />
+        </View>
+      )}
+      <View>
+        {hot.length > 0 && (
+          <Subheading style={styled.hot}>Món ăn hot</Subheading>
+        )}
+        <ScrollView horizontal={true}>
+          {hot.map((i, index) => (
+            <FoodsHot
+              key={index}
+              food={i}
+              navigation={navigation}
+              storeId={storeId}
+            />
+          ))}
+        </ScrollView>
       </View>
-      {visible && (
-        <Modal>
-          <Button onPress={() => setVisible(false)}>Đóng </Button>
-          <Title>Danh sách Hash Tag </Title>
-          <View
-            style={{
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            {tag.map((i, idx) => (
-              <TouchableOpacity
-                key={idx}
-                onPress={() => {
-                  setActive(i), setVisible(false);
-                }}
-              >
-                <Chip
-                  selected={
-                    tag.indexOf(i) === tag.indexOf(active)
-                      ? styled.active
-                      : false
-                  }
-                  selectedColor={
-                    tag.indexOf(i) === tag.indexOf(active) ? '#fff' : '#000'
-                  }
-                  style={
-                    tag.indexOf(i) === tag.indexOf(active)
-                      ? styled.active
-                      : styled.inactive
-                  }
-                >
-                  <Subheading
-                    style={[
-                      {
-                        fontWeight: 'bold',
-                        fontStyle: 'italic',
-                      },
-                      tag.indexOf(i) === tag.indexOf(active)
-                        ? { color: '#fff' }
-                        : { color: '#000' },
-                    ]}
-                    mode="outlined"
-                  >
-                    #{i.tagName}
-                  </Subheading>
-                </Chip>
-              </TouchableOpacity>
+      <View>
+        {food.length < 1 ? (
+          <View style={styled.noFood}>
+            <Title>Không có món ăn</Title>
+          </View>
+        ) : (
+          <View style={{ flex: 1 }}>
+            <Subheading style={styled.normal}>Món ăn</Subheading>
+            {foods.map((i, index) => (
+              <FoodList
+                key={index}
+                food={i}
+                navigation={navigation}
+                storeId={storeId}
+              />
             ))}
           </View>
-        </Modal>
-      )}
-    </View>
+        )}
+      </View>
+    </ScrollView>
   );
 };
 
 const styled = StyleSheet.create({
-  active: {
-    backgroundColor: `${COLORS.blue[1]}`,
-    color: '#fff',
-    margin: 10,
-    paddingHorizontal: 10,
+  hot: {
+    fontWeight: 'bold',
+    marginLeft: 15,
+    fontSize: 20,
+    marginVertical: 10,
   },
-  inactive: {
-    margin: 10,
-    paddingHorizontal: 10,
+  normal: {
+    fontWeight: 'bold',
+    marginLeft: 15,
+    fontSize: 20,
+    marginVertical: 10,
   },
 });
 

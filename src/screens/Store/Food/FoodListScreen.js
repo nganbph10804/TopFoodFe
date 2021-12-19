@@ -158,7 +158,9 @@ const FoodListScreen = ({ navigation }) => {
               <SearchFood key={i.id} food={i} navigation={navigation} />
             ))}
         <View>
-          {hot && <Subheading style={styled.hot}>Món ăn hot</Subheading>}
+          {hot.length > 0 && (
+            <Subheading style={styled.hot}>Món ăn hot</Subheading>
+          )}
           <ScrollView horizontal={true}>
             {hot.map((i, index) => (
               <FoodsHot key={index} food={i} navigation={navigation} />
@@ -169,7 +171,7 @@ const FoodListScreen = ({ navigation }) => {
           <View>
             {food.length < 1 ? (
               <View style={styled.noFood}>
-                <Title key={idx}>Không có món ăn</Title>
+                <Title>Không có món ăn</Title>
               </View>
             ) : (
               <View style={{ flex: 1 }}>

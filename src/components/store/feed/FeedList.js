@@ -5,11 +5,12 @@ import { Image, ScrollView, StyleSheet, View } from 'react-native';
 import { SliderBox } from 'react-native-image-slider-box';
 import { Menu, MenuItem } from 'react-native-material-menu';
 import { Card, Chip, Subheading } from 'react-native-paper';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../../constants/color.const.js';
 import { deleteFeedAction } from '../../../redux/feed/feedAction.js';
 
-const FeedList = ({ feed, navigation }) => {
+const FeedList = ({ feed, navigation, storeId }) => {
+  const account = useSelector(state => state.auth.account);
   const { files, content, tags, id, foods, totalReaction } = feed;
   const [visible, setVisible] = useState(false);
   const hideMenu = () => setVisible(false);
@@ -27,37 +28,39 @@ const FeedList = ({ feed, navigation }) => {
         dotColor={`${COLORS.blue[1]}`}
         inactiveDotColor="#90A4AE"
       />
-      <View style={styled.menu}>
-        <Menu
-          visible={visible}
-          anchor={
-            <Entypo
-              name="dots-three-horizontal"
-              size={24}
-              color="black"
-              onPress={showMenu}
-            />
-          }
-          onRequestClose={hideMenu}
-        >
-          <MenuItem
-            onPress={() => {
-              hideMenu();
-              navigation.navigate('EditFeedScreen', feed);
-            }}
+      {storeId === account.id && (
+        <View style={styled.menu}>
+          <Menu
+            visible={visible}
+            anchor={
+              <Entypo
+                name="dots-three-horizontal"
+                size={24}
+                color="black"
+                onPress={showMenu}
+              />
+            }
+            onRequestClose={hideMenu}
           >
-            Cập nhật
-          </MenuItem>
-          <MenuItem
-            onPress={() => {
-              hideMenu();
-              handlerRemove();
-            }}
-          >
-            Xoá
-          </MenuItem>
-        </Menu>
-      </View>
+            <MenuItem
+              onPress={() => {
+                hideMenu();
+                navigation.navigate('EditFeedScreen', feed);
+              }}
+            >
+              Cập nhật
+            </MenuItem>
+            <MenuItem
+              onPress={() => {
+                hideMenu();
+                handlerRemove();
+              }}
+            >
+              Xoá
+            </MenuItem>
+          </Menu>
+        </View>
+      )}
       <Card.Content style={{ paddingVertical: 20 }}>
         <ScrollView horizontal={true}>
           {tags.map(i => (
