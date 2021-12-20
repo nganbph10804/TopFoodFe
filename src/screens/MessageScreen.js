@@ -55,7 +55,9 @@ const MessagesScreen = ({ navigation }) => {
   const [visibleCreate, setVisibleCreate] = useState(false);
   const [lstRoom, setLstRoom] = useState([]);
   const [lstUser, setLstUser] = useState([]);
+  const [searchVal, setSearchVal] = useState('');
   const [lstSuggest, setLstSuggest] = useState([]);
+  const onChangeSearch = query => setSearchVal(query);
 
   const [products, setProducts] = useState([]);
   const dispatch = useDispatch();
@@ -403,9 +405,11 @@ const MessagesScreen = ({ navigation }) => {
         </Portal>
         <View style={styles.container}>
           <Searchbar
-            style={styles.searchBarr}
-            inputStyle={{ fontSize: 16, paddingVertical: 5 }}
-            placeholder="Search"
+           style={styles.searchBarr}
+           inputStyle={{ fontSize: 16, paddingVertical: 5 }}
+           placeholder="Search"
+           onChangeText={onChangeSearch}
+           value={searchVal}
           />
 
           <TouchableOpacity
@@ -422,7 +426,13 @@ const MessagesScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
         <FlatList
-          data={lstRoom}
+          data={lstRoom.filter(val => {
+            if (searchVal == '') {
+              return val;
+            } else if (val.nameRoom.toLowerCase().includes(searchVal.toLowerCase())) {
+              return val;
+            }
+          })}
           keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => (
             <Cardd
