@@ -7,17 +7,20 @@ import { COLORS } from '../../constants/color.const.js';
 import { FRIENDS } from '../../constants/friend.const.js';
 import {
   acceptAction,
+  clearSearchAction,
   sendAction,
 } from '../../redux/friend/actions/friendAction.js';
 import { styles } from '../../styles/paper.js';
 
-const SearchFriend = ({ item }) => {
+const SearchFriend = ({ item, setSearchValue }) => {
   const dispatch = useDispatch();
   const handlerSend = () => {
     dispatch(sendAction(item.phoneNumber));
   };
   const accept = () => {
     dispatch(acceptAction(item.username));
+    setSearchValue('');
+    dispatch(clearSearchAction());
   };
   return (
     <View>

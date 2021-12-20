@@ -25,7 +25,9 @@ const GlobalRoute = () => {
   const { status } = useSelector(state => state.auth.account);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(favoriteListAction());
+    if (token) {
+      dispatch(favoriteListAction());
+    }
   }, [dispatch]);
   return (
     <Stack.Navigator
