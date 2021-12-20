@@ -355,7 +355,6 @@ const styled = StyleSheet.create({
   },
   listComments: {
     zIndex: 80,
-    padding: 10,
     backgroundColor: '#f5f5f5',
     marginLeft: 5,
     width: '83%',

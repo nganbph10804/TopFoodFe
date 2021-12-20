@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Card, Searchbar, Title } from 'react-native-paper';
+import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
 import SearchFriend from '../../components/Friend/SearchFriend.js';
 import {
@@ -17,7 +18,15 @@ const SearchFriendScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const handlerSearch = () => {
-    dispatch(searchProfileAction(searchValue, 0));
+    if (searchValue.trim().length > 0) {
+      dispatch(searchProfileAction(searchValue, 0));
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Không được để trống',
+      });
+    }
   };
   useEffect(() => {
     const focus = navigation.addListener('focus', () => {
@@ -51,7 +60,11 @@ const SearchFriendScreen = ({ navigation }) => {
         </View>
         <View>
           {profile.map((item, key) => (
-            <SearchFriend key={key} item={item} />
+            <SearchFriend
+              key={key}
+              item={item}
+              setSearchValue={setSearchValue}
+            />
           ))}
         </View>
       </Card>

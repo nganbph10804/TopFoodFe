@@ -9,6 +9,7 @@ import { hotReducer } from './foodHot/foodHotReducer.js';
 import { friendReducer } from './friend/reducers/friendReducer.js';
 import { postReducer } from './post/postReducer.js';
 import { reactReducer } from './react/reducers/reactReducer.js';
+import { searchPostReducer } from './searchPost/searchReducer.js';
 import { foodReducer } from './store/food/reducers/foodReducer.js';
 import { storeProfileReducer } from './store/profile/profileReducer.js';
 import { tagReducer } from './store/tag/reducer/tagReducer.js';
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   voteFood: voteFoodReducer,
   post: postReducer,
   hot: hotReducer,
+  search: searchPostReducer,
 });
 
 export default rootReducer;

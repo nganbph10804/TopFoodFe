@@ -10,12 +10,17 @@ import {
 import { Button, Chip, Searchbar, Subheading, Title } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import HomeList from '../components/home/HomeList.js';
+import SearchValue from '../components/home/SearchValue.js';
 import { COLORS } from '../constants/color.const.js';
 import { favoriteListAction } from '../redux/favorite/favoriteAction.js';
 import {
   postListAction,
   postListByCityAction,
 } from '../redux/post/postAction.js';
+import {
+  allPostAction,
+  searchPostAction,
+} from '../redux/searchPost/searchAction.js';
 import { searchTagAction } from '../redux/store/tag/action/tagAction.js';
 import HeaderUser from '../shared/HeaderUser.js';
 import { styles } from '../styles/paper.js';
@@ -25,6 +30,8 @@ const FeedScreen = ({ navigation }) => {
   const postCity = useSelector(state => state.post.city);
   const total = useSelector(state => state.favorite.total);
   const role = useSelector(state => state.auth.account.role);
+  const { search } = useSelector(state => state.search);
+
   const [city, setCity] = useState([]);
   const [visible, setVisible] = useState(false);
   const [citySelected, setCitySelected] = useState({
@@ -48,8 +55,13 @@ const FeedScreen = ({ navigation }) => {
     setFocus(false);
     ref.current.blur();
     ref.current.clear();
-    dispatch(clearSearchAction());
   };
+
+  useEffect(() => {
+    if (searchValue.trim().length > 0) {
+      dispatch(searchPostAction(searchValue));
+    }
+  }, [dispatch, searchValue]);
 
   useEffect(() => {
     fetch('https://provinces.open-api.vn/api/p/')
@@ -81,11 +93,17 @@ const FeedScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (role === 'ROLE_USER') {
-      if (total < 5) {
+      if (total < 4) {
         navigation.navigate('FavoriteScreen');
+      } else {
+        navigation.navigate('FeedScreen');
       }
     }
   }, [total]);
+
+  useEffect(() => {
+    dispatch(allPostAction());
+  }, [dispatch]);
 
   return (
     <View style={styles.background}>
@@ -160,6 +178,7 @@ const FeedScreen = ({ navigation }) => {
               placeholder="Tìm kiếm"
               ref={ref}
               onFocus={onFocus}
+              onBlur={onBlur}
               value={searchValue}
               onChangeText={searchValue => setSearchValue(searchValue)}
               style={styles.search}
@@ -173,20 +192,19 @@ const FeedScreen = ({ navigation }) => {
               )}
             />
           </View>
-          {postCity.length > 0 ? (
-            postCity.map((i, index) => (
-              <HomeList
-                key={index}
-                post={i}
-                navigation={navigation}
-                citySelected={citySelected}
-              />
-            ))
-          ) : (
-            <View style={styled.noPost}>
-              <Title>Không có bài viết nào</Title>
-            </View>
-          )}
+          {focus && search.length > 0
+            ? search.map((i, index) => <SearchValue key={index} post={i} />)
+            : null}
+          {!focus && postCity.length > 0
+            ? postCity.map((i, index) => (
+                <HomeList
+                  key={index}
+                  post={i}
+                  navigation={navigation}
+                  citySelected={citySelected}
+                />
+              ))
+            : null}
         </ScrollView>
       </View>
     </View>
