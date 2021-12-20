@@ -63,22 +63,10 @@ export const registerAction =
         phoneNumber: phone,
         username: username,
       });
-      await axios.get(
-        `http://103.245.251.149:8080/auth/get-otp?email=${email}`
-      );
-      const { data } = await axios.post(
-        'http://103.245.251.149:8080/auth/login-with-username',
-        {
-          username: username,
-          password: password,
-        }
-      );
       setTimeout(() => {
         dispatch({
           type: AUTH_DONE,
         });
-        const token = data.data.token;
-        deviceStorage.saveJWT(token);
         Toast.show({
           type: 'success',
           text1: 'Thông báo',
@@ -98,23 +86,20 @@ export const registerAction =
     }
   };
 
-export const activeAction = (email, navigation) => async dispatch => {
+export const activeAction = email => async dispatch => {
   dispatch({
     type: AUTH_REQUEST,
   });
   try {
     await axios.get(`http://103.245.251.149:8080/auth/get-otp?email=${email}`);
-    setTimeout(() => {
-      dispatch({
-        type: AUTH_DONE,
-      });
-      Toast.show({
-        type: 'success',
-        text1: 'Thông báo',
-        text2: 'Gửi mã xác nhận thành công.',
-      });
-      navigation.navigate('LoginScreen');
-    }, 1500);
+    dispatch({
+      type: AUTH_DONE,
+    });
+    Toast.show({
+      type: 'success',
+      text1: 'Thông báo',
+      text2: 'Gửi mã xác nhận thành công.',
+    });
   } catch (error) {
     dispatch({
       type: AUTH_FAILURE,
@@ -149,7 +134,6 @@ export const getOtpAction = (email, navigation) => async dispatch => {
     });
     Toast.show({
       type: 'error',
-
       text1: 'Thông báo',
       text2: error.response.data.message,
     });
@@ -300,12 +284,10 @@ export const activeAccAction = (otp, navigation) => async dispatch => {
       });
       Toast.show({
         type: 'success',
-
         text1: 'Thông báo',
         text2: 'Kích hoạt tài khoản thành công.',
       });
-      navigation.navigate('LOGIN');
-      deviceStorage.deleteJWT();
+      navigation.navigate('NAV');
     }, 1500);
   } catch (error) {
     dispatch({

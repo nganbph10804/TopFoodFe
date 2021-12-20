@@ -26,8 +26,6 @@ const ChatScreen = ({ navigation, route }) => {
   const [messages, setMessages] = useState([]);
   const { _id, avt, uname, idRoom, opened } = route.params;
 
-console.log(opened)
-
   const sendNotification = async (token) => {
     const message = {
       to: token,
@@ -75,7 +73,6 @@ console.log(opened)
         appendMessages(messagesFirestore);
       });
     return () => {
-      setMessages([]);
       unsubscribe();
     };
   }, []);

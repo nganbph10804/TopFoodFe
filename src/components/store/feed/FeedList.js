@@ -1,14 +1,17 @@
+import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { Image, ScrollView } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { BottomSheet, ListItem } from 'react-native-elements';
 import { SliderBox } from 'react-native-image-slider-box';
-import { Card, Subheading } from 'react-native-paper';
+import { Card, Chip, Subheading } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { COLORS } from '../../../constants/color.const.js';
-import { deleteFeedAction } from '../../../redux/store/feed/actions/feedAction.js';
+import { deleteFeedAction } from '../../../redux/feed/feedAction.js';
+import { _ } from 'lodash';
 
 const FeedList = ({ feed, navigation }) => {
-  const { files, content, tags, id } = feed;
+  const { files, content, tags, id, foods, totalReaction } = feed;
   const [isVisible, setIsVisible] = useState(false);
   const dispatch = useDispatch();
   const handlerOption = () => {
@@ -23,7 +26,9 @@ const FeedList = ({ feed, navigation }) => {
     {
       title: 'Cập nhật',
       titleStyle: { color: `${COLORS.blue[1]}` },
-      onPress: () => navigation.navigate('EditFeedScreen', feed),
+      onPress: () => {
+        navigation.navigate('EditFeedScreen', feed), setIsVisible(false);
+      },
     },
     {
       title: 'Xoá',
@@ -44,8 +49,7 @@ const FeedList = ({ feed, navigation }) => {
           dotColor={`${COLORS.blue[1]}`}
           inactiveDotColor="#90A4AE"
         />
-        <Card.Content style={{ marginBottom: 20 }}>
-          <Subheading style={{ fontSize: 18 }}>{content}</Subheading>
+        <Card.Content style={{ paddingVertical: 20 }}>
           {tags.map(i => (
             <Text
               key={i.id}
@@ -58,24 +62,48 @@ const FeedList = ({ feed, navigation }) => {
               {i.tagName}
             </Text>
           ))}
-        </Card.Content>
-        <BottomSheet
-          isVisible={isVisible}
-          containerStyle={{ backgroundColor: 'rgba(0.5, 0.25, 0, 0.2)' }}
-        >
-          {list.map((l, i) => (
-            <ListItem
-              key={i}
-              containerStyle={l.containerStyle}
-              onPress={l.onPress}
+          <Subheading style={{ fontSize: 18 }}>{content}</Subheading>
+          <View style={{ position: 'absolute', right: 30, top: '30%' }}>
+            <Chip
+              icon={() => (
+                <AntDesign name="like1" size={24} color={`${COLORS.blue[4]}`} />
+              )}
             >
-              <ListItem.Content>
-                <ListItem.Title style={l.titleStyle}>{l.title}</ListItem.Title>
-              </ListItem.Content>
-            </ListItem>
-          ))}
-        </BottomSheet>
+              {totalReaction} Likes
+            </Chip>
+          </View>
+          <View>
+            <Subheading>Món ăn đính kèm:</Subheading>
+            <ScrollView horizontal={true}>
+              {foods.map((i, idx) => (
+                <View key={idx} style={{ padding: 5, alignItems: 'center' }}>
+                  <Image
+                    source={{ uri: `${_.head(i.files)}` }}
+                    style={{ width: 80, height: 80 }}
+                  />
+                  <Subheading>{i.name}</Subheading>
+                </View>
+              ))}
+            </ScrollView>
+          </View>
+        </Card.Content>
       </Card>
+      <BottomSheet
+        isVisible={isVisible}
+        containerStyle={{ backgroundColor: 'rgba(0.5, 0.25, 0, 0.2)' }}
+      >
+        {list.map((l, i) => (
+          <ListItem
+            key={i}
+            containerStyle={l.containerStyle}
+            onPress={l.onPress}
+          >
+            <ListItem.Content>
+              <ListItem.Title style={l.titleStyle}>{l.title}</ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+        ))}
+      </BottomSheet>
     </TouchableOpacity>
   );
 };

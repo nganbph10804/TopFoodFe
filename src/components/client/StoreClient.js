@@ -1,17 +1,24 @@
 import { Feather, FontAwesome } from '@expo/vector-icons';
 import React, { useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Subheading } from 'react-native-paper';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Subheading, Title } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfileStoreAction } from '../../redux/store/profile/profileAction.js';
 import HeaderStore from '../../shared/HeaderStore.js';
 import ListButton from '../store/ListButton.js';
+import { MaterialIcons } from '@expo/vector-icons';
+import { COLORS } from '../../constants/color.const.js';
+import { followAction } from '../../redux/follow/followAction.js';
 
 const StoreClient = ({ route, navigation }) => {
   const { storeId } = route.params;
   const { profile } = useSelector(state => state.storeProfile);
   const { listUserFollowStore } = useSelector(state => state.follow);
   const dispatch = useDispatch();
+
+  const follow = () => {
+    dispatch(followAction(storeId));
+  };
 
   useEffect(() => {
     dispatch(getProfileStoreAction(storeId));
@@ -20,6 +27,15 @@ const StoreClient = ({ route, navigation }) => {
     <View style={styled.main}>
       <HeaderStore image={profile.avatar} name={profile.name} />
       <ListButton navigation={navigation} />
+      <TouchableOpacity
+        style={{ flexDirection: 'row', alignSelf: 'center', marginTop: 10 }}
+        onPress={() => follow()}
+      >
+        <MaterialIcons name="add-business" size={40} color={COLORS.blue[4]} />
+        <Title style={{ fontWeight: 'bold', color: `${COLORS.blue[4]}` }}>
+          Theo dõi
+        </Title>
+      </TouchableOpacity>
       <View style={{ marginTop: 30 }}>
         <View style={styled.item}>
           <FontAwesome name="users" size={24} color="black" />

@@ -10,17 +10,16 @@ import {
   FOOD_FAILURE,
   FOOD_LIST,
   FOOD_REQUEST,
-  PRICE_FOOD,
   SEARCH_FOOD,
 } from '../types/foodType.js';
 
-export const foodListAction = () => async dispatch => {
+export const foodListAction = id => async dispatch => {
   dispatch({
     type: FOOD_REQUEST,
   });
   try {
     const { data } = await axios.get(
-      `http://103.245.251.149:8080/store-profile/list-food?page=0&pageSize=1000`,
+      `http://103.245.251.149:8080/store-profile/list-food?accountId=${id}&page=0&pageSize=1000`,
       {
         headers: await authHeader(),
       }

@@ -1,8 +1,8 @@
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Chip } from 'react-native-paper';
 import { COLORS } from '../../constants/color.const.js';
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 const TagList = ({ setActive, active, data, handlerFilter }) => {
   const handlerSelected = tag => {

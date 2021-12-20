@@ -82,9 +82,11 @@ const SubFoodScreen = ({ navigation, route }) => {
               paddingTop: 10,
             }}
           >
-            <Entypo name="price-tag" size={24} color={`${COLORS.blue[1]}`} />
-            <Subheading style={{ paddingLeft: 10 }}>
-              Tag món ăn / {route.params.tagName}
+            <Entypo name="price-tag" size={24} color={`${COLORS.purple[3]}`} />
+            <Subheading
+              style={{ paddingLeft: 10, color: `${COLORS.purple[3]}` }}
+            >
+              Tag món ăn: #{tag.tagName}
             </Subheading>
           </View>
           <View style={styled.main}>

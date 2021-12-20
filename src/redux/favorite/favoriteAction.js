@@ -2,6 +2,7 @@ import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import { authHeader } from '../authHeader.js';
 import {
+  CLEAR_TOTAL,
   FAVORITE_FAILURE,
   FAVORITE_LIST,
   FAVORITE_REQUEST,
@@ -20,7 +21,7 @@ export const favoriteListAction = () => async dispatch => {
     );
     dispatch({
       type: FAVORITE_LIST,
-      payload: data.data,
+      payload: data,
     });
   } catch (error) {
     dispatch({
@@ -33,7 +34,7 @@ export const favoriteListAction = () => async dispatch => {
     });
   }
 };
-export const updateFavoriteAction = tag => async dispatch => {
+export const updateFavoriteAction = (tag, navigation) => async dispatch => {
   dispatch({
     type: FAVORITE_REQUEST,
   });
@@ -45,11 +46,22 @@ export const updateFavoriteAction = tag => async dispatch => {
         headers: await authHeader(),
       }
     );
+    const { data } = await axios.get(
+      'http://103.245.251.149:8080/profiles/favorite?page=0&pageSize=1000',
+      {
+        headers: await authHeader(),
+      }
+    );
+    dispatch({
+      type: FAVORITE_LIST,
+      payload: data,
+    });
     Toast.show({
       type: 'success',
       text1: 'Thông báo',
       text2: 'Cập nhật sở thích thành công',
     });
+    if (navigation) navigation.navigate('NAV');
   } catch (error) {
     dispatch({
       type: FAVORITE_FAILURE,
@@ -60,4 +72,10 @@ export const updateFavoriteAction = tag => async dispatch => {
       text2: error.response.data.message,
     });
   }
+};
+
+export const clearTotalAction = () => dispatch => {
+  dispatch({
+    type: CLEAR_TOTAL,
+  });
 };

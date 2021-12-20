@@ -10,6 +10,7 @@ npm-debug.*
 web-build/
 package-lock.json
 yarn-error.log
-
+.vscode
+.idea
 # macOS
 .DS_Store

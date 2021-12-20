@@ -3,13 +3,31 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import MessageScreen from './MessageScreen';
 import ChatScreen from './ChatScreen';
-import { Button } from 'react-native';
+import { Alert, Button } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Ionicons } from '@expo/vector-icons';
+import { Entypo, Ionicons } from '@expo/vector-icons';
 
 const Stack = createStackNavigator();
 
 const MessageStack = () => {
+  
+  const onOptionSelect =  ( ) => {
+    Alert.alert('Thông báo', 'Xin mời lựa chọn', [
+      {
+        text: 'Cancel',
+        onPress: () => { },
+        style: 'cancel',
+      },
+      {
+        text: 'Đổi tên ',
+        onPress: () => {
+          
+        },
+      },
+    ]);
+  };
+
+
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -26,11 +44,6 @@ const MessageStack = () => {
         options={({ route, navigation}) => ({
           title: route.params.userName,
           headerBackTitleVisible: false,
-          headerRight : () => (
-           <TouchableOpacity onPress={()=>{}} style={{marginRight:10}}>
-             <Ionicons name='people' size={23} color='blue'/>
-           </TouchableOpacity>
-          )
         })}
       />
     </Stack.Navigator>

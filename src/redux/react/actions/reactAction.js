@@ -1,9 +1,15 @@
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import { authHeader } from '../../authHeader.js';
-import { REACT_FAILURE, REACT_REQUEST } from '../types/reactTypes.js';
+import { POST_LIST } from '../../post/postType.js';
+import {
+  COMMENT_LIST,
+  REACT_FAILURE,
+  REACT_REQUEST,
+  REPLY_LIST,
+} from '../types/reactTypes.js';
 
-export const reactPostAction = id => async dispatch => {
+export const likePostAction = id => async dispatch => {
   dispatch({
     type: REACT_REQUEST,
   });
@@ -17,10 +23,15 @@ export const reactPostAction = id => async dispatch => {
         headers: await authHeader(),
       }
     );
-    Toast.show({
-      type: 'success',
-      text1: 'Thông báo',
-      text2: 'Thành công',
+    const { data } = await axios.get(
+      'http://103.245.251.149:8080/store-profile/list-post-all?page=0&pageSize=1000',
+      {
+        headers: await authHeader(),
+      }
+    );
+    dispatch({
+      type: POST_LIST,
+      payload: data.data,
     });
   } catch (error) {
     dispatch({
@@ -33,8 +44,7 @@ export const reactPostAction = id => async dispatch => {
     });
   }
 };
-
-export const reactCommentAction = id => async dispatch => {
+export const likeCommentAction = (id, postId) => async dispatch => {
   dispatch({
     type: REACT_REQUEST,
   });
@@ -48,10 +58,15 @@ export const reactCommentAction = id => async dispatch => {
         headers: await authHeader(),
       }
     );
-    Toast.show({
-      type: 'success',
-      text1: 'Thông báo',
-      text2: 'Thành công',
+    const { data } = await axios.get(
+      `http://103.245.251.149:8080/react/list-comment-post?id=${postId}&page=0&pageSize=1000`,
+      {
+        headers: await authHeader(),
+      }
+    );
+    dispatch({
+      type: COMMENT_LIST,
+      payload: data.data,
     });
   } catch (error) {
     dispatch({
@@ -64,3 +79,161 @@ export const reactCommentAction = id => async dispatch => {
     });
   }
 };
+
+export const commentListAction = id => async dispatch => {
+  dispatch({
+    type: REACT_REQUEST,
+  });
+  try {
+    const { data } = await axios.get(
+      `http://103.245.251.149:8080/react/list-comment-post?id=${id}&page=0&pageSize=1000`,
+      {
+        headers: await authHeader(),
+      }
+    );
+    dispatch({
+      type: COMMENT_LIST,
+      payload: data.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: REACT_FAILURE,
+    });
+    Toast.show({
+      type: 'error',
+      text1: 'Thông báo',
+      text2: error.response.data.message,
+    });
+  }
+};
+export const commentPostAction = (id, content, files) => async dispatch => {
+  dispatch({
+    type: REACT_REQUEST,
+  });
+  try {
+    await axios.post(
+      `http://103.245.251.149:8080/react/comment-post?id=${id}`,
+      {
+        content: content,
+        files: files,
+      },
+      {
+        headers: await authHeader(),
+      }
+    );
+    const { data } = await axios.get(
+      `http://103.245.251.149:8080/react/list-comment-post?id=${id}&page=0&pageSize=1000`,
+      {
+        headers: await authHeader(),
+      }
+    );
+    dispatch({
+      type: COMMENT_LIST,
+      payload: data.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: REACT_FAILURE,
+    });
+    Toast.show({
+      type: 'error',
+      text1: 'Thông báo',
+      text2: error.response.data.message,
+    });
+  }
+};
+export const removeCommentAction = (id, postId) => async dispatch => {
+  dispatch({
+    type: REACT_REQUEST,
+  });
+  try {
+    await axios.delete(
+      `http://103.245.251.149:8080/react/comment-post?commentId=${id}`,
+      {
+        headers: await authHeader(),
+      }
+    );
+    const { data } = await axios.get(
+      `http://103.245.251.149:8080/react/list-comment-post?id=${postId}&page=0&pageSize=1000`,
+      {
+        headers: await authHeader(),
+      }
+    );
+    dispatch({
+      type: COMMENT_LIST,
+      payload: data.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: REACT_FAILURE,
+    });
+    Toast.show({
+      type: 'error',
+      text1: 'Thông báo',
+      text2: error.response.data.message,
+    });
+  }
+};
+export const replyListAction = commentId => async dispatch => {
+  dispatch({
+    type: REACT_REQUEST,
+  });
+  try {
+    const { data } = await axios.get(
+      `http://103.245.251.149:8080/react/list-reply-comment?id=${commentId}&page=0&pageSize=1000`,
+      {
+        headers: await authHeader(),
+      }
+    );
+    dispatch({
+      type: REPLY_LIST,
+      payload: data.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: REACT_FAILURE,
+    });
+    Toast.show({
+      type: 'error',
+      text1: 'Thông báo',
+      text2: error.response.data.message,
+    });
+  }
+};
+export const replyCommentAction =
+  (commentId, content, files) => async dispatch => {
+    dispatch({
+      type: REACT_REQUEST,
+    });
+    try {
+      await axios.post(
+        `http://103.245.251.149:8080/react/comment-reply?id=${commentId}`,
+        {
+          content: content,
+          files: files,
+        },
+        {
+          headers: await authHeader(),
+        }
+      );
+      const { data } = await axios.get(
+        `http://103.245.251.149:8080/react/list-reply-comment?id=${commentId}&page=0&pageSize=1000`,
+        {
+          headers: await authHeader(),
+        }
+      );
+      dispatch({
+        type: REPLY_LIST,
+        payload: data.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: REACT_FAILURE,
+      });
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: error.response.data.message,
+      });
+    }
+  };

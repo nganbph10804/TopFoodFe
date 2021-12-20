@@ -1,4 +1,5 @@
 import {
+  CLEAR_TOTAL,
   FAVORITE_FAILURE,
   FAVORITE_LIST,
   FAVORITE_REQUEST,
@@ -7,6 +8,7 @@ import {
 const initState = {
   loading: false,
   favorite: [],
+  total: 0,
 };
 
 export const favoriteReducer = (state = initState, action) => {
@@ -25,7 +27,15 @@ export const favoriteReducer = (state = initState, action) => {
       return {
         ...state,
         loading: false,
-        favorite: action.payload,
+        favorite: action.payload.data,
+        total: action.payload.totalElements,
+      };
+    case CLEAR_TOTAL:
+      return {
+        ...state,
+        loading: false,
+        favorite: [],
+        total: 0,
       };
 
     default:

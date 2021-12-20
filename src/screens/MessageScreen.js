@@ -249,7 +249,7 @@ const MessagesScreen = ({ navigation }) => {
   };
 
   useEffect(() => {
-
+    registerForPushNotificationsAsync();
     const querySnapshot = RoomsRef.where(
       'userId',
       'array-contains',
@@ -305,7 +305,7 @@ const MessagesScreen = ({ navigation }) => {
       setLstRoom([]);
       setLstUser([]);
     };
-  }, [dispatch]);
+  }, []);
 
   setTimeout(() => {
     setLstUser(friend);

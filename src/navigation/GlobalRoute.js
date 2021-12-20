@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import StoreClient from '../components/client/StoreClient.js';
 import { COLORS } from '../constants/color.const.js';
 import { favoriteListAction } from '../redux/favorite/favoriteAction.js';
-import { searchTagAction } from '../redux/store/tag/action/tagAction.js';
 import ActiveAccScreen from '../screens/Auth/ActiveAccScreen.js';
 import ChangePassScreen from '../screens/Auth/ChangePassScreen.js';
 import ForgotPasswordScreen from '../screens/Auth/ForgotPasswordScreen.js';
@@ -24,11 +23,9 @@ const Stack = createStackNavigator();
 const GlobalRoute = () => {
   const token = useSelector(state => state.auth.token);
   const { status } = useSelector(state => state.auth.account);
-  const { total } = useSelector(state => state.favorite);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(favoriteListAction());
-    dispatch(searchTagAction(''));
   }, [dispatch]);
   return (
     <Stack.Navigator
