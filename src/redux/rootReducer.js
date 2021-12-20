@@ -7,6 +7,7 @@ import { fileReducer } from './file/reducers/fileReducer.js';
 import { followReducer } from './follow/followReducer.js';
 import { hotReducer } from './foodHot/foodHotReducer.js';
 import { friendReducer } from './friend/reducers/friendReducer.js';
+import { newFeedReducer } from './newFeed/newFeedReducer.js';
 import { postReducer } from './post/postReducer.js';
 import { reactReducer } from './react/reducers/reactReducer.js';
 import { searchPostReducer } from './searchPost/searchReducer.js';
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
   post: postReducer,
   hot: hotReducer,
   search: searchPostReducer,
+  newFeed: newFeedReducer,
 });
 
 export default rootReducer;
