@@ -9,11 +9,12 @@ import { InputUpdate, styles } from '../../styles/paper.js';
 const EditPublicScreen = ({ route, navigation }) => {
   const [name, setName] = useState(route.params.profile.name);
   const [bio, setBio] = useState(route.params.profile.bio);
+  const [address, setAddress] = useState(route.params.profile.address);
   const dispatch = useDispatch();
   const handlerUpdate = () => {
     dispatch(
       updateProfileAction(
-        route.params.profile.address,
+        address,
         route.params.profile.avatar,
         bio,
         route.params.profile.birthday,
@@ -49,6 +50,14 @@ const EditPublicScreen = ({ route, navigation }) => {
               mode="outlined"
               value={bio}
               onChangeText={bio => setBio(bio)}
+            />
+          </View>
+          <View style={{ marginBottom: 20 }}>
+            <InputUpdate
+              label="Địa chỉ"
+              mode="outlined"
+              value={address}
+              onChangeText={address => setAddress(address)}
             />
           </View>
           <View
