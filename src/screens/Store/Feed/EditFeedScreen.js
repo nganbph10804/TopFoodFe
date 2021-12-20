@@ -6,7 +6,7 @@ import {
 } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import React, { useEffect, useState } from 'react';
-import { Image, ScrollView, Text, View } from 'react-native';
+import { Alert, Image, ScrollView, Text, View } from 'react-native';
 import {
   ActivityIndicator,
   Button,
@@ -20,6 +20,7 @@ import { COLORS } from '../../../constants/color.const.js';
 import { updateFeedAction } from '../../../redux/feed/feedAction.js';
 import {
   clearFilesAction,
+  deleteImageAction,
   multiFileAction,
 } from '../../../redux/file/actions/fileAction.js';
 import { InputUpdate } from '../../../styles/paper.js';
@@ -30,7 +31,19 @@ const EditFeedScreen = ({ route, navigation }) => {
   const file = useSelector(state => state.file.files);
   const loadingFile = useSelector(state => state.file.loading);
   const [newContent, setNewContent] = useState(content);
+  const [image, setImage] = useState(files);
   const dispatch = useDispatch();
+
+  const totalImg = [...image, ...file];
+
+  const remove = item => {
+    const img = image.filter(i => i !== item);
+    setImage(img);
+  };
+
+  const removeImage = item => {
+    dispatch(deleteImageAction(item));
+  };
 
   const handlerUpload = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -46,23 +59,46 @@ const EditFeedScreen = ({ route, navigation }) => {
 
   const handlerUpdate = () => {
     file.map(i => files.push(i));
-    if (newContent.trim().length < 1) {
+    if (newContent.trim().length === 0) {
       Toast.show({
         type: 'error',
         text1: 'Thông báo',
         text2: 'Không được để trống',
       });
+    } else if (totalImg.length === 0) {
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Phải có it nhất 1 ảnh',
+      });
+    } else if (totalImg.length > 4) {
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Chỉ upload tối đa 4 ảnh',
+      });
     } else {
-      dispatch(
-        updateFeedAction(
-          newContent,
-          files,
-          _.map(foods, 'id'),
-          id,
-          _.map(tags, 'id'),
-          navigation
-        )
-      );
+      Alert.alert('Thông báo', 'Bạn có muốn đăng xuất không?', [
+        {
+          text: 'Huỷ',
+          style: 'cancel',
+        },
+        {
+          text: 'Đồng ý',
+          onPress: () => {
+            dispatch(
+              updateFeedAction(
+                newContent,
+                totalImg,
+                _.map(foods, 'id'),
+                id,
+                _.map(tags, 'id'),
+                navigation
+              )
+            );
+          },
+        },
+      ]);
     }
   };
 
@@ -86,9 +122,17 @@ const EditFeedScreen = ({ route, navigation }) => {
     <Card>
       <ScrollView style={{ width: '100%', height: '100%', marginTop: 20 }}>
         <View style={{ paddingHorizontal: 20, paddingTop: 15 }}>
-          <View style={{ flexDirection: 'row', paddingLeft: 10 }}>
-            <Entypo name="images" size={30} color={`${COLORS.blue[1]}`} />
-            <Subheading style={{ paddingLeft: 10 }}>Chọn ảnh</Subheading>
+          <View style={{ alignItems: 'center' }}>
+            <Button
+              mode="contained"
+              color={COLORS.blue[1]}
+              onPress={() => handlerUpdate()}
+              icon={() => (
+                <MaterialIcons name="update" size={24} color="white" />
+              )}
+            >
+              Cập nhật bài viết
+            </Button>
           </View>
           <View
             style={{
@@ -114,7 +158,7 @@ const EditFeedScreen = ({ route, navigation }) => {
                 mode="contained"
                 onPress={() => handlerUpload()}
               >
-                Upload
+                Upload Ảnh
               </Button>
             )}
           </View>
@@ -125,24 +169,50 @@ const EditFeedScreen = ({ route, navigation }) => {
               ) : (
                 <View style={{ flexDirection: 'row', paddingTop: 10 }}>
                   {file.map((i, index) => (
-                    <Image
-                      key={index}
-                      source={{ uri: i }}
-                      style={{ width: 90, height: 90, margin: 5 }}
-                    />
+                    <View key={index} style={{ padding: 10 }}>
+                      <Image
+                        source={{ uri: i }}
+                        style={{
+                          width: 90,
+                          height: 90,
+                          margin: 15,
+                          borderRadius: 10,
+                        }}
+                      />
+                      <MaterialIcons
+                        name="highlight-remove"
+                        size={30}
+                        color="red"
+                        style={{ position: 'absolute', top: 5, right: 0 }}
+                        onPress={() => removeImage(i)}
+                      />
+                    </View>
                   ))}
                 </View>
               )}
-              {files.length < 1 ? (
+              {image.length < 0 ? (
                 <Text></Text>
               ) : (
                 <View style={{ flexDirection: 'row', paddingTop: 10 }}>
-                  {files.map((i, index) => (
-                    <Image
-                      key={index}
-                      source={{ uri: i }}
-                      style={{ width: 90, height: 90, margin: 5 }}
-                    />
+                  {image.map((i, index) => (
+                    <View key={index} style={{ padding: 10 }}>
+                      <Image
+                        source={{ uri: i }}
+                        style={{
+                          width: 90,
+                          height: 90,
+                          margin: 15,
+                          borderRadius: 10,
+                        }}
+                      />
+                      <MaterialIcons
+                        name="highlight-remove"
+                        size={30}
+                        color="red"
+                        style={{ position: 'absolute', top: 0, right: 0 }}
+                        onPress={() => remove(i)}
+                      />
+                    </View>
                   ))}
                 </View>
               )}
@@ -158,11 +228,27 @@ const EditFeedScreen = ({ route, navigation }) => {
           }}
         >
           <Entypo name="price-tag" size={24} color={`#000`} />
-          <Subheading style={{ paddingLeft: 10, color: '#000' }}>
-            Tag món ăn:{' '}
+          <Subheading
+            style={{
+              paddingLeft: 10,
+              color: '#000',
+              fontWeight: 'bold',
+              fontStyle: 'italic',
+              fontSize: 18,
+            }}
+          >
+            Hash Tag món ăn:{' '}
           </Subheading>
           {tags.map(i => (
-            <Subheading key={i.id} style={{ color: '#000' }}>
+            <Subheading
+              key={i.id}
+              style={{
+                color: '#000',
+                fontWeight: 'bold',
+                fontStyle: 'italic',
+                fontSize: 18,
+              }}
+            >
               #{i.tagName}{' '}
             </Subheading>
           ))}
@@ -210,16 +296,6 @@ const EditFeedScreen = ({ route, navigation }) => {
               />
             }
           />
-        </View>
-        <View style={{ marginTop: 30, alignItems: 'center' }}>
-          <Button
-            mode="contained"
-            color={COLORS.blue[1]}
-            onPress={() => handlerUpdate()}
-            icon={() => <MaterialIcons name="update" size={24} color="white" />}
-          >
-            Cập nhật bài viết
-          </Button>
         </View>
       </ScrollView>
     </Card>

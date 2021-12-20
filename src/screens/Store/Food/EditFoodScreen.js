@@ -33,7 +33,9 @@ const EditFoodScreen = ({ route, navigation }) => {
   const [newContent, setNewContent] = useState(content);
   const [newName, setName] = useState(name);
   const [newPrice, setPrice] = useState(price);
+  const [image, setImage] = useState(files);
   const dispatch = useDispatch();
+  const totalImg = [...image, ...file];
 
   const handlerUpload = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -50,24 +52,53 @@ const EditFoodScreen = ({ route, navigation }) => {
   const removeImage = item => {
     dispatch(deleteImageAction(item));
   };
+  const remove = item => {
+    const img = image.filter(i => i !== item);
+    setImage(img);
+  };
 
   const handlerCreate = () => {
-    file.map(i => files.push(i));
-    if (
-      newContent.trim().length < 1 &&
-      newName.trim().length < 1 &&
-      newPrice.trim().length < 1
-    ) {
+    if (newContent.trim().length === 0) {
       Toast.show({
         type: 'error',
         text1: 'Thông báo',
-        text2: 'Không được để trống',
+        text2: 'Không được để trống Mô tả',
+      });
+    } else if (newName.trim().length === 0) {
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Không được để trống tên món ăn',
+      });
+    } else if (newPrice.trim().length === 0) {
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Không được để trống giá tiền',
+      });
+    } else if (parseInt(newPrice) < 1) {
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Giá tiền phải lớn hơn 1đ',
+      });
+    } else if (totalImg.length === 0) {
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Phải có it nhất 1 ảnh',
+      });
+    } else if (totalImg.length > 4) {
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Chỉ upload tối đa 4 ảnh',
       });
     } else {
       dispatch(
         updateFoodAction(
           newContent,
-          files,
+          totalImg,
           id,
           newName,
           newPrice,
@@ -157,16 +188,29 @@ const EditFoodScreen = ({ route, navigation }) => {
                   ))}
                 </View>
               )}
-              {files.length < 1 ? (
+              {image.length < 0 ? (
                 <Text></Text>
               ) : (
                 <View style={{ flexDirection: 'row', paddingTop: 10 }}>
-                  {files.map((i, index) => (
-                    <Image
-                      key={index}
-                      source={{ uri: i }}
-                      style={{ width: 70, height: 70, margin: 5 }}
-                    />
+                  {image.map((i, index) => (
+                    <View key={index} style={{ padding: 10 }}>
+                      <Image
+                        source={{ uri: i }}
+                        style={{
+                          width: 165,
+                          height: 165,
+                          margin: 15,
+                          borderRadius: 10,
+                        }}
+                      />
+                      <MaterialIcons
+                        name="highlight-remove"
+                        size={30}
+                        color="red"
+                        style={{ position: 'absolute', top: 0, right: 0 }}
+                        onPress={() => remove(i)}
+                      />
+                    </View>
                   ))}
                 </View>
               )}
