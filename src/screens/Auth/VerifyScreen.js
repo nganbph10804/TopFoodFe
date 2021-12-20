@@ -4,6 +4,7 @@ import { Button, Title } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import { useDispatch } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
+import { validateEmail } from '../../constants/validate.const.js';
 import { getOtpAction } from '../../redux/auth/actions/authAction.js';
 import HeaderShop from '../../shared/HeaderShop.js';
 import { InputUpdate } from '../../styles/paper.js';
@@ -17,6 +18,12 @@ const VerifyScreen = ({ navigation }) => {
         type: 'error',
         text1: 'Thông báo',
         text2: 'Không được để trống email.',
+      });
+    } else if (!email.match(/^\S+@\S+\.\S+$/)) {
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Sai định dạng email',
       });
     } else {
       dispatch(getOtpAction(email, navigation));
