@@ -53,10 +53,6 @@ const Comment = ({
   const loading = useSelector(state => state.react.loading);
   const [height, setHeight] = useState();
   const [comment, setComment] = useState('');
-  console.log(
-    '😂🤣 ~ file: Comment.js ~ line 58 ~ comment',
-    comment.trim().length === 0
-  );
   const [reply, setReply] = useState('');
   const [commentId, setCommentId] = useState();
 
