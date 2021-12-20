@@ -25,6 +25,7 @@ import {
   Chip,
   Title,
 } from 'react-native-paper';
+import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../../constants/color.const.js';
 import { createFeedAction } from '../../../redux/feed/feedAction.js';
@@ -78,15 +79,53 @@ const CreateFeedScreen = ({ navigation }) => {
   };
 
   const handlerCreate = () => {
-    dispatch(
-      createFeedAction(
-        content,
-        files,
-        _.map(foodSelected, 'id'),
-        _.map(tagSelected, 'id'),
-        navigation
-      )
-    );
+    if (content.trim().length === 0) {
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Không được để trống nội dung',
+      });
+    } else if (tagSelected.length > 4) {
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Chỉ được chọn tối đa 4 Hash Tag',
+      });
+    } else if (tagSelected.length < 1) {
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Phải chọn tối thiểu 1 Hash Tag',
+      });
+    } else if (foodSelected.length > 4) {
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Chỉ được chọn tối đa 4 Món ăn',
+      });
+    } else if (foodSelected.length < 1) {
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Phải chọn tối thiểu 1 Món ăn',
+      });
+    } else if (files.length < 1) {
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Phải chọn tối thiểu 1 ảnh',
+      });
+    } else {
+      dispatch(
+        createFeedAction(
+          content,
+          files,
+          _.map(foodSelected, 'id'),
+          _.map(tagSelected, 'id'),
+          navigation
+        )
+      );
+    }
   };
 
   useEffect(() => {

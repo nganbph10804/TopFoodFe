@@ -1,7 +1,7 @@
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import { _ } from 'lodash';
 import React, { useState } from 'react';
-import { Image, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, Image, ScrollView, StyleSheet, View } from 'react-native';
 import { SliderBox } from 'react-native-image-slider-box';
 import { Menu, MenuItem } from 'react-native-material-menu';
 import { Card, Chip, Subheading } from 'react-native-paper';
@@ -17,7 +17,18 @@ const FeedList = ({ feed, navigation, storeId }) => {
   const showMenu = () => setVisible(true);
   const dispatch = useDispatch();
   const handlerRemove = () => {
-    dispatch(deleteFeedAction(id));
+    Alert.alert('Thông báo', 'Bạn có muốn xoá bài viết không?', [
+      {
+        text: 'Huỷ',
+        style: 'cancel',
+      },
+      {
+        text: 'Đồng ý',
+        onPress: () => {
+          dispatch(deleteFeedAction(id));
+        },
+      },
+    ]);
   };
 
   return (

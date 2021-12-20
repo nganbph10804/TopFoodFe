@@ -4,7 +4,7 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Chip, Paragraph } from 'react-native-paper';
 
-const ActionComment = ({ i, likeComment, handlerSubmit, setCommentId }) => {
+const ActionComment = ({ i, likeComment }) => {
   return (
     <View style={styled.main}>
       <View style={styled.action}>
@@ -14,20 +14,6 @@ const ActionComment = ({ i, likeComment, handlerSubmit, setCommentId }) => {
         <TouchableOpacity onPress={() => likeComment(i.id)}>
           <Chip onPress={() => likeComment(i.id)}>Like</Chip>
         </TouchableOpacity>
-        {/* <TouchableOpacity
-          style={{ marginLeft: 10 }}
-          onPress={() => {
-            handlerSubmit(), setCommentId(i.id);
-          }}
-        >
-          <Chip
-            onPress={() => {
-              handlerSubmit(), setCommentId(i.id);
-            }}
-          >
-            Phản hồi
-          </Chip>
-        </TouchableOpacity> */}
       </View>
     </View>
   );

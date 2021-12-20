@@ -1,4 +1,4 @@
-import { AntDesign, Entypo, Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { _ } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
@@ -21,6 +21,7 @@ import {
   TextInput,
   Title,
 } from 'react-native-paper';
+import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
 import {
@@ -29,7 +30,6 @@ import {
 } from '../../redux/file/actions/fileAction.js';
 import {
   commentListAction,
-  commentPostAction,
   likeCommentAction,
   replyCommentAction,
   replyListAction,
@@ -53,7 +53,10 @@ const Comment = ({
   const loading = useSelector(state => state.react.loading);
   const [height, setHeight] = useState();
   const [comment, setComment] = useState('');
-  const [visible, setVisible] = useState(false);
+  console.log(
+    '😂🤣 ~ file: Comment.js ~ line 58 ~ comment',
+    comment.trim().length === 0
+  );
   const [reply, setReply] = useState('');
   const [commentId, setCommentId] = useState();
 
@@ -75,10 +78,6 @@ const Comment = ({
 
   const updateHeight = size => {
     setHeight(size);
-  };
-
-  const handlerSubmit = () => {
-    setVisible(true);
   };
 
   const handlerReply = () => {
@@ -243,12 +242,7 @@ const Comment = ({
                     </Card.Actions>
                   </Card>
                 </View>
-                <ActionComment
-                  i={i}
-                  likeComment={likeComment}
-                  handlerSubmit={handlerSubmit}
-                  setCommentId={setCommentId}
-                />
+                <ActionComment i={i} likeComment={likeComment} />
               </View>
             ))}
           </View>
@@ -273,75 +267,28 @@ const Comment = ({
             color={`${COLORS.blue[4]}`}
             onPress={() => handlerUpload()}
           />
-          {!visible && (
-            <TextInput
-              ref={ref}
-              mode="outlined"
-              value={comment}
-              onChangeText={comment => setComment(comment)}
-              outlineColor={`${COLORS.blue[4]}`}
-              selectionColor={`${COLORS.blue[4]}`}
-              placeholder="Nội dung"
-              onContentSizeChange={e =>
-                updateHeight(e.nativeEvent.contentSize.height)
-              }
-              multiline={true}
-              style={styled.input}
-              autoFocus={true}
-              right={<TextInput.Affix text={`${comment.length}/1000`} />}
-            />
-          )}
-          {visible && (
-            <TextInput
-              mode="outlined"
-              value={reply}
-              onChangeText={reply => setReply(reply)}
-              outlineColor={`${COLORS.blue[4]}`}
-              selectionColor={`${COLORS.blue[4]}`}
-              placeholder="Nội dung"
-              onContentSizeChange={e =>
-                updateHeight(e.nativeEvent.contentSize.height)
-              }
-              multiline={true}
-              style={styled.input}
-              autoFocus={true}
-              right={
-                <TextInput.Icon
-                  name={() => (
-                    <MaterialIcons
-                      name="cancel"
-                      size={24}
-                      color="black"
-                      onPress={() => {
-                        setVisible(false), setReply('');
-                      }}
-                    />
-                  )}
-                />
-              }
-              onBlur={() => {
-                setTimeout(() => {
-                  setVisible(false), setReply('');
-                }, 3000);
-              }}
-            />
-          )}
-          {!visible && (
-            <Ionicons
-              name="send"
-              size={24}
-              color={`${COLORS.blue[4]}`}
-              onPress={() => handlerSend()}
-            />
-          )}
-          {visible && (
-            <Ionicons
-              name="send"
-              size={24}
-              color={`${COLORS.blue[4]}`}
-              onPress={() => handlerReply()}
-            />
-          )}
+          <TextInput
+            ref={ref}
+            mode="outlined"
+            value={comment}
+            onChangeText={comment => setComment(comment)}
+            outlineColor={`${COLORS.blue[4]}`}
+            selectionColor={`${COLORS.blue[4]}`}
+            placeholder="Nội dung"
+            onContentSizeChange={e =>
+              updateHeight(e.nativeEvent.contentSize.height)
+            }
+            multiline={true}
+            style={styled.input}
+            autoFocus={true}
+            right={<TextInput.Affix text={`${comment.length}/1000`} />}
+          />
+          <Ionicons
+            name="send"
+            size={24}
+            color={`${COLORS.blue[4]}`}
+            onPress={() => handlerSend()}
+          />
         </View>
       </View>
     </Modal>
