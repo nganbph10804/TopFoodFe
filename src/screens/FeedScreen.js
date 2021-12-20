@@ -178,7 +178,6 @@ const FeedScreen = ({ navigation }) => {
               placeholder="Tìm kiếm"
               ref={ref}
               onFocus={onFocus}
-              onBlur={onBlur}
               value={searchValue}
               onChangeText={searchValue => setSearchValue(searchValue)}
               style={styles.search}

@@ -32,12 +32,14 @@ const FoodMain = ({ navigation }) => {
       <HeaderStore image={profile.avatar} name={profile.name} />
       <ListButton navigation={navigation} />
       <View style={{ marginTop: 30 }}>
-        <View style={styled.item}>
-          <FontAwesome name="users" size={24} color="black" />
-          <Subheading style={styled.text}>
-            Đang có {listUserFollowStore.length} người dùng theo dõi
-          </Subheading>
-        </View>
+        {listUserFollowStore.length > 0 && (
+          <View style={styled.item}>
+            <FontAwesome name="users" size={24} color="black" />
+            <Subheading style={styled.text}>
+              {listUserFollowStore.length} Người dùng theo dõi
+            </Subheading>
+          </View>
+        )}
         <View style={styled.item}>
           <Feather name="phone-call" size={24} color="black" />
           <Subheading style={styled.text}>{account.phoneNumber}</Subheading>
