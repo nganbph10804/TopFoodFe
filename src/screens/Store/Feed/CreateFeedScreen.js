@@ -1,9 +1,7 @@
 import {
   AntDesign,
-  Entypo,
   MaterialCommunityIcons,
   MaterialIcons,
-  Ionicons,
 } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { _ } from 'lodash';
@@ -22,14 +20,15 @@ import {
   Checkbox,
   Subheading,
   TextInput,
-  Chip,
-  Title,
 } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../../constants/color.const.js';
 import { createFeedAction } from '../../../redux/feed/feedAction.js';
-import { multiFileAction } from '../../../redux/file/actions/fileAction.js';
+import {
+  deleteImageAction,
+  multiFileAction,
+} from '../../../redux/file/actions/fileAction.js';
 import { InputUpdate } from '../../../styles/paper.js';
 
 const CreateFeedScreen = ({ navigation }) => {
@@ -45,6 +44,10 @@ const CreateFeedScreen = ({ navigation }) => {
   const [foodSelected, setFoodSelected] = useState([]);
   const [visible, setVisible] = useState(false);
   const [show, setShow] = useState(false);
+
+  const removeImage = item => {
+    dispatch(deleteImageAction(item));
+  };
 
   const handlerSelected = id => {
     let arr = data.map((i, idx) => {
@@ -322,10 +325,17 @@ const CreateFeedScreen = ({ navigation }) => {
             </View>
             {files &&
               files.map((i, index) => (
-                <View key={index}>
+                <View key={index} style={{ padding: 10, alignItems: 'center' }}>
                   <Image
                     source={{ uri: `${i}` }}
-                    style={{ width: '100%', height: 200, marginVertical: 5 }}
+                    style={{ width: '100%', height: 200, margin: 15 }}
+                  />
+                  <MaterialIcons
+                    name="highlight-remove"
+                    size={30}
+                    color="red"
+                    style={{ position: 'absolute', top: 0, right: 0 }}
+                    onPress={() => removeImage(i)}
                   />
                 </View>
               ))}
