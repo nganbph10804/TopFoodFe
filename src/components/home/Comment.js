@@ -30,6 +30,7 @@ import {
 } from '../../redux/file/actions/fileAction.js';
 import {
   commentListAction,
+  commentPostAction,
   likeCommentAction,
   replyCommentAction,
   replyListAction,

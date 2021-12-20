@@ -11,6 +11,10 @@ import { addHotAction } from '../../redux/foodHot/foodHotActions.js';
 import { deleteFoodAction } from '../../redux/store/food/actions/foodAction.js';
 
 const FoodList = ({ food, navigation, storeId }) => {
+  console.log(
+    '😂🤣 ~ file: FoodList.js ~ line 14 ~ FoodList ~ food',
+    _.head(food.files)
+  );
   const account = useSelector(state => state.auth.account);
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
