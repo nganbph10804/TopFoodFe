@@ -26,7 +26,7 @@ const FoodList = ({ food, navigation, storeId }) => {
       {
         text: 'Đồng ý',
         onPress: () => {
-          dispatch(deleteFoodAction(food.id));
+          dispatch(deleteFoodAction(food.id, food.tag.id));
         },
       },
     ]);
