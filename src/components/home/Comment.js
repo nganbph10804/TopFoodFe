@@ -7,6 +7,7 @@ import {
   Modal,
   ScrollView,
   StyleSheet,
+  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -182,13 +183,13 @@ const Comment = ({
             source={{ uri: `${_.head(post.files)}` }}
             style={{ width: 90, height: 90, borderRadius: 10 }}
           />
-          <Subheading
+          <Text
             numberOfLines={1}
             ellipsizeMode="tail"
             style={{ marginLeft: 10 }}
           >
             {post.content}
-          </Subheading>
+          </Text>
         </View>
         <Divider />
         <View style={styled.title}>
@@ -334,6 +335,7 @@ const styled = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 10,
+    flexWrap: 'wrap',
   },
   title: {
     marginHorizontal: 10,

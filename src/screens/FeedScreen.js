@@ -192,7 +192,14 @@ const FeedScreen = ({ navigation }) => {
             />
           </View>
           {focus && search.length > 0
-            ? search.map((i, index) => <SearchValue key={index} post={i} />)
+            ? search.map((i, index) => (
+                <SearchValue
+                  key={index}
+                  post={i}
+                  navigation={navigation}
+                  citySelected={citySelected}
+                />
+              ))
             : null}
           {!focus && postCity.length > 0
             ? postCity.map((i, index) => (
