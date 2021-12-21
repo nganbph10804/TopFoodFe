@@ -35,10 +35,6 @@ const HomeList = ({ post, navigation, citySelected }) => {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const commentList = useSelector(state => state.react.comment);
-  console.log(
-    '😂🤣 ~ file: HomeList.js ~ line 38 ~ HomeList ~ commentList',
-    commentList.length
-  );
 
   const handlerHeart = () => {
     dispatch(likePostAction(id, citySelected.code));
@@ -168,7 +164,7 @@ const HomeList = ({ post, navigation, citySelected }) => {
                   />
                 )}
               >
-                Bình luận ({commentList.length})
+                Bình luận ({commentList.length > 0 && commentList.length})
               </Chip>
             </TouchableOpacity>
           </View>
