@@ -18,7 +18,7 @@ import {
   Title,
   Paragraph,
 } from 'react-native-paper';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
 import {
   commentListAction,
@@ -34,6 +34,11 @@ const HomeList = ({ post, navigation, citySelected }) => {
   const { files, content, tags, id, totalReaction, foods } = post;
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
+  const commentList = useSelector(state => state.react.comment);
+  console.log(
+    '😂🤣 ~ file: HomeList.js ~ line 38 ~ HomeList ~ commentList',
+    commentList.length
+  );
 
   const handlerHeart = () => {
     dispatch(likePostAction(id, citySelected.code));
@@ -163,7 +168,7 @@ const HomeList = ({ post, navigation, citySelected }) => {
                   />
                 )}
               >
-                Bình luận
+                Bình luận ({commentList.length})
               </Chip>
             </TouchableOpacity>
           </View>

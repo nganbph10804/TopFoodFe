@@ -78,7 +78,7 @@ const EditFeedScreen = ({ route, navigation }) => {
         text2: 'Chỉ upload tối đa 4 ảnh',
       });
     } else {
-      Alert.alert('Thông báo', 'Bạn có muốn đăng xuất không?', [
+      Alert.alert('Thông báo', 'Bạn có muốn cập nhật bài viết không?', [
         {
           text: 'Huỷ',
           style: 'cancel',
