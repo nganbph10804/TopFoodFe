@@ -19,6 +19,7 @@ import {
 import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../constants/color.const.js';
+import { validateEmail } from '../../constants/validate.const.js';
 import { registerAction } from '../../redux/auth/actions/authAction.js';
 import { InputUpdate, styles } from '../../styles/paper.js';
 
@@ -60,17 +61,23 @@ const RegisterScreen = ({ navigation }) => {
 
   const registerHandler = () => {
     if (
-      text.length === 0 ||
-      email.length === 0 ||
-      name.length == 0 ||
-      phone.length === 0 ||
-      password.length === 0 ||
-      username.length === 0
+      text.trim().length === 0 ||
+      email.trim().length === 0 ||
+      name.trim().length == 0 ||
+      phone.trim().length === 0 ||
+      password.trim().length === 0 ||
+      username.trim().length === 0
     ) {
       Toast.show({
         type: 'error',
         text1: 'Thông báo',
         text2: 'Không được để trống.',
+      });
+    } else if (!email.match(validateEmail)) {
+      Toast.show({
+        type: 'error',
+        text1: 'Thông báo',
+        text2: 'Sai định dạng email',
       });
     } else {
       dispatch(

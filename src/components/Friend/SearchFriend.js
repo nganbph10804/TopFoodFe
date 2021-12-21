@@ -23,39 +23,36 @@ const SearchFriend = ({ item, setSearchValue }) => {
     dispatch(clearSearchAction());
   };
   return (
-    <View>
-      <View style={styles.Item}>
-        <Image
-          source={{
-            uri: `${item.profile.avatar}`,
-          }}
-          style={{
-            width: 55,
-            height: 55,
-            borderRadius: 75,
-            overflow: 'hidden',
-          }}
-        />
-        <Text style={{ paddingLeft: 10, fontSize: 18, fontWeight: 'bold' }}>
-          {item.profile.name}
-        </Text>
-        <View style={styles.lastItem}>
-          {item.friendStatus === FRIENDS.FRIEND ? (
-            <Button color={`${COLORS.blue[4]}`}>BẠN BÈ</Button>
-          ) : item.friendStatus === FRIENDS.SENDING ? (
-            item.isPersonSending === FRIENDS.IS_PERSON ? (
-              <Button color={`${COLORS.orange}`}>ĐÃ GỬI</Button>
-            ) : (
-              <Button color={`${COLORS.blue[1]}`} onPress={() => accept()}>
-                CHẤP NHẬN
-              </Button>
-            )
+    <View style={styles.Item}>
+      <Image
+        source={{
+          uri: `${item.profile.avatar}`,
+        }}
+        style={{
+          width: 55,
+          height: 55,
+          borderRadius: 75,
+          overflow: 'hidden',
+        }}
+      />
+      <Text style={{ paddingLeft: 10, fontSize: 18, fontWeight: 'bold' }}>
+        {item.profile.name}
+      </Text>
+      <View style={styles.lastItem}>
+        {item.friendStatus === FRIENDS.FRIEND ? (
+          <Button color={`${COLORS.blue[4]}`}>BẠN BÈ</Button>
+        ) : item.friendStatus === FRIENDS.SENDING ? (
+          item.isPersonSending === FRIENDS.IS_PERSON ? (
+            <Button color={`${COLORS.orange}`}>ĐÃ GỬI</Button>
           ) : (
-            <Button onPress={() => handlerSend()}>Kết bạn</Button>
-          )}
-        </View>
+            <Button color={`${COLORS.blue[1]}`} onPress={() => accept()}>
+              CHẤP NHẬN
+            </Button>
+          )
+        ) : (
+          <Button onPress={() => handlerSend()}>Kết bạn</Button>
+        )}
       </View>
-      <Divider />
     </View>
   );
 };

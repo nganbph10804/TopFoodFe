@@ -208,6 +208,12 @@ export const updateProfileAction =
           headers: await authHeader(),
         }
       );
+      Toast.show({
+        type: 'success',
+
+        text1: 'Thông báo',
+        text2: 'Cập nhật tài khoản thành công',
+      });
       navigation.navigate('SettingScreen');
     } catch (error) {
       dispatch({

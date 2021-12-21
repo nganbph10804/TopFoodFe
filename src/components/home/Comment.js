@@ -30,6 +30,7 @@ import {
 } from '../../redux/file/actions/fileAction.js';
 import {
   commentListAction,
+  commentPostAction,
   likeCommentAction,
   replyCommentAction,
   replyListAction,
@@ -50,6 +51,7 @@ const Comment = ({
   const dispatch = useDispatch();
   const ref = useRef(null);
   const commentList = useSelector(state => state.react.comment);
+  const account = useSelector(state => state.auth.account);
   const loading = useSelector(state => state.react.loading);
   const [height, setHeight] = useState();
   const [comment, setComment] = useState('');
@@ -221,7 +223,10 @@ const Comment = ({
                           />
                         ))}
                       <Subheading>{i.content} </Subheading>
-                      <RemoveComment id={i.id} postId={post.id} />
+                      {commentList.map(i => i.profile.profile.id)[0] ===
+                        account.id && (
+                        <RemoveComment id={i.id} postId={post.id} />
+                      )}
                     </Card.Content>
                     <Card.Actions>
                       {i.totalReaction > 0 && (

@@ -6,27 +6,17 @@ import {
   MaterialIcons,
 } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
-import { _ } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import {
   Alert,
   Image,
-  Modal,
   Picker,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
-import {
-  ActivityIndicator,
-  Button,
-  Card,
-  Checkbox,
-  Subheading,
-  TextInput,
-} from 'react-native-paper';
+import { ActivityIndicator, Button, Card, TextInput } from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../../../constants/color.const.js';
@@ -73,19 +63,19 @@ const CreateFoodScreen = ({ navigation }) => {
         text1: 'Thông báo',
         text2: 'Phải upload ảnh',
       });
-    } else if (content.trim().length < 1) {
+    } else if (content.trim().length === 0) {
       Toast.show({
         type: 'error',
         text1: 'Thông báo',
         text2: 'Không được để trống mô tả',
       });
-    } else if (name.trim().length < 1) {
+    } else if (name.trim().length === 0) {
       Toast.show({
         type: 'error',
         text1: 'Thông báo',
         text2: 'Không được để trống tên món ăn',
       });
-    } else if (price.trim().length < 1) {
+    } else if (price.trim().length === 0) {
       Toast.show({
         type: 'error',
         text1: 'Thông báo',

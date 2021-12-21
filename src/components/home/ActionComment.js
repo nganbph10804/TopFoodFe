@@ -11,9 +11,15 @@ const ActionComment = ({ i, likeComment }) => {
         <Paragraph style={{ marginLeft: 10 }}>
           {moment(i.createAt).fromNow()}{' '}
         </Paragraph>
-        <TouchableOpacity onPress={() => likeComment(i.id)}>
-          <Chip onPress={() => likeComment(i.id)}>Like</Chip>
-        </TouchableOpacity>
+        {i.itMeReaction === 'ANGRY' ? (
+          <TouchableOpacity onPress={() => likeComment(i.id)}>
+            <Chip onPress={() => likeComment(i.id)}>Bỏ Like</Chip>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={() => likeComment(i.id)}>
+            <Chip onPress={() => likeComment(i.id)}>Like</Chip>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
