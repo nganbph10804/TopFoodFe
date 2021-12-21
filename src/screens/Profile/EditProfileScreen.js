@@ -41,7 +41,7 @@ const EditProfileScreen = ({ navigation }) => {
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const birthday =
-    date.getDate() + '/' + date.getMonth() + 1 + '/' + date.getFullYear();
+    date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
   const dispatch = useDispatch();
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
