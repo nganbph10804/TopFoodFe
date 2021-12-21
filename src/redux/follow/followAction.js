@@ -26,7 +26,7 @@ export const listStoreFollowAction = () => async dispatch => {
       type: FOLLOW_LIST_STORE,
       payload: data.data.data,
     });
-  } catch (e) {
+  } catch (error) {
     dispatch({
       type: FOLLOW_FAILURE,
     });
@@ -92,7 +92,7 @@ export const followAction = id => async dispatch => {
       text1: 'Thông báo',
       text2: 'Theo dõi cửa hàng thành công',
     });
-  } catch (e) {
+  } catch (error) {
     dispatch({
       type: FOLLOW_FAILURE,
     });
@@ -136,7 +136,7 @@ export const unFollowAction = id => async dispatch => {
       text1: 'Thông báo',
       text2: 'Bỏ theo dõi cửa hàng thành công',
     });
-  } catch (e) {
+  } catch (error) {
     dispatch({
       type: FOLLOW_FAILURE,
     });
